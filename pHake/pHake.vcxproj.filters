@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Gui">
+      <UniqueIdentifier>{43e4359f-852c-4817-b7c3-61c0c802b8d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{5a9bc1cd-6bba-491f-ac08-8595c14c8c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\lib">
+      <UniqueIdentifier>{e3e38317-e610-489b-8acb-d084b3b3c422}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Gui\lib\pButton.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\lib\pItem.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\lib\pListView.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\lib\pMouse.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\lib\pNotification.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\pGui.hpp">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\mem.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pHake.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pTimer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Memory\mem.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
