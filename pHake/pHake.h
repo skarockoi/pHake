@@ -48,6 +48,23 @@ PlayerVehicleHandling = PlayerVehicle + 0x918
 	float    collisionDamage = 0xF0;
 	float    handbrakeForce = 0x7C;
 	float    thrust = 0x338;
+
+PlayerWeaponinfo = Player + [0x10C8, 0x20]
+	float    recoil = 0x2E8;
+	float	 range = 0x28C;
+	float    bulletMass = 0xD8;
+	float	 bulletDamage = 0xB0;
+	uint32_t bulletInBatch = 0x118;
+	float	 muzzleVelocity = 0x114;
+	float    reloadMultiplier = 0x12C;
+	float    batchSpread = 0x74;
+	float    penetration = 0x108;
+	float    forceOnPed = 0xD4;
+	float    forceOnVehicle = 0x8;
+	float    forceOnHeli = 0xDC;
+
+PlayerWeaponinfoAmmoinfo = PlayerWeaponinfo + [0x60, 0x8, 0x0]
+	uint32_t ammo = 0x18
 */
 
 class pHake // 1.5
