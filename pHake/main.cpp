@@ -7,6 +7,11 @@
 pGui* menu;
 pHake* game;
 
+struct vector2
+{
+	float x, y;
+};
+
 struct settings
 {
 	bool godmode = false;
@@ -49,24 +54,27 @@ void suicide()
 
 void tpToWaypoint()
 {
-	float x = game->mem.read<float>(game->_base + 0x1F5EA30);
-	float y = game->mem.read<float>(game->_base + 0x1F5EA34);
+	vector2 waypoint = game->mem.read<vector2>(game->_base + 0x1F5EA30);
 
-	if (x != 64000 && y != 64000)
+	if (waypoint.x != 64000 && waypoint.y != 64000)
 	{
 		if (game->player->read<int32_t>(0xe44) == 0)
 		{
-			game->playerPos->write<float>(0x50, x);
-			game->playerPos->write<float>(0x54, y);
+			game->playerPos->write<float>(0x50, waypoint.x);
+			game->playerPos->write<float>(0x54, waypoint.y);
 			game->playerPos->write<float>(0x58, -200.f);
 		}
 		else
 		{
-			game->playerVehiclePos->write<float>(0x50, x);
-			game->playerVehiclePos->write<float>(0x54, y);
+			game->playerVehiclePos->write<float>(0x50, waypoint.x);
+			game->playerVehiclePos->write<float>(0x54, waypoint.y);
 			game->playerVehiclePos->write<float>(0x58, -200.f);
 		}
 		menu->notification.add("Teleported to Waypoint");
+	}
+	else
+	{
+		menu->notification.add("Please set a Waypoint");
 	}
 }
 
