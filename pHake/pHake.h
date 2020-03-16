@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Memory/mem.h"
 
+
 /*
 uint64_t World = _base + 0x024B0C50
 uint64_t Waypoint = _base + 0x1F5EA30

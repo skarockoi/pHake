@@ -303,7 +303,6 @@ void lFly()
 				BYTE freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
 				WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
 				game->player->write<unsigned char>(0x10A8, 1); // disable ragdoll
-
 			}
 
 			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
