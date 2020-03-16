@@ -92,6 +92,33 @@ float getPitch()
 	return x;
 }
 
+void freezeWorld(bool value)
+{
+	if (value)
+	{
+		BYTE freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
+		WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
+		game->player->write<unsigned char>(0x10A8, 1); // disable ragdoll
+	}
+	else
+	{
+		BYTE freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 }; // check if position is already restored
+		game->player->write<unsigned char>(0x10A8, 32); // enable ragdoll
+		WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOff, sizeof(freezeOff), NULL);
+	}
+}
+
+bool isWorldFrozen()
+{
+	BYTE isOn[4];
+	ReadProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
+
+	if (isOn[0] == 0x90) // check if position is already freezed
+		return true;
+	else
+		return false;
+}
+
 void tpToWaypoint()
 {
 	vector2 waypoint = game->mem.read<vector2>(game->_base + 0x1F5EA30);
@@ -296,14 +323,8 @@ void lFly()
 			float yaw = getYaw() + 90;
 			float pitch = getPitch() + 90;
 
-			BYTE isOn[4];
-			ReadProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
-			if (isOn[0] != 0x90) // check if position is already freezed
-			{
-				BYTE freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
-				WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
-				game->player->write<unsigned char>(0x10A8, 1); // disable ragdoll
-			}
+			if (!isWorldFrozen())
+				freezeWorld(true);
 
 			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
 			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
@@ -316,14 +337,8 @@ void lFly()
 	}
 	else
 	{
-		BYTE isOn[4];
-		ReadProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
-		if (isOn[0] == 0x90)
-		{
-			BYTE freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 }; // check if position is already restored
-			game->player->write<unsigned char>(0x10A8, 32); // enable ragdoll
-			WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOff, sizeof(freezeOff), NULL);
-		}
+		if (isWorldFrozen())
+			freezeWorld(false);
 	}
 }
 
