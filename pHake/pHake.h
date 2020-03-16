@@ -4,6 +4,12 @@
 
 /*
 uint64_t World = _base + 0x024B0C50
+uint64_t Waypoint = _base + 0x1F5EA30
+uint64_t Trigger = _base + 0x1F47430
+uint64_t kmh = _base + 0x2576BC0
+uint64_t YawX = _base + 0x26242B8
+uint64_t YawY = _base + 0x26242E8
+uint64_t Pitch = _base + 0x2915F28
 
 Player = World + 0x8
 	uint64_t position = 0x30;
@@ -118,7 +124,7 @@ public:
 	Memory mem;
 
 	DataWrapper<0x14BC>* player;
-	DataWrapper<0x58>*	 playerPos;
+	DataWrapper<0xAA>*	 playerPos;
 	DataWrapper<0x848>*	 playerInfo;
 						 
 	DataWrapper<0xC20>*	 playerVehicle;
@@ -139,7 +145,7 @@ public:
 
 		player = new DataWrapper<0x14BC>(mem.hProcess, _player);
 		playerInfo = new DataWrapper<0x848>(mem.hProcess, _playerInfo);
-		playerPos = new DataWrapper<0x58>(mem.hProcess, _playerPos);
+		playerPos = new DataWrapper<0xAA>(mem.hProcess, _playerPos);
 		playerVehicle = new DataWrapper<0xC20>(mem.hProcess, _playerVehicle);
 		playerVehiclePos = new DataWrapper<0x58>(mem.hProcess, _playerVehiclePos);
 		playerVehicleHandling = new DataWrapper<0x3CC>(mem.hProcess, _playerVehicleHandling);

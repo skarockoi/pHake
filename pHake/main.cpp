@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "pHake.h"
 #include "pTimer.hpp"
+#define M_PI           3.14159
 
 pGui* menu;
 pHake* game;
@@ -19,7 +20,9 @@ struct settings
 	bool rploop = false;
 	bool trigger = false;
 	bool weaponmax = false;
+	bool fly = false;
 
+	float flySpeed = 5.f;
 	float kmh = 0.f;
 
 	std::string boostPlayer = "default";
@@ -50,6 +53,43 @@ void suicide()
 {
 	game->player->write<float>(0x280, 0.f);
 	menu->notification.add("Player health set to 0");
+}
+
+float getYaw()
+{
+	float angle = 0;
+	float x = game->mem.read<float>(game->_base + 0x26242B8);
+	float y = game->mem.read<float>(game->_base + 0x26242E8);
+
+	if (x < 0 && y > 0)
+	{
+		angle = ((((x * -1) * 100) * 0.9) - 90) * -1;
+	}
+
+	if (x > 0 && y > 0)
+	{
+		angle = ((((x * -1) * 100) * 0.9) - 90) * -1;
+	}
+
+	if (x > 0 && y < 0)
+	{
+		angle = ((((x * -1) * 100) * 0.9) + 270);
+	}
+
+	if (x < 0 && y < 0)
+	{
+		angle = ((((x * -1) * 100) * 0.9) + 270);
+	}
+	return angle;
+}
+
+float getPitch()
+{
+	float angle = 0;
+	float x = game->mem.read<float>(game->_base + 0x2915F28);
+
+	angle = (((x * -1) * 100) + 90);
+	return x;
 }
 
 void tpToWaypoint()
@@ -247,6 +287,49 @@ void lWeaponMax()
 	}
 }
 
+void lFly()
+{
+	if (settings.fly)
+	{
+		if (GetAsyncKeyState(0x57))
+		{
+			float yaw = getYaw() + 90;
+			float pitch = getPitch() + 90;
+
+			BYTE isOn[4];
+			ReadProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
+			if (isOn[0] != 0x90) // check if position is already freezed
+			{
+				BYTE freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
+				WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
+				game->player->write<unsigned char>(0x10A8, 1); // disable ragdoll
+
+			}
+
+			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
+			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
+			float newZ = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
+
+			game->playerPos->write<float>(0x50, newX);
+			game->playerPos->write<float>(0x54, newY);
+			game->playerPos->write<float>(0x58, newZ);
+		}
+	}
+	else
+	{
+		BYTE isOn[4];
+		ReadProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
+		if (isOn[0] == 0x90)
+		{
+			BYTE freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 }; // check if position is already restored
+			game->player->write<unsigned char>(0x10A8, 32); // enable ragdoll
+			WriteProcessMemory(game->mem.hProcess, (void*)(game->_base + 0x1429EC3), &freezeOff, sizeof(freezeOff), NULL);
+		}
+	}
+}
+
+
+
 void mainLoop()
 {
 	pTimer* timer = new pTimer;
@@ -255,6 +338,7 @@ void mainLoop()
 	timer->add(lNeverWanted, 250);
 	timer->add(lRpLoop, 0);
 	timer->add(lTrigger, 0);
+	timer->add(lFly, 10);
 
 	while (true)
 	{
@@ -289,8 +373,8 @@ void mainLoop()
 void exitProgram()
 {
 	game->mem.closeHandle();
-	delete game;
-	delete menu;
+	//delete game;
+	//delete menu;
 	exit(-1);
 }
 
@@ -309,6 +393,8 @@ int main()
 	menu->entries.addBool("Trigger", settings.trigger);
 	menu->entries.addBool("RpLoop", settings.rploop);
 	menu->entries.addBool("Weaponmax", settings.weaponmax);
+	menu->entries.addBool("Fly", settings.fly);
+	menu->entries.addFloat("Flyspeed", settings.flySpeed, 0.5, 0.5);
 	menu->entries.addFloat("Km/h", settings.kmh, 0, 0);
 	menu->entries.addFunction("Boost Player", boostPlayer);
 	menu->entries.addFunction("Boost Vehicle", boostVehicle);
