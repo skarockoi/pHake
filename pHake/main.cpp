@@ -3,7 +3,6 @@
 #include <Windows.h>
 #include "pHake.h"
 #include "pTimer.hpp"
-#define M_PI           3.14159
 
 pGui* menu;
 pHake* game;
@@ -318,13 +317,16 @@ void lFly()
 {
 	if (settings.fly)
 	{
-		if (GetAsyncKeyState(0x57))
+		if (HIBYTE(GetAsyncKeyState(0x57)))
 		{
 			float yaw = getYaw() + 90;
 			float pitch = getPitch() + 90;
 
 			if (!isWorldFrozen())
+			{
+				game->player->write<unsigned char>(0x10A8, 1);
 				freezeWorld(true);
+			}
 
 			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
 			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
@@ -333,16 +335,30 @@ void lFly()
 			game->playerPos->write<float>(0x50, newX);
 			game->playerPos->write<float>(0x54, newY);
 			game->playerPos->write<float>(0x58, newZ);
+
+			if (game->player->read<int32_t>(0xe44) == 0)
+			{
+				game->playerPos->write<float>(0x50, newX);
+				game->playerPos->write<float>(0x54, newY);
+				game->playerPos->write<float>(0x58, newZ);
+			}
+			else
+			{
+				game->playerVehiclePos->write<float>(0x50, newX);
+				game->playerVehiclePos->write<float>(0x54, newY);
+				game->playerVehiclePos->write<float>(0x58, newZ);
+			}
 		}
 	}
 	else
 	{
 		if (isWorldFrozen())
+		{
+			game->player->write<unsigned char>(0x10A8, 32);
 			freezeWorld(false);
+		}
 	}
 }
-
-
 
 void mainLoop()
 {
