@@ -316,7 +316,7 @@ void lFly()
 {
 	if (settings.fly)
 	{
-		if (HIBYTE(GetAsyncKeyState(0x57)))
+		if (HIBYTE(GetAsyncKeyState(VK_SPACE)))
 		{
 			if (!isWorldFrozen())
 			{
@@ -331,18 +331,17 @@ void lFly()
 			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
 			float newZ = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
 
-			if (game->player->read<int32_t>(0xe44) == 0)
-			{
-				game->playerPos->write<float>(0x50, newX);
-				game->playerPos->write<float>(0x54, newY);
-				game->playerPos->write<float>(0x58, newZ);
-			}
-			else
-			{
-				game->playerVehiclePos->write<float>(0x50, newX);
-				game->playerVehiclePos->write<float>(0x54, newY);
-				game->playerVehiclePos->write<float>(0x58, newZ);
-			}
+
+			game->playerPos->write<float>(0x50, newX);
+			game->playerPos->write<float>(0x54, newY);
+			game->playerPos->write<float>(0x58, newZ);
+
+			//if (game->player->read<int32_t>(0xe44) != 0)
+			//{
+			//	game->playerVehiclePos->write<float>(0x50, newX);
+			//	game->playerVehiclePos->write<float>(0x54, newY);
+			//	game->playerVehiclePos->write<float>(0x58, newZ);
+			//}
 		}
 	}
 	else
