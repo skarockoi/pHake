@@ -28,7 +28,6 @@ struct settings
 	std::string boostVehicle = "default";
 }settings;
 
-
 void lMouseDown()
 {
 	INPUT    Input = { 0 };
@@ -319,22 +318,18 @@ void lFly()
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)))
 		{
-			float yaw = getYaw() + 90;
-			float pitch = getPitch() + 90;
-
 			if (!isWorldFrozen())
 			{
 				game->player->write<unsigned char>(0x10A8, 1);
 				freezeWorld(true);
 			}
 
+			float yaw = getYaw() + 90;
+			float pitch = getPitch() + 90;
+
 			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
 			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
 			float newZ = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
-
-			game->playerPos->write<float>(0x50, newX);
-			game->playerPos->write<float>(0x54, newY);
-			game->playerPos->write<float>(0x58, newZ);
 
 			if (game->player->read<int32_t>(0xe44) == 0)
 			{
