@@ -12,6 +12,12 @@ struct vector2
 	float x, y;
 };
 
+struct vector3
+{
+	float x, y, z;
+};
+
+
 struct settings
 {
 	bool godmode = false;
@@ -90,6 +96,18 @@ float getPitch()
 	return x;
 }
 
+bool isPlayerInVehicle()
+{
+	if (game->player->read<int32_t>(0xe44) != 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void freezeWorld(bool value)
 {
 	if (value)
@@ -119,21 +137,19 @@ bool isWorldFrozen()
 
 void tpToWaypoint()
 {
-	vector2 waypoint = game->mem.read<vector2>(game->_base + 0x1F5EA30);
+	vector3 waypoint = game->mem.read<vector3>(game->_base + 0x1F5EA30);
+	waypoint.z = -225.f;
 
 	if (waypoint.x != 64000 && waypoint.y != 64000)
 	{
-		if (game->player->read<int32_t>(0xe44) == 0)
+		if (!isPlayerInVehicle())
 		{
-			game->playerPos->write<float>(0x50, waypoint.x);
-			game->playerPos->write<float>(0x54, waypoint.y);
-			game->playerPos->write<float>(0x58, -200.f);
+			game->playerPos->write<vector3>(0x50, waypoint);
+
 		}
 		else
 		{
-			game->playerVehiclePos->write<float>(0x50, waypoint.x);
-			game->playerVehiclePos->write<float>(0x54, waypoint.y);
-			game->playerVehiclePos->write<float>(0x58, -200.f);
+			game->playerVehiclePos->write<vector3>(0x50, waypoint);
 		}
 		menu->notification.add("Teleported to Waypoint");
 	}
@@ -327,21 +343,18 @@ void lFly()
 			float yaw = getYaw() + 90;
 			float pitch = getPitch() + 90;
 
-			float newX = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
-			float newY = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
-			float newZ = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
+			vector3 newPos;
+		    newPos.x = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
+			newPos.y = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
+			newPos.z = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
 
 
-			game->playerPos->write<float>(0x50, newX);
-			game->playerPos->write<float>(0x54, newY);
-			game->playerPos->write<float>(0x58, newZ);
+			game->playerPos->write<vector3>(0x50, newPos);
 
-			//if (game->player->read<int32_t>(0xe44) != 0)
-			//{
-			//	game->playerVehiclePos->write<float>(0x50, newX);
-			//	game->playerVehiclePos->write<float>(0x54, newY);
-			//	game->playerVehiclePos->write<float>(0x58, newZ);
-			//}
+			if (isPlayerInVehicle())
+			{
+				game->playerVehiclePos->write<vector3>(0x50, newPos);
+			}
 		}
 	}
 	else
