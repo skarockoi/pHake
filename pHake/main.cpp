@@ -343,14 +343,13 @@ void lFly()
 			float yaw = getYaw() + 90;
 			float pitch = getPitch() + 90;
 
-			vector3 newPos;
-		    newPos.x = game->playerPos->read<float>(0x50) + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
-			newPos.y = game->playerPos->read<float>(0x54) + (settings.flySpeed * sin(yaw * 3.14 / 180));
-			newPos.z = game->playerPos->read<float>(0x58) + (((settings.flySpeed * 40.f)* cos(pitch * 3.14 / 180)) * -1);
-
+			vector3 newPos = game->playerPos->read<vector3>(0x50);
+			newPos.x = newPos.x + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
+			newPos.y = newPos.y + (settings.flySpeed * sin(yaw * 3.14 / 180));
+			newPos.z = newPos.z + (((settings.flySpeed * 40.f) * cos(pitch * 3.14 / 180)) * -1);
 
 			game->playerPos->write<vector3>(0x50, newPos);
-
+			
 			if (isPlayerInVehicle())
 			{
 				game->playerVehiclePos->write<vector3>(0x50, newPos);

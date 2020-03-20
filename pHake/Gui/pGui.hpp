@@ -93,7 +93,7 @@ public:
 		gameInfo = GameInfo(Name);
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 3.1", sf::Style::None);
+		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 3.2", sf::Style::None);
 		Window.setFramerateLimit(60);
 		setTransparent(Window.getSystemHandle());
 
