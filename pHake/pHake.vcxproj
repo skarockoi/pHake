@@ -146,8 +146,9 @@
     <ClInclude Include="Gui\lib\pMouse.hpp" />
     <ClInclude Include="Gui\lib\pNotification.hpp" />
     <ClInclude Include="Gui\pGui.hpp" />
+    <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\mem.h" />
-    <ClInclude Include="pHake.h" />
+    <ClInclude Include="pHake.hpp" />
     <ClInclude Include="pTimer.hpp" />
   </ItemGroup>
   <ItemGroup>

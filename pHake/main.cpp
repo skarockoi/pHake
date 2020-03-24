@@ -1,22 +1,12 @@
 #include "Gui/pGui.hpp"
 #include <iostream>
 #include <Windows.h>
-#include "pHake.h"
+#include "pHake.hpp"
 #include "pTimer.hpp"
+#include "Helper.hpp"
 
 pGui* menu;
 pHake* game;
-
-struct vector2
-{
-	float x, y;
-};
-
-struct vector3
-{
-	float x, y, z;
-};
-
 
 struct settings
 {
@@ -27,37 +17,12 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float flySpeed = 5.f;
+	float flySpeed = 2.5;
 	float kmh = 0.f;
 
 	std::string boostPlayer = "default";
 	std::string boostVehicle = "default";
 }settings;
-
-void lMouseDown()
-{
-	INPUT    Input = { 0 };
-
-	Input.type = INPUT_MOUSE;
-	Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-
-	::SendInput(1, &Input, sizeof(INPUT));
-}
-
-void lMouseUp()
-{
-	INPUT    Input = { 0 };
-
-	Input.type = INPUT_MOUSE;
-	Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-	::SendInput(1, &Input, sizeof(INPUT));
-}
-
-void suicide()
-{
-	game->player->write<float>(0x280, 0.f);
-	menu->notification.add("Player health set to 0");
-}
 
 float getYaw()
 {
@@ -135,7 +100,13 @@ bool isWorldFrozen()
 		return false;
 }
 
-void tpToWaypoint()
+void Suicide()
+{
+	game->player->write<float>(0x280, 0.f);
+	menu->notification.add("Player health set to 0");
+}
+
+void TeleportToWaypoint()
 {
 	vector3 waypoint = game->mem.read<vector3>(game->_base + 0x1F5EA30);
 	waypoint.z = -225.f;
@@ -159,7 +130,7 @@ void tpToWaypoint()
 	}
 }
 
-void boostPlayer()
+void BoostPlayer()
 {
 	if (settings.boostPlayer == "default")
 	{
@@ -195,7 +166,7 @@ void boostPlayer()
 	}
 }
 
-void boostVehicle()
+void BoostVehicle()
 {
 	if (settings.boostVehicle == "default")
 	{
@@ -251,136 +222,158 @@ void boostVehicle()
 	}
 }
 
-void lGodmode()
+void THREAD_Godmode()
 {
-	if (settings.godmode)
-	{
-		if (game->player->read<bool>(0x189) != 1 || game->playerVehicle->read<bool>(0x189) != 1)
-		{
-			game->player->write<bool>(0x189, 1);
-			game->playerVehicle->write<bool>(0x189, 1);
-		}
-	}
-	else
-	{
-		if (game->player->read<bool>(0x189) == 1 || game->playerVehicle->read<bool>(0x189) == 1)
-		{
-			game->player->write<bool>(0x189, 0);
-			game->playerVehicle->write<bool>(0x189, 0);
-		}
-	}
-}
-
-void lNeverWanted()
-{
-	if (settings.neverwanted)
-	{
-		if (game->playerInfo->read<uint16_t>(0x848) > 0)
-		{
-			game->playerInfo->write<uint16_t>(0x848, 0);
-		}
-	}
-}
-
-void lRpLoop()
-{
-	if (settings.rploop)
-	{
-		for (int i = 0; i <= 5; i++)
-		{
-			game->playerInfo->write<uint16_t>(0x848, i);
-		}
-	}
-}
-
-void lTrigger()
-{
-	if (settings.trigger)
-	{
-		if (game->mem.read<uint16_t>(game->_base + 0x1F47430) != 0 && game->mem.read<uint16_t>(game->_base + 0x1F47430) < 3)
-		{
-			lMouseDown();
-			Sleep(1);
-			lMouseUp();
-		}
-	}
-}
-
-void lWeaponMax()
-{
-	if (settings.weaponmax)
-	{
-		if (game->playerWeaponinfo->read<float>(0xB0) != 99999.f ||  game->playerWeaponinfo->read<float>(0x28C) != 99999.f)
-		{
-			game->playerWeaponinfo->write<float>(0xB0, 99999.f);
-			game->playerWeaponinfo->write<float>(0x12C, 9999.f);
-			game->playerWeaponinfo->write<float>(0x28C, 99999.f);
-			game->playerWeaponinfoAmmoinfo->write<float>(0x18, 99999.f);
-		}
-	}
-	else
-	{
-		if (game->playerWeaponinfo->read<float>(0xB0) == 99999.f || game->playerWeaponinfo->read<float>(0x12C) == 99999.f)
-		{
-			game->playerWeaponinfo->write<float>(0xB0, 100.f);
-			game->playerWeaponinfo->write<float>(0x12C, 1.f);
-		}
-	}
-}
-
-void lFly()
-{
-	if (settings.fly)
-	{
-		if (HIBYTE(GetAsyncKeyState(VK_SPACE)))
-		{
-			if (!isWorldFrozen())
-			{
-				game->player->write<unsigned char>(0x10A8, 1);
-				freezeWorld(true);
-			}
-
-			float yaw = getYaw() + 90;
-			float pitch = getPitch() + 90;
-
-			vector3 newPos = game->playerPos->read<vector3>(0x50);
-			newPos.x = newPos.x + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
-			newPos.y = newPos.y + (settings.flySpeed * sin(yaw * 3.14 / 180));
-			newPos.z = newPos.z + (((settings.flySpeed * 40.f) * cos(pitch * 3.14 / 180)) * -1);
-
-			game->playerPos->write<vector3>(0x50, newPos);
-			
-			if (isPlayerInVehicle())
-			{
-				game->playerVehiclePos->write<vector3>(0x50, newPos);
-			}
-		}
-	}
-	else
-	{
-		if (isWorldFrozen())
-		{
-			game->player->write<unsigned char>(0x10A8, 32);
-			freezeWorld(false);
-		}
-	}
-}
-
-void mainLoop()
-{
-	pTimer* timer = new pTimer;
-	timer->add(lGodmode, 1000);
-	timer->add(lWeaponMax, 750);
-	timer->add(lNeverWanted, 250);
-	timer->add(lRpLoop, 0);
-	timer->add(lTrigger, 0);
-	timer->add(lFly, 10);
-
 	while (true)
 	{
-		game->update();
-		timer->update();
-		settings.kmh = 3.6 * game->mem.read<float>(game->_base + 0x2576BC0);
+		Sleep(250);
+
+		if (settings.godmode)
+		{
+			if (game->player->read<bool>(0x189) != 1 || game->playerVehicle->read<bool>(0x189) != 1)
+			{
+				game->player->write<bool>(0x189, 1);
+				game->playerVehicle->write<bool>(0x189, 1);
+			}
+		}
+		else
+		{
+			if (game->player->read<bool>(0x189) == 1 || game->playerVehicle->read<bool>(0x189) == 1)
+			{
+				game->player->write<bool>(0x189, 0);
+				game->playerVehicle->write<bool>(0x189, 0);
+			}
+		}
+	}
+}
+
+void THREAD_NeverWanted()
+{
+	while (true)
+	{
+		Sleep(200);
+
+		if (settings.neverwanted)
+		{
+			if (game->playerInfo->read<uint16_t>(0x848) > 0)
+			{
+				game->playerInfo->write<uint16_t>(0x848, 0);
+			}
+		}
+	}
+}
+
+void THREAD_RpLoop()
+{
+	while (true)
+	{
+		Sleep(1);
+
+		if (settings.rploop)
+		{
+			for (int i = 0; i <= 5; i++)
+			{
+				game->playerInfo->write<uint16_t>(0x848, i);
+			}
+		}
+	}
+
+}
+
+void THREAD_Trigger()
+{
+	while (true)
+	{
+		Sleep(1);
+
+		if (settings.trigger)
+		{
+			if (game->mem.read<uint16_t>(game->_base + 0x1F47430) != 0 && game->mem.read<uint16_t>(game->_base + 0x1F47430) < 3)
+			{
+				LeftMouseDown();
+				Sleep(1);
+				LeftMouseUp();
+			}
+		}
+	}
+}
+
+void THREAD_WeaponMax()
+{
+	while (true)
+	{
+		Sleep(500);
+
+		if (settings.weaponmax)
+		{
+			if (game->playerWeaponinfo->read<float>(0xB0) != 99999.f || game->playerWeaponinfo->read<float>(0x28C) != 99999.f)
+			{
+				game->playerWeaponinfo->write<float>(0xB0, 99999.f);
+				game->playerWeaponinfo->write<float>(0x12C, 9999.f);
+				game->playerWeaponinfo->write<float>(0x28C, 99999.f);
+				game->playerWeaponinfoAmmoinfo->write<float>(0x18, 99999.f);
+			}
+		}
+		else
+		{
+			if (game->playerWeaponinfo->read<float>(0xB0) == 99999.f || game->playerWeaponinfo->read<float>(0x12C) == 99999.f)
+			{
+				game->playerWeaponinfo->write<float>(0xB0, 100.f);
+				game->playerWeaponinfo->write<float>(0x12C, 1.f);
+			}
+		}
+	}
+
+}
+
+void THREAD_Fly()
+{
+	while (true)
+	{
+		Sleep(10);
+
+		if (settings.fly)
+		{
+			if (HIBYTE(GetAsyncKeyState(VK_SPACE)))
+			{
+				if (!isWorldFrozen())
+				{
+					game->player->write<unsigned char>(0x10A8, 1);
+					freezeWorld(true);
+				}
+
+				float yaw = getYaw() + 90;
+				float pitch = getPitch() + 90;
+
+				vector3 newPos = game->playerPos->read<vector3>(0x50);
+				newPos.x = newPos.x + ((settings.flySpeed * cos(yaw * 3.14 / 180)) * -1);
+				newPos.y = newPos.y + (settings.flySpeed * sin(yaw * 3.14 / 180));
+				newPos.z = newPos.z + (((settings.flySpeed * 40.f) * cos(pitch * 3.14 / 180)) * -1);
+
+				game->playerPos->write<vector3>(0x50, newPos);
+
+				if (isPlayerInVehicle())
+				{
+					game->playerVehiclePos->write<vector3>(0x50, newPos);
+				}
+			}
+		}
+		else
+		{
+			if (isWorldFrozen())
+			{
+				game->player->write<unsigned char>(0x10A8, 32);
+				freezeWorld(false);
+			}
+		}
+	}
+}
+
+void THREAD_Keys()
+{
+	while (true)
+	{
+		Sleep(1);
 
 		if (HIBYTE(GetAsyncKeyState(VK_MENU)))
 		{
@@ -389,19 +382,36 @@ void mainLoop()
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
 		{
-			tpToWaypoint();
+			TeleportToWaypoint();
 			Sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD1)))
 		{
-			boostPlayer();
+			BoostPlayer();
 			Sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD2)))
 		{
-			boostVehicle();
+			BoostVehicle();
 			Sleep(150);
 		}
+	}
+}
+
+void mainLoop()
+{
+	std::thread t0(THREAD_Godmode);
+	std::thread t1(THREAD_NeverWanted);
+	std::thread t2(THREAD_Godmode);
+	std::thread t3(THREAD_RpLoop);
+	std::thread t4(THREAD_Trigger);
+	std::thread t5(THREAD_Fly);
+	std::thread t6(THREAD_Keys);
+
+	while (true)
+	{
+		game->update();
+		settings.kmh = 3.6 * game->mem.read<float>(game->_base + 0x2576BC0);
 		Sleep(1);
 	}
 }
@@ -421,7 +431,7 @@ int main()
 	menu = new pGui;
 	game = new pHake;
 
-	std::thread t = std::thread(mainLoop);
+	std::thread tMain(mainLoop);
 
 	menu->create("Grand Theft Auto V");
 	menu->entries.addBool("Godmode", settings.godmode);
@@ -432,10 +442,10 @@ int main()
 	menu->entries.addBool("Fly", settings.fly);
 	menu->entries.addFloat("Flyspeed", settings.flySpeed, 0.5, 0.5);
 	menu->entries.addFloat("Km/h", settings.kmh, 0, 0);
-	menu->entries.addFunction("Boost Player", boostPlayer);
-	menu->entries.addFunction("Boost Vehicle", boostVehicle);
-	menu->entries.addFunction("Tp to Waypoint", tpToWaypoint);
-	menu->entries.addFunction("Suicide", suicide);
+	menu->entries.addFunction("Boost Player", BoostPlayer);
+	menu->entries.addFunction("Boost Vehicle", BoostVehicle);
+	menu->entries.addFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->entries.addFunction("Suicide", Suicide);
 	menu->entries.addFunction("Exit", exitProgram);
 	menu->Loop();
 

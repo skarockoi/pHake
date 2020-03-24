@@ -45,10 +45,13 @@
     <ClInclude Include="Memory\mem.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="pHake.h">
+    <ClInclude Include="pTimer.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="pTimer.hpp">
+    <ClInclude Include="pHake.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
