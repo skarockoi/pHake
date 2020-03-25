@@ -105,7 +105,6 @@ public:
 			else
 			{
 				setHighlight(false);
-
 			}
 		}
 	}

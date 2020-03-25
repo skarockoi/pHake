@@ -1,7 +1,12 @@
-#include <algorithm>
-#include <Windows.h>
-#include "Memory/mem.h"
-
+#pragma once
+#include "../Memory/Process.h"
+#include "LocalPlayer.hpp"
+#include "PlayerInfo.h"
+#include "Vehicle.hpp"
+#include "VehicleHandling.hpp"
+#include "WeaponInfo.hpp"
+#include "AmmoInfo.hpp"
+#include "Position.hpp"
 
 /*
 uint64_t World = _base + 0x024B0C50
@@ -74,7 +79,7 @@ PlayerWeaponinfoAmmoinfo = PlayerWeaponinfo + [0x60, 0x8, 0x0]
 	uint32_t ammo = 0x18
 */
 
-class pHake // 1.5
+class GameData // 1.5
 {
 private:
 	void updatePointer()
@@ -88,24 +93,24 @@ private:
 		_playerVehiclePos = mem.read<uint64_t>(_playerVehicle + 0x30);
 		_playerVehicleHandling = mem.read<uint64_t>(_playerVehicle + 0x918);
 
-		_playerWeaponinfo = mem.read<uint64_t>(_player + 0x10C8);
-		_playerWeaponinfo = mem.read<uint64_t>(_playerWeaponinfo + 0x20);
+		_playerWeaponInfo = mem.read<uint64_t>(_player + 0x10C8);
+		_playerWeaponInfo = mem.read<uint64_t>(_playerWeaponInfo + 0x20);
 
-		_playerWeaponinfoAmmoinfo = mem.read<uint64_t>(_playerWeaponinfo + 0x60);
-		_playerWeaponinfoAmmoinfo = mem.read<uint64_t>(_playerWeaponinfoAmmoinfo + 0x8);
-		_playerWeaponinfoAmmoinfo = mem.read<uint64_t>(_playerWeaponinfoAmmoinfo + 0x0);
+		_playerAmmoInfo = mem.read<uint64_t>(_playerWeaponInfo + 0x60);
+		_playerAmmoInfo = mem.read<uint64_t>(_playerAmmoInfo + 0x8);
+		_playerAmmoInfo = mem.read<uint64_t>(_playerAmmoInfo + 0x0);
 	}
 
 	void updateWrapperInfo()
 	{
-		player->update();
-		playerPos->update();
-		playerInfo->update();
-		playerVehicle->update(_playerVehicle);
-		playerVehiclePos->update(_playerVehiclePos);
-		playerVehicleHandling->update(_playerVehicleHandling);
-		playerWeaponinfo->update(_playerWeaponinfo);
-		playerWeaponinfoAmmoinfo->update(_playerWeaponinfoAmmoinfo);
+		player.update(_player);
+		playerInfo.update(_playerInfo);
+		playerPos.update(_playerPos);
+		playerVehicle.update(_playerVehicle);
+		playerVehiclePos.update(_playerVehiclePos);
+		playerVehicleHandling.update(_playerVehicleHandling);
+		playerWeaponInfo.update(_playerWeaponInfo);
+		playerAmmoInfo.update(_playerAmmoInfo);
 	}
 
 public:
@@ -119,24 +124,26 @@ public:
 	uint64_t _playerVehiclePos;
 	uint64_t _playerVehicleHandling;
 
-	uint64_t _playerWeaponinfo;
-	uint64_t _playerWeaponinfoAmmoinfo;
+	uint64_t _playerWeaponInfo;
+	uint64_t _playerAmmoInfo;
 
-	Memory mem;
+	Process mem;
 
-	DataWrapper<0x14BC>* player;
-	DataWrapper<0xAA>*	 playerPos;
-	DataWrapper<0x848>*	 playerInfo;
-						 
-	DataWrapper<0xC20>*	 playerVehicle;
-	DataWrapper<0x58>*	 playerVehiclePos;
-	DataWrapper<0x3CC>*	 playerVehicleHandling;
-						 
-	DataWrapper<0xFFF>*	 playerWeaponinfo;
-	DataWrapper<0xFFF>*	 playerWeaponinfoAmmoinfo;
+	LocalPlayer		player;
+	PlayerInfo      playerInfo;
+	Position		playerPos;
+
+	Vehicle			playerVehicle;
+	Position		playerVehiclePos;
+	VehicleHandling playerVehicleHandling;
+
+	WeaponInfo		playerWeaponInfo;
+	AmmoInfo		playerAmmoInfo;
 
 
-	pHake()
+	GameData(){}
+	
+	void init()
 	{
 		if (!mem.getProcess("GTA5.exe"))
 			std::cout << " Game not found" << std::endl;
@@ -144,14 +151,15 @@ public:
 		_base = mem.getModule("GTA5.exe");
 		updatePointer();
 
-		player = new DataWrapper<0x14BC>(mem.hProcess, _player);
-		playerInfo = new DataWrapper<0x848>(mem.hProcess, _playerInfo);
-		playerPos = new DataWrapper<0xAA>(mem.hProcess, _playerPos);
-		playerVehicle = new DataWrapper<0xC20>(mem.hProcess, _playerVehicle);
-		playerVehiclePos = new DataWrapper<0x58>(mem.hProcess, _playerVehiclePos);
-		playerVehicleHandling = new DataWrapper<0x3CC>(mem.hProcess, _playerVehicleHandling);
-		playerWeaponinfo = new DataWrapper<0xFFF>(mem.hProcess, _playerWeaponinfo);
-		playerWeaponinfoAmmoinfo = new DataWrapper<0xFFF>(mem.hProcess, _playerWeaponinfoAmmoinfo);
+		player = LocalPlayer(mem.handle);
+		playerInfo = PlayerInfo(mem.handle);
+		playerPos = Position(mem.handle);
+		playerVehicle = Vehicle(mem.handle);
+		playerVehiclePos = Position(mem.handle);
+		playerVehicleHandling = VehicleHandling(mem.handle);
+		playerWeaponInfo = WeaponInfo(mem.handle);
+		playerAmmoInfo = AmmoInfo(mem.handle);
+		player = LocalPlayer(mem.handle);
 	}
 
 	void update()
@@ -160,3 +168,4 @@ public:
 		updateWrapperInfo();
 	}
 };
+

@@ -3,14 +3,25 @@
 #include <Windows.h>
 #include <TlHelp32.h> 
 
-class Memory
+struct vector3
+{
+	float x, y, z;
+};
+
+template <class T, size_t size> struct vector
+{
+	std::array<T, size> val;
+};
+
+
+class Process
 {
 private:
 	MODULEENTRY32 mEntry;
 	PROCESSENTRY32 pEntry;
 
 public:
-	HANDLE	  hProcess;
+	HANDLE	  handle;
 	DWORD_PTR dwBase;
 	DWORD	  dwPID;
 
@@ -22,38 +33,42 @@ public:
 	template<class T>
 	void write(uint64_t address, T value)
 	{
-		WriteProcessMemory(hProcess, (PBYTE*)address, &value, sizeof(T), 0);
+		WriteProcessMemory(handle, (PBYTE*)address, &value, sizeof(T), 0);
 	}
 
 	template<class T>
 	T read(uint64_t address)
 	{
 		T buffer;
-		ReadProcessMemory(hProcess, (PBYTE*)address, &buffer, sizeof(T), 0);
+		ReadProcessMemory(handle, (PBYTE*)address, &buffer, sizeof(T), 0);
 		return buffer;
 	}
 };
 
 template <uintptr_t maxSize> class DataWrapper
 {
+protected:
+	uint8_t data[maxSize];
+	uint64_t classStart;
+	HANDLE* handle;
 public:
 	DataWrapper() {}
-	DataWrapper(HANDLE& h, uint64_t c)
+	DataWrapper(HANDLE& h)
 	{
 		handle = &h;
-		classStart = c;
-		ReadProcessMemory(*handle, (PBYTE*)(classStart), &data, sizeof(data), NULL);
+		classStart = 0x0;
+		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
 	}
 
 	void update(uint64_t c)
 	{
 		classStart = c;
-		ReadProcessMemory(*handle, (PBYTE*)(classStart), &data, sizeof(data), NULL);
+		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
 	}
 
 	void update()
 	{
-		ReadProcessMemory(*handle, (PBYTE*)(classStart), &data, sizeof(data), NULL);
+		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
 	}
 
 	template <typename T>
@@ -65,11 +80,6 @@ public:
 	template<class T>
 	void write(uintptr_t offset, T value)
 	{
-		WriteProcessMemory(*handle, (PBYTE*)(classStart + offset), &value, sizeof(T), 0);
+		WriteProcessMemory(*handle, (void*)(classStart + offset), &value, sizeof(T), 0);
 	}
-
-private:
-	uint8_t data[maxSize];
-	uint64_t classStart;
-	HANDLE* handle;
 };

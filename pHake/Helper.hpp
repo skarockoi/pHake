@@ -3,15 +3,6 @@
 #include <fstream>
 #include <limits>
 
-struct vector2
-{
-	float x, y;
-};
-
-struct vector3
-{
-	float x, y, z;
-};
 
 void LeftMouseDown()
 {

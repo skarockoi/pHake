@@ -1,6 +1,6 @@
-#include "mem.h"
+#include "Process.h"
 
-bool Memory::getProcess(const char* ProcessName)
+bool Process::getProcess(const char* ProcessName)
 {
 	HANDLE hPID = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	pEntry.dwSize = sizeof(PROCESSENTRY32);
@@ -20,7 +20,7 @@ bool Memory::getProcess(const char* ProcessName)
 
 	if (dwPID)
 	{
-		hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID);
+		handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID);
 		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);
 		mEntry.dwSize = sizeof(MODULEENTRY32);
 		if (!Module32First(hModule, &mEntry))
@@ -36,7 +36,7 @@ bool Memory::getProcess(const char* ProcessName)
 	return false;
 }
 
-DWORD64 Memory::getModule(const char* lModule)
+DWORD64 Process::getModule(const char* lModule)
 {
 	HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwPID);
 	mEntry.dwSize = sizeof(MODULEENTRY32);
@@ -53,7 +53,7 @@ DWORD64 Memory::getModule(const char* lModule)
 	return 5;
 }
 
-void Memory::closeHandle()
+void Process::closeHandle()
 {
-	CloseHandle(hProcess);
+	CloseHandle(handle);
 }

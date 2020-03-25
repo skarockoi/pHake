@@ -30,7 +30,7 @@ public:
 			Pos.x = 0;
 			Pos.y = 0;
 
-			rMain.setSize(sf::Vector2f(7, 7));
+			rMain.setSize(sf::Vector2f(10, 10));
 			rMain.setPosition(Pos.x, Pos.y);
 			rMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
 			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
@@ -56,7 +56,7 @@ public:
 		}
 	}
 public:
-	void setSize(int size)
+	void setSize(int size) //in pixel
 	{
 		rMain.setSize(sf::Vector2f(size, size));
 	}

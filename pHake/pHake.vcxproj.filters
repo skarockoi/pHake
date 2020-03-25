@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Gui\lib">
       <UniqueIdentifier>{e3e38317-e610-489b-8acb-d084b3b3c422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SDK">
+      <UniqueIdentifier>{5875738b-365b-4d3c-9f2f-38b4a5062ff1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gui\lib\pButton.hpp">
@@ -42,25 +45,46 @@
     <ClInclude Include="Gui\pGui.hpp">
       <Filter>Header Files\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\mem.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="pTimer.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pHake.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Helper.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\Process.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\AmmoInfo.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\GameData.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\LocalPlayer.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\PlayerInfo.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Position.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Vehicle.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\VehicleHandling.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\WeaponInfo.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Memory\mem.cpp">
-      <Filter>Header Files\Memory</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\Process.cpp">
+      <Filter>Header Files\Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

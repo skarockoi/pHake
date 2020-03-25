@@ -147,16 +147,23 @@
     <ClInclude Include="Gui\lib\pNotification.hpp" />
     <ClInclude Include="Gui\pGui.hpp" />
     <ClInclude Include="Helper.hpp" />
-    <ClInclude Include="Memory\mem.h" />
-    <ClInclude Include="pHake.hpp" />
+    <ClInclude Include="Memory\Process.h" />
     <ClInclude Include="pTimer.hpp" />
+    <ClInclude Include="SDK\AmmoInfo.hpp" />
+    <ClInclude Include="SDK\GameData.hpp" />
+    <ClInclude Include="SDK\LocalPlayer.hpp" />
+    <ClInclude Include="SDK\PlayerInfo.h" />
+    <ClInclude Include="SDK\Position.hpp" />
+    <ClInclude Include="SDK\Vehicle.hpp" />
+    <ClInclude Include="SDK\VehicleHandling.hpp" />
+    <ClInclude Include="SDK\WeaponInfo.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
-    <ClCompile Include="Memory\mem.cpp" />
+    <ClCompile Include="Memory\Process.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
