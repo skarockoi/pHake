@@ -13,6 +13,30 @@ public:
 		this->classStart = 0x0;
 	}
 
+	bool freezeMomentum()
+	{
+		if (this->read<uint8_t>(0x2E) == 2)
+		{
+			return true;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	void freezeMomentum(bool value)
+	{
+		if (value)
+		{
+			this->write<uint8_t>(0x2E, 2);
+		}
+		else
+		{
+			this->write<uint8_t>(0x2E, 1);
+		}
+	}
+
 	uint64_t position = 0x30;
 
 	bool god()
@@ -120,6 +144,8 @@ public:
 		else
 			this->write<unsigned char>(0x10A8, 32);	
 	}
+
+	uint64_t playerInfo = 0x10B8;
 
 	float armor()
 	{

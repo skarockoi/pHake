@@ -105,12 +105,12 @@ public:
 
 	float range()
 	{
-		return this->read<float>(0x28C);
+		return this->read<float>(0x25C);
 	}
 
 	void range(float value)
 	{
-		this->write<float>(0x28C, value);
+		this->write<float>(0x25C, value);
 	}
 
 	float recoil()

@@ -288,7 +288,7 @@ void THREAD_WeaponMax()
 				game->playerWeaponInfo.explosionType(25);
 				game->playerWeaponInfo.bulletDamage(99999.f);
 				game->playerWeaponInfo.reloadMP(99999.f);
-				game->playerWeaponInfo.range(999999.f);
+				game->playerWeaponInfo.range(99999.f);
 				game->playerAmmoInfo.ammo(999999);
 			}
 		}
@@ -296,7 +296,7 @@ void THREAD_WeaponMax()
 		{
 			if (game->playerWeaponInfo.bulletDamage() == 99999.f)
 			{
-				game->playerWeaponInfo.type(2);
+				game->playerWeaponInfo.type(3);
 				game->playerWeaponInfo.bulletDamage(100.f);
 				game->playerWeaponInfo.reloadMP(1.f);
 			}
