@@ -1,5 +1,6 @@
 #include "Gui/pGui.hpp"
 #include <iostream>
+#include <array>
 #include <Windows.h>
 #include "SDK/GameData.hpp"
 #include "Helper.hpp"
@@ -16,7 +17,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float flySpeed = 0.2;
+	float flySpeed = 0.25;
 	float kmh = 0.f;
 
 	std::string boostPlayer = "default";
@@ -26,10 +27,10 @@ struct settings
 
 bool isWorldFrozen()
 {
-	BYTE isOn[4];
+	uint8_t isOn[4];
 	ReadProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
 
-	if (isOn[0] == 0x90) // check if position is already freezed
+	if (isOn[0] == 0x90) // check if position is already frozen
 		return true;
 	else
 		return false;
@@ -41,20 +42,19 @@ void freezeWorld(bool value)
 	{
 		game->player.ragdoll(1);
 
-		BYTE freezeOn[4] = { 0x90, 0x90, 0x90, 0x90};
-		BYTE heightOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90};
+		uint8_t speedOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
 		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &heightOn, sizeof(heightOn), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &speedOn, sizeof(speedOn), NULL);
 	}
 	else
 	{
 		game->player.ragdoll(0);
 
-		BYTE heightOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 };
-		BYTE freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 }; // check if position is already restored
+		uint8_t freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 };
+		uint8_t speedOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 };
 		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &freezeOff, sizeof(freezeOff), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &heightOff, sizeof(heightOff), NULL);
-
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &speedOff, sizeof(speedOff), NULL);
 	}
 }
 
@@ -74,8 +74,7 @@ void TeleportToWaypoint()
 		{
 			if (settings.fly)
 			{
-				waypoint.z = 300.f;
-
+				waypoint.z = 300.f; // You can teleport with fly enabled only if you are over z > 0
 			}
 			else
 			{
@@ -105,6 +104,11 @@ void BoostPlayer()
 		game->playerInfo.swimMP(2.5);
 		game->player.ragdoll(1);
 
+		if (settings.fly)
+		{
+			settings.flySpeed = 0.25;
+		}
+
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -116,6 +120,11 @@ void BoostPlayer()
 		game->playerInfo.swimMP(2500);
 		game->player.ragdoll(1);
 
+		if (settings.fly)
+		{
+			settings.flySpeed = 0.5;
+		}
+
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -126,6 +135,11 @@ void BoostPlayer()
 		game->playerInfo.walkMP(1);
 		game->playerInfo.swimMP(1);
 		game->player.ragdoll(0);
+
+		if (settings.fly)
+		{
+			settings.flySpeed = 0.05;
+		}
 
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
@@ -215,6 +229,7 @@ void THREAD_NeverWanted()
 	while (true)
 	{
 		Sleep(200);
+
 		if (settings.neverwanted)
 		{
 			if (game->playerInfo.wantedLevel() > 0)
@@ -239,7 +254,6 @@ void THREAD_RpLoop()
 			}
 		}
 	}
-
 }
 
 void THREAD_Trigger()
@@ -270,22 +284,24 @@ void THREAD_WeaponMax()
 		{
 			if (game->playerWeaponInfo.bulletDamage() != 99999.f)
 			{
+				game->playerWeaponInfo.type(5);
+				game->playerWeaponInfo.explosionType(25);
 				game->playerWeaponInfo.bulletDamage(99999.f);
-				game->playerWeaponInfo.reloadMP(9999.f);
-				game->playerWeaponInfo.range(9999.f);
-				game->playerAmmoInfo.ammo(99999999);
+				game->playerWeaponInfo.reloadMP(99999.f);
+				game->playerWeaponInfo.range(999999.f);
+				game->playerAmmoInfo.ammo(999999);
 			}
 		}
 		else
 		{
 			if (game->playerWeaponInfo.bulletDamage() == 99999.f)
 			{
+				game->playerWeaponInfo.type(2);
 				game->playerWeaponInfo.bulletDamage(100.f);
 				game->playerWeaponInfo.reloadMP(1.f);
 			}
 		}
 	}
-
 }
 
 void THREAD_Fly()
@@ -345,6 +361,11 @@ void THREAD_Keys()
 		if (HIBYTE(GetAsyncKeyState(VK_MENU)))
 		{
 			menu->toggle();
+			Sleep(150);
+		}
+		if (settings.fly && HIBYTE(GetAsyncKeyState(VK_SPACE)))
+		{
+			BoostPlayer();
 			Sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
@@ -407,7 +428,7 @@ int main()
 	menu->entries.addBool("RpLoop", settings.rploop);
 	menu->entries.addBool("Weaponmax", settings.weaponmax);
 	menu->entries.addBool("Fly", settings.fly);
-	menu->entries.addFloat("Flyspeed", settings.flySpeed, 0.1, 0.1);
+	menu->entries.addFloat("Flyspeed", settings.flySpeed, 0.05, 0.05, 2);
 	menu->entries.addFloat("Km/h", settings.kmh, 0, 0);
 	menu->entries.addFunction("Boost Player", BoostPlayer);
 	menu->entries.addFunction("Boost Vehicle", BoostVehicle);

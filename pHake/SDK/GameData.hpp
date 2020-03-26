@@ -13,9 +13,8 @@ uint64_t World = _base + 0x024B0C50
 uint64_t Waypoint = _base + 0x1F5EA30
 uint64_t Trigger = _base + 0x1F47430
 uint64_t kmh = _base + 0x2576BC0
-uint64_t YawX = _base + 0x26242B8
-uint64_t YawY = _base + 0x26242E8
-uint64_t Pitch = _base + 0x2915F28
+OPCODE FreezeXYZ = _base + 0x1429EC3
+OPCODE FreezeSpeedXYZ = _base + 0x77B26A
 
 Player = World + 0x8
 	uint64_t position = 0x30;
@@ -72,7 +71,7 @@ PlayerWeaponinfo = Player + [0x10C8, 0x20]
 	float    batchSpread = 0x74;
 	float    penetration = 0x108;
 	float    forceOnPed = 0xD4;
-	float    forceOnVehicle = 0x8;
+	float    forceOnVehicle = 0xD8;
 	float    forceOnHeli = 0xDC;
 
 PlayerWeaponinfoAmmoinfo = PlayerWeaponinfo + [0x60, 0x8, 0x0]

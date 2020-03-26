@@ -9,6 +9,7 @@ template <typename T> class pItem
 {
 private:
 	uint16_t sleepTime = 125;
+	uint8_t  precision = 1;
 	bool resize = false;
 	bool active = false;
 
@@ -59,7 +60,7 @@ public:
 			if (typeid(T) == typeid(float)) // String check
 			{
 				std::stringstream stream;
-				stream << std::fixed << std::setprecision(1) << std::stof(std::to_string(*tValue));  // Convert string to std and remove obsolete zero's
+				stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*tValue));  // Convert string to std and remove obsolete zero's
 
 				setText(stream.str());
 			}
@@ -132,6 +133,10 @@ public:
 		tDec = dec;
 	}
 
+	void setPrecision(uint8_t value)
+	{
+		this->precision = value;
+	}
 	void setText(std::string text)
 	{
 		wMain.setString(text);

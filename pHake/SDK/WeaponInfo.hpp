@@ -13,6 +13,26 @@ public:
 		this->classStart = 0x0;
 	}
 
+	int32_t type()
+	{
+		return this->read<int32_t>(0x20); // 2 = Fists, 3 = Bullets, 5 = Explosives
+	}
+
+	void type(int32_t value)
+	{
+		this->write<int32_t>(0x20, value);
+	}
+
+	int32_t explosionType()
+	{
+		return this->read<int32_t>(0x24);
+	}
+
+	void explosionType(int32_t value)
+	{
+		this->write<int32_t>(0x24, value);
+	}
+
 	float batchSpread()
 	{
 		return this->read<float>(0x74);

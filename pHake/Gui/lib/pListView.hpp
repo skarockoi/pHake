@@ -76,6 +76,26 @@ public:
 		this->resize();
 	}
 
+	void addFloat(std::string name, float& value, float inc, float dec, uint8_t prec)
+	{
+		wWord[count].setFont(Font);
+		wWord[count].setCharacterSize(16);
+		wWord[count].setFillColor(sf::Color::Color(255, 255, 255, 255));
+		wWord[count].setPosition(rMain.getPosition().x, rMain.getPosition().y + (count * 20));
+		wWord[count].setString(name);
+
+		fItems[fCount].create(Window);
+		fItems[fCount].addPtr(value, inc, dec);
+		fItems[fCount].setPostion(160 + rMain.getPosition().x, rMain.getPosition().y + (count * 20));
+		fItems[fCount].setFixedSize(48, 20);
+		fItems[fCount].setPrecision(prec);
+		fItems[fCount].setFillColor(sf::Color::Color(255, 255, 255, 255));
+
+		fCount++;
+		count++;
+		this->resize();
+	}
+
 	void addInt(std::string name, int& value, int inc, int dec)
 	{
 		wWord[count].setFont(Font);
