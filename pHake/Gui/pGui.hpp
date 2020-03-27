@@ -9,7 +9,7 @@
 #include <vector>
 #include "lib/pButton.hpp"
 #include "lib/pItem.hpp"
-#include "lib/pListView.hpp"
+#include "lib/pList.hpp"
 #include "lib/pMouse.hpp"
 #include "lib/pNotification.hpp"
 #pragma comment (lib, "Dwmapi.lib")
@@ -82,7 +82,7 @@ private:
 	GameInfo		 gameInfo;
 
 public:
-	pList			 entries;
+	pList			 list;
 	pMouse			 mouse;
 	pNotification    notification;
 
@@ -93,19 +93,20 @@ public:
 		gameInfo = GameInfo(Name);
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 3.2", sf::Style::None);
+		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 4.0", sf::Style::None);
 		Window.setFramerateLimit(60);
 		setTransparent(Window.getSystemHandle());
 
 		notification.create(&Window);
 		mouse.create(&Window);
-		entries.create(&Window);
-		entries.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
+		list.create(&Window);
+		//list.setSize(500, 500);
+		list.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
 	}
 
 	void toggle()
 	{
-		entries.toggle();
+		list.toggle();
 		mouse.toggle();
 	}
 
@@ -122,12 +123,13 @@ public:
 				if (event.type == sf::Event::Closed)
 					Window.close();
 			}
-			entries.Loop();
+
+			list.loop();
 			mouse.Loop();
-	
+
 			Window.clear(sf::Color::Color(0, 0, 0, 0));
 
-			entries.draw();
+			list.draw();
 			mouse.draw();
 			notification.draw();
 

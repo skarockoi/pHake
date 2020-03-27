@@ -18,8 +18,8 @@ private:
 	sf::Vector2i	   Pos;
 	sf::Vector2i	   Display;
 
-	sf::RectangleShape rMain;
-	sf::Text		   wMain;
+	sf::RectangleShape buttonBack;
+	sf::Text		   buttonName;
 
 public:
 	pButton() {}
@@ -34,16 +34,16 @@ public:
 			Pos.x = 0;
 			Pos.y = 0;
 
-			rMain.setSize(sf::Vector2f(80, 28));
-			rMain.setPosition(Pos.x, Pos.y);
-			rMain.setFillColor(sf::Color::Color(0, 0, 0, 150));
-			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
-			rMain.setOutlineThickness(1);
+			buttonBack.setSize(sf::Vector2f(80, 28));
+			buttonBack.setPosition(Pos.x, Pos.y);
+			buttonBack.setFillColor(sf::Color::Color(0, 0, 0, 150));
+			buttonBack.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
+			buttonBack.setOutlineThickness(1);
 
-			wMain.setFont(Font);
-			wMain.setCharacterSize(16);
-			wMain.setFillColor(sf::Color::Color(0, 0, 0, 255));
-			wMain.setPosition(Pos.x, Pos.y);
+			buttonName.setFont(Font);
+			buttonName.setCharacterSize(16);
+			buttonName.setFillColor(sf::Color::Color(0, 0, 0, 255));
+			buttonName.setPosition(Pos.x, Pos.y);
 
 			this->setActive(true);
 		}
@@ -77,8 +77,8 @@ public:
 	{
 		if (this->active)
 		{
-			Window->draw(rMain);
-			Window->draw(wMain);
+			Window->draw(buttonBack);
+			Window->draw(buttonName);
 		}
 	}
 
@@ -93,6 +93,11 @@ public:
 	}
 
 public:
+	void setFont(sf::Font& font)
+	{
+		buttonName.setFont(font);
+	}
+
 	bool isActive()
 	{
 		return this->active;
@@ -100,14 +105,14 @@ public:
 
 	void setText(std::string text)
 	{
-		wMain.setString(" " + text);
+		buttonName.setString(" " + text);
 		updateLength();
 	}
 
-	void setPostion(int x, int y)
+	void setPosition(int x, int y)
 	{
-		rMain.setPosition(x, y + 1);
-		wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
+		buttonBack.setPosition(x, y + 1);
+		buttonName.setPosition(x, y + (buttonBack.getSize().y / 4) - 5);
 	}
 
 	void setFixedSize(int x, int y)
@@ -115,7 +120,7 @@ public:
 		if (!resize)
 			resize = false;
 
-		rMain.setSize(sf::Vector2f(x, y));
+		buttonBack.setSize(sf::Vector2f(x, y));
 	}
 
 private:
@@ -127,18 +132,18 @@ private:
 	void setHighlight(bool value)
 	{
 		if (value)
-			rMain.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+			buttonBack.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
 		else
-			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+			buttonBack.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
 	}
 
 	bool isOnBox()
 	{
 		sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-		if (mouse.x >= rMain.getPosition().x &&						
-			mouse.x <= rMain.getPosition().x + rMain.getSize().x &&
-			mouse.y >= rMain.getPosition().y &&
-			mouse.y <= rMain.getPosition().y + rMain.getSize().y)
+		if (mouse.x >= buttonBack.getPosition().x &&						
+			mouse.x <= buttonBack.getPosition().x + buttonBack.getSize().x &&
+			mouse.y >= buttonBack.getPosition().y &&
+			mouse.y <= buttonBack.getPosition().y + buttonBack.getSize().y)
 			return true;
 		else
 			return false;
@@ -149,9 +154,9 @@ private:
 		if (resize)
 		{
 			sf::Vector2f rSize;
-			rSize.x = ((float)std::string(wMain.getString()).length() * 10) - (((std::string)wMain.getString()).length() * 2);
-			rSize.y = rMain.getSize().y;
-			rMain.setSize(rSize);
+			rSize.x = ((float)std::string(buttonName.getString()).length() * 10) - (((std::string)buttonName.getString()).length() * 2);
+			rSize.y = buttonBack.getSize().y;
+			buttonBack.setSize(rSize);
 		}
 	}
 };

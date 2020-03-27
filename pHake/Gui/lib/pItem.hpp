@@ -77,6 +77,21 @@ public:
 		Value = &value;
 	}
 
+	std::string getText()
+	{
+		return wMain.getString();
+	}
+
+	void setFont(sf::Font &font)
+	{
+		wMain.setFont(font);
+	}
+
+	sf::Font getFont()
+	{
+		return wMain.getFont();
+	}
+
 	void setText(std::string text)
 	{
 		wMain.setString(text);
@@ -88,7 +103,7 @@ public:
 		wMain.setFillColor(color);
 	}
 
-	void setPostion(uint16_t x, uint16_t y)
+	void setPosition(uint16_t x, uint16_t y)
 	{
 		rMain.setPosition(x, y);
 		wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
@@ -148,7 +163,7 @@ private:
 public:
 	pItemFloat() {}
 
-	void Loop()
+	void loop()
 	{
 		if (this->isActive())
 		{
@@ -199,7 +214,7 @@ class pItemInt : public pItem<int32_t>
 public:
 	pItemInt() {}
 
-	void Loop()
+	void loop()
 	{
 		if (this->isActive())
 		{
@@ -233,7 +248,7 @@ class pItemBool : public pItem<bool>
 public:
 	pItemBool() {}
 
-	void Loop()
+	void loop()
 	{
 		if (this->isActive())
 		{
@@ -272,7 +287,7 @@ class pItemString : public pItem<std::string>
 public:
 	pItemString() {}
 
-	void Loop()
+	void loop()
 	{
 		if (this->isActive())
 		{

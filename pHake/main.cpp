@@ -430,7 +430,7 @@ void exitProgram()
 
 int main()
 {
-	FreeConsole();
+	//FreeConsole();
 
 	game = new GameData;
 	game->init();
@@ -438,18 +438,18 @@ int main()
 
 	menu = new pGui;
 	menu->create("Grand Theft Auto V");
-	menu->entries.addBool("Godmode", settings.godmode);
-	menu->entries.addBool("NeverWanted", settings.neverwanted);
-	menu->entries.addBool("Trigger", settings.trigger);
-	menu->entries.addBool("RpLoop", settings.rploop);
-	menu->entries.addBool("Weaponmax", settings.weaponmax);
-	menu->entries.addBool("Fly", settings.fly);
-	menu->entries.addFloat("Km/h", settings.kmh, 0, 0);
-	menu->entries.addFunction("Boost Player", BoostPlayer);
-	menu->entries.addFunction("Boost Vehicle", BoostVehicle);
-	menu->entries.addFunction("Tp to Waypoint", TeleportToWaypoint);
-	menu->entries.addFunction("Suicide", Suicide);
-	menu->entries.addFunction("Exit", exitProgram);
+	menu->list.addBool("Godmode", settings.godmode);
+	menu->list.addBool("NeverWanted", settings.neverwanted);
+	menu->list.addBool("Trigger", settings.trigger);
+	menu->list.addBool("RpLoop", settings.rploop);
+	menu->list.addBool("Weaponmax", settings.weaponmax);
+	menu->list.addBool("Fly", settings.fly);
+	menu->list.addFloat("Km/h", settings.kmh, 0, 0);
+	menu->list.addFunction("Boost Player", BoostPlayer);
+	menu->list.addFunction("Boost Vehicle", BoostVehicle);
+	menu->list.addFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->list.addFunction("Suicide", Suicide);
+	menu->list.addFunction("Exit", exitProgram);
 	menu->Loop();
 
 	return 0;
