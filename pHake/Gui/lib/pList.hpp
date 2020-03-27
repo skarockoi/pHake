@@ -245,6 +245,4 @@ private:
 		rectBack.setSize(sf::Vector2f(rectBack.getSize().x, (itemName.size() * 20) + (gapCount * 5)));
 	}
 };
-
-
 #endif

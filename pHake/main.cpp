@@ -74,7 +74,7 @@ void TeleportToWaypoint()
 		{
 			if (settings.fly)
 			{
-				waypoint.z = 300.f; // You can teleport with fly enabled only if you are z > 0
+				waypoint.z = 300.f;
 			}
 			else
 			{
@@ -104,11 +104,8 @@ void BoostPlayer()
 		game->playerInfo.swimMP(2.5);
 		game->player.ragdoll(1);
 
-		if (settings.fly)
-		{
-			settings.flySpeed = 0.25;
-		}
-
+		settings.flySpeed = 0.25;
+		
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -120,11 +117,8 @@ void BoostPlayer()
 		game->playerInfo.swimMP(2500);
 		game->player.ragdoll(1);
 
-		if (settings.fly)
-		{
-			settings.flySpeed = 0.5;
-		}
-
+		settings.flySpeed = 0.5;
+		
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -136,11 +130,8 @@ void BoostPlayer()
 		game->playerInfo.swimMP(1);
 		game->player.ragdoll(0);
 
-		if (settings.fly)
-		{
-			settings.flySpeed = 0.05;
-		}
-
+		settings.flySpeed = 0.05;
+		
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -402,8 +393,11 @@ void THREAD_Keys()
 	}
 }
 
-void mainLoop()
+void THREAD_MAIN()
 {
+	game = new GameData;
+	game->init();
+
 	std::thread t0(THREAD_Godmode);
 	std::thread t1(THREAD_NeverWanted);
 	std::thread t2(THREAD_WeaponMax);
@@ -423,8 +417,6 @@ void mainLoop()
 void exitProgram()
 {
 	game->mem.closeHandle();
-	//delete game;
-	//delete menu;
 	exit(-1);
 }
 
@@ -432,9 +424,7 @@ int main()
 {
 	FreeConsole();
 
-	game = new GameData;
-	game->init();
-	std::thread tMain(mainLoop);
+	std::thread cheatLoop(THREAD_MAIN); //FCKAFD
 
 	menu = new pGui;
 	menu->create("Grand Theft Auto V");
