@@ -49,7 +49,7 @@ public:
 
 		tempBone.text.setFont(Font);
 		tempBone.text.setCharacterSize(16);
-		tempBone.text.setFillColor(sf::Color::Color(255, 255, 255, 200));
+		tempBone.text.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		tempBone.text.setPosition(tempBone.back.getPosition().x, tempBone.back.getPosition().y);
 		tempBone.text.setString(name);
 
@@ -90,7 +90,7 @@ public:
 					{
 						notifications[i].back.setFillColor(sf::Color(0, 0, 0, b));
 						notifications[i].back.setOutlineColor(sf::Color(0, 0, 0, b));
-						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b));
+						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b + 55));
 
 						sf::sleep(sf::milliseconds(4));
 					}

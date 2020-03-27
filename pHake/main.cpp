@@ -319,7 +319,7 @@ void THREAD_Fly()
 
 		if (settings.fly)
 		{
-			if (HIBYTE(GetAsyncKeyState(0x57)))
+			if (HIBYTE(GetAsyncKeyState(0x57)) && !game->player.inVehicle())
 			{
 				if (!isWorldFrozen())
 				{

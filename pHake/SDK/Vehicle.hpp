@@ -41,6 +41,51 @@ public:
 		this->write<float>(0x280, value);
 	}
 
+	void speedXYZ(vector3 value)
+	{
+		this->write<vector3>(0x7D0, value);
+	}
+
+	void speedXYZ(float x, float y, float z)
+	{
+		vector3 value;
+		value.x = x;
+		value.y = y;
+		value.z = z;
+
+		this->write<vector3>(0x7D0, value);
+	}
+
+	float speedX()
+	{
+		return this->read<float>(0x7D0);
+	}
+
+	void speedX(float value)
+	{
+		this->write<float>(0x7D0, value);
+	}
+
+	float speedY()
+	{
+		return this->read<float>(0x7D4);
+	}
+
+	void speedY(float value)
+	{
+		this->write<float>(0x7D4, value);
+	}
+
+	float speedZ()
+	{
+		return this->read<float>(0x7D8);
+	}
+
+	void speedZ(float value)
+	{
+		this->write<float>(0x7D8, value);
+	}
+
 	float gravity()
 	{
 		return this->read<float>(0xC3C);
