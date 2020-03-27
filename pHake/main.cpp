@@ -430,7 +430,7 @@ void exitProgram()
 
 int main()
 {
-	//FreeConsole();
+	FreeConsole();
 
 	game = new GameData;
 	game->init();
