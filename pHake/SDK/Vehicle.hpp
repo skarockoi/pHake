@@ -3,14 +3,13 @@
 
 #include "../Memory/Process.h"
 
-class Vehicle : public DataWrapper<0xC3C + 0x4>
+class Vehicle : public DataWrapper<0x918 + 0x4>
 {
 public:
 	Vehicle() {}
 	Vehicle(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	uint64_t position = 0x30;

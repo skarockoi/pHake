@@ -47,17 +47,11 @@ public:
 
 template <uintptr_t maxSize> class DataWrapper
 {
-protected:
-	uint8_t data[maxSize];
-	uint64_t classStart;
-	HANDLE* handle;
 public:
 	DataWrapper() {}
 	DataWrapper(HANDLE& h)
 	{
 		handle = &h;
-		classStart = 0x0;
-		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
 	}
 
 	void update(uint64_t c)
@@ -82,4 +76,9 @@ public:
 	{
 		WriteProcessMemory(*handle, (void*)(classStart + offset), &value, sizeof(T), 0);
 	}
+
+protected:
+	HANDLE* handle;
+	uint8_t  data[maxSize];
+	uint64_t classStart = 0x0;
 };

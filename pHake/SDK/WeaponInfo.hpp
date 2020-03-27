@@ -10,7 +10,6 @@ public:
 	WeaponInfo(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	int32_t type()

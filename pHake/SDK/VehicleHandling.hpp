@@ -10,7 +10,6 @@ public:
 	VehicleHandling(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	float acceleration()

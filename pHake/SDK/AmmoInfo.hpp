@@ -3,14 +3,13 @@
 
 #include "../Memory/Process.h"
 
-class AmmoInfo : public DataWrapper<0xFF + 0x4>
+class AmmoInfo : public DataWrapper<0x18 + 0x4>
 {
 public:
 	AmmoInfo() {}
 	AmmoInfo(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	uint32_t ammo()

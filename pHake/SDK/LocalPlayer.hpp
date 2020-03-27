@@ -10,31 +10,23 @@ public:
 	LocalPlayer(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	bool freezeMomentum()
 	{
 		if (this->read<uint8_t>(0x2E) == 2)
-		{
 			return true;
-		}
 		else
-		{
 			return true;
-		}
 	}
 
 	void freezeMomentum(bool value)
 	{
 		if (value)
-		{
 			this->write<uint8_t>(0x2E, 2);
-		}
-		else
-		{
+		
+		else	
 			this->write<uint8_t>(0x2E, 1);
-		}
 	}
 
 	uint64_t position = 0x30;

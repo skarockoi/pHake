@@ -158,7 +158,6 @@ public:
 		playerVehicleHandling = VehicleHandling(mem.handle);
 		playerWeaponInfo = WeaponInfo(mem.handle);
 		playerAmmoInfo = AmmoInfo(mem.handle);
-		player = LocalPlayer(mem.handle);
 	}
 
 	void update()

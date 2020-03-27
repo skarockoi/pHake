@@ -4,14 +4,13 @@
 
 #include "../Memory/Process.h"
 
-class PlayerInfo : public DataWrapper<0xD00 + 0x4>
+class PlayerInfo : public DataWrapper<0xC80 + 0x4>
 {
 public:
 	PlayerInfo() {}
 	PlayerInfo(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	float walkMP()

@@ -10,7 +10,6 @@ public:
 	Position(HANDLE& h)
 	{
 		this->handle = &h;
-		this->classStart = 0x0;
 	}
 
 	vector3 xyz()

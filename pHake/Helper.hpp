@@ -3,7 +3,6 @@
 #include <fstream>
 #include <limits>
 
-
 void LeftMouseDown()
 {
 	INPUT    Input = { 0 };

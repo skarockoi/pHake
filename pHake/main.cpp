@@ -74,7 +74,7 @@ void TeleportToWaypoint()
 		{
 			if (settings.fly)
 			{
-				waypoint.z = 300.f; // You can teleport with fly enabled only if you are over z > 0
+				waypoint.z = 300.f; // You can teleport with fly enabled only if you are z > 0
 			}
 			else
 			{
@@ -201,6 +201,7 @@ void BoostVehicle()
 
 void THREAD_Godmode()
 {
+	bool check = false;
 	while (true)
 	{
 		Sleep(250);
@@ -212,14 +213,17 @@ void THREAD_Godmode()
 				game->player.god(1);
 				game->playerVehicle.god(1);
 			}
-		}
-		else
-		{
-			if (game->player.god() || game->playerVehicle.god())
+
+			if (!check)
 			{
-				game->player.god(0);
-				game->playerVehicle.god(0);
+				check = true;
 			}
+		}
+		else if (check)
+		{
+			game->player.god(0);
+			game->playerVehicle.god(0);
+			check = false;
 		}
 	}
 }
@@ -258,17 +262,29 @@ void THREAD_RpLoop()
 
 void THREAD_Trigger()
 {
+	bool check = false;
 	while (true)
 	{
 		Sleep(1);
 
 		if (settings.trigger)
 		{
-			if (game->mem.read<uint16_t>(game->_base + 0x1F47430) != 0 && game->mem.read<uint16_t>(game->_base + 0x1F47430) < 3)
+			int32_t crossId = game->mem.read<int32_t>(game->_base + 0x1F47430);
+			if (crossId != 0 && crossId <= 2)
 			{
-				LeftMouseDown();
-				Sleep(1);
-				LeftMouseUp();
+				if (!check)
+				{
+					LeftMouseDown();
+					check = true;
+				}
+			}
+			else
+			{
+				if (check)
+				{
+					LeftMouseUp();
+					check = false;
+				}
 			}
 		}
 	}
