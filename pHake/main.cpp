@@ -294,7 +294,7 @@ void THREAD_WeaponMax()
 {
 	while (true)
 	{
-		Sleep(500);
+		Sleep(250);
 
 		if (settings.weaponmax)
 		{
@@ -444,7 +444,6 @@ int main()
 	menu->entries.addBool("RpLoop", settings.rploop);
 	menu->entries.addBool("Weaponmax", settings.weaponmax);
 	menu->entries.addBool("Fly", settings.fly);
-	menu->entries.addFloat("Flyspeed", settings.flySpeed, 0.05, 0.05, 2);
 	menu->entries.addFloat("Km/h", settings.kmh, 0, 0);
 	menu->entries.addFunction("Boost Player", BoostPlayer);
 	menu->entries.addFunction("Boost Vehicle", BoostVehicle);

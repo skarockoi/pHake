@@ -106,7 +106,7 @@ public:
 
 	void setPostion(int x, int y)
 	{
-		rMain.setPosition(x, y);
+		rMain.setPosition(x, y + 1);
 		wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
 	}
 

@@ -4,18 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <sstream>  
+#include <iomanip>
 
 template <typename T> class pItem
 {
-private:
+protected:
 	uint16_t sleepTime = 125;
-	uint8_t  precision = 1;
 	bool resize = false;
 	bool active = false;
 
-	T* tValue;
-	T tInc;
-	T tDec;
+	T* Value;
+	T dec;
+	T inc;
 
 	sf::RenderWindow* Window;
 	sf::Font		  Font;
@@ -26,8 +26,6 @@ private:
 	sf::Text		   wMain;
 
 public:
-	pItem() {}
-
 	void create(sf::RenderWindow* const& window)
 	{
 		if (Window == 0)
@@ -46,67 +44,10 @@ public:
 
 			wMain.setFont(Font);
 			wMain.setCharacterSize(16);
-			wMain.setFillColor(sf::Color::Color(0, 0, 0, 255));
+			wMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
 			wMain.setPosition(Pos.x, Pos.y);
 
 			this->setActive(true);
-		}
-	}
-
-	void Loop()
-	{
-		if (this->isActive())
-		{
-			if (typeid(T) == typeid(float)) // String check
-			{
-				std::stringstream stream;
-				stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*tValue));  // Convert string to std and remove obsolete zero's
-
-				setText(stream.str());
-			}
-			else if (typeid(T) == typeid(bool))
-			{
-				if (*tValue)
-					setText("ON");
-
-				else
-					setText("OFF");
-			}
-			else
-				setText(std::to_string(*tValue));
-
-
-			if (isOnBox())
-			{
-				setHighlight(true);
-
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-				{
-					if (typeid(T) == typeid(bool))
-						*tValue = not *tValue;
-
-					else
-						*tValue -= tDec;
-
-					sf::sleep(sf::milliseconds(sleepTime));
-
-				}
-				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
-				{
-					if (typeid(T) == typeid(bool))
-						*tValue = not *tValue;
-
-					else
-					{
-						*tValue += tInc;
-					}
-					sf::sleep(sf::milliseconds(sleepTime));
-				}
-			}
-			else
-			{
-				setHighlight(false);
-			}
 		}
 	}
 
@@ -119,24 +60,23 @@ public:
 		}
 	}
 
-
-public:
 	bool isActive()
 	{
 		return this->active;
 	}
 
-	void addPtr(T& value, T inc, T dec)
+	void addPtr(T& value, T Inc, T Dec)
 	{
-		tValue = &value;
-		tInc = inc;
-		tDec = dec;
+		Value = &value;
+		inc = Inc;
+		dec = Dec;
 	}
 
-	void setPrecision(uint8_t value)
+	void addPtr(T& value)
 	{
-		this->precision = value;
+		Value = &value;
 	}
+
 	void setText(std::string text)
 	{
 		wMain.setString(text);
@@ -161,8 +101,7 @@ public:
 
 		rMain.setSize(sf::Vector2f(x, y));
 	}
-
-private:
+protected:
 	void setActive(bool act)
 	{
 		active = act;
@@ -171,7 +110,7 @@ private:
 	bool isOnBox()
 	{
 		sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-		if (mouse.x >= rMain.getPosition().x &&						// Check if Mouse is on button
+		if (mouse.x >= rMain.getPosition().x &&
 			mouse.x <= rMain.getPosition().x + rMain.getSize().x &&
 			mouse.y >= rMain.getPosition().y &&
 			mouse.y <= rMain.getPosition().y + rMain.getSize().y)
@@ -190,12 +129,164 @@ private:
 
 	void updateLength()
 	{
-		if (resize)
+		if (this->resize)
 		{
 			sf::Vector2f rSize;
 			rSize.x = ((float)std::string(wMain.getString()).length() * 10) - (((std::string)wMain.getString()).length() * 2);
 			rSize.y = rMain.getSize().y;
 			rMain.setSize(rSize);
+		}
+	}
+};
+
+
+class pItemFloat : public pItem<float>
+{
+private:
+	uint8_t  precision = 1;
+
+public:
+	pItemFloat() {}
+
+	void Loop()
+	{
+		if (this->isActive())
+		{
+			std::stringstream stream;
+			stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*Value));  // Convert string to std and remove obsolete zero's
+			setText(stream.str());
+
+			if (isOnBox())
+			{
+				setHighlight(true);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					*Value -= dec;
+					sf::sleep(sf::milliseconds(sleepTime));
+				}
+				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				{
+					*Value += inc;
+					sf::sleep(sf::milliseconds(sleepTime));
+				}
+			}
+			else
+			{
+				setHighlight(false);
+			}
+		}
+	}
+
+	void draw()
+	{
+		if (this->isActive())
+		{
+			Window->draw(rMain);
+			Window->draw(wMain);
+		}
+	}
+
+public:
+	void setPrecision(uint8_t value)
+	{
+		this->precision = value;
+	}
+};
+
+class pItemInt : public pItem<int32_t>
+{
+public:
+	pItemInt() {}
+
+	void Loop()
+	{
+		if (this->isActive())
+		{
+			setText(std::to_string(*Value));
+
+			if (isOnBox())
+			{
+				setHighlight(true);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					*Value -= dec;
+					sf::sleep(sf::milliseconds(sleepTime));
+				}
+				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				{
+					*Value += inc;
+					sf::sleep(sf::milliseconds(sleepTime));
+				}
+			}
+			else
+			{
+				setHighlight(false);
+			}
+		}
+	}
+};
+
+class pItemBool : public pItem<bool>
+{
+public:
+	pItemBool() {}
+
+	void Loop()
+	{
+		if (this->isActive())
+		{
+			if (*Value)
+				this->setText("ON");
+
+			else
+				this->setText("OFF");
+
+			if (isOnBox())
+			{
+				this->setHighlight(true);
+
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					*Value = not *Value;
+					sf::sleep(sf::milliseconds(sleepTime));
+
+				}
+				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				{
+					*Value = not *Value;
+					sf::sleep(sf::milliseconds(sleepTime));
+				}
+			}
+			else
+			{
+				this->setHighlight(false);
+			}
+		}
+	}
+};
+
+class pItemString : public pItem<std::string>
+{
+public:
+	pItemString() {}
+
+	void Loop()
+	{
+		if (this->isActive())
+		{
+			this->setText(*Value);
+
+			if (isOnBox())
+			{
+				this->setHighlight(true);
+
+			}
+			else
+			{
+				this->setHighlight(false);
+			}
 		}
 	}
 };
