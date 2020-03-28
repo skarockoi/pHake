@@ -17,7 +17,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float flySpeed = 0.25;
+	float flySpeed = 0.05;
 	float kmh = 0.f;
 
 	std::string boostPlayer = "default";
@@ -78,10 +78,10 @@ void TeleportToWaypoint()
 			}
 			else
 			{
-				waypoint.z = -200.f;
-			}
 			game->playerPos.xyz(waypoint);
 		}
+				waypoint.z = -200.f;
+			}
 		else
 		{
 			waypoint.z = -200.f;
@@ -243,10 +243,13 @@ void THREAD_RpLoop()
 
 		if (settings.rploop)
 		{
-			for (int i = 0; i <= 5; i++)
-			{
-				game->playerInfo.wantedLevel(i);
-			}
+			game->playerInfo.wantedLevel(5);
+			game->playerInfo.wantedLevel(0);
+
+			//for (int i = 0; i <= 5; i++)
+			//{
+			//	game->playerInfo.wantedLevel(i);
+			//}
 		}
 	}
 }
@@ -352,6 +355,7 @@ void THREAD_Fly()
 		{
 			if (isWorldFrozen())
 			{
+				game->player.speedXYZ(0, 0, 0);
 				game->player.ragdoll(0);
 				freezeWorld(false);
 			}

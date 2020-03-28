@@ -43,18 +43,17 @@ public:
 		tempBone.finished = false;
 		tempBone.back.setSize(sf::Vector2f(210, 20));
 		tempBone.back.setPosition(Pos.x + 10, Pos.y + (notifications.size() * 25));
-		tempBone.back.setFillColor(sf::Color::Color(0, 0, 0, 200));
-		tempBone.back.setOutlineColor(sf::Color::Color(0, 0, 0, 200));
+		tempBone.back.setFillColor(sf::Color::Color(0, 0, 0, 150));
+		tempBone.back.setOutlineColor(sf::Color::Color(0, 0, 0, 150));
 		tempBone.back.setOutlineThickness(1);
 
 		tempBone.text.setFont(Font);
 		tempBone.text.setCharacterSize(16);
 		tempBone.text.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		tempBone.text.setPosition(tempBone.back.getPosition().x, tempBone.back.getPosition().y);
-		tempBone.text.setString(name);
+		tempBone.text.setString(" " + name);
 
 		notifications.push_back(tempBone);
-		
 	}
 
 	void draw()
@@ -80,17 +79,15 @@ public:
 				if (notifications[i].finished)
 				{
 					notifications.erase(notifications.begin());
-
 				}
 
 				if (!notifications[i].finished)
 				{
-
-					for (int b = 200; b > 0; b--)
+					for (int b = 150; b > 0; b--)
 					{
 						notifications[i].back.setFillColor(sf::Color(0, 0, 0, b));
 						notifications[i].back.setOutlineColor(sf::Color(0, 0, 0, b));
-						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b + 55));
+						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b + 105));
 
 						sf::sleep(sf::milliseconds(4));
 					}

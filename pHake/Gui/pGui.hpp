@@ -100,7 +100,6 @@ public:
 		notification.create(&Window);
 		mouse.create(&Window);
 		list.create(&Window);
-		//list.setSize(500, 500);
 		list.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
 	}
 
@@ -108,6 +107,10 @@ public:
 	{
 		list.toggle();
 		mouse.toggle();
+
+		if (list.isActive())
+			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x, list.getPosition().y));
+		
 	}
 
 	void Loop()
