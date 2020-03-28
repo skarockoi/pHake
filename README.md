@@ -1,7 +1,4 @@
 # GTA Online(1.5) cheat 
-https://www.unknowncheats.me/forum/grand-theft-auto-v/344571-phake-external-steam-framework.html<br/>
-https://www.sfml-dev.org/<br/>
-
 # Features<br/>
 -GodMode<br/>
 -Triggerbot<br/>
