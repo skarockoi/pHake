@@ -93,6 +93,11 @@ public:
 	}
 
 public:
+	sf::Vector2f getSize()
+	{
+		return buttonBack.getSize();
+	}
+
 	void setFont(sf::Font& font)
 	{
 		buttonName.setFont(font);

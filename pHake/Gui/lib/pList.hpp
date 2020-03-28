@@ -60,8 +60,8 @@ public:
 		tempFloat.create(Window);
 		tempFloat.setFont(Font);
 		tempFloat.addPtr(value, inc, dec);
-		tempFloat.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempFloat.setFixedSize(48, 20);
+		tempFloat.setPosition(rectBack.getSize().x - tempFloat.getSize().x + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempFloat.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		itemFloat.push_back(tempFloat);
 
@@ -76,8 +76,8 @@ public:
 		tempFloat.setFont(Font);
 		tempFloat.addPtr(value, inc, dec);
 		tempFloat.setPrecision(prec);
-		tempFloat.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempFloat.setFixedSize(48, 20);
+		tempFloat.setPosition(rectBack.getSize().x - tempFloat.getSize().x + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempFloat.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		itemFloat.push_back(tempFloat);
 
@@ -91,8 +91,8 @@ public:
 		tempInt.create(Window);
 		tempInt.setFont(Font);
 		tempInt.addPtr(value, inc, dec);
-		tempInt.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempInt.setFixedSize(48, 20);
+		tempInt.setPosition(rectBack.getSize().x - tempInt.getSize().x + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempInt.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		itemInt.push_back(tempInt);
 
@@ -106,8 +106,8 @@ public:
 		tempBool.create(Window);
 		tempBool.setFont(Font);
 		tempBool.addPtr(value, 1, 1);
-		tempBool.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempBool.setFixedSize(48, 20);
+		tempBool.setPosition(rectBack.getSize().x - tempBool.getSize().x + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempBool.setFillColor(sf::Color::Color(255, 255, 255, 255));
 		itemBool.push_back(tempBool);
 
@@ -122,8 +122,8 @@ public:
 		tempButton.create(Window);
 		tempButton.setFont(Font);
 		tempButton.connect(functionP);
-		tempButton.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x , rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempButton.setFixedSize(48, 18);
+		tempButton.setPosition(rectBack.getSize().x - tempButton.getSize().x + rectBack.getPosition().x , rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		itemButton.push_back(tempButton);
 
 		this->addWord(name);
@@ -136,8 +136,8 @@ public:
 		tempString.create(Window);
 		tempString.setFont(Font);
 		tempString.addPtr(value);
-		tempString.setPosition(rectBack.getSize().x - 48 + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		tempString.setFixedSize(48, 20);
+		tempString.setPosition(rectBack.getSize().x - tempString.getSize().x + rectBack.getPosition().x, rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		itemString.push_back(tempString);
 
 		this->addWord(name);
@@ -178,7 +178,7 @@ public:
 
 	void draw()
 	{
-		if (isActive())
+		if (this->isActive())
 		{
 			Window->draw(rectBack);
 

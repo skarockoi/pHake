@@ -82,6 +82,11 @@ public:
 		return wMain.getString();
 	}
 
+	sf::Vector2f getSize()
+	{
+		return rMain.getSize();
+	}
+
 	void setFont(sf::Font &font)
 	{
 		wMain.setFont(font);

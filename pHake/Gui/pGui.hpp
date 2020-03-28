@@ -79,17 +79,19 @@ class pGui
 private:
 	sf::RenderWindow Window;
 	sf::Font		 Font;
+	pMouse			 mouse;
 	GameInfo		 gameInfo;
+	bool			 isOverlay;
 
 public:
 	pList			 list;
-	pMouse			 mouse;
 	pNotification    notification;
 
 	pGui(){}
 
-	void create(LPCSTR Name)
+	void createOverlay(LPCSTR Name)
 	{
+		isOverlay = true;
 		gameInfo = GameInfo(Name);
 		Font.loadFromFile("Settings/font.ttf");
 
@@ -103,17 +105,77 @@ public:
 		list.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
 	}
 
-	void toggle()
+	void createWindow()
 	{
-		list.toggle();
-		mouse.toggle();
+		isOverlay = false;
 
-		if (list.isActive())
-			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x, list.getPosition().y));
-		
+		Font.loadFromFile("Settings/font.ttf");
+
+		Window.create(sf::VideoMode(208, 148), "pHake 4.0");
+		Window.setFramerateLimit(60);
+
+		notification.create(&Window);
+		list.create(&Window);
+		list.setPostion(0, 0);
 	}
 
-	void Loop()
+	void toggle()
+	{
+		if (this->isOverlay)
+		{
+			list.toggle();
+			mouse.toggle();
+
+			if (list.isActive())
+				sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x, list.getPosition().y));
+		}
+	}
+
+	void loop()
+	{
+		if (this->isOverlay)
+			this->overlayLoop();
+		
+		else
+			this->windowLoop();
+	}
+
+private:
+	void windowLoop()
+	{
+		while (Window.isOpen())
+		{
+			sf::Vector2f newSizef = list.getSize();
+			sf::Vector2u newSizeU;
+			newSizeU.x = list.getSize().x + 1;
+			newSizeU.y = list.getSize().y - 1;
+			Window.setSize(newSizeU);
+
+			sf::Event event;
+			while (Window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					Window.close();
+
+				if (event.type == sf::Event::Resized)
+				{
+					sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+					Window.setView(sf::View(visibleArea));
+				}
+			}
+
+			list.loop();
+
+			Window.clear(sf::Color::Color(255, 255, 255, 255));
+
+			list.draw();
+			notification.draw();
+
+			Window.display();
+		}
+	}
+
+	void overlayLoop()
 	{
 		while (Window.isOpen() && gameInfo.hwnd != 0)
 		{

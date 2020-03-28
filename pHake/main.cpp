@@ -245,11 +245,6 @@ void THREAD_RpLoop()
 		{
 			game->playerInfo.wantedLevel(5);
 			game->playerInfo.wantedLevel(0);
-
-			//for (int i = 0; i <= 5; i++)
-			//{
-			//	game->playerInfo.wantedLevel(i);
-			//}
 		}
 	}
 }
@@ -428,10 +423,10 @@ int main()
 {
 	FreeConsole();
 
-	std::thread cheatLoop(THREAD_MAIN); //FCKAFD
+	std::thread cheatLoop(THREAD_MAIN);
 
 	menu = new pGui;
-	menu->create("Grand Theft Auto V");
+	menu->createOverlay("Grand Theft Auto V");
 	menu->list.addBool("Godmode", settings.godmode);
 	menu->list.addBool("NeverWanted", settings.neverwanted);
 	menu->list.addBool("Trigger", settings.trigger);
@@ -444,7 +439,7 @@ int main()
 	menu->list.addFunction("Tp to Waypoint", TeleportToWaypoint);
 	menu->list.addFunction("Suicide", Suicide);
 	menu->list.addFunction("Exit", exitProgram);
-	menu->Loop();
+	menu->loop();
 
 	return 0;
 }
