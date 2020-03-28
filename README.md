@@ -20,7 +20,7 @@
 - Num0 : Teleport to Waypoint<br/>
 - Num1 : Boost Player<br/>
 - Num2 : Boost Vehicle<br/>
-- Space: When flying to change speed<br/>
+- Space : When flying to change speed<br/>
 
 # Compilation with Visual Studio
 - Download the latest SFML version(https://www.sfml-dev.org/download/sfml/2.5.1/) and put it in "C:\\Libraries\"<br/>
