@@ -8,10 +8,10 @@ Credits to unknowncheats.me for providing information
 -You can use any release as an example https://github.com/xhz8s/pHake/releases
 
 #Features
--GodMode
--Triggerbot
--NeverWanted
--RpLoop
+-GodMode\n
+-Triggerbot\n
+-NeverWanted\n
+-RpLoop\n
 -WeaponMax
 -Fly
 -Teleport to Waypoint
