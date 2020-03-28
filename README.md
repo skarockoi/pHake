@@ -8,24 +8,23 @@ Credits to unknowncheats.me for providing information
 -You can use any release as an example https://github.com/xhz8s/pHake/releases
 
 #Features
--GodMode\n
--Triggerbot\n
--NeverWanted\n
--RpLoop\n
--WeaponMax
--Fly
--Teleport to Waypoint
--Boost Vehicle
--Boost Player
-
+-GodMode<br/>
+-Triggerbot<br/>
+-NeverWanted<br/>
+-RpLoop<br/>
+-WeaponMax<br/>
+-Fly<br/>
+-Teleport to Waypoint<br/>
+-Boost Vehicle<br/>
+-Boost Player<br/>
 
 #Usage
--Fullscreen Windowed
--Start in game
+-Fullscreen Windowed<br/>
+-Start in game<br/>
 
--ALT : Toggle Menu
--Left/Right Mouse: Enable/Disable Features
--Num0 : Teleport to Waypoint
--Num1 : Boost Player
--Num2 : Boost Vehicle
--Space: When flying to change speed
+-ALT : Toggle Menu<br/>
+-Left/Right Mouse: Enable/Disable Features<br/>
+-Num0 : Teleport to Waypoint<br/>
+-Num1 : Boost Player<br/>
+-Num2 : Boost Vehicle<br/>
+-Space: When flying to change speed<br/>
