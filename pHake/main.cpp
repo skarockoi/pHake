@@ -78,13 +78,13 @@ void TeleportToWaypoint()
 			}
 			else
 			{
+				waypoint.z = -210.f;
+			}
 			game->playerPos.xyz(waypoint);
 		}
-				waypoint.z = -200.f;
-			}
 		else
 		{
-			waypoint.z = -200.f;
+			waypoint.z = -210.f;
 			game->playerVehiclePos.xyz(waypoint);
 		}
 		menu->notification.add("Teleported to Waypoint");
