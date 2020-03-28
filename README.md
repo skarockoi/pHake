@@ -6,3 +6,26 @@ Credits to unknowncheats.me for providing information
 -The executable folder must include a subfolder named "Settings", in there there must be a font file named "font.ttf"
 
 -You can use any release as an example https://github.com/xhz8s/pHake/releases
+
+#Features
+-GodMode
+-Triggerbot
+-NeverWanted
+-RpLoop
+-WeaponMax
+-Fly
+-Teleport to Waypoint
+-Boost Vehicle
+-Boost Player
+
+
+#Usage
+-Fullscreen Windowed
+-Start in game
+
+-ALT : Toggle Menu
+-Left/Right Mouse: Enable/Disable Features
+-Num0 : Teleport to Waypoint
+-Num1 : Boost Player
+-Num2 : Boost Vehicle
+-Space: When flying to change speed
