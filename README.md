@@ -7,7 +7,7 @@ Credits to unknowncheats.me for providing information
 
 -You can use any release as an example https://github.com/xhz8s/pHake/releases
 
-#Features
+# Features<br/>
 -GodMode<br/>
 -Triggerbot<br/>
 -NeverWanted<br/>
@@ -18,7 +18,7 @@ Credits to unknowncheats.me for providing information
 -Boost Vehicle<br/>
 -Boost Player<br/>
 
-#Usage
+# Usage
 -Fullscreen Windowed<br/>
 -Start in game<br/>
 
