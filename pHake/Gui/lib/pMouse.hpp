@@ -36,7 +36,7 @@ public:
 			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
 			rMain.setOutlineThickness(1);
 
-			active = true;
+			active = false;
 		}
 	}
 
@@ -55,6 +55,17 @@ public:
 			Window->draw(rMain);
 		}
 	}
+
+	bool isActive(bool act)
+	{
+		return this->active;
+	}
+
+	void setActive(bool act)
+	{
+		this->active = act;
+	}
+
 public:
 	void setSize(int size) //in pixel
 	{

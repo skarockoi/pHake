@@ -156,7 +156,8 @@
     <ClInclude Include="Gui\lib\pList.hpp" />
     <ClInclude Include="Gui\lib\pMouse.hpp" />
     <ClInclude Include="Gui\lib\pNotification.hpp" />
-    <ClInclude Include="Gui\pGui.hpp" />
+    <ClInclude Include="Gui\pOverlay.hpp" />
+    <ClInclude Include="Gui\pWindow.hpp" />
     <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Process.h" />
     <ClInclude Include="pTimer.hpp" />

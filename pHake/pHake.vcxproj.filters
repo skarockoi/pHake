@@ -39,9 +39,6 @@
     <ClInclude Include="Gui\lib\pNotification.hpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Gui\pGui.hpp">
-      <Filter>Header Files\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="pTimer.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -77,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="Gui\lib\pList.hpp">
       <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\pWindow.hpp">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui\pOverlay.hpp">
+      <Filter>Header Files\Gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

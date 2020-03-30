@@ -26,22 +26,20 @@ private:
 	uint8_t gapCount = 0;
 
 	bool active = false;
-
+	bool used = false;
 
 public:
 	pList() {}
 
 	void create(sf::RenderWindow* const& window)
 	{
-		setActive(1);
-
 		Window = window;
 		Font.loadFromFile("Settings/font.ttf");
 
 		Pos.x = 0;
 		Pos.y = 0;
 
-		rectBack.setSize(sf::Vector2f(208, 148));
+		rectBack.setSize(sf::Vector2f(208, 0));
 		rectBack.setPosition(Pos.x, Pos.y);
 		rectBack.setFillColor(sf::Color::Color(0, 0, 0, 150));
 		rectBack.setOutlineColor(sf::Color::Color(0, 0, 0));
@@ -149,15 +147,9 @@ public:
 		gapCount++;
 	}
 
-
-	void setPostion(int x, int y)
-	{
-		rectBack.setPosition(x, y);
-	}
-
 	void loop()
 	{
-		if (this->isActive())
+		if (this->isActive() && this->isUsed())
 		{
 			for (int i = 0; i < itemBool.size(); i++)
 				itemBool[i].loop();
@@ -178,7 +170,7 @@ public:
 
 	void draw()
 	{
-		if (this->isActive())
+		if (this->isActive() && this->isUsed())
 		{
 			Window->draw(rectBack);
 
@@ -202,14 +194,9 @@ public:
 		}
 	}
 
-	bool isActive()
+	void setPostion(int x, int y)
 	{
-		return this->active;
-	}
-
-	void setActive(bool act)
-	{
-		active = act;
+		rectBack.setPosition(x, y);
 	}
 
 	void setSize(int x, int y)
@@ -227,9 +214,22 @@ public:
 		return rectBack.getPosition();
 	}
 
+	bool isUsed()
+	{
+		return this->used;
+	}
+
+	bool isActive()
+	{
+		return this->active;
+	}
+
 private:
 	void addWord(std::string name)
 	{
+		if (!this->isUsed())
+			setUsed(true);
+		
 		sf::Text tempWord;
 		tempWord.setFont(Font);
 		tempWord.setCharacterSize(16);
@@ -240,6 +240,15 @@ private:
 		count++;
 	}
 
+	void setActive(bool act)
+	{
+		active = act;
+	}
+
+	void setUsed(bool act)
+	{
+		used = act;
+	}
 	void resize()
 	{
 		rectBack.setSize(sf::Vector2f(rectBack.getSize().x, (itemName.size() * 20) + (gapCount * 5)));
