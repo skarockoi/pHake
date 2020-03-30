@@ -14,17 +14,6 @@
 #include "lib/pNotification.hpp"
 #pragma comment (lib, "Dwmapi.lib")
 
-void setTransparent(HWND handle)
-{
-	MARGINS margins;
-	margins.cxLeftWidth = -1;
-	LONG cur_style = GetWindowLong(handle, GWL_EXSTYLE);
-
-	DwmExtendFrameIntoClientArea(handle, &margins);
-	SetWindowPos(handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-	SetWindowLong(handle, GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
-}
-
 struct GameInfo
 {
 	HWND hwnd;
@@ -41,7 +30,7 @@ struct GameInfo
 		hwnd = FindWindowA(0, gameW);
 		GetWindowRect(hwnd, &rect);
 
-		pos = this->getPos();
+		pos = this->getPosition();
 		size = this->getSize();
 	}
 
@@ -49,11 +38,19 @@ struct GameInfo
 	{
 		hwnd = FindWindowA(0, game);
 		GetWindowRect(hwnd, &rect);
-		pos = this->getPos();
+		pos = this->getPosition();
 		size = this->getSize();
 	}
 
-	sf::Vector2i getPos()
+	bool isActive()
+	{
+		if (this->hwnd != 0)
+			return true;
+		else
+			return false;
+	}
+
+	sf::Vector2i getPosition()
 	{
 		sf::Vector2i value;
 
@@ -94,9 +91,9 @@ public:
 		gameInfo = GameInfo(Name); // Getting game Info
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 4.0", sf::Style::None); // creating a window in the game's size
+		Window.create(sf::VideoMode(gameInfo.getSize().x , gameInfo.getSize().y), "pHake 4.0", sf::Style::None); // creating a window in the game's size
 		Window.setFramerateLimit(60);
-		setTransparent(Window.getSystemHandle()); // making the window transparent & not clickable
+		this->setTransparent(Window.getSystemHandle()); // making the window transparent & not clickable
 
 		notification.create(&Window);
 
@@ -119,19 +116,14 @@ public:
 		mouse.toggle();
 
 		if (list.isActive())
-			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + gameInfo.getPos().x, list.getPosition().y + gameInfo.getPos().y));
+			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + Window.getPosition().x , list.getPosition().y + Window.getPosition().y));
 	}
 
 	void loop()
 	{
-		while (Window.isOpen() && gameInfo.hwnd != 0)
+		while (Window.isOpen() && gameInfo.isActive())
 		{
-			gameInfo.update(); // updating the games window position and size
-			if (Window.getPosition() != gameInfo.getPos() || Window.getSize() != gameInfo.getSize())
-			{
-				Window.setPosition(gameInfo.pos);
-				Window.setSize(sf::Vector2u(gameInfo.size.x, gameInfo.size.y));
-			}
+			this->fixPosition();
 
 			sf::Event event;
 			while (Window.pollEvent(event))
@@ -158,6 +150,29 @@ public:
 			notification.draw();
 
 			Window.display();
+		}
+	}
+private:
+	void setTransparent(HWND handle)
+	{
+		MARGINS margins;
+		margins.cxLeftWidth = -1;
+		LONG cur_style = GetWindowLong(handle, GWL_EXSTYLE);
+
+		DwmExtendFrameIntoClientArea(handle, &margins);
+		SetWindowPos(handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+		SetWindowLong(handle, GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+	}
+
+	void fixPosition()
+	{
+		gameInfo.update();
+		sf::Vector2i gamePos = gameInfo.getPosition();
+		sf::Vector2i windowPos = Window.getPosition();
+
+		if (gamePos.x != windowPos.x + 1 || gamePos.y != windowPos.y - 1)
+		{
+			Window.setPosition(sf::Vector2i(gamePos.x - 1, gamePos.y + 1));
 		}
 	}
 };
