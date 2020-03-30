@@ -31,7 +31,7 @@ struct GameInfo
 	RECT rect;
 	LPCSTR game;
 	sf::Vector2i pos;
-	sf::Vector2i size;
+	sf::Vector2u size;
 
 	GameInfo() {}
 
@@ -63,9 +63,9 @@ struct GameInfo
 		return value;
 	}
 
-	sf::Vector2i getSize()
+	sf::Vector2u getSize()
 	{
-		sf::Vector2i value;
+		sf::Vector2u value;
 
 		value.x = rect.right - rect.left;
 		value.y = rect.bottom - rect.top;
@@ -81,7 +81,6 @@ private:
 	sf::Font		 Font;
 	GameInfo		 gameInfo;
 	pMouse			 mouse;
-	bool			 isOverlay;
 
 public:
 	pList			 list;
@@ -92,52 +91,59 @@ public:
 
 	void createOverlay(LPCSTR Name)
 	{
-		isOverlay = true;
-		gameInfo = GameInfo(Name);
+		gameInfo = GameInfo(Name); // Getting game Info
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 4.0", sf::Style::None);
+		Window.create(sf::VideoMode(gameInfo.getSize().x - 1, gameInfo.getSize().y + 1), "pHake 4.0", sf::Style::None); // creating a window in the game's size
 		Window.setFramerateLimit(60);
-		setTransparent(Window.getSystemHandle());
+		setTransparent(Window.getSystemHandle()); // making the window transparent & not clickable
 
 		notification.create(&Window);
 
 		mouse.create(&Window);
+		mouse.toggle();
 
 		list.create(&Window);
 		list.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
+		list.toggle();
 
 		listSettings.create(&Window);
 		listSettings.setPostion(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
-
-		this->toggle();
+		listSettings.toggle();
 	}
 
 	void toggle()
 	{
-		if (this->isOverlay)
-		{
-			list.toggle();
-			listSettings.toggle();
-			mouse.toggle();
+		list.toggle();
+		listSettings.toggle();
+		mouse.toggle();
 
-			if (list.isActive())
-				sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x, list.getPosition().y));
-		}
+		if (list.isActive())
+			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + gameInfo.getPos().x, list.getPosition().y + gameInfo.getPos().y));
 	}
 
 	void loop()
 	{
 		while (Window.isOpen() && gameInfo.hwnd != 0)
 		{
-			gameInfo.update();
-			Window.setPosition(gameInfo.pos);
+			gameInfo.update(); // updating the games window position and size
+			if (Window.getPosition() != gameInfo.getPos() || Window.getSize() != gameInfo.getSize())
+			{
+				Window.setPosition(gameInfo.pos);
+				Window.setSize(sf::Vector2u(gameInfo.size.x, gameInfo.size.y));
+			}
 
 			sf::Event event;
 			while (Window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
 					Window.close();
+
+				if (event.type == sf::Event::Resized)
+				{
+					sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+					Window.setView(sf::View(visibleArea));
+				}
 			}
 
 			list.loop();

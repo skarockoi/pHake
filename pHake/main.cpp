@@ -447,7 +447,6 @@ int main()
 	menu->list.addFunction("Tp to Waypoint", TeleportToWaypoint);
 	menu->list.addFunction("Suicide", Suicide);
 	menu->list.addFunction("Exit", exitProgram);
-
 	menu->loop();
 
 	return 0;
