@@ -72,7 +72,7 @@ public:
 	{
 		while (true)
 		{
-			Sleep(1);
+			sf::sleep(sf::milliseconds(1));
 
 			for (int i = 0; i < notifications.size(); i++)
 			{
@@ -83,21 +83,27 @@ public:
 
 				if (!notifications[i].finished)
 				{
-					for (int b = 150; b > 0; b--)
+					for (int b = 125; b > 0; b--)
 					{
 						notifications[i].back.setFillColor(sf::Color(0, 0, 0, b));
 						notifications[i].back.setOutlineColor(sf::Color(0, 0, 0, b));
-						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b + 105));
+						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b * 2));
 
-						sf::sleep(sf::milliseconds(4));
+						sf::sleep(sf::milliseconds(this->sleepTime()));
 					}
 					notifications[i].finished = true;
 				}
 			}
 		}
 	}
+private:
+	uint32_t sleepTime()
+	{
+		if (notifications.size() < 7)
+			return 5;
+		else if (notifications.size() >= 7)
+			return 1;
+	}
 };
-
-
 #endif
 
