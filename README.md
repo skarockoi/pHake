@@ -1,5 +1,5 @@
 # GTA Online Cheat 
-<a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">Download latest Version (Steam)</a>
+<a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">pHake 4.0 (1.50 Steam)</a>
 # Features<br/>
 - GodMode<br/>
 - Triggerbot<br/>
