@@ -1,4 +1,4 @@
-# GTA Online(1.5) Cheat 
+# GTA Online Cheat 
 <a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">Download latest Version (Steam)</a>
 # Features<br/>
 - GodMode<br/>
