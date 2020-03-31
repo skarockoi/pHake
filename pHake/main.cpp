@@ -40,8 +40,6 @@ void freezePlayer(bool value)
 {
 	if (value)
 	{
-		game->player.ragdoll(1);
-
 		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90};
 		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
 
@@ -52,8 +50,6 @@ void freezePlayer(bool value)
 	}
 	else
 	{
-		game->player.ragdoll(0);
-
 		uint8_t freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 };
 		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOff, sizeof(freezeOff), NULL);
 
@@ -136,7 +132,9 @@ void BoostPlayer()
 		settings.boostPlayer = "default";
 		game->playerInfo.walkMP(1);
 		game->playerInfo.swimMP(1);
-		game->player.ragdoll(0);
+
+		if (!settings.fly)
+			game->player.ragdoll(0);
 
 		settings.flySpeed = 0.05;
 		
@@ -328,10 +326,7 @@ void THREAD_Fly()
 			if (HIBYTE(GetAsyncKeyState(0x57)) && !game->player.inVehicle())
 			{
 				if (!isWorldFrozen())
-				{
-					game->player.ragdoll(1);
 					freezePlayer(true);
-				}
 
 				vector3 cameraPos = game->mem.read<vector3>(game->_base + 0x1D22170);
 				vector3 oldPos = game->playerPos.xyz();
@@ -359,7 +354,6 @@ void THREAD_Fly()
 			if (isWorldFrozen())
 			{
 				game->player.speedXYZ(0, 0, 0);
-				game->player.ragdoll(0);
 				freezePlayer(false);
 			}
 		}

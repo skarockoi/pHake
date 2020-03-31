@@ -13,8 +13,8 @@ uint64_t World = _base + 0x024B0C50
 uint64_t Waypoint = _base + 0x1F5EA30
 uint64_t Trigger = _base + 0x1F47430
 uint64_t kmh = _base + 0x2576BC0
-OPCODE FreezeXYZ = _base + 0x1429EC3
-OPCODE FreezeSpeedXYZ = _base + 0x77B26A
+OPCODE FreezeXYZ = _base + 0x1429F9F
+OPCODE FreezeSpeedXYZ = _base + 0x779994
 
 Player = World + 0x8
 	uint64_t position = 0x30;
