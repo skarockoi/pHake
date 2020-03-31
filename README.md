@@ -24,6 +24,7 @@
 
 # Download
 <a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">pHake 4.0 (1.50 Steam)</a>
+<a href="https://www.unknowncheats.me/forum/grand-theft-auto-v/344571-phake-external-source.html">Outdated Versions</a>
 
 # Compilation with Visual Studio
 - Download the latest SFML version(https://www.sfml-dev.org/download/sfml/2.5.1/) and put it in "C:\\Libraries\\"<br/>
