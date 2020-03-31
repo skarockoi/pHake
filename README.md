@@ -1,6 +1,6 @@
 # GTA Online Cheat 
 <a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">pHake 4.0 (1.50 Steam)</a>
-![Ja](https://images2.imgbox.com/d2/6b/5FyBi1bl_o.png)
+![Image of Yaktocat](https://images2.imgbox.com/d2/6b/5FyBi1bl_o.png)
 # Features<br/>
 - GodMode<br/>
 - Triggerbot<br/>
