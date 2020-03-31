@@ -22,6 +22,9 @@
 - Num2 : Boost Vehicle<br/>
 - Space : To change speed while flying<br/>
 
+# Download
+<a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">pHake 4.0 (1.50 Steam)</a>
+
 # Compilation with Visual Studio
 - Download the latest SFML version(https://www.sfml-dev.org/download/sfml/2.5.1/) and put it in "C:\\Libraries\\"<br/>
 - The executable folder must include all sfml DLL's and subfolder named "Settings", in there there must be any font file (with pixel size 16) named "font.ttf"<br/>
