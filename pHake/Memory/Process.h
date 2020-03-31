@@ -8,12 +8,6 @@ struct vector3
 	float x, y, z;
 };
 
-template <class T, size_t size> struct vector
-{
-	std::array<T, size> val;
-};
-
-
 class Process
 {
 private:

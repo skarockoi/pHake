@@ -3,9 +3,7 @@
 #include <Windows.h>
 #include <string>
 #include <iostream>
-#include <filesystem>
 #include <Dwmapi.h>
-#include <thread>
 #include <vector>
 #include "lib/pButton.hpp"
 #include "lib/pItem.hpp"

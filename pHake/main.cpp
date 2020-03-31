@@ -28,7 +28,7 @@ struct settings
 bool isWorldFrozen()
 {
 	uint8_t isOn[4];
-	ReadProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &isOn, sizeof(isOn), NULL);
+	ReadProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &isOn, sizeof(isOn), NULL);
 
 	if (isOn[0] == 0x90) // check if position is already frozen
 		return true;
@@ -43,26 +43,26 @@ void freezePlayer(bool value)
 		game->player.ragdoll(1);
 
 		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90};
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &freezeOn, sizeof(freezeOn), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
 
 		uint8_t speedOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B250), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B25D), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x779994), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799A1), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799AE), &speedOn, sizeof(speedOn), NULL);
 	}
 	else
 	{
 		game->player.ragdoll(0);
 
 		uint8_t freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429EC3), &freezeOff, sizeof(freezeOff), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOff, sizeof(freezeOff), NULL);
 
 		uint8_t speedXOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 };
 		uint8_t speedYOff[8] = { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 };
 		uint8_t speedZOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B250), &speedXOff, sizeof(speedXOff), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B25D), &speedYOff, sizeof(speedYOff), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x77B26A), &speedZOff, sizeof(speedZOff), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x779994), &speedXOff, sizeof(speedXOff), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799A1), &speedYOff, sizeof(speedYOff), NULL);
+		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799AE), &speedZOff, sizeof(speedZOff), NULL);
 	}
 }
 
