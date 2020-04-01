@@ -26,6 +26,7 @@
 <a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">Latest Version (Steam)</a><br/>
 
 # Compilation with Visual Studio
-- Download the latest SFML version(https://www.sfml-dev.org/download/sfml/2.5.1/) and put it in "C:\\Libraries\\"<br/>
-- The executable folder must include all sfml DLL's and subfolder named "Settings", in there there must be any font file (with pixel size 16) named "font.ttf"<br/>
-- You can use any release as an example https://github.com/xhz8s/pHake/releases<br/>
+1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> Version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
+2. Compile it as x64 Release/Debug
+3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">Dependencies</a> in the Executable folder <br/>
+- You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/4.0/pHake4.0_1.5.zip">Release</a> as an example
