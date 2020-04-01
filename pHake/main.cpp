@@ -25,7 +25,7 @@ struct settings
 }settings;
 
 
-bool isWorldFrozen()
+bool isPlayerFrozen()
 {
 	uint8_t isOn[4];
 	ReadProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &isOn, sizeof(isOn), NULL);
@@ -212,9 +212,8 @@ void THREAD_Godmode()
 			}
 
 			if (!check)
-			{
 				check = true;
-			}
+			
 		}
 		else if (check)
 		{
@@ -325,7 +324,7 @@ void THREAD_Fly()
 		{
 			if (HIBYTE(GetAsyncKeyState(0x57)) && !game->player.inVehicle())
 			{
-				if (!isWorldFrozen())
+				if (!isPlayerFrozen())
 					freezePlayer(true);
 
 				vector3 cameraPos = game->mem.read<vector3>(game->_base + 0x1D22170);
@@ -351,7 +350,7 @@ void THREAD_Fly()
 		}
 		else
 		{
-			if (isWorldFrozen())
+			if (isPlayerFrozen())
 			{
 				game->player.speedXYZ(0, 0, 0);
 				freezePlayer(false);

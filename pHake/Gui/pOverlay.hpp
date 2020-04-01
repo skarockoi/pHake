@@ -114,7 +114,9 @@ public:
 		mouse.toggle();
 
 		if (list.isActive())
-			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + Window.getPosition().x , list.getPosition().y + Window.getPosition().y));
+		{
+			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + Window.getPosition().x, list.getPosition().y + Window.getPosition().y));
+		}
 	}
 
 	void loop()
