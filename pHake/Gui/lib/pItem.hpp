@@ -51,6 +51,8 @@ public:
 		}
 	}
 
+	virtual void loop() = 0;
+
 	void draw()
 	{
 		if (this->isActive())
@@ -97,7 +99,7 @@ public:
 		return wMain.getFont();
 	}
 
-	void setText(std::string text)
+	void setText(const std::string &text)
 	{
 		wMain.setString(text);
 		updateLength();

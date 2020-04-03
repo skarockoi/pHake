@@ -425,6 +425,7 @@ int main()
 	FreeConsole();
 
 	std::thread cheatLoop(THREAD_MAIN);
+
 	menu = new pOverlay;
 	menu->createOverlay("Grand Theft Auto V");
 	menu->list.addBool("Godmode", settings.godmode);

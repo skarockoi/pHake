@@ -72,7 +72,7 @@ public:
 	}
 
 protected:
-	HANDLE* handle;
-	uint8_t  data[maxSize];
-	uint64_t classStart = 0x0;
+	HANDLE* handle = 0;
+	uint8_t  data[maxSize] = {};
+	uint64_t classStart = 0;
 };

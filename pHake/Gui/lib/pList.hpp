@@ -52,7 +52,7 @@ public:
 		active = not active;
 	}
 
-	void addFloat(std::string name, float& value, float inc, float dec)
+	void addFloat(const std::string &name, float& value, float inc, float dec)
 	{
 		pItemFloat tempFloat;
 		tempFloat.create(Window);
@@ -67,7 +67,7 @@ public:
 		this->resize();
 	}
 
-	void addFloat(std::string name, float& value, float inc, float dec, uint8_t prec)
+	void addFloat(const std::string& name, float& value, float inc, float dec, uint8_t prec)
 	{
 		pItemFloat tempFloat;
 		tempFloat.create(Window);
@@ -83,7 +83,7 @@ public:
 		this->resize();
 	}
 
-	void addInt(std::string name, int& value, int inc, int dec)
+	void addInt(const std::string& name, int& value, int inc, int dec)
 	{
 		pItemInt tempInt;
 		tempInt.create(Window);
@@ -98,7 +98,7 @@ public:
 		this->resize();
 	}
 
-	void addBool(std::string name, bool& value)
+	void addBool(const std::string& name, bool& value)
 	{
 		pItemBool tempBool;
 		tempBool.create(Window);
@@ -114,7 +114,7 @@ public:
 	}
 
 
-	void addFunction(std::string name, void(&functionP)())
+	void addFunction(const std::string& name, void(&functionP)())
 	{
 		pButton tempButton;
 		tempButton.create(Window);
@@ -128,7 +128,7 @@ public:
 		this->resize();
 	}
 
-	void addString(std::string name, std::string& value)
+	void addString(const std::string& name, std::string& value)
 	{
 		pItemString tempString;
 		tempString.create(Window);
@@ -225,7 +225,7 @@ public:
 	}
 
 private:
-	void addWord(std::string name)
+	void addWord(const std::string& name)
 	{
 		if (!this->isUsed())
 			setUsed(true);
