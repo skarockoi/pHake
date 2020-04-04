@@ -119,7 +119,7 @@ public:
 		tempButton.create(Window);
 		tempButton.setFont(Font);
 		tempButton.connect(functionP);
-		tempButton.setFixedSize(48, 18);
+		tempButton.setFixedSize(48, 19);
 		tempButton.setPosition(rectBack.getSize().x - tempButton.getSize().x + rectBack.getPosition().x , rectBack.getPosition().y + ((gapCount * 5) + count * 20));
 		itemButton.push_back(tempButton);
 
