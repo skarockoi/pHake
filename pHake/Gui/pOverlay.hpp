@@ -1,8 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
-#include <string>
-#include <iostream>
 #include <Dwmapi.h>
 #include <vector>
 #include "lib/pButton.hpp"
@@ -84,7 +82,7 @@ public:
 
 	pOverlay(){}
 
-	void createOverlay(LPCSTR Name)
+	void create(LPCSTR Name)
 	{
 		gameInfo = GameInfo(Name); // Getting game Info
 		Font.loadFromFile("Settings/font.ttf");

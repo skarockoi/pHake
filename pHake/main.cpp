@@ -1,6 +1,5 @@
 #include "Gui/pOverlay.hpp"
 #include <iostream>
-#include <array>
 #include <Windows.h>
 #include "SDK/GameData.hpp"
 #include "Helper.hpp"
@@ -427,7 +426,7 @@ int main()
 	std::thread cheatLoop(THREAD_MAIN);
 
 	menu = new pOverlay;
-	menu->createOverlay("Grand Theft Auto V");
+	menu->create("Grand Theft Auto V");
 	menu->list.addBool("Godmode", settings.godmode);
 	menu->list.addBool("NeverWanted", settings.neverwanted);
 	menu->list.addBool("Trigger", settings.trigger);

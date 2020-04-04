@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <random>
 #include <limits>
 
 void LeftMouseDown()
@@ -20,6 +21,17 @@ void LeftMouseUp()
 	Input.type = INPUT_MOUSE;
 	Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
 	::SendInput(1, &Input, sizeof(INPUT));
+}
+
+void SendSpaceDown()
+{
+	keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_EXTENDEDKEY, 0); // https://www.codeproject.com/Articles/7305/Keyboard-Events-Simulation-using-keybd-event-funct
+}
+
+void SendSpaceUp()
+{
+	keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_KEYUP, 0);
+
 }
 
 void SendKeyDown(WORD Key)
@@ -50,6 +62,15 @@ void SendKeyUp(WORD Key)
 
 	SendInput(1, &ip, sizeof(INPUT));
 }
+
+uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
+{
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
+	return num(rng);
+}
+
 
 float distance3d(float from_x, float from_y, float from_z, float to_x, float to_y, float to_z)
 {

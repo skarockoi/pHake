@@ -2,7 +2,6 @@
 #define _PLIST_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <thread>
 #include <vector>
 #include "pItem.hpp"
 #include "pButton.hpp"

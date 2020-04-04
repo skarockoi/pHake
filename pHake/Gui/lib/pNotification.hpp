@@ -2,8 +2,6 @@
 #define _PNOTIFICATION_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <string>
-#include <iostream>
 #include <thread>
 #include <vector>
 

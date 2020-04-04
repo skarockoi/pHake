@@ -1,12 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <Windows.h>
-#include <string>
-#include <iostream>
-#include <filesystem>
-#include <Dwmapi.h>
-#include <thread>
-#include <vector>
 #include "lib/pButton.hpp"
 #include "lib/pItem.hpp"
 #include "lib/pList.hpp"
@@ -23,21 +16,25 @@ private:
 
 public:
 	pList			 list;
-	pNotification    notification;
+	pList			 listSettings;
 
-	pWindow(){}
+	pWindow() {}
 
 
-	void createWindow()
+	void create()
 	{
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(208, 148), "pHake 4.0");
+		Window.create(sf::VideoMode(208, 148), "pHake");
 		Window.setFramerateLimit(60);
 
-		notification.create(&Window);
 		list.create(&Window);
 		list.setPostion(0, 0);
+		list.toggle();
+
+		listSettings.create(&Window);
+		listSettings.setPostion(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
+		listSettings.toggle();
 	}
 
 
@@ -45,12 +42,7 @@ public:
 	{
 		while (Window.isOpen())
 		{
-			sf::Vector2f newSizef = list.getSize();
-			sf::Vector2u newSizeU;
-			newSizeU.x = list.getSize().x + 1;
-			newSizeU.y = list.getSize().y - 1;
-			Window.setSize(newSizeU);
-
+			this->fixSize();
 			sf::Event event;
 			while (Window.pollEvent(event))
 			{
@@ -65,13 +57,31 @@ public:
 			}
 
 			list.loop();
+			listSettings.loop();
 
 			Window.clear(sf::Color::Color(255, 255, 255, 255));
 
 			list.draw();
-			notification.draw();
+			listSettings.draw();
 
 			Window.display();
 		}
+	}
+private:
+	void fixSize()
+	{
+		sf::Vector2f sizeList = list.getSize();
+		sf::Vector2f sizeListSettings = listSettings.getSize();
+
+		sf::Vector2u newSize;
+		newSize.x = sizeList.x + sizeListSettings.x;
+
+		if (sizeList.y > sizeListSettings.y)
+			newSize.y = sizeList.y;
+
+		else
+			newSize.y = sizeListSettings.y;
+
+		Window.setSize(newSize);
 	}
 };

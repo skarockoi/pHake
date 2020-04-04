@@ -2,7 +2,6 @@
 #define _PMOUSE_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <thread>
 #include <string>
 #include <sstream>  
 

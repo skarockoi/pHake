@@ -2,7 +2,6 @@
 #define _PBUTTON_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <thread>
 
 class pButton
 {
