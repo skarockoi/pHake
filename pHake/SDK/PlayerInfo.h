@@ -8,10 +8,7 @@ class PlayerInfo : public DataWrapper<0xC80 + 0x4>
 {
 public:
 	PlayerInfo() {}
-	PlayerInfo(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	PlayerInfo(HANDLE& h) :DataWrapper(h) {}
 
 	float walkMP()
 	{

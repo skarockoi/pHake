@@ -7,10 +7,7 @@ class Position : public DataWrapper<0x58 + 0x4>
 {
 public:
 	Position(){}
-	Position(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	Position(HANDLE& h) :DataWrapper(h) {}
 
 	vector3 xyz()
 	{

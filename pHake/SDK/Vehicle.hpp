@@ -7,10 +7,7 @@ class Vehicle : public DataWrapper<0x918 + 0x4>
 {
 public:
 	Vehicle() {}
-	Vehicle(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	Vehicle(HANDLE& h) :DataWrapper(h) {}
 
 	uint64_t position = 0x30;
 

@@ -42,37 +42,42 @@ public:
 template <uintptr_t maxSize> class DataWrapper
 {
 public:
-	DataWrapper() {}
-	DataWrapper(HANDLE& h)
+	DataWrapper(){}
+	DataWrapper(HANDLE &hdl)
 	{
-		handle = &h;
-	}
+		this->handle = &hdl;
+		this->data = std::make_unique<uint8_t[]>(maxSize);
+		this->maxOffset = maxSize;
+	};
 
-	void update(uint64_t c)
+	void attach(HANDLE &hdl)
 	{
-		classStart = c;
-		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
-	}
-
-	void update()
-	{
-		ReadProcessMemory(*handle, (void*)(classStart), &data, sizeof(data), NULL);
+		this->handle = &hdl;
+		this->data = std::make_unique<uint8_t[]>(maxSize);
+		this->maxOffset = maxSize;
 	}
 
 	template <typename T>
-	T read(uintptr_t offset)
+	T read(uint64_t offset)
 	{
-		return *reinterpret_cast<T*>(&data[offset]);
+		return *reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(&this->data[offset]));
 	}
 
 	template<class T>
-	void write(uintptr_t offset, T value)
+	void write(uint64_t offset, T value)
 	{
-		WriteProcessMemory(*handle, (void*)(classStart + offset), &value, sizeof(T), 0);
+		WriteProcessMemory(*handle, (void*)(baseAddress + offset), &value, sizeof(T), 0);
 	}
 
-protected:
-	HANDLE* handle = 0;
-	uint8_t  data[maxSize] = {};
-	uint64_t classStart = 0;
+public:
+	void update(uint64_t baseAddress)
+	{
+		this->baseAddress = baseAddress;
+		ReadProcessMemory(*handle, (void*)(baseAddress), this->data.get(), this->maxOffset, NULL);
+	}
+
+	std::unique_ptr<uint8_t[]> data;
+	HANDLE*  handle = 0;
+	uint64_t maxOffset = 0x0;
+	uint64_t baseAddress = 0x0;
 };

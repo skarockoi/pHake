@@ -7,10 +7,7 @@ class WeaponInfo : public DataWrapper<0x2E8 + 0x4>
 {
 public:
 	WeaponInfo() {}
-	WeaponInfo(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	WeaponInfo(HANDLE& h) :DataWrapper(h) {}
 
 	int32_t type()
 	{

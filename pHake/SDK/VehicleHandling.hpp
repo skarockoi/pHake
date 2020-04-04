@@ -7,10 +7,7 @@ class VehicleHandling : public DataWrapper<0x338 + 0x4>
 {
 public:
 	VehicleHandling() {}
-	VehicleHandling(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	VehicleHandling(HANDLE& h) :DataWrapper(h) {}
 
 	float acceleration()
 	{

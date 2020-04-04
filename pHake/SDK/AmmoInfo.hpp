@@ -7,10 +7,7 @@ class AmmoInfo : public DataWrapper<0x18 + 0x4>
 {
 public:
 	AmmoInfo() {}
-	AmmoInfo(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	AmmoInfo(HANDLE& h) :DataWrapper(h) {}
 
 	uint32_t ammo()
 	{

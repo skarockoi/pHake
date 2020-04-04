@@ -7,10 +7,7 @@ class LocalPlayer : public DataWrapper<0x14BC + 0x4>
 {
 public:
 	LocalPlayer() {}
-	LocalPlayer(HANDLE& h)
-	{
-		this->handle = &h;
-	}
+	LocalPlayer(HANDLE &h):DataWrapper(h){}
 
 	bool freezeMomentum()
 	{
