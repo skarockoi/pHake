@@ -39,7 +39,7 @@ void freezePlayer(bool value)
 {
 	if (value)
 	{
-		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90};
+		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
 		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
 
 		uint8_t speedOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
@@ -328,6 +328,7 @@ void THREAD_Fly()
 
 				vector3 cameraPos = game->mem.read<vector3>(game->_base + 0x1D22170);
 				vector3 oldPos = game->playerPos.xyz();
+
 				vector3 newPos;
 				newPos.x = settings.flySpeed * (oldPos.x - cameraPos.x);
 				newPos.y = settings.flySpeed * (oldPos.y - cameraPos.y);

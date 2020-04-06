@@ -39,9 +39,6 @@
     <ClInclude Include="Gui\lib\pNotification.hpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClInclude>
-    <ClInclude Include="pTimer.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Helper.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -88,6 +85,18 @@
     </ClCompile>
     <ClCompile Include="Memory\Process.cpp">
       <Filter>Header Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\lib\pButton.cpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\lib\pList.cpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\lib\pMouse.cpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\lib\pNotification.cpp">
+      <Filter>Header Files\Gui\lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

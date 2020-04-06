@@ -5,162 +5,198 @@
 #include <string>
 #include <sstream>  
 #include <iomanip>
+#include <thread>
+#include <future>
 
 template <typename T> class pItem
 {
 protected:
 	uint16_t sleepTime = 125;
-	bool resize = false;
-	bool active = false;
+	bool	 resize = false;
+	bool	 active = false;
 
 	T* Value;
 	T dec;
 	T inc;
 
-	sf::RenderWindow* Window;
-	sf::Font		  Font;
-	sf::Vector2i	  Pos;
-	sf::Vector2i	  Display;
+	sf::RenderWindow*  Window;
+	sf::Font		   Font;
+	sf::Vector2i	   Display;
 
 	sf::RectangleShape rMain;
 	sf::Text		   wMain;
 
 public:
-	void create(sf::RenderWindow* const& window)
-	{
-		if (Window == 0)
-		{
-			Window = window;
-			Font.loadFromFile("Settings/font.ttf");
-
-			Pos.x = 0;
-			Pos.y = 0;
-
-			rMain.setSize(sf::Vector2f(80, 28));
-			rMain.setPosition(Pos.x, Pos.y);
-			rMain.setFillColor(sf::Color::Color(0, 0, 0, 0));
-			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
-			rMain.setOutlineThickness(1);
-
-			wMain.setFont(Font);
-			wMain.setCharacterSize(16);
-			wMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
-			wMain.setPosition(Pos.x, Pos.y);
-
-			this->setActive(true);
-		}
-	}
-
+	void		 create(sf::RenderWindow* const& window);
+	void		 draw();
 	virtual void loop() = 0;
 
-	void draw()
-	{
-		if (this->isActive())
-		{
-			Window->draw(rMain);
-			Window->draw(wMain);
-		}
-	}
+	void		 addPtr(T& value, T Inc, T Dec);
+	void		 addPtr(T& value);
+	std::string  getText();
+	sf::Vector2f getSize();
+	void		 setFont(sf::Font &font);
+	void		 setText(const std::string &text);
+	void		 setFillColor(sf::Color color);
+	void		 setPosition(uint32_t x, uint32_t y);
+	void		 setFixedSize(uint32_t x, uint32_t y);
 
-	bool isActive()
-	{
-		return this->active;
-	}
-
-	void addPtr(T& value, T Inc, T Dec)
-	{
-		Value = &value;
-		inc = Inc;
-		dec = Dec;
-	}
-
-	void addPtr(T& value)
-	{
-		Value = &value;
-	}
-
-	std::string getText()
-	{
-		return wMain.getString();
-	}
-
-	sf::Vector2f getSize()
-	{
-		return rMain.getSize();
-	}
-
-	void setFont(sf::Font &font)
-	{
-		wMain.setFont(font);
-	}
-
-	sf::Font getFont()
-	{
-		return wMain.getFont();
-	}
-
-	void setText(const std::string &text)
-	{
-		wMain.setString(text);
-		updateLength();
-	}
-
-	void setFillColor(sf::Color color)
-	{
-		wMain.setFillColor(color);
-	}
-
-	void setPosition(uint16_t x, uint16_t y)
-	{
-		rMain.setPosition(x, y);
-		wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
-	}
-
-	void setFixedSize(uint16_t x, uint16_t y)
-	{
-		if (!resize)
-			resize = false;
-
-		rMain.setSize(sf::Vector2f(x, y));
-	}
 protected:
-	void setActive(bool act)
-	{
-		active = act;
-	}
+	bool         isActive();
+	void         setActive(bool act);
+	bool         isOnBox();
+	void         setHighlight(bool value);
+	void         updateLength();
 
-	bool isOnBox()
-	{
-		sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-		if (mouse.x >= rMain.getPosition().x &&
-			mouse.x <= rMain.getPosition().x + rMain.getSize().x &&
-			mouse.y >= rMain.getPosition().y &&
-			mouse.y <= rMain.getPosition().y + rMain.getSize().y)
-			return true;
-		else
-			return false;
-	}
-
-	void setHighlight(bool value)
-	{
-		if (value)
-			rMain.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
-		else
-			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
-	}
-
-	void updateLength()
-	{
-		if (this->resize)
-		{
-			sf::Vector2f rSize;
-			rSize.x = ((float)std::string(wMain.getString()).length() * 10) - (((std::string)wMain.getString()).length() * 2);
-			rSize.y = rMain.getSize().y;
-			rMain.setSize(rSize);
-		}
-	}
 };
 
+
+template<typename T>
+inline void pItem<T>::create(sf::RenderWindow* const& window)
+{
+	if (Window == 0)
+	{
+		this->Window = window;
+		this->Font.loadFromFile("Settings/font.ttf");
+
+		this->rMain.setSize(sf::Vector2f(80, 28));
+		this->rMain.setPosition(0, 0);
+		this->rMain.setFillColor(sf::Color::Color(0, 0, 0, 0));
+		this->rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+		this->rMain.setOutlineThickness(1);
+
+		this->wMain.setFont(Font);
+		this->wMain.setCharacterSize(16);
+		this->wMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
+		this->wMain.setPosition(0, 0);
+
+		this->setActive(true);
+	}
+}
+
+template<typename T>
+inline void pItem<T>::draw()
+{
+	if (this->isActive())
+	{
+		this->Window->draw(rMain);
+		this->Window->draw(wMain);
+	}
+}
+
+template<typename T>
+inline void pItem<T>::addPtr(T& value, T Inc, T Dec)
+{
+	Value = &value;
+	inc = Inc;
+	dec = Dec;
+}
+
+template<typename T>
+inline void pItem<T>::addPtr(T& value)
+{
+	Value = &value;
+}
+
+template<typename T>
+inline std::string pItem<T>::getText()
+{
+	return wMain.getString();
+}
+
+template<typename T>
+inline sf::Vector2f pItem<T>::getSize()
+{
+	return rMain.getSize();
+}
+
+template<typename T>
+inline void pItem<T>::setFont(sf::Font& font)
+{
+	wMain.setFont(font);
+}
+
+
+template<typename T>
+inline void pItem<T>::setText(const std::string& text)
+{
+	wMain.setString(text);
+	updateLength();
+}
+
+template<typename T>
+inline void pItem<T>::setFillColor(sf::Color color)
+{
+	wMain.setFillColor(color);
+}
+
+template<typename T>
+inline void pItem<T>::setPosition(uint32_t x, uint32_t y)
+{
+	rMain.setPosition(x, y);
+	wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
+}
+
+template<typename T>
+inline void pItem<T>::setFixedSize(uint32_t x, uint32_t y)
+{
+	if (!resize)
+		resize = false;
+
+	rMain.setSize(sf::Vector2f(x, y));
+}
+
+template<typename T>
+inline bool pItem<T>::isActive()
+{
+	return this->active;
+}
+
+template<typename T>
+inline void pItem<T>::setActive(bool act)
+{
+	active = act;
+}
+
+template<typename T>
+inline bool pItem<T>::isOnBox()
+{
+	sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
+	if (mouse.x >= rMain.getPosition().x &&
+		mouse.x <= rMain.getPosition().x + rMain.getSize().x &&
+		mouse.y >= rMain.getPosition().y &&
+		mouse.y <= rMain.getPosition().y + rMain.getSize().y)
+		return true;
+	else
+		return false;
+}
+
+template<typename T>
+inline void pItem<T>::setHighlight(bool value)
+{
+	if (value)
+		rMain.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+	else
+		rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+}
+
+template<typename T>
+inline void pItem<T>::updateLength()
+{
+	if (this->resize)
+	{
+		sf::Vector2f rSize;
+		rSize.x = ((float)std::string(wMain.getString()).length() * 10) - (((std::string)wMain.getString()).length() * 2);
+		rSize.y = rMain.getSize().y;
+		rMain.setSize(rSize);
+	}
+}
+
+#endif
+
+
+#ifndef _PITEMTYPES_HPP_
+#define _PITEMTYPES_HPP_
 
 class pItemFloat : public pItem<float>
 {

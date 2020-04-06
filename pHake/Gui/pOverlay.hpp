@@ -87,7 +87,7 @@ public:
 		gameInfo = GameInfo(Name); // Getting game Info
 		Font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x , gameInfo.getSize().y), "pHake 4.0", sf::Style::None); // creating a window in the game's size
+		Window.create(sf::VideoMode(gameInfo.getSize().x , gameInfo.getSize().y), "pOverlay", sf::Style::None); // creating a window in the game's size
 		Window.setFramerateLimit(60);
 		this->setTransparent(Window.getSystemHandle()); // making the window transparent & not clickable
 
@@ -138,7 +138,8 @@ public:
 
 			list.loop();
 			listSettings.loop();
-			mouse.Loop();
+			mouse.loop();
+			notification.loop();
 
 			Window.clear(sf::Color::Color(0, 0, 0, 0));
 

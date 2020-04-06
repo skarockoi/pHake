@@ -160,7 +160,6 @@
     <ClInclude Include="Gui\pWindow.hpp" />
     <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Process.h" />
-    <ClInclude Include="pTimer.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\GameData.hpp" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
@@ -171,6 +170,10 @@
     <ClInclude Include="SDK\WeaponInfo.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Gui\lib\pButton.cpp" />
+    <ClCompile Include="Gui\lib\pList.cpp" />
+    <ClCompile Include="Gui\lib\pMouse.cpp" />
+    <ClCompile Include="Gui\lib\pNotification.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>

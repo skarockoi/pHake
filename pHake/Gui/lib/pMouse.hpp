@@ -12,7 +12,6 @@ private:
 
 	sf::RenderWindow*  Window;
 	sf::Font		   Font;
-	sf::Vector2i	   Pos;
 	sf::Vector2i	   Display;
 	sf::Vector2i       Mouse;
 	sf::RectangleShape rMain;
@@ -20,65 +19,16 @@ private:
 public:
 	pMouse() {}
 
-	void create(sf::RenderWindow* const& window)
-	{
-		if (Window == 0)
-		{
-			Window = window;
+	void create(sf::RenderWindow* const& window);
+	void loop();
+	void draw();
+	void toggle();
 
-			Pos.x = 0;
-			Pos.y = 0;
+	void setSize(int size); //in pixel
+	sf::Vector2f getPosition();
 
-			rMain.setSize(sf::Vector2f(10, 10));
-			rMain.setPosition(Pos.x, Pos.y);
-			rMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
-			rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
-			rMain.setOutlineThickness(1);
-
-			active = false;
-		}
-	}
-
-	void Loop()
-	{
-		if (this->active)
-		{
-			rMain.setPosition(sf::Mouse::getPosition().x - Window->getPosition().x, sf::Mouse::getPosition().y - Window->getPosition().y);
-		}
-	}
-
-	void draw()
-	{
-		if (this->active)
-		{
-			Window->draw(rMain);
-		}
-	}
-
-	bool isActive(bool act)
-	{
-		return this->active;
-	}
-
-	void setActive(bool act)
-	{
-		this->active = act;
-	}
-
-public:
-	void setSize(int size) //in pixel
-	{
-		rMain.setSize(sf::Vector2f(size, size));
-	}
-
-	void toggle()
-	{
-		this->active = not this->active;
-	}
-
-	sf::Vector2f getPosition()
-	{
-		return rMain.getPosition();
-	}
+private:
+	bool isActive(bool act);
+	void setActive(bool act);
 };
 #endif
