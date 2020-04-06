@@ -24,26 +24,29 @@ void pButton::create(sf::RenderWindow* const& window)
 
 void pButton::loop()
 {
-	if (this->isActive())
+	if (this->active && !this->isExecuting)
 	{
 		sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-		if (this->isOnBox())
+		if (!this->isExecuting)
 		{
-			this->setHighlight(true);
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			if (this->isOnBox())
 			{
-				if (function != NULL)
+				this->setHighlight(true);
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
-					//std::async(std::launch::async, &pButton::execFunction, this);
-					std::thread execThread = std::thread(&pButton::execFunction, this); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
-					execThread.detach();
+					if (function != NULL)
+					{
+						std::thread execThread = std::thread(&pButton::execFunction, this); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
+						execThread.detach();
+					}
 				}
 			}
+			else
+			{
+				this->setHighlight(false);
+			}
 		}
-		else
-		{
-			this->setHighlight(false);
-		}
+
 	}
 }
 
@@ -109,13 +112,10 @@ bool pButton::isOnBox()
 
 void pButton::execFunction()
 {
-	if (!this->isExecuting)
-	{
-		this->isExecuting = true;
-		((void(*)(void))function)();
-		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-		this->isExecuting = false;
-	}
+	this->isExecuting = true;
+	((void(*)(void))function)();
+	std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	this->isExecuting = false;
 }
 
 void pButton::setPosition(int x, int y)

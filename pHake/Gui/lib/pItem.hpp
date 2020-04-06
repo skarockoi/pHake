@@ -6,7 +6,6 @@
 #include <sstream>  
 #include <iomanip>
 #include <thread>
-#include <future>
 
 template <typename T> class pItem
 {
@@ -14,6 +13,7 @@ protected:
 	uint16_t sleepTime = 125;
 	bool	 resize = false;
 	bool	 active = false;
+	bool     isExecuting = false;
 
 	T* Value;
 	T dec;
@@ -214,35 +214,43 @@ public:
 			stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*Value));  // Convert string to std and remove obsolete zero's
 			setText(stream.str());
 
-			if (isOnBox())
-			{
-				setHighlight(true);
+			if (!this->isExecuting)
+			{ 
+				if (isOnBox())
+				{
+					setHighlight(true);
 
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-				{
-					*Value -= dec;
-					sf::sleep(sf::milliseconds(sleepTime));
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+					{
+						std::thread(&pItemFloat::decToValue, this).detach();
+
+					}
+					else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+					{
+						std::thread(&pItemFloat::addToValue, this).detach();
+					}
 				}
-				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				else
 				{
-					*Value += inc;
-					sf::sleep(sf::milliseconds(sleepTime));
+					setHighlight(false);
 				}
-			}
-			else
-			{
-				setHighlight(false);
 			}
 		}
 	}
-
-	void draw()
+private:
+	void addToValue()
 	{
-		if (this->isActive())
-		{
-			Window->draw(rMain);
-			Window->draw(wMain);
-		}
+		this->isExecuting = true;
+		*Value += inc;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
+		this->isExecuting = false;
+	}
+	void decToValue()
+	{
+		this->isExecuting = true;
+		*Value -= dec;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
+		this->isExecuting = false;
 	}
 
 public:
@@ -263,26 +271,42 @@ public:
 		{
 			setText(std::to_string(*Value));
 
-			if (isOnBox())
+			if (!this->isExecuting)
 			{
-				setHighlight(true);
+				if (isOnBox())
+				{
+					setHighlight(true);
 
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-				{
-					*Value -= dec;
-					sf::sleep(sf::milliseconds(sleepTime));
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+					{
+						std::thread(&pItemInt::decToValue, this).detach();
+					}
+					else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+					{
+						std::thread(&pItemInt::addToValue, this).detach();
+					}
 				}
-				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				else
 				{
-					*Value += inc;
-					sf::sleep(sf::milliseconds(sleepTime));
+					setHighlight(false);
 				}
-			}
-			else
-			{
-				setHighlight(false);
 			}
 		}
+	}
+private:
+	void addToValue()
+	{
+		this->isExecuting = true;
+		*Value += inc;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
+		this->isExecuting = false;
+	}
+	void decToValue()
+	{
+		this->isExecuting = true;
+		*Value -= dec;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
+		this->isExecuting = false;
 	}
 };
 
@@ -301,27 +325,32 @@ public:
 			else
 				this->setText("OFF");
 
-			if (isOnBox())
+			if (!this->isExecuting)
 			{
-				this->setHighlight(true);
-
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (isOnBox())
 				{
-					*Value = not *Value;
-					sf::sleep(sf::milliseconds(sleepTime));
+					this->setHighlight(true);
 
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+					{
+						 std::thread(&pItemBool::flipBool, this).detach(); 
+					}
 				}
-				else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+				else
 				{
-					*Value = not *Value;
-					sf::sleep(sf::milliseconds(sleepTime));
+					this->setHighlight(false);
 				}
 			}
-			else
-			{
-				this->setHighlight(false);
-			}
+
 		}
+	}
+private:
+	void flipBool()
+	{
+		this->isExecuting = true;
+		*Value = not *Value;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
+		this->isExecuting = false;
 	}
 };
 
