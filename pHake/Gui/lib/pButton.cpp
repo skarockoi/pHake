@@ -36,8 +36,7 @@ void pButton::loop()
 				{
 					if (function != NULL)
 					{
-						std::thread execThread = std::thread(&pButton::execFunction, this); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
-						execThread.detach();
+						std::thread(&pButton::execFunction, this).detach(); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
 					}
 				}
 			}

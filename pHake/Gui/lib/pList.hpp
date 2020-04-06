@@ -46,7 +46,7 @@ public:
 public:
 	bool isUsed();
 	bool isActive();
-	void setPostion(int x, int y);
+	void setPosition(int x, int y);
 	void setSize(int x, int y);
 	sf::Vector2f getSize();
 	sf::Vector2f getPosition();

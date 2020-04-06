@@ -101,7 +101,7 @@ bool pNotification::finishedShowing()
 uint32_t pNotification::sleepTime()
 {
 	if (notifications.size() < 7)
-		return 5;
+		return 10;
 	else if (notifications.size() >= 7)
-		return 1;
+		return 5;
 }

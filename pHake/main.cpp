@@ -14,6 +14,7 @@ struct settings
 	bool rploop = false;
 	bool trigger = false;
 	bool weaponmax = false;
+	bool peddropper = false;
 	bool fly = false;
 
 	float flySpeed = 0.05;
@@ -200,7 +201,7 @@ void THREAD_Godmode()
 	bool check = false;
 	while (true)
 	{
-		Sleep(250);
+		sleep(250);
 
 		if (settings.godmode)
 		{
@@ -227,7 +228,7 @@ void THREAD_NeverWanted()
 {
 	while (true)
 	{
-		Sleep(200);
+		sleep(200);
 
 		if (settings.neverwanted)
 		{
@@ -243,7 +244,7 @@ void THREAD_RpLoop()
 {
 	while (true)
 	{
-		Sleep(1);
+		sleep(1);
 
 		if (settings.rploop)
 		{
@@ -258,7 +259,7 @@ void THREAD_Trigger()
 	bool check = false;
 	while (true)
 	{
-		Sleep(1);
+		sleep(1);
 
 		if (settings.trigger)
 		{
@@ -287,7 +288,7 @@ void THREAD_WeaponMax()
 {
 	while (true)
 	{
-		Sleep(250);
+		sleep(250);
 
 		if (settings.weaponmax)
 		{
@@ -313,11 +314,66 @@ void THREAD_WeaponMax()
 	}
 }
 
-void THREAD_Fly()
+void THREAD_PedDropper()
 {
+	bool check = false;
+
 	while (true)
 	{
-		Sleep(10);
+		sleep(1);
+
+		if (settings.peddropper)
+		{
+			if (!isPlayerFrozen())
+				freezePlayer(true);
+
+			game->player.speedXYZ(1, 1, 1);
+
+			SendWKeyDown();
+
+			uint64_t pedList[16];
+			for (int i = 0; i < 16; i++)
+			{
+				pedList[i] = game->mem.read<uint64_t>(game->_pedList + (i * 0x8));
+			}
+
+			for (int i = 0; i < 16; i++)
+			{
+				game->mem.write<uint32_t>(pedList[i] + 0x15DC, 2000);
+
+				uint64_t _pedPosition = game->mem.read<uint64_t>(pedList[i] + 0x30);
+				vector3  pedPosition = game->mem.read<vector3>(_pedPosition + 0x50);
+
+				game->playerPos.xyz(pedPosition);
+				game->player.speedXYZ(0, 0, 0);
+				sleep(1000);
+				game->mem.write<float>(pedList[i] + 0x280, 0.f);
+				sleep(1000);
+
+			}
+			SendWKeyUp();
+
+			check = true;
+		}
+		else
+		{
+			if (check)
+			{
+				SendWKeyUp();
+				freezePlayer(false);
+				check = false;
+			}
+		}
+	}
+}
+
+void THREAD_Fly()
+{
+	bool check = false;
+
+	while (true)
+	{
+		sleep(10);
 
 		if (settings.fly)
 		{
@@ -347,13 +403,16 @@ void THREAD_Fly()
 					game->playerPos.xyz(newPos);
 				}
 			}
+			check = true;
+
 		}
 		else
 		{
-			if (isPlayerFrozen())
+			if (isPlayerFrozen() && check)
 			{
 				game->player.speedXYZ(0, 0, 0);
 				freezePlayer(false);
+				check = false;
 			}
 		}
 	}
@@ -363,32 +422,32 @@ void THREAD_Keys()
 {
 	while (true)
 	{
-		Sleep(1);
+		sleep(1);
 
 		if (HIBYTE(GetAsyncKeyState(VK_MENU)))
 		{
 			menu->toggle();
-			Sleep(150);
+			sleep(150);
 		}
 		if (settings.fly && HIBYTE(GetAsyncKeyState(VK_SPACE)))
 		{
 			BoostPlayer();
-			Sleep(150);
+			sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
 		{
 			TeleportToWaypoint();
-			Sleep(150);
+			sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD1)))
 		{
 			BoostPlayer();
-			Sleep(150);
+			sleep(150);
 		}
 		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD2)))
 		{
 			BoostVehicle();
-			Sleep(150);
+			sleep(150);
 		}
 	}
 }
@@ -398,19 +457,20 @@ void THREAD_MAIN()
 	game = new GameData;
 	game->init();
 
-	std::thread t0(THREAD_Godmode);
-	std::thread t1(THREAD_NeverWanted);
-	std::thread t2(THREAD_WeaponMax);
-	std::thread t3(THREAD_RpLoop);
-	std::thread t4(THREAD_Trigger);
-	std::thread t5(THREAD_Fly);
-	std::thread t6(THREAD_Keys);
+	std::thread t1(THREAD_Godmode);
+	std::thread t2(THREAD_NeverWanted);
+	std::thread t3(THREAD_WeaponMax);
+	std::thread t4(THREAD_RpLoop);
+	std::thread t5(THREAD_Trigger);
+	std::thread t6(THREAD_PedDropper);
+	std::thread t7(THREAD_Fly);
+	std::thread t8(THREAD_Keys);
 
 	while (true)
-	{
+	{		
 		game->update();
 		settings.kmh = 3.6 * game->mem.read<float>(game->_base + 0x2576BC0);
-		Sleep(1);
+		sleep(1);
 	}
 }
 
@@ -432,7 +492,8 @@ int main()
 	menu->list.addBool("NeverWanted", settings.neverwanted);
 	menu->list.addBool("Trigger", settings.trigger);
 	menu->list.addBool("RpLoop", settings.rploop);
-	menu->list.addBool("Weaponmax", settings.weaponmax);
+	menu->list.addBool("MaxWeapon", settings.weaponmax);
+	menu->list.addBool("PedDropper", settings.peddropper);
 	menu->list.addBool("Fly", settings.fly);
 	menu->list.addFloat("Km/h", settings.kmh, 0, 0);
 	menu->list.addFunction("Boost Player", BoostPlayer);

@@ -97,11 +97,11 @@ public:
 		mouse.toggle();
 
 		list.create(&Window);
-		list.setPostion(Window.getSize().x / 2, Window.getSize().y / 4);
+		list.setPosition(Window.getSize().x / 2, Window.getSize().y / 4);
 		list.toggle();
 
 		listSettings.create(&Window);
-		listSettings.setPostion(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
+		listSettings.setPosition(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
 		listSettings.toggle();
 	}
 

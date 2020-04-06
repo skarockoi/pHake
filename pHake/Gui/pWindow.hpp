@@ -29,11 +29,11 @@ public:
 		Window.setFramerateLimit(60);
 
 		list.create(&Window);
-		list.setPostion(0, 0);
+		list.setPosition(0, 0);
 		list.toggle();
 
 		listSettings.create(&Window);
-		listSettings.setPostion(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
+		listSettings.setPosition(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
 		listSettings.toggle();
 	}
 

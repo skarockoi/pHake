@@ -10,6 +10,7 @@
 
 /*
 uint64_t World = _base + 0x024B0C50
+uint64_t PedList = _base + 0x1F564E0 (holds 16 Entities, 0x8 distance)
 uint64_t Waypoint = _base + 0x1F5EA30
 uint64_t Trigger = _base + 0x1F47430
 uint64_t kmh = _base + 0x2576BC0
@@ -83,7 +84,14 @@ class GameData // 1.5
 private:
 	void updatePointer()
 	{
+		uint64_t temp;
+
 		_world = mem.read<uint64_t>(_base + 0x024B0C50);
+
+		temp = mem.read<uint64_t>(_base + 0x1F564E0);
+		temp = mem.read<uint64_t>(temp + 0x0);
+		_pedList = temp + 0x8;
+
 		_player = mem.read<uint64_t>(_world + 0x8);
 		_playerInfo = mem.read<uint64_t>(_player + 0x10B8);
 		_playerPos = mem.read<uint64_t>(_player + 0x30);
@@ -118,6 +126,7 @@ public:
 	uint64_t _player;
 	uint64_t _playerPos;
 	uint64_t _playerInfo;
+	uint64_t _pedList;
 
 	uint64_t _playerVehicle;
 	uint64_t _playerVehiclePos;

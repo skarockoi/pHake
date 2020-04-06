@@ -163,7 +163,7 @@ void pList::addGap()
 }
 
 
-void pList::setPostion(int x, int y)
+void pList::setPosition(int x, int y)
 {
 	rectBack.setPosition(x, y);
 }
