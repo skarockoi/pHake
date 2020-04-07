@@ -313,7 +313,9 @@ private:
 class pItemBool : public pItem<bool>
 {
 public:
-	pItemBool() {}
+	pItemBool() {
+		this->sleepTime = 250;
+	}
 
 	void loop()
 	{
