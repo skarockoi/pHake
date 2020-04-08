@@ -1,13 +1,23 @@
-#ifndef _WEAPONINFO_HPP_
-#define _WEAPONINFO_HPP_
+#ifndef _WEAPON_HPP_
+#define _WEAPON_HPP_
 
 #include "../Memory/Process.h"
+#include "AmmoInfo.hpp"
 
-class WeaponInfo : public DataWrapper<0x2E8 + 0x4>
+class Weapon : public DataWrapper<0x2E8 + 0x4>
 {
 public:
-	WeaponInfo() {}
-	WeaponInfo(HANDLE& h) :DataWrapper(h) {}
+	Weapon() {}
+	Weapon(HANDLE& h) :DataWrapper(h) {
+		ammoInfo = AmmoInfo(h);
+
+	}
+
+	void updateSub(uint64_t baseAddress)
+	{
+		this->update(baseAddress);
+		ammoInfo.update(this->readMulti({ 0x60, 0x8, 0x0 }));
+	}
 
 	int32_t type()
 	{
@@ -28,6 +38,8 @@ public:
 	{
 		this->write<int32_t>(0x24, value);
 	}
+
+	AmmoInfo ammoInfo;
 
 	float batchSpread()
 	{
@@ -118,6 +130,5 @@ public:
 	{
 		this->write<float>(0x2E8, value);
 	}
-
 };
 #endif

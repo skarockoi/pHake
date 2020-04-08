@@ -2,14 +2,26 @@
 #define _VEHICLE_HPP_
 
 #include "../Memory/Process.h"
+#include "Position.hpp"
+#include "VehicleHandling.hpp"
 
-class Vehicle : public DataWrapper<0x918 + 0x4>
+class Vehicle : public DataWrapper<0x918 + 0x8>
 {
 public:
 	Vehicle() {}
-	Vehicle(HANDLE& h) :DataWrapper(h) {}
+	Vehicle(HANDLE& h) :DataWrapper(h) {
+		position = Position(h);
+		handling = VehicleHandling(h);
+	}
 
-	uint64_t position = 0x30;
+	void updateSub(uint64_t baseAddress)
+	{
+		this->update(baseAddress);
+		position.update(this->read<uint64_t>(0x30));
+		handling.update(this->read<uint64_t>(0x918));
+	}
+
+	Position position;
 
 	bool god()
 	{
@@ -38,19 +50,14 @@ public:
 		this->write<float>(0x280, value);
 	}
 
-	void speedXYZ(vector3 value)
+	void speedXYZ(vector3f value)
 	{
-		this->write<vector3>(0x7D0, value);
+		this->write<vector3f>(0x7D0, value);
 	}
 
 	void speedXYZ(float x, float y, float z)
 	{
-		vector3 value;
-		value.x = x;
-		value.y = y;
-		value.z = z;
-
-		this->write<vector3>(0x7D0, value);
+		this->write<vector3f>(0x7D0, vector3f(x, y, z));
 	}
 
 	float speedX()
@@ -103,6 +110,6 @@ public:
 		this->write<float>(0x8E8, value);
 	}
 
-	uint64_t handling = 0x918;
+	VehicleHandling handling;
 };
 #endif

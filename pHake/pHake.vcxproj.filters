@@ -48,9 +48,6 @@
     <ClInclude Include="SDK\AmmoInfo.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\GameData.hpp">
-      <Filter>Header Files\SDK</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\LocalPlayer.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
@@ -66,9 +63,6 @@
     <ClInclude Include="SDK\VehicleHandling.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\WeaponInfo.hpp">
-      <Filter>Header Files\SDK</Filter>
-    </ClInclude>
     <ClInclude Include="Gui\lib\pList.hpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClInclude>
@@ -77,6 +71,21 @@
     </ClInclude>
     <ClInclude Include="Gui\pOverlay.hpp">
       <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\World.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\WeaponManager.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Weapon.hpp">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\_info_.txt">
+      <Filter>Header Files\SDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

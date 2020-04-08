@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _PLAYERINFO_HPP_
 #define _PLAYERINFO_HPP_
 

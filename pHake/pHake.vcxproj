@@ -161,13 +161,16 @@
     <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Process.h" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
-    <ClInclude Include="SDK\GameData.hpp" />
+    <ClInclude Include="SDK\_info_.txt" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
     <ClInclude Include="SDK\PlayerInfo.h" />
     <ClInclude Include="SDK\Position.hpp" />
     <ClInclude Include="SDK\Vehicle.hpp" />
     <ClInclude Include="SDK\VehicleHandling.hpp" />
-    <ClInclude Include="SDK\WeaponInfo.hpp" />
+    <ClInclude Include="SDK\Weapon.hpp" />
+    <ClInclude Include="SDK\WeaponManager.hpp" />
+    <ClInclude Include="SDK\World.hpp" />
+    <ClInclude Include="Settings.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gui\lib\pButton.cpp" />

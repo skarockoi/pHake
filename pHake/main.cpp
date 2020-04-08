@@ -1,33 +1,18 @@
 #include "Gui/pOverlay.hpp"
 #include <iostream>
 #include <Windows.h>
-#include "SDK/GameData.hpp"
 #include "Helper.hpp"
+#include "Settings.hpp"
+#include "SDK/World.hpp"
 
 pOverlay* menu;
-GameData* game;
-
-struct settings
-{
-	bool godmode = false;
-	bool neverwanted = false;
-	bool rploop = false;
-	bool trigger = false;
-	bool weaponmax = false; 
-	bool fly = false;
-
-	float flySpeed = 0.05;
-	float kmh = 0.f;
-
-	std::string boostPlayer = "default";
-	std::string boostVehicle = "default";
-}settings;
-
+Process   mem;
+World     world;
 
 bool isPlayerFrozen()
 {
 	uint8_t isOn;
-	ReadProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &isOn, sizeof(isOn), NULL);
+	ReadProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &isOn, sizeof(isOn), NULL);
 
 	if (isOn == 0x90) // check if position is already frozen
 		return true;
@@ -40,40 +25,40 @@ void freezePlayer(bool value)
 	if (value)
 	{
 		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
 
 		uint8_t speedOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x779994), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799A1), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799AE), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x779994), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799A1), &speedOn, sizeof(speedOn), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799AE), &speedOn, sizeof(speedOn), NULL);
 	}
 	else
 	{
 		uint8_t freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x1429F9F), &freezeOff, sizeof(freezeOff), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &freezeOff, sizeof(freezeOff), NULL);
 
 		uint8_t speedXOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 };
 		uint8_t speedYOff[8] = { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 };
 		uint8_t speedZOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 };
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x779994), &speedXOff, sizeof(speedXOff), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799A1), &speedYOff, sizeof(speedYOff), NULL);
-		WriteProcessMemory(game->mem.handle, (void*)(game->_base + 0x7799AE), &speedZOff, sizeof(speedZOff), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x779994), &speedXOff, sizeof(speedXOff), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799A1), &speedYOff, sizeof(speedYOff), NULL);
+		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799AE), &speedZOff, sizeof(speedZOff), NULL);
 	}
 }
 
 void Suicide()
 {
-	game->player.health(0.f);
+	world.localPlayer.health(0.f);
 	menu->notification.add("Player health set to 0");
 }
 
 void TeleportToWaypoint()
 {
-	vector3 waypoint = game->mem.read<vector3>(game->_base + 0x1F5EA30);
+	vector3f waypoint = mem.read<vector3f>(mem.base + 0x1F5EA30);
 
 	if (waypoint.x != 64000 && waypoint.y != 64000)
 	{
-		if (!game->player.inVehicle())
+		if (!world.localPlayer.inVehicle())
 		{
 			if (settings.fly)
 			{
@@ -83,12 +68,12 @@ void TeleportToWaypoint()
 			{
 				waypoint.z = -210.f;
 			}
-			game->playerPos.xyz(waypoint);
+			world.localPlayer.position.xyz(waypoint);
 		}
 		else
 		{
 			waypoint.z = -210.f;
-			game->playerVehiclePos.xyz(waypoint);
+			world.localPlayer.vehicle.position.xyz(waypoint);
 		}
 		menu->notification.add("Teleported to Waypoint");
 	}
@@ -103,9 +88,9 @@ void BoostPlayer()
 	if (settings.boostPlayer == "default")
 	{
 		settings.boostPlayer = "fast";
-		game->playerInfo.walkMP(2.5);
-		game->playerInfo.swimMP(2.5);
-		game->player.ragdoll(1);
+		world.localPlayer.playerInfo.walkMP(2.5);
+		world.localPlayer.playerInfo.swimMP(2.5);
+		world.localPlayer.ragdoll(1);
 
 		settings.flySpeed = 0.25;
 		
@@ -116,9 +101,9 @@ void BoostPlayer()
 	if (settings.boostPlayer == "fast")
 	{
 		settings.boostPlayer = "max";
-		game->playerInfo.walkMP(2500);
-		game->playerInfo.swimMP(2500);
-		game->player.ragdoll(1);
+		world.localPlayer.playerInfo.walkMP(2500);
+		world.localPlayer.playerInfo.swimMP(2500);
+		world.localPlayer.ragdoll(1);
 
 		settings.flySpeed = 0.5;
 		
@@ -129,11 +114,11 @@ void BoostPlayer()
 	if (settings.boostPlayer == "max")
 	{
 		settings.boostPlayer = "default";
-		game->playerInfo.walkMP(1);
-		game->playerInfo.swimMP(1);
+		world.localPlayer.playerInfo.walkMP(1);
+		world.localPlayer.playerInfo.swimMP(1);
 
 		if (!settings.fly)
-			game->player.ragdoll(0);
+			world.localPlayer.ragdoll(0);
 
 		settings.flySpeed = 0.05;
 		
@@ -147,11 +132,11 @@ void BoostVehicle()
 	if (settings.boostVehicle == "default")
 	{
 		settings.boostVehicle = "race";
-		game->playerVehicle.gravity(20.f);
-		game->playerVehicleHandling.tractionMax(3.f);
-		game->playerVehicleHandling.tractionMin(3.f);
-		game->playerVehicleHandling.collisionDamage(0.f);
-		game->playerVehicleHandling.acceleration(3.f);
+		world.localPlayer.vehicle.gravity(20.f);
+		world.localPlayer.vehicle.handling.tractionMax(3.f);
+		world.localPlayer.vehicle.handling.tractionMin(3.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(3.f);
 
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
@@ -159,11 +144,11 @@ void BoostVehicle()
 	else if (settings.boostVehicle == "race")
 	{
 		settings.boostVehicle = "max";
-		game->playerVehicle.gravity(25.f);
-		game->playerVehicleHandling.tractionMax(5.f);
-		game->playerVehicleHandling.tractionMin(5.f);
-		game->playerVehicleHandling.collisionDamage(0.f);
-		game->playerVehicleHandling.acceleration(20.f);
+		world.localPlayer.vehicle.gravity(25.f);
+		world.localPlayer.vehicle.handling.tractionMax(5.f);
+		world.localPlayer.vehicle.handling.tractionMin(5.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(20.f);
 
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
@@ -171,11 +156,11 @@ void BoostVehicle()
 	else if (settings.boostVehicle == "max")
 	{
 		settings.boostVehicle = "fly";
-		game->playerVehicle.gravity(-10.f);
-		game->playerVehicleHandling.tractionMax(2.f);
-		game->playerVehicleHandling.tractionMin(2.f);
-		game->playerVehicleHandling.collisionDamage(0.f);
-		game->playerVehicleHandling.acceleration(2.f);
+		world.localPlayer.vehicle.gravity(-10.f);
+		world.localPlayer.vehicle.handling.tractionMax(2.f);
+		world.localPlayer.vehicle.handling.tractionMin(2.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(2.f);
 
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
@@ -184,11 +169,11 @@ void BoostVehicle()
 	{
 		settings.boostVehicle = "default";
 
-		game->playerVehicle.gravity(9.8);
-		game->playerVehicleHandling.tractionMax(2.f);
-		game->playerVehicleHandling.tractionMin(2.f);
-		game->playerVehicleHandling.acceleration(1.f);
-		game->playerVehicleHandling.collisionDamage(0.f);
+		world.localPlayer.vehicle.gravity(9.8);
+		world.localPlayer.vehicle.handling.tractionMax(2.f);
+		world.localPlayer.vehicle.handling.tractionMin(2.f);
+		world.localPlayer.vehicle.handling.acceleration(1.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
@@ -204,10 +189,10 @@ void THREAD_Godmode()
 
 		if (settings.godmode)
 		{
-			if (!game->player.god() || !game->playerVehicle.god())
+			if (!world.localPlayer.god() || !world.localPlayer.vehicle.god())
 			{
-				game->player.god(1);
-				game->playerVehicle.god(1);
+				world.localPlayer.god(1);
+				world.localPlayer.vehicle.god(1);
 			}
 
 			if (!check)
@@ -216,8 +201,8 @@ void THREAD_Godmode()
 		}
 		else if (check)
 		{
-			game->player.god(0);
-			game->playerVehicle.god(0);
+			world.localPlayer.god(0);
+			world.localPlayer.vehicle.god(0);
 			check = false;
 		}
 	}
@@ -231,9 +216,9 @@ void THREAD_NeverWanted()
 
 		if (settings.neverwanted)
 		{
-			if (game->playerInfo.wantedLevel() > 0)
+			if (world.localPlayer.playerInfo.wantedLevel() > 0)
 			{
-				game->playerInfo.wantedLevel(0);
+				world.localPlayer.playerInfo.wantedLevel(0);
 			}
 		}
 	}
@@ -247,8 +232,8 @@ void THREAD_RpLoop()
 
 		if (settings.rploop)
 		{
-			game->playerInfo.wantedLevel(5);
-			game->playerInfo.wantedLevel(0);
+			world.localPlayer.playerInfo.wantedLevel(5);
+			world.localPlayer.playerInfo.wantedLevel(0);
 		}
 	}
 }
@@ -262,7 +247,7 @@ void THREAD_Trigger()
 
 		if (settings.trigger)
 		{
-			int32_t crossId = game->mem.read<int32_t>(game->_base + 0x1F47430);
+			int32_t crossId = mem.read<int32_t>(mem.base + 0x1F47430);
 			if (crossId != 0 && crossId <= 2)
 			{
 				if (!check)
@@ -291,30 +276,27 @@ void THREAD_WeaponMax()
 
 		if (settings.weaponmax)
 		{
-			if (game->playerWeaponInfo.bulletDamage() != 99999.f)
+			if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() != 99999.f)
 			{
-				game->playerWeaponInfo.type(5);
-				game->playerWeaponInfo.explosionType(25);
-				game->playerWeaponInfo.bulletDamage(99999.f);
-				game->playerWeaponInfo.reloadMP(99999.f);
-				game->playerWeaponInfo.range(99999.f);
-				game->playerAmmoInfo.ammo(999999);
+				world.localPlayer.weaponManager.currentWeapon.type(5);
+				world.localPlayer.weaponManager.currentWeapon.explosionType(25);
+				world.localPlayer.weaponManager.currentWeapon.bulletDamage(99999.f);
+				world.localPlayer.weaponManager.currentWeapon.reloadMP(99999.f);
+				world.localPlayer.weaponManager.currentWeapon.range(99999.f);
+				world.localPlayer.weaponManager.currentWeapon.ammoInfo.ammo(999999);
 			}
 		}
 		else
 		{
-			if (game->playerWeaponInfo.bulletDamage() == 99999.f)
+			if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() == 99999.f)
 			{
-				game->playerWeaponInfo.type(3);
-				game->playerWeaponInfo.bulletDamage(100.f);
-				game->playerWeaponInfo.reloadMP(1.f);
+				world.localPlayer.weaponManager.currentWeapon.type(3);
+				world.localPlayer.weaponManager.currentWeapon.bulletDamage(100.f);
+				world.localPlayer.weaponManager.currentWeapon.reloadMP(1.f);
 			}
 		}
 	}
 }
-
-
-
 
 void THREAD_Fly()
 {
@@ -326,15 +308,15 @@ void THREAD_Fly()
 
 		if (settings.fly)
 		{
-			if (HIBYTE(GetAsyncKeyState(0x57)) && !game->player.inVehicle())
+			if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 			{
 				if (!isPlayerFrozen())
 					freezePlayer(true);
 
-				vector3 cameraPos = game->mem.read<vector3>(game->_base + 0x1D22170);
-				vector3 oldPos = game->playerPos.xyz();
+				vector3f cameraPos = mem.read<vector3f>(mem.base + 0x1D22170);
+				vector3f oldPos = world.localPlayer.position.xyz();
 
-				vector3 newPos;
+				vector3f newPos;
 				newPos.x = settings.flySpeed * (oldPos.x - cameraPos.x);
 				newPos.y = settings.flySpeed * (oldPos.y - cameraPos.y);
 				newPos.z = settings.flySpeed * (oldPos.z - (cameraPos.z - 0.5));
@@ -349,7 +331,7 @@ void THREAD_Fly()
 					newPos.y = newPos.y + oldPos.y;
 					newPos.z = newPos.z + oldPos.z;
 
-					game->playerPos.xyz(newPos);
+					world.localPlayer.position.xyz(newPos);
 				}
 			}
 			check = true;
@@ -358,7 +340,7 @@ void THREAD_Fly()
 		{
 			if (isPlayerFrozen() && check)
 			{
-				game->player.speedXYZ(0, 0, 0);
+				world.localPlayer.speedXYZ(0, 0, 0);
 				freezePlayer(false);
 				check = false;
 			}
@@ -402,8 +384,10 @@ void THREAD_Keys()
 
 void THREAD_MAIN()
 {
-	game = new GameData;
-	game->init();
+	if (!mem.GetProcess("GTA5.exe"))
+		std::cout << " Game not found" << std::endl;
+
+	world = World(mem.handle);
 
 	std::thread t1(THREAD_Godmode);
 	std::thread t2(THREAD_NeverWanted);
@@ -415,15 +399,15 @@ void THREAD_MAIN()
 
 	while (true)
 	{		
-		game->update();
-		settings.kmh = 3.6 * game->mem.read<float>(game->_base + 0x2576BC0);
+		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50));
+		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
 		sleep(1);
 	}
 }
 
 void exitProgram()
 {
-	game->mem.closeHandle();
+	mem.Close();
 	exit(-1);
 }
 
@@ -433,7 +417,7 @@ int main()
 
 	std::thread cheatLoop(THREAD_MAIN);
 
-	menu = new pOverlay;
+	menu = new pOverlay();
 	menu->create("Grand Theft Auto V");
 	menu->list.addBool("Godmode", settings.godmode);
 	menu->list.addBool("NeverWanted", settings.neverwanted);

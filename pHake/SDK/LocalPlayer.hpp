@@ -2,12 +2,30 @@
 #define _LOCALPLAYER_HPP_
 
 #include "../Memory/Process.h"
+#include "Position.hpp"
+#include "Vehicle.hpp"
+#include "PlayerInfo.h"
+#include "WeaponManager.hpp"
 
 class LocalPlayer : public DataWrapper<0x14BC + 0x4>
 {
 public:
 	LocalPlayer() {}
-	LocalPlayer(HANDLE &h):DataWrapper(h){}
+	LocalPlayer(HANDLE &h):DataWrapper(h){
+		position = Position(h);
+		vehicle = Vehicle(h);
+		playerInfo = PlayerInfo(h);
+		weaponManager = WeaponManager(h);
+	}
+
+	void updateSub(uint64_t baseAddress)
+	{
+		this->update(baseAddress);
+		position.update(this->read<uint64_t>(0x30));
+		vehicle.updateSub(this->read<uint64_t>(0xD28));
+		playerInfo.update(this->read<uint64_t>(0x10B8));
+		weaponManager.updateSub(this->read<uint64_t>(0x10C8));
+	}
 
 	bool freezeMomentum()
 	{
@@ -26,7 +44,7 @@ public:
 			this->write<uint8_t>(0x2E, 1);
 	}
 
-	uint64_t position = 0x30;
+	Position position;
 
 	bool god()
 	{
@@ -58,24 +76,19 @@ public:
 		this->write<float>(0x2A0, value);
 	}
 
-	vector3 speedXYZ()
+	vector3f speedXYZ()
 	{
-		this->read<vector3>(0x320);
+		this->read<vector3f>(0x320);
 	}
 
-	void speedXYZ(vector3 value)
+	void speedXYZ(vector3f value)
 	{
-		this->write<vector3>(0x320, value);
+		this->write<vector3f>(0x320, value);
 	}
 
 	void speedXYZ(float x, float y, float z)
 	{
-		vector3 value;
-		value.x = x;
-		value.y = y;
-		value.z = z;
-
-		this->write<vector3>(0x320, value);
+		this->write<vector3f>(0x320, vector3f(x, y, z));
 	}
 
 	float speedX()
@@ -108,7 +121,7 @@ public:
 		this->write<float>(0x328, value);
 	}
 
-	uint64_t vehicle = 0xD28;
+	Vehicle vehicle;
 
 	int32_t inVehicle()
 	{
@@ -134,7 +147,9 @@ public:
 			this->write<unsigned char>(0x10A8, 32);	
 	}
 
-	uint64_t playerInfo = 0x10B8;
+	WeaponManager weaponManager;
+
+	PlayerInfo playerInfo;
 
 	float armor()
 	{

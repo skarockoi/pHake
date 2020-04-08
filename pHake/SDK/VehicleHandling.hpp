@@ -88,6 +88,5 @@ public:
 	{
 		this->write<float>(0x338, value);
 	}
-
 };
 #endif
