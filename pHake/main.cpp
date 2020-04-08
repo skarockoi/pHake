@@ -2,19 +2,32 @@
 #include <iostream>
 #include <Windows.h>
 #include "Helper.hpp"
-#include "Settings.hpp"
 #include "SDK/World.hpp"
 
 pOverlay* menu;
 Process   mem;
 World     world;
 
+struct settings
+{
+	bool godmode = false;
+	bool neverwanted = false;
+	bool rploop = false;
+	bool trigger = false;
+	bool weaponmax = false;
+	bool fly = false;
+
+	float flySpeed = 0.05;
+	float kmh = 0.f;
+
+	std::string boostPlayer = "default";
+	std::string boostVehicle = "default";
+}settings;
+
+
 bool isPlayerFrozen()
 {
-	uint8_t isOn;
-	ReadProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &isOn, sizeof(isOn), NULL);
-
-	if (isOn == 0x90) // check if position is already frozen
+	if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90)
 		return true;
 	else
 		return false;
@@ -24,25 +37,17 @@ void freezePlayer(bool value)
 {
 	if (value)
 	{
-		uint8_t freezeOn[4] = { 0x90, 0x90, 0x90, 0x90 };
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &freezeOn, sizeof(freezeOn), NULL);
-
-		uint8_t speedOn[8] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x779994), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799A1), &speedOn, sizeof(speedOn), NULL);
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799AE), &speedOn, sizeof(speedOn), NULL);
+		mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 });
+		mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+		mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+		mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
 	}
 	else
 	{
-		uint8_t freezeOff[4] = { 0x0F, 0x29, 0x48, 0x50 };
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x1429F9F), &freezeOff, sizeof(freezeOff), NULL);
-
-		uint8_t speedXOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 };
-		uint8_t speedYOff[8] = { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 };
-		uint8_t speedZOff[8] = { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 };
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x779994), &speedXOff, sizeof(speedXOff), NULL);
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799A1), &speedYOff, sizeof(speedYOff), NULL);
-		WriteProcessMemory(mem.handle, (void*)(mem.base + 0x7799AE), &speedZOff, sizeof(speedZOff), NULL);
+		mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
+		mem.writeBytes(mem.base + 0x779994, { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 });
+		mem.writeBytes(mem.base + 0x7799A1, { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 });
+		mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 }
 
@@ -78,9 +83,7 @@ void TeleportToWaypoint()
 		menu->notification.add("Teleported to Waypoint");
 	}
 	else
-	{
 		menu->notification.add("Please set a Waypoint");
-	}
 }
 
 void BoostPlayer()
@@ -353,7 +356,6 @@ void THREAD_Keys()
 	while (true)
 	{
 		sleep(1);
-
 		if (HIBYTE(GetAsyncKeyState(VK_MENU)))
 		{
 			menu->toggle();

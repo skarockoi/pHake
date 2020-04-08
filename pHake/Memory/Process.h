@@ -47,14 +47,19 @@ public:
 		return buffer;
 	}
 
-	uint64_t readMulti(uint64_t ptr, std::vector<uint32_t> offsets)
+	void writeBytes(uint64_t addr, std::vector<uint8_t> patch)
 	{
-		uint64_t addr = ptr;
+		WriteProcessMemory(handle, (void*)addr, &patch[0], patch.size(), 0);
+	}
+
+	uint64_t readMultiPointer(uint64_t ptr, std::vector<uint32_t> offsets)
+	{
+		uint64_t buffer = ptr;
 		for (unsigned int i = 0; i < offsets.size(); i++)
 		{
-			addr = this->read<uint64_t>(addr + offsets[i]);
+			buffer = this->read<uint64_t>(buffer + offsets[i]);
 		}
-		return addr;
+		return buffer;
 	}
 };
 
@@ -76,6 +81,12 @@ public:
 		this->maxOffset = maxSize;
 	}
 
+	void update(uint64_t baseAddress)
+	{
+		this->baseAddress = baseAddress;
+		ReadProcessMemory(*handle, (void*)(baseAddress), this->data.get(), this->maxOffset, NULL);
+	}
+
 	template <typename T>
 	T read(uint64_t offset)
 	{
@@ -87,8 +98,8 @@ public:
 	{
 		WriteProcessMemory(*handle, (void*)(baseAddress + offset), &value, sizeof(T), 0);
 	}
-
-	uint64_t readMulti(std::vector<uint32_t> offsets)
+protected:
+	uint64_t readMultiPointer(std::vector<uint32_t> offsets)
 	{
 		uint64_t addr = this->baseAddress;
 		for (unsigned int i = 0; i < offsets.size(); i++)
@@ -99,12 +110,6 @@ public:
 	}
 
 public:
-	void update(uint64_t baseAddress)
-	{
-		this->baseAddress = baseAddress;
-		ReadProcessMemory(*handle, (void*)(baseAddress), this->data.get(), this->maxOffset, NULL);
-	}
-
 	std::unique_ptr<uint8_t[]> data;
 	HANDLE*  handle = 0;
 	uint64_t maxOffset = 0x0;

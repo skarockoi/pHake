@@ -81,9 +81,6 @@
     <ClInclude Include="SDK\Weapon.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Settings.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\_info_.txt">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>

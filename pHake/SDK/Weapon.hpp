@@ -16,7 +16,7 @@ public:
 	void updateSub(uint64_t baseAddress)
 	{
 		this->update(baseAddress);
-		ammoInfo.update(this->readMulti({ 0x60, 0x8, 0x0 }));
+		ammoInfo.update(this->readMultiPointer({ 0x60, 0x8, 0x0 }));
 	}
 
 	int32_t type()
