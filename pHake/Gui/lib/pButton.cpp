@@ -100,10 +100,10 @@ void pButton::updateLength()
 bool pButton::isOnBox()
 {
 	sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-	if (mouse.x >= buttonBack.getPosition().x &&
-		mouse.x <= buttonBack.getPosition().x + buttonBack.getSize().x &&
-		mouse.y >= buttonBack.getPosition().y &&
-		mouse.y <= buttonBack.getPosition().y + buttonBack.getSize().y)
+	if (mouse.x > buttonBack.getPosition().x &&
+		mouse.x < buttonBack.getPosition().x + buttonBack.getSize().x &&
+		mouse.y > buttonBack.getPosition().y &&
+		mouse.y < buttonBack.getPosition().y + buttonBack.getSize().y)
 		return true;
 	else
 		return false;

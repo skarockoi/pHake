@@ -98,7 +98,7 @@ public:
 	{
 		WriteProcessMemory(*handle, (void*)(baseAddress + offset), &value, sizeof(T), 0);
 	}
-protected:
+
 	uint64_t readMultiPointer(std::vector<uint32_t> offsets)
 	{
 		uint64_t addr = this->baseAddress;

@@ -162,10 +162,10 @@ template<typename T>
 inline bool pItem<T>::isOnBox()
 {
 	sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-	if (mouse.x >= rMain.getPosition().x &&
-		mouse.x <= rMain.getPosition().x + rMain.getSize().x &&
-		mouse.y >= rMain.getPosition().y &&
-		mouse.y <= rMain.getPosition().y + rMain.getSize().y)
+	if (mouse.x > rMain.getPosition().x &&
+		mouse.x < rMain.getPosition().x + rMain.getSize().x &&
+		mouse.y > rMain.getPosition().y &&
+		mouse.y < rMain.getPosition().y + rMain.getSize().y)
 		return true;
 	else
 		return false;

@@ -25,32 +25,6 @@ struct settings
 }settings;
 
 
-bool isPlayerFrozen()
-{
-	if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90)
-		return true;
-	else
-		return false;
-}
-
-void freezePlayer(bool value)
-{
-	if (value)
-	{
-		mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 });
-		mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-		mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-		mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-	}
-	else
-	{
-		mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
-		mem.writeBytes(mem.base + 0x779994, { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 });
-		mem.writeBytes(mem.base + 0x7799A1, { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 });
-		mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
-	}
-}
-
 void Suicide()
 {
 	world.localPlayer.health(0.f);
@@ -313,16 +287,21 @@ void THREAD_Fly()
 		{
 			if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 			{
-				if (!isPlayerFrozen())
-					freezePlayer(true);
+				if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
+				{
+					mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing for xyz
+					mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedX
+					mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedY
+					mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedZ
+				}
 
 				vector3f cameraPos = mem.read<vector3f>(mem.base + 0x1D22170);
 				vector3f oldPos = world.localPlayer.position.xyz();
 
 				vector3f newPos;
-				newPos.x = settings.flySpeed * (oldPos.x - cameraPos.x);
-				newPos.y = settings.flySpeed * (oldPos.y - cameraPos.y);
-				newPos.z = settings.flySpeed * (oldPos.z - (cameraPos.z - 0.5));
+				newPos.x = (settings.flySpeed * (oldPos.x - cameraPos.x));
+				newPos.y = (settings.flySpeed * (oldPos.y - cameraPos.y));
+				newPos.z = (settings.flySpeed * (oldPos.z - (cameraPos.z - 0.5)));
 
 				if (newPos.x > 50 || newPos.y > 50 || newPos.z > 50 || newPos.x < -50 || newPos.y < -50 || newPos.z < -50) // ye I know there are these things called vector functions
 				{
@@ -341,10 +320,15 @@ void THREAD_Fly()
 		}
 		else
 		{
-			if (isPlayerFrozen() && check)
+			if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90 && check)
 			{
 				world.localPlayer.speedXYZ(0, 0, 0);
-				freezePlayer(false);
+
+				mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
+				mem.writeBytes(mem.base + 0x779994, { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 });
+				mem.writeBytes(mem.base + 0x7799A1, { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 });
+				mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+
 				check = false;
 			}
 		}
@@ -401,9 +385,9 @@ void THREAD_MAIN()
 
 	while (true)
 	{		
+		sleep(1);
 		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50));
 		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
-		sleep(1);
 	}
 }
 
