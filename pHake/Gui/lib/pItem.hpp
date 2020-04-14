@@ -7,24 +7,23 @@
 #include <iomanip>
 #include <thread>
 
-template <typename T> class pItem
+template <typename T> class pItem // No.1 reason why templates arent the best choice sometimes
 {
 protected:
-	uint16_t sleepTime = 125;
+	uint16_t sleep_time = 125;
 	bool	 resize = false;
 	bool	 active = false;
-	bool     isExecuting = false;
+	bool     busy = false;
 
 	T* Value;
-	T dec;
-	T inc;
+	T  dec;
+	T  inc;
 
-	sf::RenderWindow*  Window;
-	sf::Font		   Font;
-	sf::Vector2i	   Display;
+	sf::RenderWindow*  window;
+	sf::Font		   font;
 
-	sf::RectangleShape rMain;
-	sf::Text		   wMain;
+	sf::Text		   text;
+	sf::RectangleShape rect_back;
 
 public:
 	void		 create(sf::RenderWindow* const& window);
@@ -47,31 +46,26 @@ protected:
 	bool         isOnBox();
 	void         setHighlight(bool value);
 	void         updateLength();
-
 };
 
-
 template<typename T>
-inline void pItem<T>::create(sf::RenderWindow* const& window)
+inline void pItem<T>::create(sf::RenderWindow* const& Window)
 {
-	if (Window == 0)
-	{
-		this->Window = window;
-		this->Font.loadFromFile("Settings/font.ttf");
+	this->window = Window;
+	this->font.loadFromFile("Settings/font.ttf");
 
-		this->rMain.setSize(sf::Vector2f(80, 28));
-		this->rMain.setPosition(0, 0);
-		this->rMain.setFillColor(sf::Color::Color(0, 0, 0, 0));
-		this->rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
-		this->rMain.setOutlineThickness(1);
+	this->rect_back.setSize(sf::Vector2f(80, 28));
+	this->rect_back.setPosition(0, 0);
+	this->rect_back.setFillColor(sf::Color::Color(0, 0, 0, 0));
+	this->rect_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+	this->rect_back.setOutlineThickness(1);
 
-		this->wMain.setFont(Font);
-		this->wMain.setCharacterSize(16);
-		this->wMain.setFillColor(sf::Color::Color(255, 255, 255, 255));
-		this->wMain.setPosition(0, 0);
+	this->text.setFont(font);
+	this->text.setCharacterSize(16);
+	this->text.setFillColor(sf::Color::Color(255, 255, 255, 255));
+	this->text.setPosition(0, 0);
 
-		this->setActive(true);
-	}
+	this->setActive(true);
 }
 
 template<typename T>
@@ -79,8 +73,8 @@ inline void pItem<T>::draw()
 {
 	if (this->isActive())
 	{
-		this->Window->draw(rMain);
-		this->Window->draw(wMain);
+		this->window->draw(rect_back);
+		this->window->draw(text);
 	}
 }
 
@@ -101,40 +95,40 @@ inline void pItem<T>::addPtr(T& value)
 template<typename T>
 inline std::string pItem<T>::getText()
 {
-	return wMain.getString();
+	return text.getString();
 }
 
 template<typename T>
 inline sf::Vector2f pItem<T>::getSize()
 {
-	return rMain.getSize();
+	return rect_back.getSize();
 }
 
 template<typename T>
 inline void pItem<T>::setFont(sf::Font& font)
 {
-	wMain.setFont(font);
+	text.setFont(font);
 }
 
 
 template<typename T>
-inline void pItem<T>::setText(const std::string& text)
+inline void pItem<T>::setText(const std::string& Text)
 {
-	wMain.setString(text);
+	text.setString(Text);
 	updateLength();
 }
 
 template<typename T>
 inline void pItem<T>::setFillColor(sf::Color color)
 {
-	wMain.setFillColor(color);
+	text.setFillColor(color);
 }
 
 template<typename T>
 inline void pItem<T>::setPosition(uint32_t x, uint32_t y)
 {
-	rMain.setPosition(x, y);
-	wMain.setPosition(x, y + (rMain.getSize().y / 4) - 5);
+	rect_back.setPosition(x, y);
+	text.setPosition(x, y + (rect_back.getSize().y / 4) - 5);
 }
 
 template<typename T>
@@ -143,7 +137,7 @@ inline void pItem<T>::setFixedSize(uint32_t x, uint32_t y)
 	if (!resize)
 		resize = false;
 
-	rMain.setSize(sf::Vector2f(x, y));
+	rect_back.setSize(sf::Vector2f(x, y));
 }
 
 template<typename T>
@@ -161,11 +155,11 @@ inline void pItem<T>::setActive(bool act)
 template<typename T>
 inline bool pItem<T>::isOnBox()
 {
-	sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-	if (mouse.x > rMain.getPosition().x &&
-		mouse.x < rMain.getPosition().x + rMain.getSize().x &&
-		mouse.y > rMain.getPosition().y &&
-		mouse.y < rMain.getPosition().y + rMain.getSize().y)
+	sf::Vector2i mouse = sf::Mouse::getPosition(*window);
+	if (mouse.x > rect_back.getPosition().x &&
+		mouse.x < rect_back.getPosition().x + rect_back.getSize().x &&
+		mouse.y > rect_back.getPosition().y &&
+		mouse.y < rect_back.getPosition().y + rect_back.getSize().y)
 		return true;
 	else
 		return false;
@@ -175,9 +169,9 @@ template<typename T>
 inline void pItem<T>::setHighlight(bool value)
 {
 	if (value)
-		rMain.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+		rect_back.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
 	else
-		rMain.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+		rect_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
 }
 
 template<typename T>
@@ -186,14 +180,13 @@ inline void pItem<T>::updateLength()
 	if (this->resize)
 	{
 		sf::Vector2f rSize;
-		rSize.x = ((float)std::string(wMain.getString()).length() * 10) - (((std::string)wMain.getString()).length() * 2);
-		rSize.y = rMain.getSize().y;
-		rMain.setSize(rSize);
+		rSize.x = ((float)std::string(text.getString()).length() * 10) - (((std::string)text.getString()).length() * 2);
+		rSize.y = rect_back.getSize().y;
+		rect_back.setSize(rSize);
 	}
 }
 
 #endif
-
 
 #ifndef _PITEMTYPES_HPP_
 #define _PITEMTYPES_HPP_
@@ -214,7 +207,7 @@ public:
 			stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*Value));  // Convert string to std and remove obsolete zero's
 			setText(stream.str());
 
-			if (!this->isExecuting)
+			if (!this->busy)
 			{ 
 				if (isOnBox())
 				{
@@ -240,17 +233,17 @@ public:
 private:
 	void addToValue()
 	{
-		this->isExecuting = true;
+		this->busy = true;
 		*Value += inc;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
-		this->isExecuting = false;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+		this->busy = false;
 	}
 	void decToValue()
 	{
-		this->isExecuting = true;
+		this->busy = true;
 		*Value -= dec;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
-		this->isExecuting = false;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+		this->busy = false;
 	}
 
 public:
@@ -271,7 +264,7 @@ public:
 		{
 			setText(std::to_string(*Value));
 
-			if (!this->isExecuting)
+			if (!this->busy)
 			{
 				if (isOnBox())
 				{
@@ -296,17 +289,17 @@ public:
 private:
 	void addToValue()
 	{
-		this->isExecuting = true;
+		this->busy = true;
 		*Value += inc;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
-		this->isExecuting = false;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+		this->busy = false;
 	}
 	void decToValue()
 	{
-		this->isExecuting = true;
+		this->busy = true;
 		*Value -= dec;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
-		this->isExecuting = false;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+		this->busy = false;
 	}
 };
 
@@ -314,7 +307,7 @@ class pItemBool : public pItem<bool>
 {
 public:
 	pItemBool() {
-		this->sleepTime = 250;
+		this->sleep_time = 250;
 	}
 
 	void loop()
@@ -327,7 +320,7 @@ public:
 			else
 				this->setText("OFF");
 
-			if (!this->isExecuting)
+			if (!this->busy)
 			{
 				if (isOnBox())
 				{
@@ -349,10 +342,10 @@ public:
 private:
 	void flipBool()
 	{
-		this->isExecuting = true;
+		this->busy = true;
 		*Value = not *Value;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime));
-		this->isExecuting = false;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+		this->busy = false;
 	}
 };
 

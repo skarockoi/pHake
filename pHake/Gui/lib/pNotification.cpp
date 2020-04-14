@@ -1,17 +1,15 @@
 #include "pNotification.hpp"
 
-void pNotification::create(sf::RenderWindow* const& window)
+void pNotification::create(sf::RenderWindow* const& Window)
 {
-	Pos.x = 15;
-	Pos.y = 20;
-	if (Window == 0)
-	{
-		Window = window;
-		Font.loadFromFile("Settings/font.ttf");
-	}
+	pos.x = 15;
+	pos.y = 20;
+
+	window = Window;
+	Font.loadFromFile("Settings/font.ttf");
 }
 
-void pNotification::add(std::string name)
+void pNotification::add(const std::string& name)
 {
 	Bone tempBone;
 	tempBone.finished = false;
@@ -19,7 +17,7 @@ void pNotification::add(std::string name)
 	tempBone.ready = true;
 
 	tempBone.back.setSize(sf::Vector2f(210, 20));
-	tempBone.back.setPosition(Pos.x + 10, Pos.y + (notifications.size() * 25));
+	tempBone.back.setPosition(pos.x + 10, pos.y + (notifications.size() * 25));
 	tempBone.back.setFillColor(sf::Color::Color(0, 0, 0, 150));
 	tempBone.back.setOutlineColor(sf::Color::Color(0, 0, 0, 150));
 	tempBone.back.setOutlineThickness(1);
@@ -39,8 +37,8 @@ void pNotification::draw()
 	{
 		if (notifications[i].started && !notifications[i].finished)
 		{
-			Window->draw(notifications[i].back);
-			Window->draw(notifications[i].text);
+			window->draw(notifications[i].back);
+			window->draw(notifications[i].text);
 		}
 	}
 }
@@ -56,7 +54,7 @@ void pNotification::loop()
 		}
 	}
 
-	if (notifications.size() > 32 || this->finishedShowing())
+	if (notifications.size() > 32 || this->isListFinished())
 	{
 		notifications.clear();
 	}
@@ -67,33 +65,30 @@ void pNotification::startNotification(int index)
 	notifications[index].ready = false;
 	notifications[index].started = true;
 
-	for (int b = 125; b > 0; b--)
+	for (int b = 125; b > 0; b--) // fade effect magic
 	{
 		notifications[index].back.setFillColor(sf::Color(0, 0, 0, b));
 		notifications[index].back.setOutlineColor(sf::Color(0, 0, 0, b));
 		notifications[index].text.setFillColor(sf::Color(255, 255, 255, b * 2));
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleepTime()));
-
 	}
 
 	notifications[index].finished = true;
 }
 
-bool pNotification::finishedShowing()
+bool pNotification::isListFinished()
 {
 	uint8_t count = 0;
+
 	for (int i = 0; i < notifications.size(); i++)
 	{
 		if (notifications[i].finished && notifications.size() > 1)
-		{
 			count++;
-		}
 	}
 
 	if (count == notifications.size())
 		return true;
-
 	else
 		return false;
 }

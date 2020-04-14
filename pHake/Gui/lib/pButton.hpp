@@ -8,21 +8,20 @@
 class pButton
 {
 protected:
-	uint16_t  sleepTime = 150;
+	uint16_t  sleep_time = 150;
 	bool	  resize = true;
 	bool	  active = false;
-	bool	  isExecuting = false;
+	bool	  busy = false;
+
 	void*	  function;
 
-	sf::RenderWindow   *Window;
-	sf::Font		   Font;
-	sf::Vector2i	   Display;
+	sf::RenderWindow   *window;
+	sf::Font		   font;
 
-	sf::RectangleShape buttonBack;
-	sf::Text		   buttonName;
+	sf::Text		   button_text;
+	sf::RectangleShape button_back;
 
 public:
-	pButton() {}
 	void create(sf::RenderWindow* const& window);
 	void connect(void(&functionP)());
 	void loop();

@@ -8,30 +8,32 @@
 class pNotification
 {
 private:
-	struct Bone
+	struct Bone // Everything needed for a notification
 	{
-		sf::Text text;
+		sf::Text		   text;
 		sf::RectangleShape back;
 		bool finished;
 		bool started;
 		bool ready;
 	};
 
-	sf::RenderWindow* Window;
+	sf::RenderWindow* window;
 	sf::Font		  Font;
-	sf::Vector2i	  Pos;
+	sf::Vector2i	  pos;
 	std::vector<Bone> notifications;
+
 public:
 	void create(sf::RenderWindow* const& window);
-	void add(std::string name);
 	void draw();
 	void loop();
 
+public:
+	void add(const std::string& name);
+
 private:
 	void startNotification(int index);
-	bool finishedShowing();
+	bool isListFinished();
 	uint32_t sleepTime();
-
 };
 #endif
 

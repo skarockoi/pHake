@@ -29,9 +29,9 @@ public:
 	DWORD_PTR base;
 	DWORD	  pid;
 
-	bool    GetProcess(const char* ProcessName);
-	DWORD64 GetModule(const char* lModule);
-	void    Close();
+	bool    getProcess(const char* ProcessName);
+	DWORD64 getModule(const char* lModule);
+	void    close();
 
 	template<class T>
 	void write(uint64_t address, T value)
@@ -71,20 +71,20 @@ public:
 	{
 		this->handle = &hdl;
 		this->data = std::make_unique<uint8_t[]>(maxSize);
-		this->maxOffset = maxSize;
+		this->max_offset = maxSize;
 	};
 
 	void attach(HANDLE &hdl)
 	{
 		this->handle = &hdl;
 		this->data = std::make_unique<uint8_t[]>(maxSize);
-		this->maxOffset = maxSize;
+		this->max_offset = maxSize;
 	}
 
 	void update(uint64_t baseAddress)
 	{
-		this->baseAddress = baseAddress;
-		ReadProcessMemory(*handle, (void*)(baseAddress), this->data.get(), this->maxOffset, NULL);
+		this->base = baseAddress;
+		ReadProcessMemory(*handle, (void*)(baseAddress), this->data.get(), this->max_offset, NULL);
 	}
 
 	template <typename T>
@@ -96,12 +96,12 @@ public:
 	template<class T>
 	void write(uint64_t offset, T value)
 	{
-		WriteProcessMemory(*handle, (void*)(baseAddress + offset), &value, sizeof(T), 0);
+		WriteProcessMemory(*handle, (void*)(base + offset), &value, sizeof(T), 0);
 	}
 
 	uint64_t readMultiPointer(std::vector<uint32_t> offsets)
 	{
-		uint64_t addr = this->baseAddress;
+		uint64_t addr = this->base;
 		for (unsigned int i = 0; i < offsets.size(); i++)
 		{
 			ReadProcessMemory(*handle, (PBYTE*)addr + offsets[i], &addr, sizeof(addr), 0);
@@ -109,10 +109,10 @@ public:
 		return addr;
 	}
 
-public:
+protected:
 	std::unique_ptr<uint8_t[]> data;
 	HANDLE*  handle = 0;
-	uint64_t maxOffset = 0x0;
-	uint64_t baseAddress = 0x0;
+	uint64_t base = 0x0;
+	uint64_t max_offset = 0x0;
 };
 #endif

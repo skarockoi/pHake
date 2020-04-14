@@ -36,12 +36,10 @@ void SendSpaceDown()
 void SendSpaceUp()
 {
 	keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_KEYUP, 0);
-
 }
 
 void SendWKeyDown()
 {
-
 	INPUT ip;
 
 	ip.type = INPUT_KEYBOARD;
@@ -59,7 +57,6 @@ void SendWKeyDown()
 
 void SendWKeyUp()
 {
-
 	INPUT ip;
 
 	ip.type = INPUT_KEYBOARD;
@@ -105,7 +102,6 @@ void SendKeyUp(WORD Key)
 	SendInput(1, &ip, sizeof(INPUT));
 }
 
-
 uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
 {
 	std::random_device dev;
@@ -113,7 +109,6 @@ uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
 	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
 	return num(rng);
 }
-
 
 float distance3d(float from_x, float from_y, float from_z, float to_x, float to_y, float to_z)
 {

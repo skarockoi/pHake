@@ -12,18 +12,20 @@
 
 struct GameInfo
 {
+private:
 	HWND hwnd;
 	RECT rect;
 	LPCSTR game;
 	sf::Vector2i pos;
 	sf::Vector2u size;
 
+public:
 	GameInfo() {}
 
-	GameInfo(LPCSTR gameW)
+	GameInfo(LPCSTR Game)
 	{
-		game = gameW;
-		hwnd = FindWindowA(0, gameW);
+		game = Game;
+		hwnd = FindWindowA(0, Game);
 		GetWindowRect(hwnd, &rect);
 
 		pos = this->getPosition();
@@ -70,87 +72,84 @@ struct GameInfo
 class pOverlay
 {
 private:
-	sf::RenderWindow Window;
-	sf::Font		 Font;
-	GameInfo		 gameInfo;
+	sf::RenderWindow window;
+	sf::Font		 font;
+	GameInfo		 game_info;
 	pMouse			 mouse;
 
 public:
 	pList			 list;
-	pList			 listSettings;
+	pList			 list_settings;
 	pNotification    notification;
-
-	pOverlay(){}
 
 	void create(LPCSTR Name)
 	{
-		gameInfo = GameInfo(Name); // Getting game Info
-		Font.loadFromFile("Settings/font.ttf");
+		game_info = GameInfo(Name); // Getting game Info
+		font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(gameInfo.getSize().x , gameInfo.getSize().y), "pOverlay", sf::Style::None); // creating a window in the game's size
-		Window.setFramerateLimit(60);
-		this->setTransparent(Window.getSystemHandle()); // making the window transparent & not clickable
+		window.create(sf::VideoMode(game_info.getSize().x , game_info.getSize().y), "pOverlay", sf::Style::None); // creating a window in the game's size
+		window.setFramerateLimit(60);
+		this->setTransparent(window.getSystemHandle()); // making the window transparent & not clickable
 
-		notification.create(&Window);
+		notification.create(&window);
 
-		mouse.create(&Window);
+		mouse.create(&window);
 		mouse.toggle();
 
-		list.create(&Window);
-		list.setPosition(Window.getSize().x / 2, Window.getSize().y / 4);
+		list.create(&window);
+		list.setPosition(window.getSize().x / 2, window.getSize().y / 4);
 		list.toggle();
 
-		listSettings.create(&Window);
-		listSettings.setPosition(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
-		listSettings.toggle();
+		list_settings.create(&window);
+		list_settings.setPosition(list.getPosition().x + list_settings.getSize().x + 5, list.getPosition().y);
+		list_settings.toggle();
 	}
 
 	void toggle()
 	{
 		list.toggle();
-		listSettings.toggle();
+		list_settings.toggle();
 		mouse.toggle();
 
 		if (list.isActive())
-		{
-			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + Window.getPosition().x, list.getPosition().y + Window.getPosition().y));
-		}
+			sf::Mouse::setPosition(sf::Vector2i(list.getPosition().x + window.getPosition().x, list.getPosition().y + window.getPosition().y));
 	}
 
 	void loop()
 	{
-		while (Window.isOpen() && gameInfo.isActive())
+		while (window.isOpen() && game_info.isActive())
 		{
 			this->fixPosition();
 
 			sf::Event event;
-			while (Window.pollEvent(event))
+			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
-					Window.close();
+					window.close();
 
 				if (event.type == sf::Event::Resized)
 				{
 					sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-					Window.setView(sf::View(visibleArea));
+					window.setView(sf::View(visibleArea));
 				}
 			}
 
 			list.loop();
-			listSettings.loop();
+			list_settings.loop();
 			mouse.loop();
 			notification.loop();
 
-			Window.clear(sf::Color::Color(0, 0, 0, 0));
+			window.clear(sf::Color::Color(0, 0, 0, 0));
 
 			list.draw();
-			listSettings.draw();
+			list_settings.draw();
 			mouse.draw();
 			notification.draw();
 
-			Window.display();
+			window.display();
 		}
 	}
+
 private:
 	void setTransparent(HWND handle)
 	{
@@ -165,13 +164,13 @@ private:
 
 	void fixPosition()
 	{
-		gameInfo.update();
-		sf::Vector2i gamePos = gameInfo.getPosition();
-		sf::Vector2i windowPos = Window.getPosition();
+		game_info.update();
+		sf::Vector2i gamePos = game_info.getPosition();
+		sf::Vector2i windowPos = window.getPosition();
 
 		if (gamePos.x != windowPos.x + 1 || gamePos.y != windowPos.y - 1)
 		{
-			Window.setPosition(sf::Vector2i(gamePos.x - 1, gamePos.y + 1));
+			window.setPosition(sf::Vector2i(gamePos.x - 1, gamePos.y + 1));
 		}
 	}
 };

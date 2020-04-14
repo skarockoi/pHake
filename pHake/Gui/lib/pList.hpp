@@ -12,24 +12,21 @@ private:
 	bool active = false;
 	bool used = false;
 
-	sf::RenderWindow*  Window;
-	sf::Font		   Font;
-	sf::Vector2i	   Pos;
-	sf::RectangleShape rectBack;
+	sf::RenderWindow*  window;
+	sf::Font		   font;
+	sf::RectangleShape rect_back;
 
-	std::vector<sf::Text>    itemName;
-	std::vector<pItemBool>   itemBool;
-	std::vector<pItemFloat>	 itemFloat;
-	std::vector<pItemInt>	 itemInt;
-	std::vector<pItemString> itemString;
-	std::vector<pButton>	 itemButton;
+	std::vector<sf::Text>    item_names;
+	std::vector<pItemBool>   item_bools;
+	std::vector<pItemFloat>	 item_floats;
+	std::vector<pItemInt>	 item_ints;
+	std::vector<pItemString> item_string;
+	std::vector<pButton>	 item_buttons;
 
 	uint8_t count = 0;
 	uint8_t gapCount = 0;
 
 public:
-	pList(){}
-
 	void create(sf::RenderWindow* const& window);
 	void draw();
 	void loop();

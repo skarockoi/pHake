@@ -10,78 +10,74 @@
 class pWindow
 {
 private:
-	sf::RenderWindow Window;
-	sf::Font		 Font;
+	sf::RenderWindow window;
+	sf::Font		 font;
 	pMouse			 mouse;
 
 public:
 	pList			 list;
-	pList			 listSettings;
-
-	pWindow() {}
-
+	pList			 list_settings;
 
 	void create()
 	{
-		Font.loadFromFile("Settings/font.ttf");
+		font.loadFromFile("Settings/font.ttf");
 
-		Window.create(sf::VideoMode(208, 148), "pHake");
-		Window.setFramerateLimit(60);
+		window.create(sf::VideoMode(208, 148), "pHake");
+		window.setFramerateLimit(60);
 
-		list.create(&Window);
+		list.create(&window);
 		list.setPosition(0, 0);
 		list.toggle();
 
-		listSettings.create(&Window);
-		listSettings.setPosition(list.getPosition().x + listSettings.getSize().x + 5, list.getPosition().y);
-		listSettings.toggle();
+		list_settings.create(&window);
+		list_settings.setPosition(list.getPosition().x + list_settings.getSize().x + 5, list.getPosition().y);
+		list_settings.toggle();
 	}
-
 
 	void loop()
 	{
-		while (Window.isOpen())
+		while (window.isOpen())
 		{
 			this->fixSize();
 			sf::Event event;
-			while (Window.pollEvent(event))
+			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
-					Window.close();
+					window.close();
 
 				if (event.type == sf::Event::Resized)
 				{
 					sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-					Window.setView(sf::View(visibleArea));
+					window.setView(sf::View(visibleArea));
 				}
 			}
 
 			list.loop();
-			listSettings.loop();
+			list_settings.loop();
 
-			Window.clear(sf::Color::Color(255, 255, 255, 255));
+			window.clear(sf::Color::Color(255, 255, 255, 255));
 
 			list.draw();
-			listSettings.draw();
+			list_settings.draw();
 
-			Window.display();
+			window.display();
 		}
 	}
 private:
 	void fixSize()
 	{
-		sf::Vector2f sizeList = list.getSize();
-		sf::Vector2f sizeListSettings = listSettings.getSize();
+		sf::Vector2f size_list = list.getSize();
+		sf::Vector2f size_list_settings = list_settings.getSize();
 
-		sf::Vector2u newSize;
-		newSize.x = sizeList.x + sizeListSettings.x;
+		sf::Vector2u new_size;
+		new_size.x = size_list.x + size_list_settings.x;
 
-		if (sizeList.y > sizeListSettings.y)
-			newSize.y = sizeList.y;
+		if (size_list.y > size_list_settings.y)
+			new_size.y = size_list.y;
 
 		else
-			newSize.y = sizeListSettings.y;
+			new_size.y = size_list_settings.y;
 
-		Window.setSize(newSize);
+		window.setSize(new_size);
 	}
 };

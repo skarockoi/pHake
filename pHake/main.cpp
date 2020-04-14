@@ -40,13 +40,10 @@ void TeleportToWaypoint()
 		if (!world.localPlayer.inVehicle())
 		{
 			if (settings.fly)
-			{
 				waypoint.z = 300.f;
-			}
 			else
-			{
 				waypoint.z = -210.f;
-			}
+			
 			world.localPlayer.position.xyz(waypoint);
 		}
 		else
@@ -289,10 +286,10 @@ void THREAD_Fly()
 			{
 				if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
 				{
-					mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing for xyz
-					mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedX
-					mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedY
-					mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing for speedZ
+					mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+					mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedX
+					mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedY
+					mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 				}
 
 				vector3f cameraPos = mem.read<vector3f>(mem.base + 0x1D22170);
@@ -368,9 +365,15 @@ void THREAD_Keys()
 	}
 }
 
+void exitProgram()
+{
+	mem.close();
+	exit(-1);
+}
+
 void THREAD_MAIN()
 {
-	if (!mem.GetProcess("GTA5.exe"))
+	if (!mem.getProcess("GTA5.exe"))
 		std::cout << " Game not found" << std::endl;
 
 	world = World(mem.handle);
@@ -389,12 +392,6 @@ void THREAD_MAIN()
 		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50));
 		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
 	}
-}
-
-void exitProgram()
-{
-	mem.Close();
-	exit(-1);
 }
 
 int main()

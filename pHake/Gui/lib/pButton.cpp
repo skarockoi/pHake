@@ -1,37 +1,35 @@
 #include "pButton.hpp"
 
-void pButton::create(sf::RenderWindow* const& window)
+void pButton::create(sf::RenderWindow* const& Window)
 {
-	if (Window == 0)
-	{
-		Window = window;
-		Font.loadFromFile("Settings/font.ttf");
+	window = Window;
+	font.loadFromFile("Settings/font.ttf");
 
-		this->buttonBack.setSize(sf::Vector2f(80, 28));
-		this->buttonBack.setPosition(0, 0);
-		this->buttonBack.setFillColor(sf::Color::Color(0, 0, 0, 150));
-		this->buttonBack.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
-		this->buttonBack.setOutlineThickness(1);
+	this->button_back.setSize(sf::Vector2f(80, 28));
+	this->button_back.setPosition(0, 0);
+	this->button_back.setFillColor(sf::Color::Color(0, 0, 0, 150));
+	this->button_back.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
+	this->button_back.setOutlineThickness(1);
 
-		this->buttonName.setFont(Font);
-		this->buttonName.setCharacterSize(16);
-		this->buttonName.setFillColor(sf::Color::Color(0, 0, 0, 255));
-		this->buttonName.setPosition(0, 0);
+	this->button_text.setFont(font);
+	this->button_text.setCharacterSize(16);
+	this->button_text.setFillColor(sf::Color::Color(0, 0, 0, 255));
+	this->button_text.setPosition(0, 0);
 
-		this->setActive(true);
-	}
+	this->setActive(true);
 }
 
 void pButton::loop()
 {
-	if (this->active && !this->isExecuting)
+	if (this->active && !this->busy)
 	{
-		sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-		if (!this->isExecuting)
+		sf::Vector2i mouse = sf::Mouse::getPosition(*window);
+		if (!this->busy)
 		{
 			if (this->isOnBox())
 			{
 				this->setHighlight(true);
+
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
 					if (function != NULL)
@@ -53,8 +51,8 @@ void pButton::draw()
 {
 	if (this->isActive())
 	{
-		Window->draw(buttonBack);
-		Window->draw(buttonName);
+		window->draw(button_back);
+		window->draw(button_text);
 	}
 }
 
@@ -65,12 +63,12 @@ void pButton::connect(void(&functionP)())
 
 void pButton::setTimeout(int sleep)
 {
-	this->sleepTime = sleep;
+	this->sleep_time = sleep;
 }
 
 sf::Vector2f pButton::getSize()
 {
-	return buttonBack.getSize();
+	return button_back.getSize();
 }
 
 void pButton::setActive(bool act)
@@ -81,9 +79,9 @@ void pButton::setActive(bool act)
 void pButton::setHighlight(bool value)
 {
 	if (value)
-		buttonBack.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+		button_back.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
 	else
-		buttonBack.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+		button_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
 }
 
 void pButton::updateLength()
@@ -91,19 +89,19 @@ void pButton::updateLength()
 	if (this->resize)
 	{
 		sf::Vector2f rSize;
-		rSize.x = ((float)std::string(buttonName.getString()).length() * 10) - (((std::string)buttonName.getString()).length() * 2);
-		rSize.y = buttonBack.getSize().y;
-		buttonBack.setSize(rSize);
+		rSize.x = ((float)std::string(button_text.getString()).length() * 10) - (((std::string)button_text.getString()).length() * 2);
+		rSize.y = button_back.getSize().y;
+		button_back.setSize(rSize);
 	}
 }
 
 bool pButton::isOnBox()
 {
-	sf::Vector2i mouse = sf::Mouse::getPosition(*Window);
-	if (mouse.x > buttonBack.getPosition().x &&
-		mouse.x < buttonBack.getPosition().x + buttonBack.getSize().x &&
-		mouse.y > buttonBack.getPosition().y &&
-		mouse.y < buttonBack.getPosition().y + buttonBack.getSize().y)
+	sf::Vector2i mouse = sf::Mouse::getPosition(*window);
+	if (mouse.x > button_back.getPosition().x &&
+		mouse.x < button_back.getPosition().x + button_back.getSize().x &&
+		mouse.y > button_back.getPosition().y &&
+		mouse.y < button_back.getPosition().y + button_back.getSize().y)
 		return true;
 	else
 		return false;
@@ -111,21 +109,21 @@ bool pButton::isOnBox()
 
 void pButton::execFunction()
 {
-	this->isExecuting = true;
+	this->busy = true;
 	((void(*)(void))function)();
 	std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	this->isExecuting = false;
+	this->busy = false;
 }
 
 void pButton::setPosition(int x, int y)
 {
-	buttonBack.setPosition(x, y + 1);
-	buttonName.setPosition(x, y + (buttonBack.getSize().y / 4) - 5);
+	button_back.setPosition(x, y + 1);
+	button_text.setPosition(x, y + (button_back.getSize().y / 4) - 5);
 }
 
 void pButton::setText(const std::string& text)
 {
-	buttonName.setString(" " + text);
+	button_text.setString(" " + text);
 	updateLength();
 }
 
@@ -134,12 +132,12 @@ void pButton::setFixedSize(int x, int y)
 	if (!resize)
 		resize = false;
 
-	buttonBack.setSize(sf::Vector2f(x, y));
+	button_back.setSize(sf::Vector2f(x, y));
 }
 
 void pButton::setFont(sf::Font& font)
 {
-	buttonName.setFont(font);
+	button_text.setFont(font);
 }
 
 bool pButton::isActive()

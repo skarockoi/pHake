@@ -1,6 +1,6 @@
 #include "Process.h"
 
-bool Process::GetProcess(const char* ProcessName)
+bool Process::getProcess(const char* ProcessName)
 {
 	HANDLE hPID = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	process_entry.dwSize = sizeof(PROCESSENTRY32);
@@ -36,7 +36,7 @@ bool Process::GetProcess(const char* ProcessName)
 	return false;
 }
 
-DWORD64 Process::GetModule(const char* lModule)
+DWORD64 Process::getModule(const char* lModule)
 {
 	HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid);
 	module_entry.dwSize = sizeof(MODULEENTRY32);
@@ -53,7 +53,7 @@ DWORD64 Process::GetModule(const char* lModule)
 	return 5;
 }
 
-void Process::Close()
+void Process::close()
 {
 	CloseHandle(handle);
 }
