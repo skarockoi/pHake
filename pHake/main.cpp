@@ -221,8 +221,8 @@ void THREAD_Trigger()
 
 		if (settings.trigger)
 		{
-			int32_t crossId = mem.read<int32_t>(mem.base + 0x1F47430);
-			if (crossId != 0 && crossId <= 2)
+			int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430);
+			if (crossid != 0 && crossid <= 2)
 			{
 				if (!check)
 				{
@@ -292,25 +292,25 @@ void THREAD_Fly()
 					mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 				}
 
-				vector3f cameraPos = mem.read<vector3f>(mem.base + 0x1D22170);
-				vector3f oldPos = world.localPlayer.position.xyz();
+				vector3f cam_pos = mem.read<vector3f>(mem.base + 0x1D22170);
+				vector3f old_pos = world.localPlayer.position.xyz();
 
-				vector3f newPos;
-				newPos.x = (settings.flySpeed * (oldPos.x - cameraPos.x));
-				newPos.y = (settings.flySpeed * (oldPos.y - cameraPos.y));
-				newPos.z = (settings.flySpeed * (oldPos.z - (cameraPos.z - 0.5)));
+				vector3f new_pos;
+				new_pos.x = (settings.flySpeed * (old_pos.x - cam_pos.x));
+				new_pos.y = (settings.flySpeed * (old_pos.y - cam_pos.y));
+				new_pos.z = (settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5)));
 
-				if (newPos.x > 50 || newPos.y > 50 || newPos.z > 50 || newPos.x < -50 || newPos.y < -50 || newPos.z < -50) // ye I know there are these things called vector functions
+				if (new_pos.x > 50 || new_pos.y > 50 || new_pos.z > 50 || new_pos.x < -50 || new_pos.y < -50 || new_pos.z < -50) // ye I know there are these things called vector functions
 				{
 					continue;
 				}
 				else
 				{
-					newPos.x = newPos.x + oldPos.x;
-					newPos.y = newPos.y + oldPos.y;
-					newPos.z = newPos.z + oldPos.z;
+					new_pos.x = new_pos.x + old_pos.x;
+					new_pos.y = new_pos.y + old_pos.y;
+					new_pos.z = new_pos.z + old_pos.z;
 
-					world.localPlayer.position.xyz(newPos);
+					world.localPlayer.position.xyz(new_pos);
 				}
 			}
 			check = true;
@@ -378,13 +378,13 @@ void THREAD_MAIN()
 
 	world = World(mem.handle);
 
-	std::thread t1(THREAD_Godmode);
-	std::thread t2(THREAD_NeverWanted);
-	std::thread t3(THREAD_WeaponMax);
-	std::thread t4(THREAD_RpLoop);
-	std::thread t5(THREAD_Trigger);
-	std::thread t6(THREAD_Fly);
-	std::thread t7(THREAD_Keys);
+	std::thread t0(THREAD_Godmode);
+	std::thread t1(THREAD_NeverWanted);
+	std::thread t2(THREAD_WeaponMax);
+	std::thread t3(THREAD_RpLoop);
+	std::thread t4(THREAD_Trigger);
+	std::thread t5(THREAD_Fly);
+	std::thread t6(THREAD_Keys);
 
 	while (true)
 	{		

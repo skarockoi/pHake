@@ -9,6 +9,19 @@ void sleep(uint32_t ms)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+void Schedule(void(&Function)(), uint32_t ms)
+{
+	std::thread t1([=]
+		{
+			while (true)
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+				((void(*)(void))Function)();
+			}
+		});
+	t1.detach();
+}
+
 void LeftMouseDown()
 {
 	INPUT    Input = { 0 };
@@ -52,7 +65,6 @@ void SendWKeyDown()
 	ip.ki.dwFlags = 0;
 
 	SendInput(1, &ip, sizeof(INPUT));
-	
 }
 
 void SendWKeyUp()
@@ -69,7 +81,6 @@ void SendWKeyUp()
 	ip.ki.dwFlags = KEYEVENTF_KEYUP;
 
 	SendInput(1, &ip, sizeof(INPUT));
-
 }
 
 void SendKeyDown(WORD Key)
