@@ -1,8 +1,9 @@
 #include "Gui/pOverlay.hpp"
 #include <iostream>
 #include <Windows.h>
-#include "Helper.hpp"
 #include "SDK/World.hpp"
+#include "Helper.hpp"
+#include "pTimer.hpp"
 
 pOverlay* menu;
 Process   mem;
@@ -154,100 +155,82 @@ void BoostVehicle()
 	}
 }
 
-void THREAD_Godmode()
+void loopGodmode()
 {
-	bool check = false;
-	while (true)
+	static bool check = false;
+
+	if (settings.godmode)
 	{
-		sleep(250);
-
-		if (settings.godmode)
+		if (!world.localPlayer.god() || !world.localPlayer.vehicle.god())
 		{
-			if (!world.localPlayer.god() || !world.localPlayer.vehicle.god())
-			{
-				world.localPlayer.god(1);
-				world.localPlayer.vehicle.god(1);
-			}
+			world.localPlayer.god(1);
+			world.localPlayer.vehicle.god(1);
+		}
 
-			if (!check)
-				check = true;
+		if (!check)
+			check = true;
 			
-		}
-		else if (check)
-		{
-			world.localPlayer.god(0);
-			world.localPlayer.vehicle.god(0);
-			check = false;
-		}
 	}
+	else if (check)
+	{
+		world.localPlayer.god(0);
+		world.localPlayer.vehicle.god(0);
+		check = false;
+	}
+	
 }
 
-void THREAD_NeverWanted()
+void loopNeverWanted()
 {
-	while (true)
+	if (settings.neverwanted)
 	{
-		sleep(200);
-
-		if (settings.neverwanted)
+		if (world.localPlayer.playerInfo.wantedLevel() > 0)
 		{
-			if (world.localPlayer.playerInfo.wantedLevel() > 0)
-			{
-				world.localPlayer.playerInfo.wantedLevel(0);
-			}
-		}
-	}
-}
-
-void THREAD_RpLoop()
-{
-	while (true)
-	{
-		sleep(1);
-
-		if (settings.rploop)
-		{
-			world.localPlayer.playerInfo.wantedLevel(5);
 			world.localPlayer.playerInfo.wantedLevel(0);
 		}
 	}
 }
 
-void THREAD_Trigger()
+void loopRpLoop()
 {
-	bool check = false;
-	while (true)
+	if (settings.rploop)
 	{
-		sleep(1);
-
-		if (settings.trigger)
-		{
-			int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430);
-			if (crossid != 0 && crossid <= 2)
-			{
-				if (!check)
-				{
-					LeftMouseDown();
-					check = true;
-				}
-			}
-			else
-			{
-				if (check)
-				{
-					LeftMouseUp();
-					check = false;
-				}
-			}
-		}
+		world.localPlayer.playerInfo.wantedLevel(5);
+		world.localPlayer.playerInfo.wantedLevel(0);
 	}
 }
 
-void THREAD_WeaponMax()
+void loopTrigger()
+{
+	static bool check = false;
+
+	if (settings.trigger)
+	{
+		int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430);
+		if (crossid != 0 && crossid <= 2)
+		{
+			if (!check)
+			{
+				LeftMouseDown();
+				check = true;
+			}
+		}
+		else
+		{
+			if (check)
+			{
+				LeftMouseUp();
+				check = false;
+			}
+		}
+	}
+	
+}
+
+void loopWeaponMax()
 {
 	while (true)
 	{
-		sleep(250);
-
 		if (settings.weaponmax)
 		{
 			if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() != 99999.f)
@@ -272,96 +255,88 @@ void THREAD_WeaponMax()
 	}
 }
 
-void THREAD_Fly()
+void loopFly()
 {
-	bool check = false;
+	static bool check = false;
 
-	while (true)
+	if (settings.fly)
 	{
-		sleep(10);
-
-		if (settings.fly)
+		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
+			if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
 			{
-				if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
-				{
-					mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
-					mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedX
-					mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedY
-					mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
-				}
-
-				vector3f cam_pos = mem.read<vector3f>(mem.base + 0x1D22170);
-				vector3f old_pos = world.localPlayer.position.xyz();
-
-				vector3f new_pos;
-				new_pos.x = (settings.flySpeed * (old_pos.x - cam_pos.x));
-				new_pos.y = (settings.flySpeed * (old_pos.y - cam_pos.y));
-				new_pos.z = (settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5)));
-
-				if (new_pos.x > 50 || new_pos.y > 50 || new_pos.z > 50 || new_pos.x < -50 || new_pos.y < -50 || new_pos.z < -50) // ye I know there are these things called vector functions
-				{
-					continue;
-				}
-				else
-				{
-					new_pos.x = new_pos.x + old_pos.x;
-					new_pos.y = new_pos.y + old_pos.y;
-					new_pos.z = new_pos.z + old_pos.z;
-
-					world.localPlayer.position.xyz(new_pos);
-				}
+				mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+				mem.writeBytes(mem.base + 0x779994, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedX
+				mem.writeBytes(mem.base + 0x7799A1, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedY
+				mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
-			check = true;
+
+			vector3f cam_pos = mem.read<vector3f>(mem.base + 0x1D22170);
+			vector3f old_pos = world.localPlayer.position.xyz();
+
+			vector3f new_pos;
+			new_pos.x = (settings.flySpeed * (old_pos.x - cam_pos.x));
+			new_pos.y = (settings.flySpeed * (old_pos.y - cam_pos.y));
+			new_pos.z = (settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5)));
+
+			if (new_pos.x > 50 || new_pos.y > 50 || new_pos.z > 50 || new_pos.x < -50 || new_pos.y < -50 || new_pos.z < -50) // ye I know there are these things called vector functions
+			{
+				return;
+			}
+			else
+			{
+				new_pos.x = new_pos.x + old_pos.x;
+				new_pos.y = new_pos.y + old_pos.y;
+				new_pos.z = new_pos.z + old_pos.z;
+
+				world.localPlayer.position.xyz(new_pos);
+			}
 		}
-		else
+		check = true;
+	}
+	else
+	{
+		if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90 && check)
 		{
-			if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90 && check)
-			{
-				world.localPlayer.speedXYZ(0, 0, 0);
+			world.localPlayer.speedXYZ(0, 0, 0);
 
-				mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
-				mem.writeBytes(mem.base + 0x779994, { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 });
-				mem.writeBytes(mem.base + 0x7799A1, { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 });
-				mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
+			mem.writeBytes(mem.base + 0x779994, { 0xF3, 0x0F, 0x11, 0x83, 0x20, 0x03, 0x00, 0x00 });
+			mem.writeBytes(mem.base + 0x7799A1, { 0xF3, 0x0F, 0x11, 0x8B, 0x24, 0x03, 0x00, 0x00 });
+			mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 
-				check = false;
-			}
+			check = false;
 		}
 	}
+	
 }
 
-void THREAD_Keys()
+void loopKeys()
 {
-	while (true)
+	if (HIBYTE(GetAsyncKeyState(VK_MENU)))
 	{
-		sleep(1);
-		if (HIBYTE(GetAsyncKeyState(VK_MENU)))
-		{
-			menu->toggle();
-			sleep(150);
-		}
-		if (settings.fly && HIBYTE(GetAsyncKeyState(VK_SPACE)))
-		{
-			BoostPlayer();
-			sleep(150);
-		}
-		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
-		{
-			TeleportToWaypoint();
-			sleep(150);
-		}
-		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD1)))
-		{
-			BoostPlayer();
-			sleep(150);
-		}
-		if (HIBYTE(GetAsyncKeyState(VK_NUMPAD2)))
-		{
-			BoostVehicle();
-			sleep(150);
-		}
+		menu->toggle();
+		sleep(150);
+	}
+	if (settings.fly && HIBYTE(GetAsyncKeyState(VK_SPACE)))
+	{
+		BoostPlayer();
+		sleep(150);
+	}
+	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
+	{
+		TeleportToWaypoint();
+		sleep(150);
+	}
+	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD1)))
+	{
+		BoostPlayer();
+		sleep(150);
+	}
+	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD2)))
+	{
+		BoostVehicle();
+		sleep(150);
 	}
 }
 
@@ -378,13 +353,14 @@ void THREAD_MAIN()
 
 	world = World(mem.handle);
 
-	std::thread t0(THREAD_Godmode);
-	std::thread t1(THREAD_NeverWanted);
-	std::thread t2(THREAD_WeaponMax);
-	std::thread t3(THREAD_RpLoop);
-	std::thread t4(THREAD_Trigger);
-	std::thread t5(THREAD_Fly);
-	std::thread t6(THREAD_Keys);
+	pTimer timer;
+	timer.setLoop(loopGodmode, 250);
+	timer.setLoop(loopNeverWanted, 200);
+	timer.setLoop(loopWeaponMax, 250);
+	timer.setLoop(loopRpLoop, 1);
+	timer.setLoop(loopTrigger, 1);
+	timer.setLoop(loopFly, 10);
+	timer.setLoop(loopKeys, 10);
 
 	while (true)
 	{		

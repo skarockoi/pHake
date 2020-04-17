@@ -84,6 +84,9 @@
     <ClInclude Include="SDK\_info_.txt">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="pTimer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -43,7 +43,6 @@ void pButton::loop()
 				this->setHighlight(false);
 			}
 		}
-
 	}
 }
 

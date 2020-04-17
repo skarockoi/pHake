@@ -170,6 +170,7 @@
     <ClInclude Include="SDK\Weapon.hpp" />
     <ClInclude Include="SDK\WeaponManager.hpp" />
     <ClInclude Include="SDK\World.hpp" />
+    <ClInclude Include="pTimer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gui\lib\pButton.cpp" />
