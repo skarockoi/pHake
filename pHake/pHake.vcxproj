@@ -161,7 +161,7 @@
     <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Process.h" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
-    <ClInclude Include="SDK\_info_.txt" />
+    <ClInclude Include="SDK\_info.txt" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
     <ClInclude Include="SDK\PlayerInfo.h" />
     <ClInclude Include="SDK\Position.hpp" />

@@ -1,3 +1,4 @@
+1.5 Steam
 
 uint64_t World = _base + 0x024B0C50
 uint64_t PedList = _base + 0x1F564E0 [0x0, 0x8] (holds 16 Entities, 0x8 distance)
@@ -5,7 +6,7 @@ uint64_t Waypoint = _base + 0x1F5EA30
 uint64_t Trigger = _base + 0x1F47430
 uint64_t kmh = _base + 0x2576BC0
 OPCODE FreezeXYZ = _base + 0x1429F9F
-OPCODE FreezeSpeedXYZ = _base + 0x779994
+OPCODE FreezeSpeedXYZ = _base + 0x7799AE
 
 Player = World + 0x8
 	uint64_t position = 0x30;
