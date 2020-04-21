@@ -336,7 +336,7 @@ void loopKeys()
 	}
 }
 
-void exitProgram()
+void ExitProgram()
 {
 	mem.close();
 	exit(-1);
@@ -385,7 +385,7 @@ int main()
 	menu->list.addFunction("Boost Vehicle", BoostVehicle);
 	menu->list.addFunction("Tp to Waypoint", TeleportToWaypoint);
 	menu->list.addFunction("Suicide", Suicide);
-	menu->list.addFunction("Exit", exitProgram);
+	menu->list.addFunction("Exit", ExitProgram);
 	menu->loop();
 
 	return 0;
