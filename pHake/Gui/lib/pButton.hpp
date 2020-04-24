@@ -38,7 +38,6 @@ public:
 
 protected:
 	bool isOnBox();
-	void execFunction();
 	void setActive(bool act);
 	void setHighlight(bool value);
 	void updateLength();

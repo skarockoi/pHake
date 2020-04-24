@@ -34,7 +34,14 @@ void pButton::loop()
 				{
 					if (function != NULL)
 					{
-						std::thread(&pButton::execFunction, this).detach(); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
+						std::thread([=]() {
+							this->busy = true;
+
+							((void(*)(void))function)();
+							std::this_thread::sleep_for(std::chrono::milliseconds(150));
+
+							this->busy = false; 
+							}).detach(); 
 					}
 				}
 			}
@@ -104,14 +111,6 @@ bool pButton::isOnBox()
 		return true;
 	else
 		return false;
-}
-
-void pButton::execFunction()
-{
-	this->busy = true;
-	((void(*)(void))function)();
-	std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	this->busy = false;
 }
 
 void pButton::setPosition(int x, int y)

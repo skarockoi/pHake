@@ -215,12 +215,26 @@ public:
 
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 					{
-						std::thread(&pItemFloat::decToValue, this).detach();
+						std::thread([=]() {
+							this->busy = true;
+
+							*Value -= dec;
+							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+
+							this->busy = false;
+							}).detach();
 
 					}
 					else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 					{
-						std::thread(&pItemFloat::addToValue, this).detach();
+						std::thread([=]() {
+							this->busy = true;
+
+							*Value += inc;
+							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+
+							this->busy = false;
+							}).detach();
 					}
 				}
 				else
@@ -230,22 +244,6 @@ public:
 			}
 		}
 	}
-private:
-	void addToValue()
-	{
-		this->busy = true;
-		*Value += inc;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
-		this->busy = false;
-	}
-	void decToValue()
-	{
-		this->busy = true;
-		*Value -= dec;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
-		this->busy = false;
-	}
-
 public:
 	void setPrecision(uint8_t value)
 	{
