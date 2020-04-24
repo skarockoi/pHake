@@ -359,12 +359,10 @@ int main()
 	timer.setLoop(loopTrigger, 1);
 	timer.setLoop(loopFly, 10);
 	timer.setLoop(loopKeys, 10);
-	timer.setLoop([]() 
-	{
+	timer.setLoop([]() {
 		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50));
 		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
 	}, 1);
-
 
 	menu = new pOverlay();
 	menu->create("Grand Theft Auto V");
