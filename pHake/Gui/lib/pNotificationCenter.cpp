@@ -1,6 +1,6 @@
-#include "pNotification.hpp"
+#include "pNotificationCenter.hpp"
 
-void pNotification::create(sf::RenderWindow* const& Window)
+void pNotificationCenter::create(sf::RenderWindow* const& Window)
 {
 	pos.x = 15;
 	pos.y = 20;
@@ -9,7 +9,7 @@ void pNotification::create(sf::RenderWindow* const& Window)
 	Font.loadFromFile("Settings/font.ttf");
 }
 
-void pNotification::add(const std::string& name)
+void pNotificationCenter::add(const std::string& name)
 {
 	Bone tempBone;
 	tempBone.finished = false;
@@ -31,7 +31,7 @@ void pNotification::add(const std::string& name)
 	notifications.push_back(tempBone);
 }
 
-void pNotification::draw()
+void pNotificationCenter::draw()
 {
 	for (int i = 0; i < notifications.size(); i++)
 	{
@@ -43,13 +43,13 @@ void pNotification::draw()
 	}
 }
 
-void pNotification::loop()
+void pNotificationCenter::loop()
 {
 	for (int i = 0; i < notifications.size(); i++)
 	{
 		if (notifications[i].ready && !notifications[i].started)
 		{
-			std::thread execThread = std::thread(&pNotification::startNotification, this, i); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
+			std::thread execThread = std::thread(&pNotificationCenter::startNotification, this, i); // Launches a new thread so the whole Gui wont freeze, tried using std::async but it doesnt work with sleep
 			execThread.detach();
 		}
 	}
@@ -60,7 +60,7 @@ void pNotification::loop()
 	}
 }
 
-void pNotification::startNotification(int index)
+void pNotificationCenter::startNotification(int index)
 {
 	notifications[index].ready = false;
 	notifications[index].started = true;
@@ -77,7 +77,7 @@ void pNotification::startNotification(int index)
 	notifications[index].finished = true;
 }
 
-bool pNotification::isListFinished()
+bool pNotificationCenter::isListFinished()
 {
 	uint8_t count = 0;
 
@@ -93,7 +93,7 @@ bool pNotification::isListFinished()
 		return false;
 }
 
-uint32_t pNotification::sleepTime()
+uint32_t pNotificationCenter::sleepTime()
 {
 	if (notifications.size() < 7)
 		return 10;

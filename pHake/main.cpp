@@ -341,8 +341,8 @@ int main()
 	FreeConsole();
 
 	if (!mem.getProcess("GTA5.exe"))
-		std::cout << " Game not found" << std::endl;
-
+		ExitProgram;
+	
 	world = World(mem.handle);
 
 	pTimer timer;

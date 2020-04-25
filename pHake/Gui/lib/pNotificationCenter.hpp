@@ -1,11 +1,11 @@
-#ifndef _PNOTIFICATION_HPP_
-#define _PNOTIFICATION_HPP_
+#ifndef _PNOTIFICATIONCENTER_HPP_
+#define _PNOTIFICATIONCENTER_HPP_
 
 #include <SFML/Graphics.hpp>
 #include <thread>
 #include <vector>
 
-class pNotification
+class pNotificationCenter
 {
 private:
 	struct Bone // Everything needed for a notification

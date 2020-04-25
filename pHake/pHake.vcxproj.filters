@@ -36,9 +36,6 @@
     <ClInclude Include="Gui\lib\pMouse.hpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClInclude>
-    <ClInclude Include="Gui\lib\pNotification.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
     <ClInclude Include="Helper.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -87,6 +84,9 @@
     <ClInclude Include="SDK\_info_.txt">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="Gui\lib\pNotificationCenter.hpp">
+      <Filter>Header Files\Gui\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,7 +104,7 @@
     <ClCompile Include="Gui\lib\pMouse.cpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\lib\pNotification.cpp">
+    <ClCompile Include="Gui\lib\pNotificationCenter.cpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClCompile>
   </ItemGroup>

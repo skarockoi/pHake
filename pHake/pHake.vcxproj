@@ -155,7 +155,7 @@
     <ClInclude Include="Gui\lib\pItem.hpp" />
     <ClInclude Include="Gui\lib\pList.hpp" />
     <ClInclude Include="Gui\lib\pMouse.hpp" />
-    <ClInclude Include="Gui\lib\pNotification.hpp" />
+    <ClInclude Include="Gui\lib\pNotificationCenter.hpp" />
     <ClInclude Include="Gui\pOverlay.hpp" />
     <ClInclude Include="Gui\pWindow.hpp" />
     <ClInclude Include="Helper.hpp" />
@@ -176,7 +176,7 @@
     <ClCompile Include="Gui\lib\pButton.cpp" />
     <ClCompile Include="Gui\lib\pList.cpp" />
     <ClCompile Include="Gui\lib\pMouse.cpp" />
-    <ClCompile Include="Gui\lib\pNotification.cpp" />
+    <ClCompile Include="Gui\lib\pNotificationCenter.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>

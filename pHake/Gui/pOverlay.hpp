@@ -7,7 +7,7 @@
 #include "lib/pItem.hpp"
 #include "lib/pList.hpp"
 #include "lib/pMouse.hpp"
-#include "lib/pNotification.hpp"
+#include "lib/pNotificationCenter.hpp"
 #pragma comment (lib, "Dwmapi.lib")
 
 struct GameInfo
@@ -80,7 +80,7 @@ private:
 public:
 	pList			 list;
 	pList			 list_settings;
-	pNotification    notification;
+	pNotificationCenter notification;
 
 	void create(LPCSTR Name)
 	{
