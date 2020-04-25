@@ -9,19 +9,19 @@ public:
 	Position(){}
 	Position(HANDLE& h) :DataWrapper(h) {}
 
-	vector3f xyz()
+	vec3 xyz()
 	{
-		return this->read<vector3f>(0x50);
+		return this->read<vec3>(0x50);
 	}
 
-	void xyz(vector3f value)
+	void xyz(vec3 value)
 	{
-		this->write<vector3f>(0x50, value);
+		this->write<vec3>(0x50, value);
 	}
 
 	void xyz(float x, float y, float z)
 	{
-		this->write<vector3f>(0x50, vector3f(x, y, z));
+		this->write<vec3>(0x50, vec3(x, y, z));
 	}
 
 	float x()

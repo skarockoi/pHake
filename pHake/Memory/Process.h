@@ -2,20 +2,37 @@
 #define _PROCESS_HPP_
 
 #include <iostream>
+#include <math.h>
 #include <Windows.h>
 #include <vector>
 #include <TlHelp32.h> 
 
-struct vector3f
+struct vec3
 {
 	float x, y, z;
-	vector3f(float X, float Y, float Z)
+
+	vec3(){}
+	vec3(float X, float Y, float Z)
 	{
 		x = X;
 		y = Y;
 		z = Z;
 	}
-	vector3f(){}
+
+	vec3 operator+(const vec3 &ext)
+	{
+		return vec3(x + ext.x , y + ext.y, z + ext.z);
+	}
+
+	vec3 operator-(const vec3& ext)
+	{
+		return vec3(x - ext.x, y - ext.y, z - ext.z);
+	}
+
+	float len()
+	{
+		return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+	}
 };
 
 class Process

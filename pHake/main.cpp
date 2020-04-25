@@ -34,7 +34,7 @@ void Suicide()
 
 void TeleportToWaypoint()
 {
-	vector3f waypoint = mem.read<vector3f>(mem.base + 0x1F5EA30);
+	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F5EA30);
 
 	if (waypoint.x != 64000 && waypoint.y != 64000)
 	{
@@ -261,7 +261,7 @@ void loopFly()
 
 	if (settings.fly)
 	{
-		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
+		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle()) // 
 		{
 			if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
 			{
@@ -269,32 +269,29 @@ void loopFly()
 				mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
 
-			vector3f cam_pos = mem.read<vector3f>(mem.base + 0x1D22170);
-			vector3f old_pos = world.localPlayer.position.xyz();
+			vec3 cam_pos = mem.read<vec3>(mem.base + 0x1D22170);
+			vec3 old_pos = world.localPlayer.position.xyz();
+			vec3 add_pos(
+				settings.flySpeed * (old_pos.x - cam_pos.x),
+				settings.flySpeed * (old_pos.y - cam_pos.y),
+				settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5))
+			);
 
-			vector3f new_pos;
-			new_pos.x = (settings.flySpeed * (old_pos.x - cam_pos.x));
-			new_pos.y = (settings.flySpeed * (old_pos.y - cam_pos.y));
-			new_pos.z = (settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5)));
-
-			if (new_pos.x > 50 || new_pos.y > 50 || new_pos.z > 50 || new_pos.x < -50 || new_pos.y < -50 || new_pos.z < -50) // ye I know there are these things called vector functions
+			float len = add_pos.len();
+			if (len > 50.f || len < -50.f) // to prevent spikes while flying
 			{
 				return;
 			}
 			else
 			{
-				new_pos.x = new_pos.x + old_pos.x;
-				new_pos.y = new_pos.y + old_pos.y;
-				new_pos.z = new_pos.z + old_pos.z;
-
-				world.localPlayer.position.xyz(new_pos);
+				world.localPlayer.position.xyz(old_pos + add_pos);
 			}
 		}
 		check = true;
 	}
 	else
 	{
-		if (mem.read<uint8_t>(mem.base + 0x1429F9F) == 0x90 && check)
+		if (check)
 		{
 			world.localPlayer.speedXYZ(0, 0, 0);
 
@@ -304,7 +301,6 @@ void loopFly()
 			check = false;
 		}
 	}
-	
 }
 
 void loopKeys()

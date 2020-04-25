@@ -76,19 +76,19 @@ public:
 		this->write<float>(0x2A0, value);
 	}
 
-	vector3f speedXYZ()
+	vec3 speedXYZ()
 	{
-		this->read<vector3f>(0x320);
+		this->read<vec3>(0x320);
 	}
 
-	void speedXYZ(vector3f value)
+	void speedXYZ(vec3 value)
 	{
-		this->write<vector3f>(0x320, value);
+		this->write<vec3>(0x320, value);
 	}
 
 	void speedXYZ(float x, float y, float z)
 	{
-		this->write<vector3f>(0x320, vector3f(x, y, z));
+		this->write<vec3>(0x320, vec3(x, y, z));
 	}
 
 	float speedX()
