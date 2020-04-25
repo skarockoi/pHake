@@ -9,19 +9,6 @@ void sleep(uint32_t ms)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
-void Schedule(void(&Function)(), uint32_t ms)
-{
-	std::thread t1([=]
-		{
-			while (true)
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-				((void(*)(void))Function)();
-			}
-		});
-	t1.detach();
-}
-
 void LeftMouseDown()
 {
 	INPUT    Input = { 0 };
@@ -119,36 +106,4 @@ uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
 	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
 	return num(rng);
-}
-
-float distance3d(float from_x, float from_y, float from_z, float to_x, float to_y, float to_z)
-{
-	float x = from_x - to_x;
-	float y = from_y - to_y;
-	float z = from_z - to_z;
-
-	return sqrt(x * x + y * y + z * z);
-}
-
-float distance2d(float from_x, float from_y, float to_x, float to_y)
-{
-	float x = from_x - to_x;
-	float y = from_y - to_y;
-
-	return sqrt(x * x + y * y);
-}
-
-std::string GetLineContent(int Line, std::ifstream& FileToRead)
-{
-	std::string LineContent;
-
-	for (int i = 1; i <= Line; i++)
-	{
-		std::getline(FileToRead, LineContent);
-	}
-
-	FileToRead.clear();
-	FileToRead.seekg(0, std::ios::beg);
-
-	return LineContent;
 }

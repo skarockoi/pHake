@@ -1,5 +1,6 @@
 #include "Gui/pOverlay.hpp"
 #include <iostream>
+#include <thread>
 #include <Windows.h>
 #include "SDK/World.hpp"
 #include "Helper.hpp"
@@ -261,7 +262,8 @@ void loopFly()
 
 	if (settings.fly)
 	{
-		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle()) // 
+		check = true;
+		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
 			if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
 			{
@@ -279,15 +281,11 @@ void loopFly()
 
 			float len = add_pos.len();
 			if (len > 50.f || len < -50.f) // to prevent spikes while flying
-			{
 				return;
-			}
+			
 			else
-			{
 				world.localPlayer.position.xyz(old_pos + add_pos);
-			}
 		}
-		check = true;
 	}
 	else
 	{
@@ -295,7 +293,7 @@ void loopFly()
 		{
 			world.localPlayer.speedXYZ(0, 0, 0);
 
-			mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 });
+			mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
 			mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 
 			check = false;

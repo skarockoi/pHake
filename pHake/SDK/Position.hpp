@@ -54,5 +54,4 @@ public:
 		this->write<float>(0x58, value);
 	}
 };
-
 #endif
