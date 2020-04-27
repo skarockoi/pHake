@@ -63,41 +63,38 @@ void BoostPlayer()
 {
 	if (settings.boostPlayer == "default")
 	{
-		settings.boostPlayer = "fast";
 		world.localPlayer.playerInfo.walkMP(2.5);
 		world.localPlayer.playerInfo.swimMP(2.5);
 		world.localPlayer.ragdoll(1);
-
 		settings.flySpeed = 0.25;
-		
+
+		settings.boostPlayer = "fast";
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
 
 	if (settings.boostPlayer == "fast")
 	{
-		settings.boostPlayer = "max";
 		world.localPlayer.playerInfo.walkMP(2500);
 		world.localPlayer.playerInfo.swimMP(2500);
 		world.localPlayer.ragdoll(1);
-
 		settings.flySpeed = 0.5;
-		
+
+		settings.boostPlayer = "max";
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
 
 	if (settings.boostPlayer == "max")
 	{
-		settings.boostPlayer = "default";
 		world.localPlayer.playerInfo.walkMP(1);
 		world.localPlayer.playerInfo.swimMP(1);
+		settings.flySpeed = 0.05;
 
 		if (!settings.fly)
 			world.localPlayer.ragdoll(0);
 
-		settings.flySpeed = 0.05;
-		
+		settings.boostPlayer = "default";
 		menu->notification.add("Player mode set to " + settings.boostPlayer);
 		return;
 	}
@@ -107,50 +104,49 @@ void BoostVehicle()
 {
 	if (settings.boostVehicle == "default")
 	{
-		settings.boostVehicle = "race";
 		world.localPlayer.vehicle.gravity(20.f);
 		world.localPlayer.vehicle.handling.tractionMax(3.f);
 		world.localPlayer.vehicle.handling.tractionMin(3.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 		world.localPlayer.vehicle.handling.acceleration(3.f);
 
+		settings.boostVehicle = "race";
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
 	}
 	else if (settings.boostVehicle == "race")
 	{
-		settings.boostVehicle = "max";
 		world.localPlayer.vehicle.gravity(25.f);
 		world.localPlayer.vehicle.handling.tractionMax(5.f);
 		world.localPlayer.vehicle.handling.tractionMin(5.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 		world.localPlayer.vehicle.handling.acceleration(20.f);
 
+		settings.boostVehicle = "max";
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
 	}
 	else if (settings.boostVehicle == "max")
 	{
-		settings.boostVehicle = "fly";
 		world.localPlayer.vehicle.gravity(-10.f);
 		world.localPlayer.vehicle.handling.tractionMax(2.f);
 		world.localPlayer.vehicle.handling.tractionMin(2.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 		world.localPlayer.vehicle.handling.acceleration(2.f);
 
+		settings.boostVehicle = "fly";
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
 	}
 	else if (settings.boostVehicle == "fly")
 	{
-		settings.boostVehicle = "default";
-
 		world.localPlayer.vehicle.gravity(9.8);
 		world.localPlayer.vehicle.handling.tractionMax(2.f);
 		world.localPlayer.vehicle.handling.tractionMin(2.f);
 		world.localPlayer.vehicle.handling.acceleration(1.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 
+		settings.boostVehicle = "default";
 		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
 		return;
 	}
@@ -225,7 +221,6 @@ void loopTrigger()
 			}
 		}
 	}
-	
 }
 
 void loopWeaponMax()
@@ -282,7 +277,6 @@ void loopFly()
 			float len = add_pos.len();
 			if (len > 50.f || len < -50.f) // to prevent spikes while flying
 				return;
-			
 			else
 				world.localPlayer.position.xyz(old_pos + add_pos);
 		}
@@ -341,7 +335,7 @@ int main()
 	FreeConsole();
 
 	if (!mem.getProcess("GTA5.exe"))
-		ExitProgram;
+		ExitProgram();
 	
 	world = World(mem.handle);
 
