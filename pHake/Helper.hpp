@@ -9,6 +9,14 @@ void sleep(uint32_t ms)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
+{
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
+	return num(rng);
+}
+
 void LeftMouseDown()
 {
 	INPUT    Input = { 0 };
@@ -30,7 +38,7 @@ void LeftMouseUp()
 
 void SendSpaceDown()
 {
-	keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_EXTENDEDKEY, 0); // 
+	keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_EXTENDEDKEY, 0);
 }
 
 void SendSpaceUp()
@@ -98,12 +106,4 @@ void SendKeyUp(WORD Key)
 	ip.ki.dwFlags = KEYEVENTF_KEYUP;
 
 	SendInput(1, &ip, sizeof(INPUT));
-}
-
-uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
-{
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
-	return num(rng);
 }

@@ -174,7 +174,6 @@ void loopGodmode()
 		world.localPlayer.vehicle.god(0);
 		check = false;
 	}
-	
 }
 
 void loopNeverWanted()
