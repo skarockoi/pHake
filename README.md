@@ -28,5 +28,5 @@
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> Version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
 2. Compile it as x64 Release/Debug
-3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">Dependencies</a> in the Executable folder <br/>
+3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">Dependencies</a> to the Executable folder <br/>
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/4.2/pHake4.2_1.5.zip">Release</a> as an example
