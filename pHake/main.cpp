@@ -168,11 +168,14 @@ void loopGodmode()
 			check = true;
 			
 	}
-	else if (check)
+	else
 	{
-		world.localPlayer.god(0);
-		world.localPlayer.vehicle.god(0);
-		check = false;
+		if (check)
+		{
+			world.localPlayer.god(0);
+			world.localPlayer.vehicle.god(0);
+			check = false;
+		}
 	}
 }
 
