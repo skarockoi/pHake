@@ -210,7 +210,7 @@ void loopTrigger()
 		{
 			if (!check)
 			{
-				LeftMouseDown();
+				Key::Down::LMouse();
 				check = true;
 			}
 		}
@@ -218,7 +218,7 @@ void loopTrigger()
 		{
 			if (check)
 			{
-				LeftMouseUp();
+				Key::Up::LMouse();
 				check = false;
 			}
 		}
