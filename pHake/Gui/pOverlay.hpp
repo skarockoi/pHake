@@ -50,22 +50,12 @@ public:
 
 	sf::Vector2i getPosition()
 	{
-		sf::Vector2i value;
-
-		value.x = rect.left;
-		value.y = rect.top;
-
-		return value;
+		return sf::Vector2i(rect.left, rect.top);
 	}
 
 	sf::Vector2u getSize()
 	{
-		sf::Vector2u value;
-
-		value.x = rect.right - rect.left;
-		value.y = rect.bottom - rect.top;
-
-		return value;
+		return sf::Vector2u(rect.right - rect.left, rect.bottom - rect.top);
 	}
 };
 
