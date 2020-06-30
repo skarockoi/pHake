@@ -87,6 +87,9 @@
     <ClInclude Include="Gui\lib\pNotificationCenter.hpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClInclude>
+    <ClInclude Include="pSettings.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

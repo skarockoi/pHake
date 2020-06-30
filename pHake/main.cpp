@@ -5,8 +5,10 @@
 #include "SDK/World.hpp"
 #include "Helper.hpp"
 #include "pTimer.hpp"
+#include "pSettings.hpp"
 
 pOverlay* menu;
+pSettings* cfg;
 Process   mem;
 World     world;
 
@@ -328,6 +330,13 @@ void loopKeys()
 
 void ExitProgram()
 {
+	cfg->edit("Godmode", std::to_string(settings.godmode));
+	cfg->edit("NeverWanted", std::to_string(settings.neverwanted));
+	cfg->edit("RpLoop", std::to_string(settings.rploop));
+	cfg->edit("Trigger", std::to_string(settings.trigger));
+	cfg->edit("WeaponMax", std::to_string(settings.weaponmax));
+	cfg->edit("Fly", std::to_string(settings.fly));
+	cfg->save();
 	mem.close();
 	exit(-1);
 }
@@ -338,8 +347,16 @@ int main()
 
 	if (!mem.getProcess("GTA5.exe"))
 		ExitProgram();
-	
+
 	world = World(mem.handle);
+
+	cfg = new pSettings("Settings\\cfg.txt");
+	settings.godmode = std::stoi(cfg->addGet("Godmode", "0"));
+	settings.neverwanted = std::stoi(cfg->addGet("NeverWanted", "0"));
+	settings.rploop = std::stoi(cfg->addGet("RpLoop", "0"));
+	settings.trigger = std::stoi(cfg->addGet("Trigger", "0"));
+	settings.weaponmax = std::stoi(cfg->addGet("WeaponMax", "0"));
+	settings.fly = std::stoi(cfg->addGet("Fly", "0"));
 
 	pTimer timer;
 	timer.setLoop(loopGodmode, 250);

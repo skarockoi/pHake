@@ -29,5 +29,4 @@ public:
 			}).detach();
 	}
 };
-
 #endif

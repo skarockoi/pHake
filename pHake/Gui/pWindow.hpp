@@ -4,7 +4,6 @@
 #include "lib/pItem.hpp"
 #include "lib/pList.hpp"
 #include "lib/pMouse.hpp"
-#include "lib/pNotification.hpp"
 #pragma comment (lib, "Dwmapi.lib")
 
 class pWindow

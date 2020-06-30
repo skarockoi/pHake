@@ -160,6 +160,7 @@
     <ClInclude Include="Gui\pWindow.hpp" />
     <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Process.h" />
+    <ClInclude Include="pSettings.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\_info_.txt" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
