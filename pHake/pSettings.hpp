@@ -4,6 +4,8 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <sstream>
+#include <Windows.h>
 
 class pSettings
 {
@@ -18,8 +20,6 @@ public:
 
 		if (std::filesystem::exists(filePathAndName)) // Check if the cfg file exitst, otherwise create a new file(does not work if the path is behind a directory that does not exist
 		{
-			filePath = filePathAndName;
-
 			fileContent = new std::vector<std::string>;
 			std::ifstream file(filePathAndName);
 
@@ -37,29 +37,34 @@ public:
 		}
 		else
 		{
+			fileContent = new std::vector<std::string>;
 			std::ofstream file{ filePathAndName };
 			file.close();
 		}
 	}
 
-	std::string addGet(std::string Key, std::string Value)
+	template <typename T>
+	T addGet(std::string Key, T Value)
 	{
 		if (this->checkExistanceOfKey(Key))
 		{
-			return this->getKeyByName(Key);
+			return this->lexical_cast<T>(this->getKeyByName(Key));
 		}
 		else
 		{
-			this->addKeyAndValue(Key, Value);
-			return this->getKeyByName(Key);
+			this->addKeyAndValue(Key, std::to_string(Value));
+			return this->lexical_cast<T>(this->getKeyByName(Key));
 		}
+
+		return 0;
 	}
 
-	bool edit(std::string Key, std::string Value)
+	template <typename T>
+	bool edit(std::string Key, T Value)
 	{
 		if (this->checkExistanceOfKey(Key))
 		{
-			this->changeKeyValue(Key, Value);
+			this->changeKeyValue(Key, std::to_string(Value));
 			return true;
 		}
 		return false;
@@ -133,6 +138,16 @@ private:
 			file << (*fileContent)[i] + "\n";
 		}
 		file.close();
+	}
+
+	template <typename T>
+	T lexical_cast(const std::string& str)
+	{
+		T var;
+		std::istringstream iss;
+		iss.str(str);
+		iss >> var;
+		return var;
 	}
 };
 #endif

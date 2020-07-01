@@ -1,5 +1,6 @@
 #include "Gui/pOverlay.hpp"
 #include <iostream>
+#include <array>
 #include <thread>
 #include <Windows.h>
 #include "SDK/World.hpp"
@@ -24,8 +25,9 @@ struct settings
 	float flySpeed = 0.05;
 	float kmh = 0.f;
 
-	std::string boostPlayer = "default";
-	std::string boostVehicle = "default";
+	std::array<std::string, 3> playerStates = { "default", "fast", "max" };
+	std::array<std::string, 4> vehicleStates = { "default", "race", "max", "fly" };
+
 }settings;
 
 
@@ -63,95 +65,80 @@ void TeleportToWaypoint()
 
 void BoostPlayer()
 {
-	if (settings.boostPlayer == "default")
+	static uint8_t state = 0; state++;
+
+	if (state == 3)
+		state = 0;
+	
+	switch (state)
 	{
-		world.localPlayer.playerInfo.walkMP(2.5);
-		world.localPlayer.playerInfo.swimMP(2.5);
-		world.localPlayer.ragdoll(1);
-		settings.flySpeed = 0.25;
-
-		settings.boostPlayer = "fast";
-		menu->notification.add("Player mode set to " + settings.boostPlayer);
-		return;
-	}
-
-	if (settings.boostPlayer == "fast")
-	{
-		world.localPlayer.playerInfo.walkMP(2500);
-		world.localPlayer.playerInfo.swimMP(2500);
-		world.localPlayer.ragdoll(1);
-		settings.flySpeed = 0.5;
-
-		settings.boostPlayer = "max";
-		menu->notification.add("Player mode set to " + settings.boostPlayer);
-		return;
-	}
-
-	if (settings.boostPlayer == "max")
-	{
+	case 0: 		
 		world.localPlayer.playerInfo.walkMP(1);
 		world.localPlayer.playerInfo.swimMP(1);
 		settings.flySpeed = 0.05;
 
 		if (!settings.fly)
 			world.localPlayer.ragdoll(0);
+		break;
 
-		settings.boostPlayer = "default";
-		menu->notification.add("Player mode set to " + settings.boostPlayer);
-		return;
+	case 1: 
+		world.localPlayer.playerInfo.walkMP(2.5);
+		world.localPlayer.playerInfo.swimMP(2.5);
+		world.localPlayer.ragdoll(1);
+		settings.flySpeed = 0.25;
+		break;
+
+	case 2:
+		world.localPlayer.playerInfo.walkMP(2500);
+		world.localPlayer.playerInfo.swimMP(2500);
+		world.localPlayer.ragdoll(1);
+		settings.flySpeed = 0.5;
+		break;
 	}
+	menu->notification.add("Player mode set to " + settings.playerStates[state]);
 }
 
 void BoostVehicle()
 {
-	if (settings.boostVehicle == "default")
-	{
-		world.localPlayer.vehicle.gravity(20.f);
-		world.localPlayer.vehicle.handling.tractionMax(3.f);
-		world.localPlayer.vehicle.handling.tractionMin(3.f);
-		world.localPlayer.vehicle.handling.collisionDamage(0.f);
-		world.localPlayer.vehicle.handling.acceleration(3.f);
+	static uint8_t state = 0; state++;
 
-		settings.boostVehicle = "race";
-		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
-		return;
-	}
-	else if (settings.boostVehicle == "race")
-	{
-		world.localPlayer.vehicle.gravity(25.f);
-		world.localPlayer.vehicle.handling.tractionMax(5.f);
-		world.localPlayer.vehicle.handling.tractionMin(5.f);
-		world.localPlayer.vehicle.handling.collisionDamage(0.f);
-		world.localPlayer.vehicle.handling.acceleration(20.f);
+	if (state == 4)
+		state = 0;
 
-		settings.boostVehicle = "max";
-		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
-		return;
-	}
-	else if (settings.boostVehicle == "max")
+	switch (state)
 	{
-		world.localPlayer.vehicle.gravity(-10.f);
-		world.localPlayer.vehicle.handling.tractionMax(2.f);
-		world.localPlayer.vehicle.handling.tractionMin(2.f);
-		world.localPlayer.vehicle.handling.collisionDamage(0.f);
-		world.localPlayer.vehicle.handling.acceleration(2.f);
-
-		settings.boostVehicle = "fly";
-		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
-		return;
-	}
-	else if (settings.boostVehicle == "fly")
-	{
+	case 0:
 		world.localPlayer.vehicle.gravity(9.8);
 		world.localPlayer.vehicle.handling.tractionMax(2.f);
 		world.localPlayer.vehicle.handling.tractionMin(2.f);
 		world.localPlayer.vehicle.handling.acceleration(1.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		break;
 
-		settings.boostVehicle = "default";
-		menu->notification.add("Vehicle mode set to " + settings.boostVehicle);
-		return;
+	case 1:
+		world.localPlayer.vehicle.gravity(20.f);
+		world.localPlayer.vehicle.handling.tractionMax(3.f);
+		world.localPlayer.vehicle.handling.tractionMin(3.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(3.f);
+		break;
+
+	case 2:
+		world.localPlayer.vehicle.gravity(25.f);
+		world.localPlayer.vehicle.handling.tractionMax(5.f);
+		world.localPlayer.vehicle.handling.tractionMin(5.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(20.f);
+		break;
+	case 3:
+		world.localPlayer.vehicle.gravity(-10.f);
+		world.localPlayer.vehicle.handling.tractionMax(2.f);
+		world.localPlayer.vehicle.handling.tractionMin(2.f);
+		world.localPlayer.vehicle.handling.collisionDamage(0.f);
+		world.localPlayer.vehicle.handling.acceleration(2.f);
+		break;
 	}
+	menu->notification.add("Vehicle mode set to " + settings.vehicleStates[state]);
 }
 
 void loopGodmode()
@@ -330,12 +317,12 @@ void loopKeys()
 
 void ExitProgram()
 {
-	cfg->edit("Godmode", std::to_string(settings.godmode));
-	cfg->edit("NeverWanted", std::to_string(settings.neverwanted));
-	cfg->edit("RpLoop", std::to_string(settings.rploop));
-	cfg->edit("Trigger", std::to_string(settings.trigger));
-	cfg->edit("WeaponMax", std::to_string(settings.weaponmax));
-	cfg->edit("Fly", std::to_string(settings.fly));
+	cfg->edit<bool>("Godmode", settings.godmode);
+	cfg->edit<bool>("NeverWanted", settings.neverwanted);
+	cfg->edit<bool>("RpLoop", settings.rploop);
+	cfg->edit<bool>("Trigger", settings.trigger);
+	cfg->edit<bool>("WeaponMax", settings.weaponmax);
+	cfg->edit<bool>("Fly", settings.fly);
 	cfg->save();
 	mem.close();
 	exit(-1);
@@ -351,12 +338,12 @@ int main()
 	world = World(mem.handle);
 
 	cfg = new pSettings("Settings\\cfg.txt");
-	settings.godmode = std::stoi(cfg->addGet("Godmode", "0"));
-	settings.neverwanted = std::stoi(cfg->addGet("NeverWanted", "0"));
-	settings.rploop = std::stoi(cfg->addGet("RpLoop", "0"));
-	settings.trigger = std::stoi(cfg->addGet("Trigger", "0"));
-	settings.weaponmax = std::stoi(cfg->addGet("WeaponMax", "0"));
-	settings.fly = std::stoi(cfg->addGet("Fly", "0"));
+	settings.godmode = cfg->addGet<bool>("Godmode", 0);
+	settings.neverwanted = cfg->addGet<bool>("NeverWanted", 0);
+	settings.rploop = cfg->addGet<bool>("RpLoop", 0);
+	settings.trigger = cfg->addGet<bool>("Trigger", 0);
+	settings.weaponmax = cfg->addGet<bool>("WeaponMax", 0);
+	settings.fly = cfg->addGet<bool>("Fly", 0);
 
 	pTimer timer;
 	timer.setLoop(loopGodmode, 250);
