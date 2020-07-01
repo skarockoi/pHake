@@ -216,28 +216,25 @@ void loopTrigger()
 
 void loopWeaponMax()
 {
-	while (true)
+	if (settings.weaponmax)
 	{
-		if (settings.weaponmax)
+		if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() != 99999.f)
 		{
-			if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() != 99999.f)
-			{
-				world.localPlayer.weaponManager.currentWeapon.type(5);
-				world.localPlayer.weaponManager.currentWeapon.explosionType(25);
-				world.localPlayer.weaponManager.currentWeapon.bulletDamage(99999.f);
-				world.localPlayer.weaponManager.currentWeapon.reloadMP(99999.f);
-				world.localPlayer.weaponManager.currentWeapon.range(99999.f);
-				world.localPlayer.weaponManager.currentWeapon.ammoInfo.ammo(999999);
-			}
+			world.localPlayer.weaponManager.currentWeapon.type(5);
+			world.localPlayer.weaponManager.currentWeapon.explosionType(25);
+			world.localPlayer.weaponManager.currentWeapon.bulletDamage(99999.f);
+			world.localPlayer.weaponManager.currentWeapon.reloadMP(99999.f);
+			world.localPlayer.weaponManager.currentWeapon.range(99999.f);
+			world.localPlayer.weaponManager.currentWeapon.ammoInfo.ammo(999999);
 		}
-		else
+	}
+	else
+	{
+		if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() == 99999.f)
 		{
-			if (world.localPlayer.weaponManager.currentWeapon.bulletDamage() == 99999.f)
-			{
-				world.localPlayer.weaponManager.currentWeapon.type(3);
-				world.localPlayer.weaponManager.currentWeapon.bulletDamage(100.f);
-				world.localPlayer.weaponManager.currentWeapon.reloadMP(1.f);
-			}
+			world.localPlayer.weaponManager.currentWeapon.type(3);
+			world.localPlayer.weaponManager.currentWeapon.bulletDamage(100.f);
+			world.localPlayer.weaponManager.currentWeapon.reloadMP(1.f);
 		}
 	}
 }
@@ -338,7 +335,7 @@ int main()
 	world = World(mem.handle);
 
 	cfg = new pSettings("Settings\\cfg.txt");
-	settings.godmode = cfg->addGet<bool>("Godmode", 0);
+	settings.godmode =	cfg->addGet<bool>("Godmode", 0);
 	settings.neverwanted = cfg->addGet<bool>("NeverWanted", 0);
 	settings.rploop = cfg->addGet<bool>("RpLoop", 0);
 	settings.trigger = cfg->addGet<bool>("Trigger", 0);
