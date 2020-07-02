@@ -67,7 +67,7 @@ void BoostPlayer()
 {
 	static uint8_t state = 0; state++;
 
-	if (state == 3)
+	if (state > settings.playerStates.size() - 1)
 		state = 0;
 	
 	switch (state)
@@ -80,14 +80,12 @@ void BoostPlayer()
 		if (!settings.fly)
 			world.localPlayer.ragdoll(0);
 		break;
-
 	case 1: 
 		world.localPlayer.playerInfo.walkMP(2.5);
 		world.localPlayer.playerInfo.swimMP(2.5);
 		world.localPlayer.ragdoll(1);
 		settings.flySpeed = 0.25;
 		break;
-
 	case 2:
 		world.localPlayer.playerInfo.walkMP(2500);
 		world.localPlayer.playerInfo.swimMP(2500);
@@ -102,7 +100,7 @@ void BoostVehicle()
 {
 	static uint8_t state = 0; state++;
 
-	if (state == 4)
+	if (state > settings.vehicleStates.size() - 1)
 		state = 0;
 
 	switch (state)
@@ -114,7 +112,6 @@ void BoostVehicle()
 		world.localPlayer.vehicle.handling.acceleration(1.f);
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 		break;
-
 	case 1:
 		world.localPlayer.vehicle.gravity(20.f);
 		world.localPlayer.vehicle.handling.tractionMax(3.f);
@@ -122,7 +119,6 @@ void BoostVehicle()
 		world.localPlayer.vehicle.handling.collisionDamage(0.f);
 		world.localPlayer.vehicle.handling.acceleration(3.f);
 		break;
-
 	case 2:
 		world.localPlayer.vehicle.gravity(25.f);
 		world.localPlayer.vehicle.handling.tractionMax(5.f);
@@ -154,8 +150,7 @@ void loopGodmode()
 		}
 
 		if (!check)
-			check = true;
-			
+			check = true;	
 	}
 	else
 	{
@@ -351,7 +346,7 @@ int main()
 	timer.setLoop(loopFly, 10);
 	timer.setLoop(loopKeys, 10);
 	timer.setLoop([]() {
-		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50));
+		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50)); // World pointer
 		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
 	}, 1);
 
