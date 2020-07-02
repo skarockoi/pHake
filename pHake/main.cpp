@@ -1,8 +1,6 @@
 #include "Gui/pOverlay.hpp"
-#include <iostream>
-#include <array>
-#include <thread>
 #include <Windows.h>
+#include <array>
 #include "SDK/World.hpp"
 #include "Helper.hpp"
 #include "pTimer.hpp"
