@@ -37,33 +37,38 @@ void Suicide()
 
 void TeleportToWaypoint()
 {
-	if (!settings.fly && world.localPlayer.speedXYZ().len() > 0.1 || world.localPlayer.vehicle.speedXYZ().len() > 0.1)
+	bool inVehicle = world.localPlayer.inVehicle();
+	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F5EA30);
+
+	if (waypoint.x == 64000 && waypoint.y == 64000) {
+		menu->notification.add("Please set a Waypoint");
+		return;
+	}
+
+	if (!inVehicle && world.localPlayer.speedXYZ().len() > 0.1) {
 		menu->notification.add("Please don't move");
+		return;
+	}
 	else
 	{
-		vec3 waypoint = mem.read<vec3>(mem.base + 0x1F5EA30);
-
-		if (waypoint.x != 64000 && waypoint.y != 64000)
-		{
-			if (!world.localPlayer.inVehicle())
-			{
-				if (settings.fly)
-					waypoint.z = 300.f;
-				else
-					waypoint.z = -210.f;
-
-				world.localPlayer.position.xyz(waypoint);
-			}
-			else
-			{
-				waypoint.z = -210.f;
-				world.localPlayer.vehicle.position.xyz(waypoint);
-			}
-			menu->notification.add("Teleported to Waypoint");
-		}
+		if (settings.fly)
+			waypoint.z = 300.f;
 		else
-			menu->notification.add("Please set a Waypoint");
+			waypoint.z = -210.f;
+
+		world.localPlayer.position.xyz(waypoint);
 	}
+
+	if (inVehicle && world.localPlayer.vehicle.speedXYZ().len() > 0.1) {
+		menu->notification.add("Please don't move");
+		return;
+	}
+	else
+	{
+		waypoint.z = -210.f;
+		world.localPlayer.vehicle.position.xyz(waypoint);
+	}
+	menu->notification.add("Teleported to Waypoint");
 }
 
 void BoostPlayer()
