@@ -45,11 +45,13 @@ void TeleportToWaypoint()
 		return;
 	}
 
-	if (!inVehicle && world.localPlayer.speedXYZ().len() > 0.1) {
-		menu->notification.add("Please don't move");
-		return;
+	if (inVehicle && world.localPlayer.vehicle.speedXYZ().len() < 0.1)
+	{
+		waypoint.z = -210.f;
+		world.localPlayer.vehicle.position.xyz(waypoint);
+
 	}
-	else
+	else if (!inVehicle && world.localPlayer.speedXYZ().len() < 0.1)
 	{
 		if (settings.fly)
 			waypoint.z = 300.f;
@@ -57,16 +59,12 @@ void TeleportToWaypoint()
 			waypoint.z = -210.f;
 
 		world.localPlayer.position.xyz(waypoint);
-	}
 
-	if (inVehicle && world.localPlayer.vehicle.speedXYZ().len() > 0.1) {
-		menu->notification.add("Please don't move");
-		return;
 	}
 	else
 	{
-		waypoint.z = -210.f;
-		world.localPlayer.vehicle.position.xyz(waypoint);
+		menu->notification.add("Please don't move");
+		return;
 	}
 	menu->notification.add("Teleported to Waypoint");
 }
