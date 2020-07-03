@@ -78,7 +78,7 @@ public:
 
 	vec3 speedXYZ()
 	{
-		this->read<vec3>(0x320);
+		return this->read<vec3>(0x320);
 	}
 
 	void speedXYZ(vec3 value)

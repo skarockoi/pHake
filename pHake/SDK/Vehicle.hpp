@@ -50,6 +50,11 @@ public:
 		this->write<float>(0x280, value);
 	}
 
+	vec3 speedXYZ()
+	{
+		return this->read<vec3>(0x7D0);
+	}
+
 	void speedXYZ(vec3 value)
 	{
 		this->write<vec3>(0x7D0, value);
