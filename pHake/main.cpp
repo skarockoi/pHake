@@ -41,31 +41,34 @@ void TeleportToWaypoint()
 	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F5EA30);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		menu->notification.add("Please set a Waypoint");
+		menu->notification.add("No Waypoint set");
 		return;
 	}
 
-	if (inVehicle && world.localPlayer.vehicle.speedXYZ().len() < 0.1)
+	if (!inVehicle && settings.fly)
 	{
-		waypoint.z = -210.f;
-		world.localPlayer.vehicle.position.xyz(waypoint);
-
-	}
-	else if (!inVehicle && world.localPlayer.speedXYZ().len() < 0.1)
-	{
-		if (settings.fly)
-			waypoint.z = 300.f;
-		else
-			waypoint.z = -210.f;
-
+		waypoint.z = 300.f;
 		world.localPlayer.position.xyz(waypoint);
-
 	}
 	else
 	{
-		menu->notification.add("Please don't move");
-		return;
+		if (inVehicle && world.localPlayer.vehicle.speedXYZ().len() < 0.1)
+		{
+			waypoint.z = -210.f;
+			world.localPlayer.vehicle.position.xyz(waypoint);
+		}
+		else if (!inVehicle && world.localPlayer.speedXYZ().len() < 0.1)
+		{
+			waypoint.z = -210.f;
+			world.localPlayer.position.xyz(waypoint);
+		}
+		else
+		{
+			menu->notification.add("Please don't move");
+			return;
+		}
 	}
+
 	menu->notification.add("Teleported to Waypoint");
 }
 
