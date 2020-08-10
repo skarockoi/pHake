@@ -198,7 +198,7 @@ void loopTrigger()
 
 	if (settings.trigger)
 	{
-		int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430);
+		int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 		if (crossid != 0 && crossid <= 2)
 		{
 			if (!check)
