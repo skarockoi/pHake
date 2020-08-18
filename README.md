@@ -22,9 +22,6 @@
 - Num2 : Boost Vehicle<br/>
 - Space : To change speed while flying<br/>
 
-# Download
-<a href="https://github.com/xhz8s/pHake/releases/download/4.4/pHake4.4_1.51.zip">Latest Version (Steam 1.51)</a><br/>
-
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> Version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
 2. Compile it as x64 Release/Debug
