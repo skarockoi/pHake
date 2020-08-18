@@ -1,12 +1,11 @@
-1.5 Steam
+1.51 Steam
 
-uint64_t World = _base + 0x024B0C50
-uint64_t PedList = _base + 0x1F564E0 [0x0, 0x8] (holds 16 Entities, 0x8 distance)
-uint64_t Waypoint = _base + 0x1F5EA30
-uint64_t Trigger = _base + 0x1F47430 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-uint64_t kmh = _base + 0x2576BC0
-OPCODE FreezeXYZ = _base + 0x1429F9F
-OPCODE FreezeSpeedXYZ = _base + 0x7799AE
+uint64_t World = _base + 0x024CD000
+uint64_t Waypoint = _base + 0x1F7A860
+uint64_t Trigger = _base + 0x1F63020 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+uint64_t kmh = _base + 0x2593300
+OPCODE FreezeXYZ = _base + 0x1440763
+OPCODE FreezeSpeedXYZ = _base + 0x788AF2
 
 Player = World + 0x8
 	uint64_t position = 0x30;
@@ -14,34 +13,34 @@ Player = World + 0x8
 	float    health = 0x280;
 	float    healthMax = 0x2A0;
 	uint64_t vehicle = 0xD28;
-	uint8_t  ragdoll = 0x10A8;
-	float    armor = 0x14B8;
+	uint8_t  ragdoll = 0x10B8;
+	float    armor = 0x14E0;
 
 PlayerPos = Player + 0x30
 	float    x = 0x50;
 	float    y = 0x54;
 	float    z = 0x58;
 
-PlayerInfo = Player + 0x10B8
-	float    stamina = 0xC80;
-	float    walkMp = 0x14C;
-	float	 swimMp = 0x148;
+PlayerInfo = Player + 0x10C8
+	float    stamina = 0xCD4;
+	float    walkMp = 0xCD0;
+	float	 swimMp = 0x150;
 
 PlayerVehicle = Player + 0xD28
 	uint64_t position = 0x30;
 	uint8_t  godmode = 0x189;
 	float    engineHealth1 = 0x280;
-	float    engineHealth2 = 0x8E8;
-	uint64_t handling = 0x918;
+	float    engineHealth2 = 0x908;
+	uint64_t handling = 0x938;
 	uint8_t  invisibility = 0x2C;
-	float	 gravity = 0xC1C;
+	float	 gravity = 0xC5C;
 
 PlayerVehiclePos = PlayerVehicle + 0x30
 	float    x = 0x50;
 	float    y = 0x54;
 	float    z = 0x58;
 
-PlayerVehicleHandling = PlayerVehicle + 0x918
+PlayerVehicleHandling = PlayerVehicle + 0x938
 	float    gravity = 0xC;
 	float    suspensionHeight = 0xD0;
 	float    suspensionForce = 0xBC;
@@ -52,16 +51,16 @@ PlayerVehicleHandling = PlayerVehicle + 0x918
 	float    handbrakeForce = 0x7C;
 	float    thrust = 0x338;
 
-PlayerWeaponinfo = Player + [0x10C8, 0x20]
-	float    recoil = 0x2E8;
+PlayerWeaponinfo = Player + [0x10D8, 0x20]
+	float    recoil = 0x2F4;
 	float	 range = 0x28C;
-	float    bulletMass = 0xD8;
+	float    bulletMass = 0xE0;
 	float	 bulletDamage = 0xB0;
-	uint32_t bulletInBatch = 0x118;
-	float	 muzzleVelocity = 0x114;
-	float    reloadMultiplier = 0x12C;
+	uint32_t bulletInBatch = 0x120;
+	float	 muzzleVelocity = 0x11C;
+	float    reloadMultiplier = 0x134;
 	float    batchSpread = 0x74;
-	float    penetration = 0x108;
+	float    penetration = 0x110;
 	float    forceOnPed = 0xD4;
 	float    forceOnVehicle = 0xD8;
 	float    forceOnHeli = 0xDC;

@@ -11,26 +11,22 @@ struct vec3
 {
 	float x, y, z;
 
-	vec3(){}
-	vec3(float X, float Y, float Z)
-	{
-		x = X;
-		y = Y;
-		z = Z;
+	vec3() {}
+	vec3(float X, float Y, float Z) : x(X), y(Y), z(Z) {}
+
+	vec3 operator+(const vec3& ext) {
+		return vec3(x + ext.x, y + ext.y, z + ext.z);
 	}
 
-	vec3 operator+(const vec3 &ext)
-	{
-		return vec3(x + ext.x , y + ext.y, z + ext.z);
-	}
-
-	vec3 operator-(const vec3& ext)
-	{
+	vec3 operator-(const vec3& ext) {
 		return vec3(x - ext.x, y - ext.y, z - ext.z);
 	}
 
-	float len()
-	{
+	vec3 operator*(const float& ext) {
+		return vec3(ext * x, ext * y, ext * z);
+	}
+
+	float len() {
 		return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 	}
 };

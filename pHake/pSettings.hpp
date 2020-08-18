@@ -2,6 +2,8 @@
 #define _PSETTINGS_HPP_
 
 #include <fstream>
+#include <vector>
+#include <algorithm>
 #include <filesystem>
 #include <string>
 #include <sstream>

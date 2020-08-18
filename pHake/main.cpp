@@ -38,7 +38,7 @@ void Suicide()
 void TeleportToWaypoint()
 {
 	bool inVehicle = world.localPlayer.inVehicle();
-	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F5EA30);
+	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F7A860);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification.add("No Waypoint set");
@@ -198,7 +198,7 @@ void loopTrigger()
 
 	if (settings.trigger)
 	{
-		int32_t crossid = mem.read<int32_t>(mem.base + 0x1F47430); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+		int32_t crossid = mem.read<int32_t>(mem.base + 0x1F63020); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 		if (crossid != 0 && crossid <= 2)
 		{
 			if (!check)
@@ -252,13 +252,13 @@ void loopFly()
 		check = true;
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (mem.read<uint8_t>(mem.base + 0x1429F9F) != 0x90)
+			if (mem.read<uint8_t>(mem.base + 0x1440763) != 0x90)
 			{
-				mem.writeBytes(mem.base + 0x1429F9F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
-				mem.writeBytes(mem.base + 0x7799AE, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
+				mem.writeBytes(mem.base + 0x1440763, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+				mem.writeBytes(mem.base + 0x788AF2, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
 
-			vec3 cam_pos = mem.read<vec3>(mem.base + 0x1D22170);
+			vec3 cam_pos = mem.read<vec3>(mem.base + 0x1F6F900);
 			vec3 old_pos = world.localPlayer.position.xyz();
 			vec3 add_pos(
 				settings.flySpeed * (old_pos.x - cam_pos.x),
@@ -279,8 +279,8 @@ void loopFly()
 		{
 			world.localPlayer.speedXYZ(0, 0, 0);
 
-			mem.writeBytes(mem.base + 0x1429F9F, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
-			mem.writeBytes(mem.base + 0x7799AE, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			mem.writeBytes(mem.base + 0x1440763, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
+			mem.writeBytes(mem.base + 0x788AF2, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 
 			check = false;
 		}
@@ -355,8 +355,8 @@ int main()
 	timer.setLoop(loopFly, 10);
 	timer.setLoop(loopKeys, 10);
 	timer.setLoop([]() {
-		world.updateSub(mem.read<uint64_t>(mem.base + 0x024B0C50)); // World pointer
-		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2576BC0);
+		world.updateSub(mem.read<uint64_t>(mem.base + 0x024CD000)); // World pointer
+		settings.kmh = 3.6 * mem.read<float>(mem.base + 0x2593300);
 	}, 1);
 
 	menu = new pOverlay();

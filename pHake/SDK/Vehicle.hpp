@@ -5,7 +5,7 @@
 #include "Position.hpp"
 #include "VehicleHandling.hpp"
 
-class Vehicle : public DataWrapper<0x918 + 0x8>
+class Vehicle : public DataWrapper<0x938 + 0x8>
 {
 public:
 	Vehicle() {}
@@ -18,7 +18,7 @@ public:
 	{
 		this->update(baseAddress);
 		position.update(this->read<uint64_t>(0x30));
-		handling.update(this->read<uint64_t>(0x918));
+		handling.update(this->read<uint64_t>(0x938));
 	}
 
 	Position position;
@@ -52,67 +52,67 @@ public:
 
 	vec3 speedXYZ()
 	{
-		return this->read<vec3>(0x7D0);
+		return this->read<vec3>(0x7F0);
 	}
 
 	void speedXYZ(vec3 value)
 	{
-		this->write<vec3>(0x7D0, value);
+		this->write<vec3>(0x7F0, value);
 	}
 
 	void speedXYZ(float x, float y, float z)
 	{
-		this->write<vec3>(0x7D0, vec3(x, y, z));
+		this->write<vec3>(0x7F0, vec3(x, y, z));
 	}
 
 	float speedX()
 	{
-		return this->read<float>(0x7D0);
+		return this->read<float>(0x7F0);
 	}
 
 	void speedX(float value)
 	{
-		this->write<float>(0x7D0, value);
+		this->write<float>(0x7F0, value);
 	}
 
 	float speedY()
 	{
-		return this->read<float>(0x7D4);
+		return this->read<float>(0x7F4);
 	}
 
 	void speedY(float value)
 	{
-		this->write<float>(0x7D4, value);
+		this->write<float>(0x7F4, value);
 	}
 
 	float speedZ()
 	{
-		return this->read<float>(0x7D8);
+		return this->read<float>(0x7F8);
 	}
 
 	void speedZ(float value)
 	{
-		this->write<float>(0x7D8, value);
+		this->write<float>(0x7F8, value);
 	}
 
 	float gravity()
 	{
-		return this->read<float>(0xC3C);
+		return this->read<float>(0xC5C);
 	}
 
 	void gravity(float value)
 	{
-		this->write<float>(0xC3C, value);
+		this->write<float>(0xC5C, value);
 	}
 
 	float engineHealth2()
 	{
-		return this->read<float>(0x8E8);
+		return this->read<float>(0x908);
 	}
 
 	void engineHealth2(float value)
 	{
-		this->write<float>(0x8E8, value);
+		this->write<float>(0x908, value);
 	}
 
 	VehicleHandling handling;

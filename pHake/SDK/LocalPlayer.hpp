@@ -7,7 +7,7 @@
 #include "PlayerInfo.h"
 #include "WeaponManager.hpp"
 
-class LocalPlayer : public DataWrapper<0x14BC + 0x4>
+class LocalPlayer : public DataWrapper<0x14E0 + 0x4>
 {
 public:
 	LocalPlayer() {}
@@ -23,8 +23,8 @@ public:
 		this->update(baseAddress);
 		position.update(this->read<uint64_t>(0x30));
 		vehicle.updateSub(this->read<uint64_t>(0xD28));
-		playerInfo.update(this->read<uint64_t>(0x10B8));
-		weaponManager.updateSub(this->read<uint64_t>(0x10C8));
+		playerInfo.update(this->read<uint64_t>(0x10C8));
+		weaponManager.updateSub(this->read<uint64_t>(0x10D8));
 	}
 
 	bool freezeMomentum()
@@ -125,7 +125,7 @@ public:
 
 	int32_t inVehicle()
 	{
-		if (this->read<int32_t>(0xE44) != 0)
+		if (this->read<int32_t>(0xE48) != 0)
 			return true;
 		else
 			return false;
@@ -142,9 +142,9 @@ public:
 	void ragdoll(bool value)
 	{
 		if (value)
-			this->write<unsigned char>(0x10A8, 1);
+			this->write<unsigned char>(0x10B8, 1);
 		else
-			this->write<unsigned char>(0x10A8, 32);	
+			this->write<unsigned char>(0x10B8, 32);
 	}
 
 	WeaponManager weaponManager;
@@ -153,12 +153,12 @@ public:
 
 	float armor()
 	{
-		return this->read<float>(0x14B8);
+		return this->read<float>(0x14E0);
 	}
 
 	void armor(float value)
 	{
-		this->write<float>(0x14B8, value);
+		this->write<float>(0x14E0, value);
 	}
 };
 #endif

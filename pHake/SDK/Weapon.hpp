@@ -63,72 +63,72 @@ public:
 
 	float bulletMass()
 	{
-		return this->read<float>(0xD8);
+		return this->read<float>(0xE0);
 	}
 	
 	void bulletMass(float value)
 	{
-		this->write<float>(0xD8, value);
+		this->write<float>(0xE0, value);
 	}
 
 	float reloadMP()
 	{
-		return this->read<float>(0x12C);
+		return this->read<float>(0x134);
 	}
 
 	void reloadMP(float value)
 	{
-		this->write<float>(0x12C, value);
+		this->write<float>(0x134, value);
 	}
 
 	float penetration()
 	{
-		return this->read<float>(0x108);
+		return this->read<float>(0x110);
 	}
 
 	void penetration(float value)
 	{
-		this->write(0x108, value);
+		this->write(0x110, value);
 	}
 
 	float muzzleVelocity()
 	{
-		return this->read<float>(0x114);
+		return this->read<float>(0x11C);
 	}
 
 	void muzzleVelocity(float value)
 	{
-		this->write(0x114, value);
+		this->write(0x11C, value);
 	}
 
 	uint32_t bulletInBatch()
 	{
-		return this->read<uint32_t>(0x118);
+		return this->read<uint32_t>(0x120);
 	}
 
 	void bulletInBatch(uint32_t value)
 	{
-		this->write<uint32_t>(0x118, value);
+		this->write<uint32_t>(0x120, value);
 	}
 
 	float range()
 	{
-		return this->read<float>(0x25C);
+		return this->read<float>(0x28C);
 	}
 
 	void range(float value)
 	{
-		this->write<float>(0x25C, value);
+		this->write<float>(0x28C, value);
 	}
 
 	float recoil()
 	{
-		return this->read<float>(0x2E8);
+		return this->read<float>(0x2F4);
 	}
 
 	void recoil(float value)
 	{
-		this->write<float>(0x2E8, value);
+		this->write<float>(0x2F4, value);
 	}
 };
 #endif
