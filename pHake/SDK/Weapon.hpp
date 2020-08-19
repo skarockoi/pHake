@@ -4,7 +4,7 @@
 #include "../Memory/Process.h"
 #include "AmmoInfo.hpp"
 
-class Weapon : public DataWrapper<0x2E8 + 0x4>
+class Weapon : public DataWrapper<0x2F4 + 0x4>
 {
 public:
 	Weapon() {}

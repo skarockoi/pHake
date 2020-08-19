@@ -7,24 +7,70 @@ uint64_t kmh = _base + 0x2593300
 OPCODE FreezeXYZ = _base + 0x1440763
 OPCODE FreezeSpeedXYZ = _base + 0x788AF2
 
-Player = World + 0x8
-	uint64_t position = 0x30;
-	uint8_t  godmode = 0x189;
-	float    health = 0x280;
-	float    healthMax = 0x2A0;
-	uint64_t vehicle = 0xD28;
-	uint8_t  ragdoll = 0x10B8;
-	float    armor = 0x14E0;
+class CPed // World + 0x8
+{
+public:
+    char pad_0000[32]; //0x0000
+    CPedModelInfo* m_PedModelInfo; //0x0020
+    char pad_0028[8]; //0x0028
+    CNavigation* m_Navigation; //0x0030
+    char pad_0038[88]; //0x0038
+    Vector3 m_VisualPos; //0x0090
+    char pad_009C[52]; //0x009C
+    rage::netObject* m_NetObject; //0x00D0
+    char pad_00D8[176]; //0x00D8
+    uint32_t m_DamageBits; //0x0188
+    char pad_018C[244]; //0x018C
+    float m_Health; //0x0280
+    char pad_0284[2724]; //0x0284
+    CVehicle* m_LastVehicle1; //0x0D28
+    char pad_0D30[920]; //0x0D30
+    CPlayerInfo* m_PlayerInfo; //0x10C8
+    CPedInventory* m_PedInventory; //0x10D0
+    CPedWeaponManager* m_WeaponManager; //0x10D8
+    char pad_10E0[1024]; //0x10E0
+    float m_Armor; //0x14E0
+    char pad_14E4[60]; //0x14E4
+    CVehicle* m_LastVehicle2; //0x1520
+}; //Size: 0x1528
 
 PlayerPos = Player + 0x30
 	float    x = 0x50;
 	float    y = 0x54;
 	float    z = 0x58;
 
-PlayerInfo = Player + 0x10C8
-	float    stamina = 0xCD4;
-	float    walkMp = 0xCD0;
-	float	 swimMp = 0x150;
+
+class CPlayerInfo // Player + 0x10C8
+{
+public:
+    char pad_0000[52]; //0x0000
+    uint32_t m_LanIP; //0x0034
+    char pad_0038[4]; //0x0038
+    uint32_t m_RelayIP; //0x003C
+    char pad_0040[4]; //0x0040
+    uint32_t m_OnlineIP; //0x0044
+    char pad_0048[24]; //0x0048
+    uint64_t m_HostKey; //0x0060
+    char pad_0068[8]; //0x0068
+    uint64_t m_RockstarID; //0x0070
+    char pad_0078[12]; //0x0078
+    char m_Name[20]; //0x0084
+    char pad_0098[184]; //0x0098
+    float m_SwimSpeed; //0x0150
+    char pad_0154[24]; //0x0154
+    float m_StealthWalkSpeed; //0x016C
+    char pad_0170[88]; //0x0170
+    class CPed* m_Entity; //0x01C8
+    char pad_01D0[40]; //0x01D0
+    uint32_t m_FrameFlags; //0x01F8
+    char pad_01FC[1640]; //0x01FC
+    uint32_t m_WantedLevelDisplay; //0x0864
+    uint32_t m_WantedLevel; //0x0868
+    char pad_086C[1124]; //0x086C
+    float m_RunSpeed; //0x0CD0
+    float m_Stamina; //0x0CD4
+    float m_MaxStaminaRegeneration; //0x0CD8
+}; //Size: 0x0CDC
 
 PlayerVehicle = Player + 0xD28
 	uint64_t position = 0x30;

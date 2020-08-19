@@ -117,7 +117,7 @@ public:
 		uint64_t addr = this->base;
 		for (unsigned int i = 0; i < offsets.size(); i++)
 		{
-			ReadProcessMemory(*handle, (PBYTE*)addr + offsets[i], &addr, sizeof(addr), 0);
+			ReadProcessMemory(*handle, (void*)(addr + offsets[i]), &addr, sizeof(addr), 0);
 		}
 		return addr;
 	}
