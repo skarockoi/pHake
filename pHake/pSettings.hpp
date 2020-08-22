@@ -19,6 +19,8 @@ public:
 
 	template <typename T>
 	T				addGet(std::string Key, T Value);
+	void			addComment(std::string Key);
+
 	template <typename T>
 	bool			edit(std::string Key, T Value);
 
@@ -82,6 +84,15 @@ inline T pSettings::addGet(std::string Key, T Value)
 
 	return 0;
 }
+
+void pSettings::addComment(std::string Key)
+{
+	if (!this->checkExistanceOfKey(Key))
+	{
+		this->fileContent->push_back(Key);
+	}
+}
+
 
 template<typename T>
 inline bool pSettings::edit(std::string Key, T Value)

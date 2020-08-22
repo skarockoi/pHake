@@ -26,6 +26,14 @@ struct settings
 	std::array<std::string, 3> playerStates = { "default", "fast", "max" };
 	std::array<std::string, 4> vehicleStates = { "default", "race", "max", "fly" };
 
+	struct keys
+	{
+		uint32_t menu = 0;
+		uint32_t teleport = 0;
+		uint32_t boostPlayer = 0;
+		uint32_t boostVehicle = 0;
+	}keys;
+
 }settings;
 
 
@@ -289,7 +297,7 @@ void loopFly()
 
 void loopKeys()
 {
-	if (HIBYTE(GetAsyncKeyState(VK_MENU)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.menu)))
 	{
 		menu->toggle();
 		sleep(150);
@@ -299,17 +307,17 @@ void loopKeys()
 		BoostPlayer();
 		sleep(150);
 	}
-	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD0)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.teleport)))
 	{
 		TeleportToWaypoint();
 		sleep(150);
 	}
-	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD1)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.boostPlayer)))
 	{
 		BoostPlayer();
 		sleep(150);
 	}
-	if (HIBYTE(GetAsyncKeyState(VK_NUMPAD2)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.boostVehicle)))
 	{
 		BoostVehicle();
 		sleep(150);
@@ -331,8 +339,6 @@ void ExitProgram()
 
 int main()
 {
-	FreeConsole();
-
 	if (!mem.getProcess("GTA5.exe"))
 		ExitProgram();
 
@@ -345,6 +351,11 @@ int main()
 	settings.trigger = cfg->addGet<bool>("Trigger", 0);
 	settings.weaponmax = cfg->addGet<bool>("WeaponMax", 0);
 	settings.fly = cfg->addGet<bool>("Fly", 0);
+	cfg->addComment("\nKeycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
+	settings.keys.menu = cfg->addGet<uint32_t>("Menu Key", VK_MENU);
+	settings.keys.teleport = cfg->addGet<uint32_t>("Teleport Key", VK_NUMPAD0);
+	settings.keys.boostPlayer = cfg->addGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
+	settings.keys.boostVehicle = cfg->addGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 
 	pTimer timer;
 	timer.setLoop(loopGodmode, 250);
