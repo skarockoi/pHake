@@ -14,6 +14,7 @@
 # Usage
 - Fullscreen Windowed<br/>
 - Start in game<br/>
+- Keys can be changed in cfg.txt<br/>
 
 - ALT : Toggle Menu<br/>
 - Left/Right Mouse: Toggle Features<br/>
