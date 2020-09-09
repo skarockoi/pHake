@@ -260,10 +260,10 @@ void loopFly()
 		check = true;
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (mem.read<uint8_t>(mem.base + 0x1440763) != 0x90)
+			if (mem.read<uint8_t>(mem.base + 0x143F5BB) != 0x90)
 			{
-				mem.writeBytes(mem.base + 0x1440763, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
-				mem.writeBytes(mem.base + 0x788AF2, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
+				mem.writeBytes(mem.base + 0x143F5BB, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+				mem.writeBytes(mem.base + 0x787D12, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
 
 			vec3 cam_pos = mem.read<vec3>(mem.base + 0x1F6F900);
@@ -287,8 +287,8 @@ void loopFly()
 		{
 			world.localPlayer.speedXYZ(0, 0, 0);
 
-			mem.writeBytes(mem.base + 0x1440763, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
-			mem.writeBytes(mem.base + 0x788AF2, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			mem.writeBytes(mem.base + 0x143F5BB, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
+			mem.writeBytes(mem.base + 0x787D12, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 
 			check = false;
 		}
@@ -339,6 +339,8 @@ void ExitProgram()
 
 int main()
 {
+	FreeConsole();
+
 	if (!mem.getProcess("GTA5.exe"))
 		ExitProgram();
 
@@ -351,7 +353,7 @@ int main()
 	settings.trigger = cfg->addGet<bool>("Trigger", 0);
 	settings.weaponmax = cfg->addGet<bool>("WeaponMax", 0);
 	settings.fly = cfg->addGet<bool>("Fly", 0);
-	cfg->addComment("\nKeycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
+	cfg->addComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
 	settings.keys.menu = cfg->addGet<uint32_t>("Menu Key", VK_MENU);
 	settings.keys.teleport = cfg->addGet<uint32_t>("Teleport Key", VK_NUMPAD0);
 	settings.keys.boostPlayer = cfg->addGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);

@@ -26,7 +26,7 @@ void pList::addFloat(const std::string& name, float& value, float inc, float dec
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 	buffer.setFillColor(sf::Color::Color(255, 255, 255, 255));
 
-	item_floats.push_back(buffer);
+	items_float.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -43,7 +43,7 @@ void pList::addFloat(const std::string& name, float& value, float inc, float dec
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 	buffer.setFillColor(sf::Color::Color(255, 255, 255, 255));
 
-	item_floats.push_back(buffer);
+	items_float.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -59,7 +59,7 @@ void pList::addInt(const std::string& name, int& value, int inc, int dec)
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 	buffer.setFillColor(sf::Color::Color(255, 255, 255, 255));
 
-	item_ints.push_back(buffer);
+	items_int.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -75,7 +75,7 @@ void pList::addBool(const std::string& name, bool& value)
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 	buffer.setFillColor(sf::Color::Color(255, 255, 255, 255));
 
-	item_bools.push_back(buffer);
+	items_bool.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -90,7 +90,7 @@ void pList::addFunction(const std::string& name, void(&functionP)())
 	buffer.setFixedSize(48, 19);
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 
-	item_buttons.push_back(buffer);
+	items_button.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -105,7 +105,7 @@ void pList::addString(const std::string& name, std::string& value)
 	buffer.setFixedSize(48, 20);
 	buffer.setPosition(rect_back.getSize().x - buffer.getSize().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 
-	item_string.push_back(buffer);
+	items_string.push_back(buffer);
 
 	this->addWord(name);
 	this->resize();
@@ -115,20 +115,20 @@ void pList::loop()
 {
 	if (this->isActive() && this->isUsed())
 	{
-		for (int i = 0; i < item_bools.size(); i++)
-			item_bools[i].loop();
+		for (int i = 0; i < items_bool.size(); i++)
+			items_bool[i].loop();
 
-		for (int i = 0; i < item_floats.size(); i++)
-			item_floats[i].loop();
+		for (int i = 0; i < items_float.size(); i++)
+			items_float[i].loop();
 
-		for (int i = 0; i < item_ints.size(); i++)
-			item_ints[i].loop();
+		for (int i = 0; i < items_int.size(); i++)
+			items_int[i].loop();
 
-		for (int i = 0; i < item_buttons.size(); i++)
-			item_buttons[i].loop();
+		for (int i = 0; i < items_button.size(); i++)
+			items_button[i].loop();
 
-		for (int i = 0; i < item_string.size(); i++)
-			item_string[i].loop();
+		for (int i = 0; i < items_string.size(); i++)
+			items_string[i].loop();
 	}
 }
 
@@ -138,23 +138,23 @@ void pList::draw()
 	{
 		window->draw(rect_back);
 
-		for (int i = 0; i < item_names.size(); i++)
-			window->draw(item_names[i]);
+		for (int i = 0; i < items_name.size(); i++)
+			window->draw(items_name[i]);
 
-		for (int i = 0; i < item_bools.size(); i++)
-			item_bools[i].draw();
+		for (int i = 0; i < items_bool.size(); i++)
+			items_bool[i].draw();
 
-		for (int i = 0; i < item_floats.size(); i++)
-			item_floats[i].draw();
+		for (int i = 0; i < items_float.size(); i++)
+			items_float[i].draw();
 
-		for (int i = 0; i < item_ints.size(); i++)
-			item_ints[i].draw();
+		for (int i = 0; i < items_int.size(); i++)
+			items_int[i].draw();
 
-		for (int i = 0; i < item_buttons.size(); i++)
-			item_buttons[i].draw();
+		for (int i = 0; i < items_button.size(); i++)
+			items_button[i].draw();
 
-		for (int i = 0; i < item_string.size(); i++)
-			item_string[i].draw();
+		for (int i = 0; i < items_string.size(); i++)
+			items_string[i].draw();
 	}
 }
 
@@ -163,12 +163,12 @@ void pList::addGap()
 	gapCount++;
 }
 
-void pList::setPosition(int x, int y)
+void pList::setPosition(float x, float y)
 {
 	rect_back.setPosition(x, y);
 }
 
-void pList::setSize(int x, int y)
+void pList::setSize(float x, float y)
 {
 	rect_back.setSize(sf::Vector2f(x, y));
 }
@@ -195,7 +195,7 @@ void pList::addWord(const std::string& name)
 	buffer.setPosition(rect_back.getPosition().x, rect_back.getPosition().y + ((gapCount * 5) + count * 20));
 	buffer.setString(name);
 
-	item_names.push_back(buffer);
+	items_name.push_back(buffer);
 
 	count++;
 }
@@ -217,7 +217,7 @@ void pList::setActive(bool act)
 
 void pList::resize()
 {
-	rect_back.setSize(sf::Vector2f(rect_back.getSize().x, (item_names.size() * 20) + (gapCount * 5)));
+	rect_back.setSize(sf::Vector2f(rect_back.getSize().x, (items_name.size() * 20) + (gapCount * 5)));
 }
 
 void pList::setUsed(bool act)

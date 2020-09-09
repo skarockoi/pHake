@@ -4,8 +4,8 @@ uint64_t World = _base + 0x024CD000
 uint64_t Waypoint = _base + 0x1F7A860
 uint64_t Trigger = _base + 0x1F63020 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 uint64_t kmh = _base + 0x2593300
-OPCODE FreezeXYZ = _base + 0x1440763
-OPCODE FreezeSpeedXYZ = _base + 0x788AF2
+OPCODE FreezeXYZ = _base + 0x143F5BB 
+OPCODE FreezeSpeedXYZ = _base + 0x787D12
 
 class CPed // World + 0x8
 {

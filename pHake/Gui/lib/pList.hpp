@@ -16,12 +16,12 @@ private:
 	sf::Font		   font;
 	sf::RectangleShape rect_back;
 
-	std::vector<sf::Text>    item_names;
-	std::vector<pItemBool>   item_bools;
-	std::vector<pItemFloat>	 item_floats;
-	std::vector<pItemInt>	 item_ints;
-	std::vector<pItemString> item_string;
-	std::vector<pButton>	 item_buttons;
+	std::vector<sf::Text>    items_name;
+	std::vector<pItemBool>   items_bool;
+	std::vector<pItemFloat>	 items_float;
+	std::vector<pItemInt>	 items_int;
+	std::vector<pItemString> items_string;
+	std::vector<pButton>	 items_button;
 
 	uint8_t count = 0;
 	uint8_t gapCount = 0;
@@ -43,8 +43,8 @@ public:
 public:
 	bool isUsed();
 	bool isActive();
-	void setPosition(int x, int y);
-	void setSize(int x, int y);
+	void setPosition(float x, float y);
+	void setSize(float x, float y);
 	sf::Vector2f getSize();
 	sf::Vector2f getPosition();
 
