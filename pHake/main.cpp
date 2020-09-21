@@ -195,18 +195,29 @@ void loopRpLoop()
 
 void loopTrigger()
 {
-	static bool check = false;
+	if (settings.trigger)
+	{
+		static bool can_shoot = true;
+		static bool already_shooting = false;
 
-	int32_t crossid = mem.read<int32_t>(mem.base + 0x1F63020); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-	if (crossid != 0 && crossid < 3 && !check)
-	{
-		Key::Down::LMouse();
-		check = true;
-	}
-	else if(check)
-	{
-		Key::Up::LMouse();
-		check = false;
+		int32_t cross_id = mem.read<int32_t>(mem.base + 0x1F63020); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+
+		if (cross_id > 0)
+			can_shoot = true;
+		else
+			can_shoot = false;
+
+
+		if (can_shoot && !already_shooting)
+		{
+			Key::Down::LMouse();
+			already_shooting = true;
+		}
+		else if (!can_shoot && already_shooting)
+		{
+			Key::Up::LMouse();
+			already_shooting = false;
+		}
 	}
 }
 
