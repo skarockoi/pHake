@@ -200,13 +200,10 @@ void loopTrigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t cross_id = mem.read<int32_t>(mem.base + 0x1F63020); // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-
-		if (cross_id > 0)
+		if (mem.read<int32_t>(mem.base + 0x1F63020) > 0) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
 			can_shoot = false;
-
 
 		if (can_shoot && !already_shooting)
 		{
