@@ -44,7 +44,7 @@ pSettings::pSettings(const std::string filePathAndName)
 {
 	filePath = filePathAndName;
 
-	if (std::filesystem::exists(filePathAndName)) // Check if the cfg file exitst, otherwise create a new file(does not work if the path is behind a directory that does not exist
+	if (std::filesystem::exists(filePathAndName)) // check if the cfg file exitst, otherwise create a new file(does not work if the path is behind a directory that does not exist
 	{
 		fileContent = new std::vector<std::string>;
 		std::ifstream file(filePathAndName);
