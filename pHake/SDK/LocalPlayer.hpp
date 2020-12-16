@@ -22,7 +22,7 @@ public:
 	{
 		this->update(baseAddress);
 		position.update(this->read<uint64_t>(0x30));
-		vehicle.updateSub(this->read<uint64_t>(0xD28));
+		vehicle.updateSub(this->read<uint64_t>(0xD30));
 		playerInfo.update(this->read<uint64_t>(0x10C8));
 		weaponManager.updateSub(this->read<uint64_t>(0x10D8));
 	}
@@ -125,7 +125,7 @@ public:
 
 	int32_t inVehicle()
 	{
-		if (this->read<int32_t>(0xE48) != 0)
+		if (this->read<int32_t>(0xE50) != 0)
 			return true;
 		else
 			return false;
