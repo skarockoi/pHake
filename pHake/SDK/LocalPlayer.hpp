@@ -12,11 +12,11 @@ class LocalPlayer : public DataWrapper<0x14E0 + 0x4>
 {
 public:
 	LocalPlayer() {}
-	LocalPlayer(HANDLE &h):DataWrapper(h){
-		position = Position(h);
-		vehicle = Vehicle(h);
-		playerInfo = PlayerInfo(h);
-		weaponManager = WeaponManager(h);
+	LocalPlayer(Process* const& proc) :DataWrapper(proc) {
+		position = Position(proc);
+		vehicle = Vehicle(proc);
+		playerInfo = PlayerInfo(proc);
+		weaponManager = WeaponManager(proc);
 	}
 
 	void updateSub(uint64_t baseAddress)

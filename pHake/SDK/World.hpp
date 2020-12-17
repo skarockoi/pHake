@@ -9,8 +9,8 @@ class World : public DataWrapper<0x8 + 0x8>
 {
 public:
 	World() {}
-	World(HANDLE& h) :DataWrapper(h) {
-		localPlayer = LocalPlayer(h);
+	World(Process* const& proc) :DataWrapper(proc) {
+		localPlayer = LocalPlayer(proc);
 	}
 
 	void updateSub(uint64_t baseAddress)

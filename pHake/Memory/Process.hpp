@@ -65,7 +65,7 @@ public:
 		WriteProcessMemory(handle, (void*)addr, &patch[0], patch.size(), 0);
 	}
 
-	uint64_t readMultiPointer(uint64_t ptr, std::vector<uint32_t> offsets)
+	uint64_t readMultiAdrr(uint64_t ptr, std::vector<uint32_t> offsets)
 	{
 		uint64_t buffer = ptr;
 		for (unsigned int i = 0; i < offsets.size(); i++)
@@ -74,6 +74,15 @@ public:
 		}
 		return buffer;
 	}
-};
 
+	template <typename T>
+	T readMulti(uint64_t base, std::vector<uint32_t> offsets) {
+		uint64_t buffer = base;
+		for (int i = 0; i < offsets.size() - 1; i++)
+		{
+			buffer = this->read<uint64_t>(buffer + offsets[i]);
+		}
+		return this->read<T>(buffer + offsets.back());
+	}
+};
 #endif

@@ -8,7 +8,7 @@ class AmmoInfo : public DataWrapper<0x18 + 0x4>
 {
 public:
 	AmmoInfo() {}
-	AmmoInfo(HANDLE& h) :DataWrapper(h) {}
+	AmmoInfo(Process* const& proc) :DataWrapper(proc) {}
 
 	uint32_t ammo()
 	{

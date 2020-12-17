@@ -9,15 +9,15 @@ class Weapon : public DataWrapper<0x2F4 + 0x4>
 {
 public:
 	Weapon() {}
-	Weapon(HANDLE& h) :DataWrapper(h) {
-		ammoInfo = AmmoInfo(h);
+	Weapon(Process* const& proc) :DataWrapper(proc) {
+		ammoInfo = AmmoInfo(proc);
 
 	}
 
 	void updateSub(uint64_t baseAddress)
 	{
 		this->update(baseAddress);
-		ammoInfo.update(this->readMultiPointer({ 0x60, 0x8, 0x0 }));
+		ammoInfo.update(process->readMultiAdrr(this->base, { 0x60, 0x8, 0x0 }));
 	}
 
 	int32_t type()

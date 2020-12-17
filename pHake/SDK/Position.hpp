@@ -8,7 +8,7 @@ class Position : public DataWrapper<0x58 + 0x4>
 {
 public:
 	Position(){}
-	Position(HANDLE& h) :DataWrapper(h) {}
+	Position(Process* const& proc) :DataWrapper(proc) {}
 
 	vec3 xyz()
 	{

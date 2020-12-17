@@ -8,8 +8,8 @@ class WeaponManager : public DataWrapper<0x20 + 0x8>
 {
 public:
 	WeaponManager() {}
-	WeaponManager(HANDLE& h) :DataWrapper(h) {
-		currentWeapon = Weapon(h);
+	WeaponManager(Process* const& proc) :DataWrapper(proc) {
+		currentWeapon = Weapon(proc);
 	}
 
 	void updateSub(uint64_t baseAddress)

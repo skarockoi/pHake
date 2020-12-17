@@ -9,7 +9,7 @@
 
 pOverlay* menu;
 pSettings* cfg;
-Process   mem;
+Process   proc;
 World     world;
 
 struct settings
@@ -44,7 +44,7 @@ void Suicide()
 void TeleportToWaypoint()
 {
 	bool inVehicle = world.localPlayer.inVehicle();
-	vec3 waypoint = mem.read<vec3>(mem.base + 0x1F97750);
+	vec3 waypoint = proc.read<vec3>(proc.base + 0x1F97750);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification.add("No Waypoint set");
@@ -200,7 +200,7 @@ void loopTrigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		if (mem.read<int32_t>(mem.base + + 0x1F7FEE0) > 0) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+		if (proc.read<int32_t>(proc.base + + 0x1F7FEE0) > 0) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
 			can_shoot = false;
@@ -253,13 +253,13 @@ void loopFly()
 		check = true;
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (mem.read<uint8_t>(mem.base + 0x145648F) != 0x90)
+			if (proc.read<uint8_t>(proc.base + 0x145648F) != 0x90)
 			{
-				mem.writeBytes(mem.base + 0x145648F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
-				mem.writeBytes(mem.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
+				proc.writeBytes(proc.base + 0x145648F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+				proc.writeBytes(proc.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
 
-			vec3 cam_pos = mem.read<vec3>(mem.base + 0x1D59A30);
+			vec3 cam_pos = proc.read<vec3>(proc.base + 0x1D59A30);
 			vec3 old_pos = world.localPlayer.position.xyz();
 			vec3 add_pos(
 				settings.flySpeed * (old_pos.x - cam_pos.x),
@@ -280,8 +280,8 @@ void loopFly()
 		{
 			check = false;
 			world.localPlayer.speedXYZ(0, 0, 0);
-			mem.writeBytes(mem.base + 0x145648F, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
-			mem.writeBytes(mem.base + 0x790B2A, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			proc.writeBytes(proc.base + 0x145648F, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
+			proc.writeBytes(proc.base + 0x790B2A, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 		}
 	}
 }
@@ -324,7 +324,7 @@ void ExitProgram()
 	cfg->edit<bool>("WeaponMax", settings.weaponmax);
 	cfg->edit<bool>("Fly", settings.fly);
 	cfg->save();
-	mem.close();
+	proc.close();
 	exit(-1);
 }
 
@@ -332,10 +332,10 @@ int main()
 {
 	FreeConsole();
 
-	if (!mem.getProcess("GTA5.exe"))
+	if (!proc.getProcess("GTA5.exe"))
 		ExitProgram();
 
-	world = World(mem.handle);
+	world = World(&proc);
 
 	cfg = new pSettings("Settings\\cfg.txt");
 	settings.godmode =	cfg->addGet<bool>("Godmode", 0);
@@ -359,8 +359,8 @@ int main()
 	timer.setLoop(loopFly, 10);
 	timer.setLoop(loopKeys, 10);
 	timer.setLoop([]() {
-		world.updateSub(mem.read<uint64_t>(mem.base + 0x24E9E50)); // World pointer
-		settings.kmh = 3.6 * mem.read<float>(mem.base + + 0x25B0590);
+		world.updateSub(proc.read<uint64_t>(proc.base + 0x24E9E50)); // World pointer
+		settings.kmh = 3.6 * proc.read<float>(proc.base + + 0x25B0590);
 	}, 1);
 
 	menu = new pOverlay();
