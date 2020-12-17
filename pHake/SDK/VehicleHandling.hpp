@@ -1,7 +1,8 @@
 #ifndef _VEHICLEHANDLING_HPP_
 #define _VEHICLEHANDLING_HPP_
 
-#include "../Memory/Process.h"
+#include "../Memory/Process.hpp"
+#include "../Memory/Datawrapper.hpp"
 
 class VehicleHandling : public DataWrapper<0x338 + 0x4>
 {

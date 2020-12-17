@@ -1,10 +1,11 @@
 #ifndef _LOCALPLAYER_HPP_
 #define _LOCALPLAYER_HPP_
 
-#include "../Memory/Process.h"
+#include "../Memory/Process.hpp"
+#include "../Memory/Datawrapper.hpp"
 #include "Position.hpp"
 #include "Vehicle.hpp"
-#include "PlayerInfo.h"
+#include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
 class LocalPlayer : public DataWrapper<0x14E0 + 0x4>

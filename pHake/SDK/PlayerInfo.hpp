@@ -1,7 +1,8 @@
 #ifndef _PLAYERINFO_HPP_
 #define _PLAYERINFO_HPP_
 
-#include "../Memory/Process.h"
+#include "../Memory/Process.hpp"
+#include "../Memory/Datawrapper.hpp"
 
 class PlayerInfo : public DataWrapper<0xC80 + 0x4>
 {

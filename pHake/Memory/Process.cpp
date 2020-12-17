@@ -1,4 +1,4 @@
-#include "Process.h"
+#include "Process.hpp"
 
 bool Process::getProcess(const char* ProcessName)
 {

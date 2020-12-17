@@ -1,7 +1,7 @@
 #include "Gui/pOverlay.hpp"
 #include <Windows.h>
 #include <array>
-#include "Memory/Process.h"
+#include "Memory/Process.hpp"
 #include "SDK/World.hpp"
 #include "Helper.hpp"
 #include "pTimer.hpp"

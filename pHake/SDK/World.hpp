@@ -1,7 +1,8 @@
 #ifndef _WORLD_HPP_
 #define _WORLD_HPP_
 
-#include "../Memory/Process.h"
+#include "../Memory/Process.hpp"
+#include "../Memory/Datawrapper.hpp"
 #include "LocalPlayer.hpp"
 
 class World : public DataWrapper<0x8 + 0x8>

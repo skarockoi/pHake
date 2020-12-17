@@ -1,7 +1,8 @@
 #ifndef _POSITION_HPP_
 #define _POSITION_HPP_
 
-#include "../Memory/Process.h"
+#include "../Memory/Process.hpp"
+#include "../Memory/Datawrapper.hpp"
 
 class Position : public DataWrapper<0x58 + 0x4>
 {

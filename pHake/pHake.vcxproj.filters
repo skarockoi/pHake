@@ -39,16 +39,10 @@
     <ClInclude Include="Helper.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Memory\Process.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\AmmoInfo.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\LocalPlayer.hpp">
-      <Filter>Header Files\SDK</Filter>
-    </ClInclude>
-    <ClInclude Include="SDK\PlayerInfo.h">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Position.hpp">
@@ -89,6 +83,15 @@
     </ClInclude>
     <ClInclude Include="pSettings.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Datawrapper.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Process.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\PlayerInfo.hpp">
+      <Filter>Header Files\SDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

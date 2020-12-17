@@ -160,12 +160,13 @@
     <ClInclude Include="Gui\pOverlay.hpp" />
     <ClInclude Include="Gui\pWindow.hpp" />
     <ClInclude Include="Helper.hpp" />
-    <ClInclude Include="Memory\Process.h" />
+    <ClInclude Include="Memory\Datawrapper.hpp" />
+    <ClInclude Include="Memory\Process.hpp" />
     <ClInclude Include="pSettings.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\_info_.txt" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
-    <ClInclude Include="SDK\PlayerInfo.h" />
+    <ClInclude Include="SDK\PlayerInfo.hpp" />
     <ClInclude Include="SDK\Position.hpp" />
     <ClInclude Include="SDK\Vehicle.hpp" />
     <ClInclude Include="SDK\VehicleHandling.hpp" />
