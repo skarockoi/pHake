@@ -245,7 +245,6 @@ void loopWeaponMax()
 
 void loopFly()
 {
-
 	static bool check = false;
 
 	if (settings.fly)

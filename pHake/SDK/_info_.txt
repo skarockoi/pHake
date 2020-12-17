@@ -1,11 +1,11 @@
-1.51 Steam
+1.52 Steam
 
-uint64_t World = _base + 0x024CD000
-uint64_t Waypoint = _base + 0x1F7A860
-uint64_t Trigger = _base + 0x1F63020 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-uint64_t kmh = _base + 0x2593300
-OPCODE FreezeXYZ = _base + 0x143F5BB 
-OPCODE FreezeSpeedXYZ = _base + 0x787D12
+uint64_t World = _base + 0x24E9E50
+uint64_t Waypoint = _base + 0x1F97750
+uint64_t Trigger = _base + 0x1F7FEE0 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+uint64_t kmh = _base + 0x25B0590
+OPCODE FreezeXYZ = _base + 0x145648F 
+OPCODE FreezeSpeedXYZ = _base + 0x790B2A
 
 class CPed // World + 0x8
 {
@@ -23,8 +23,7 @@ public:
     char pad_018C[244]; //0x018C
     float m_Health; //0x0280
     char pad_0284[2724]; //0x0284
-    CVehicle* m_LastVehicle1; //0x0D28
-    char pad_0D30[920]; //0x0D30
+    CVehicle* m_LastVehicle1; //0x0D30
     CPlayerInfo* m_PlayerInfo; //0x10C8
     CPedInventory* m_PedInventory; //0x10D0
     CPedWeaponManager* m_WeaponManager; //0x10D8
