@@ -24,16 +24,29 @@ public:
 
 	Position position;
 
+	bool freezeMomentum()
+	{
+		if (this->read<uint8_t>(0x2E) == 2)
+			return true;
+		else
+			return true;
+	}
+
+	void freezeMomentum(bool value)
+	{
+		if (value)
+			this->write<uint8_t>(0x2E, 2);
+
+		else
+			this->write<uint8_t>(0x2E, 1);
+	}
+
 	bool god()
 	{
-		if (this->read<bool>(0x189) != 1)
-		{
+		if (this->read<uint8_t>(0x189) != 1)
 			return false;
-		}
 		else
-		{
 			return true;
-		}
 	}
 
 	void god(bool value)

@@ -49,7 +49,10 @@ public:
 
 	bool god()
 	{
-		return this->read<bool>(0x189);
+		if (this->read<uint8_t>(0x189) != 1)
+			return false;
+		else
+			return true;
 	}
 
 	void god(bool value)
