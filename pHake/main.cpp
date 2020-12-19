@@ -245,7 +245,7 @@ void loopWeaponMax()
 
 void loopFly()
 {
-	static bool setup = 0 ;
+	static bool setup = false;
 	if (!setup)
 	{
 		uint64_t position_base = 0;
@@ -260,15 +260,11 @@ void loopFly()
 		std::vector<uint8_t> mov_rcx_localplayer{ 0x48, 0xB9 };
 		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(position_base_patch), std::end(position_base_patch));
 
-		std::vector<uint8_t> cmp_rax_rcx_je{ 0x48, 0x39, 0xC1, 0x74, 0x4 };
-		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je), std::end(cmp_rax_rcx_je));
-
-		std::vector<uint8_t> movaps_add_pop_ret{ 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 };
-		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(movaps_add_pop_ret), std::end(movaps_add_pop_ret));
+		std::vector<uint8_t> cmp_rax_rcx_je_movaps_add_pop_ret{ 0x48, 0x39, 0xC1, 0x74, 0x4, 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 };
+		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je_movaps_add_pop_ret), std::end(cmp_rax_rcx_je_movaps_add_pop_ret));
 
 		proc.writeBytes(proc.base, mov_rcx_localplayer);
-
-		setup = 1;
+		setup = true;
 	}
 
 	static bool check = false;
