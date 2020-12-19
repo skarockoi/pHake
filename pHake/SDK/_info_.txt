@@ -7,6 +7,45 @@ uint64_t kmh = _base + 0x25B0590
 OPCODE FreezeXYZ = _base + 0x145648F 
 OPCODE FreezeSpeedXYZ = _base + 0x790B2A
 
+
+------------------------SMOOTH FLY--------------------------------------------------------------------------
+Update Entity Position(GTA5.exe + 145648F):
+1. push rbx
+2. sub rsp,60
+3. lea rdx,[rsp+20]
+4. mov rbx,rcx
+5. call GTA5.exe+1443518
+6. mov rax,[rbx+10]
+7. movaps xmm0,[rsp+20]
+8. movaps xmm2,[rsp+40]
+9. movaps xmm1,[rsp+30]
+10. movaps [rax+20],xmm0
+11. movaps xmm0,xmm2
+12. movaps [rax+30],xmm1
+13. shufps xmm0,[rax+40],-02
+14. shufps xmm2,xmm0,-7C
+15. movaps xmm1,[rsp+50]
+16. movaps xmm0,xmm1
+17. movaps [rax+40],xmm2
+18. shufps xmm0,[rax+50],-02
+19. shufps xmm1,xmm0,-7C
+20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0:
+21. add rsp, 60              |    ret
+22. pop rbx
+23. ret 
+
+Code(GTA5.exe + 0):
+30. mov rcx, &localplayer_position_class
+31. cmp rcx, rax
+32. je GTA5.exe + 13.
+33. movaps [rax+50],xmm1
+34. add rsp, 60
+35. pop rbx
+36. ret
+
+----------------------------CLASSES---------------------------------------------------------------------------
+
+
 class CPed // World + 0x8
 {
 public:

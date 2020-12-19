@@ -40,10 +40,11 @@ public:
 		WriteProcessMemory(process->handle, (void*)(base + offset), &value, sizeof(T), 0);
 	}
 
+public:
+	uint64_t base = 0x0;
 protected:
 	std::unique_ptr<uint8_t[]> data;
 	Process* process = 0;
-	uint64_t base = 0x0;
 	uint64_t max_offset = 0x0;
 };
 #endif

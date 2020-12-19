@@ -100,13 +100,13 @@ void BoostPlayer()
 		world.localPlayer.playerInfo.walkMP(2.5);
 		world.localPlayer.playerInfo.swimMP(2.5);
 		world.localPlayer.ragdoll(1);
-		settings.flySpeed = 0.25;
+		settings.flySpeed = 0.15;
 		break;
 	case 2:
 		world.localPlayer.playerInfo.walkMP(2500);
 		world.localPlayer.playerInfo.swimMP(2500);
 		world.localPlayer.ragdoll(1);
-		settings.flySpeed = 0.5;
+		settings.flySpeed = 0.3;
 		break;
 	}
 	menu->notification.add("Player mode set to " + modes[curr_mode]);
@@ -245,6 +245,32 @@ void loopWeaponMax()
 
 void loopFly()
 {
+	static bool setup = 0 ;
+	if (!setup)
+	{
+		uint64_t position_base = 0;
+		while (position_base == 0)
+		{
+			position_base = world.localPlayer.position.base;
+			sleep(10);
+		}
+		uint8_t position_base_patch[8];
+		unpack_uint64(position_base, position_base_patch);
+
+		std::vector<uint8_t> mov_rcx_localplayer{ 0x48, 0xB9 };
+		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(position_base_patch), std::end(position_base_patch));
+
+		std::vector<uint8_t> cmp_rax_rcx_je{ 0x48, 0x39, 0xC1, 0x74, 0x4 };
+		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je), std::end(cmp_rax_rcx_je));
+
+		std::vector<uint8_t> movaps_add_pop_ret{ 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 };
+		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(movaps_add_pop_ret), std::end(movaps_add_pop_ret));
+
+		proc.writeBytes(proc.base, mov_rcx_localplayer);
+
+		setup = 1;
+	}
+
 	static bool check = false;
 
 	if (settings.fly)
@@ -252,9 +278,9 @@ void loopFly()
 		check = true;
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (proc.read<uint8_t>(proc.base + 0x145648F) != 0x90)
+			if (proc.read<uint8_t>(proc.base + 0x145648F) != 0xE9)
 			{
-				proc.writeBytes(proc.base + 0x145648F, { 0x90, 0x90, 0x90, 0x90 }); // removes writing to xyz
+				proc.writeBytes(proc.base + 0x145648F, { 0xE9, 0x6C, 0x9B , 0xBA, 0xFE });
 				proc.writeBytes(proc.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
 			}
 
@@ -279,7 +305,7 @@ void loopFly()
 		{
 			check = false;
 			world.localPlayer.speedXYZ(0, 0, 0);
-			proc.writeBytes(proc.base + 0x145648F, { 0x0F, 0x29, 0x48, 0x50 }); // restoring the original values
+			proc.writeBytes(proc.base + 0x145648F, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restoring the original values
 			proc.writeBytes(proc.base + 0x790B2A, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 		}
 	}

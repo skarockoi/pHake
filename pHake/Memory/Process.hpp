@@ -39,7 +39,7 @@ private:
 
 public:
 	HANDLE	  handle;
-	DWORD_PTR base;
+	uint64_t base;
 	DWORD	  pid;
 
 	bool    getProcess(const char* ProcessName);
@@ -65,10 +65,10 @@ public:
 		WriteProcessMemory(handle, (void*)addr, &patch[0], patch.size(), 0);
 	}
 
-	uint64_t readMultiAdrr(uint64_t ptr, std::vector<uint32_t> offsets)
+	uint64_t readMultiAddr(uint64_t ptr, std::vector<uint32_t> offsets)
 	{
 		uint64_t buffer = ptr;
-		for (unsigned int i = 0; i < offsets.size(); i++)
+		for (int i = 0; i < offsets.size(); i++)
 		{
 			buffer = this->read<uint64_t>(buffer + offsets[i]);
 		}
