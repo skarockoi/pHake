@@ -243,7 +243,7 @@ void loopWeaponMax()
 	}
 }
 
-void loopFly()
+void loopFly() // code explained in "SDK/_info_.txt"
 {
 	static bool setup = false;
 	if (!setup)
@@ -263,12 +263,11 @@ void loopFly()
 		std::vector<uint8_t> cmp_rax_rcx_je_movaps_add_pop_ret{ 0x48, 0x39, 0xC1, 0x74, 0x4, 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 };
 		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je_movaps_add_pop_ret), std::end(cmp_rax_rcx_je_movaps_add_pop_ret));
 
-		proc.writeBytes(proc.base, mov_rcx_localplayer);
+		proc.writeBytes((uint64_t)proc.base + 0x1A, mov_rcx_localplayer);
 		setup = true;
 	}
 
 	static bool check = false;
-
 	if (settings.fly)
 	{
 		check = true;
@@ -276,8 +275,8 @@ void loopFly()
 		{
 			if (proc.read<uint8_t>(proc.base + 0x145648F) != 0xE9)
 			{
-				proc.writeBytes(proc.base + 0x145648F, { 0xE9, 0x6C, 0x9B , 0xBA, 0xFE });
-				proc.writeBytes(proc.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ
+				proc.writeBytes(proc.base + 0x145648F, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
+				proc.writeBytes(proc.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ to prevent falling animation
 			}
 
 			vec3 cam_pos = proc.read<vec3>(proc.base + 0x1D59A30);
@@ -372,7 +371,7 @@ int main()
 	settings.keys.boostVehicle = cfg->addGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 
 	pTimer timer;
-	timer.setLoop(loopGodmode, 250);
+	timer.setLoop(loopGodmode, 100);
 	timer.setLoop(loopNeverWanted, 200);
 	timer.setLoop(loopWeaponMax, 250);
 	timer.setLoop(loopRpLoop, 1);

@@ -9,7 +9,7 @@ OPCODE FreezeSpeedXYZ = _base + 0x790B2A
 
 
 ------------------------SMOOTH FLY--------------------------------------------------------------------------
-Update Entity Position(GTA5.exe + 145648F):
+Update Entity Position(GTA5.exe + 145648F): // This function is used by all nearby entities, so we have to check when it is our players turn
 1. push rbx
 2. sub rsp,60
 3. lea rdx,[rsp+20]
@@ -29,20 +29,20 @@ Update Entity Position(GTA5.exe + 145648F):
 17. movaps [rax+40],xmm2
 18. shufps xmm0,[rax+50],-02
 19. shufps xmm1,xmm0,-7C
-20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0:
-21. add rsp, 60              |    ret
+20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0x1A // We jump to "GTA5.exe + 0x1A" because overwriting the code here would damage important code.
+21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed which code the game doesnt need anymore
 22. pop rbx
 23. ret 
 
 Code(GTA5.exe + 0):
-30. mov rcx, &localplayer_position_class
-31. cmp rcx, rax
-32. je GTA5.exe + 13.
-33. movaps [rax+50],xmm1
-34. add rsp, 60
-35. pop rbx
-36. ret
-
+30. mov rcx, &localplayer_position_class              // first we move the local player position base to rcx
+31. cmp rcx, rax                                      // then we compare wether rcx and rax are the same
+32. je GTA5.exe + 13.                                 // if yes, we skip the next line
+33. movaps [rax+50],xmm1                              // which updates the position of the current entity(rax)
+34. add rsp, 60                                       // vanilla code
+35. pop rbx                                           // vanilla code
+36. ret                                               // vanilla code
+1E02D310000
 ----------------------------CLASSES---------------------------------------------------------------------------
 
 

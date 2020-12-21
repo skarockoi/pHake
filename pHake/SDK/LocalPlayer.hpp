@@ -49,15 +49,15 @@ public:
 
 	bool god()
 	{
-		if (this->read<uint8_t>(0x189) != 1)
-			return false;
-		else
+		if (this->read<uint8_t>(0x189) == 1)
 			return true;
+		else
+			return false;
 	}
 
-	void god(bool value)
+	void god(uint8_t value)
 	{
-		this->write<bool>(0x189, value);
+		this->write<uint8_t>(0x189, value);
 	}
 
 	float health()
