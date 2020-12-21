@@ -200,7 +200,8 @@ void loopTrigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		if (proc.read<int32_t>(proc.base + + 0x1F7FEE0) > 0) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+		int32_t id_value = proc.read<int32_t>(proc.base + + 0x1F7FEE0);
+		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
 			can_shoot = false;
