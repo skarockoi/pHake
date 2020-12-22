@@ -23,7 +23,7 @@ void unpack_uint64(uint64_t number, uint8_t* result) {
 	result[7] = number & 0x00000000000000FF;
 }
 
-uint64_t  pack_uint64(uint8_t* buffer) {
+uint64_t pack_uint64(uint8_t* buffer) {
 
 	uint64_t value;
 
@@ -37,7 +37,6 @@ uint64_t  pack_uint64(uint8_t* buffer) {
 	value = (value << 8) + buffer[0];
 
 	return value;
-
 }
 
 uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)

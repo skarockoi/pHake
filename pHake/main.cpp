@@ -34,6 +34,17 @@ struct settings
 
 }settings;
 
+struct pointer
+{
+	uint64_t world = 0x24E9E50;
+	uint64_t waypoint = 0x1F97750;
+	uint64_t triggerbot = 0x1F7FEE0;
+	uint64_t camera_pos = 0x1D59A30;
+	uint64_t function_xyz = 0x145648F;
+	uint64_t function_speed_z = 0x790B2A;
+	uint64_t kmh = 0x25B0590;
+}pointer;
+
 
 void Suicide()
 {
@@ -44,7 +55,7 @@ void Suicide()
 void TeleportToWaypoint()
 {
 	bool inVehicle = world.localPlayer.inVehicle();
-	vec3 waypoint = proc.read<vec3>(proc.base + 0x1F97750);
+	vec3 waypoint = proc.read<vec3>(proc.base + pointer.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification.add("No Waypoint set");
@@ -186,7 +197,7 @@ void loopNeverWanted()
 
 void loopRpLoop()
 {
-	if (settings.rploop) 
+	if (settings.rploop)
 	{
 		world.localPlayer.playerInfo.wantedLevel(5);
 		world.localPlayer.playerInfo.wantedLevel(0);
@@ -200,7 +211,7 @@ void loopTrigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t id_value = proc.read<int32_t>(proc.base + + 0x1F7FEE0);
+		int32_t id_value = proc.read<int32_t>(proc.base + pointer.triggerbot);
 		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
@@ -246,15 +257,12 @@ void loopWeaponMax()
 
 void loopFly() // code explained in "SDK/_info_.txt"
 {
-	static bool setup = false;
-	if (!setup)
+	static uint64_t position_base = 0;
+	if (position_base != world.localPlayer.position.base)
 	{
-		uint64_t position_base = 0;
-		while (position_base == 0)
-		{
-			position_base = world.localPlayer.position.base;
-			sleep(10);
-		}
+		position_base = world.localPlayer.position.base;
+		sleep(10);
+		
 		uint8_t position_base_patch[8];
 		unpack_uint64(position_base, position_base_patch);
 
@@ -265,22 +273,19 @@ void loopFly() // code explained in "SDK/_info_.txt"
 		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je_movaps_add_pop_ret), std::end(cmp_rax_rcx_je_movaps_add_pop_ret));
 
 		proc.writeBytes((uint64_t)proc.base + 0x1A, mov_rcx_localplayer);
-		setup = true;
 	}
 
-	static bool check = false;
 	if (settings.fly)
 	{
-		check = true;
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localPlayer.inVehicle())
 		{
-			if (proc.read<uint8_t>(proc.base + 0x145648F) != 0xE9)
-			{
-				proc.writeBytes(proc.base + 0x145648F, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
-				proc.writeBytes(proc.base + 0x790B2A, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // removes writing to speedZ to prevent falling animation
-			}
+			if (proc.read<uint8_t>(proc.base + pointer.function_xyz) != 0xE9)
+				proc.writeBytes(proc.base + pointer.function_xyz, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
 
-			vec3 cam_pos = proc.read<vec3>(proc.base + 0x1D59A30);
+			if (proc.read<uint8_t>(proc.base + pointer.function_xyz) != 0x90)
+				proc.writeBytes(proc.base + pointer.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+			
+			vec3 cam_pos = proc.read<vec3>(proc.base + pointer.camera_pos);
 			vec3 old_pos = world.localPlayer.position.xyz();
 			vec3 add_pos(
 				settings.flySpeed * (old_pos.x - cam_pos.x),
@@ -295,15 +300,13 @@ void loopFly() // code explained in "SDK/_info_.txt"
 				world.localPlayer.position.xyz(old_pos + add_pos);
 		}
 	}
-	else
+	else // restore the original values
 	{
-		if (check)
-		{
-			check = false;
-			world.localPlayer.speedXYZ(0, 0, 0);
-			proc.writeBytes(proc.base + 0x145648F, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restoring the original values
-			proc.writeBytes(proc.base + 0x790B2A, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
-		}
+		if (proc.read<uint8_t>(proc.base + pointer.function_xyz) != 0x0F)
+			proc.writeBytes(proc.base + pointer.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		
+		if (proc.read<uint8_t>(proc.base + pointer.function_speed_z) != 0xF3)
+			proc.writeBytes(proc.base + pointer.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 }
 
@@ -380,8 +383,8 @@ int main()
 	timer.setLoop(loopFly, 10);
 	timer.setLoop(loopKeys, 10);
 	timer.setLoop([]() {
-		world.updateSub(proc.read<uint64_t>(proc.base + 0x24E9E50)); // World pointer
-		settings.kmh = 3.6 * proc.read<float>(proc.base + + 0x25B0590);
+		world.updateSub(proc.read<uint64_t>(proc.base + pointer.world)); // World pointer
+		settings.kmh = 3.6 * proc.read<float>(proc.base + pointer.kmh);
 	}, 1);
 
 	menu = new pOverlay();
