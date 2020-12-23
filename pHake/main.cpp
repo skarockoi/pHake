@@ -28,8 +28,8 @@ struct settings
 	{
 		uint32_t menu = 0;
 		uint32_t teleport = 0;
-		uint32_t boostPlayer = 0;
-		uint32_t boostVehicle = 0;
+		uint32_t boost_player = 0;
+		uint32_t boost_vehicle = 0;
 	}keys;
 }settings;
 
@@ -326,12 +326,12 @@ void loopKeys()
 		TeleportToWaypoint();
 		sleep(150);
 	}
-	if (HIBYTE(GetAsyncKeyState(settings.keys.boostPlayer)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.boost_player)))
 	{
 		BoostPlayer();
 		sleep(150);
 	}
-	if (HIBYTE(GetAsyncKeyState(settings.keys.boostVehicle)))
+	if (HIBYTE(GetAsyncKeyState(settings.keys.boost_vehicle)))
 	{
 		BoostVehicle();
 		sleep(150);
@@ -370,8 +370,8 @@ int main()
 	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
 	settings.keys.menu = cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
 	settings.keys.teleport = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
-	settings.keys.boostPlayer = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
-	settings.keys.boostVehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+	settings.keys.boost_player = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
+	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 
 	pTimer timer;
 	timer.Loop(loopGodmode, 100);
