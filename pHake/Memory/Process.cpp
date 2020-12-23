@@ -1,33 +1,33 @@
 #include "Process.hpp"
 
-bool Process::getProcess(const char* ProcessName)
+bool Process::AttachProcess(const char* ProcessName)
 {
 	HANDLE hPID = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	process_entry.dwSize = sizeof(PROCESSENTRY32);
+	process_entry_.dwSize = sizeof(PROCESSENTRY32);
 
-	if (Process32First(hPID, &process_entry))
+	if (Process32First(hPID, &process_entry_))
 	{
 		do
 		{
-			if (!strcmp(process_entry.szExeFile, ProcessName))
+			if (!strcmp(process_entry_.szExeFile, ProcessName))
 			{
-				pid = process_entry.th32ProcessID;
+				pid_ = process_entry_.th32ProcessID;
 				break;
 			}
-		} while (Process32Next(hPID, &process_entry));
+		} while (Process32Next(hPID, &process_entry_));
 	}
 	CloseHandle(hPID);
 
-	if (pid)
+	if (pid_)
 	{
-		handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
-		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid);
-		module_entry.dwSize = sizeof(MODULEENTRY32);
-		if (!Module32First(hModule, &module_entry))
+		handle_ = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid_);
+		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
+		module_entry_.dwSize = sizeof(MODULEENTRY32);
+		if (!Module32First(hModule, &module_entry_))
 			//exit(2);
 
-			Module32First(hModule, &module_entry);
-		base = (uintptr_t)module_entry.modBaseAddr;
+			Module32First(hModule, &module_entry_);
+		base_ = (uintptr_t)module_entry_.modBaseAddr;
 
 		CloseHandle(hModule);
 
@@ -36,24 +36,24 @@ bool Process::getProcess(const char* ProcessName)
 	return false;
 }
 
-DWORD64 Process::getModule(const char* lModule)
+DWORD64 Process::GetModule(const char* lModule)
 {
-	HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid);
-	module_entry.dwSize = sizeof(MODULEENTRY32);
+	HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
+	module_entry_.dwSize = sizeof(MODULEENTRY32);
 	do
 	{
-		if (!strcmp(module_entry.szModule, lModule))
+		if (!strcmp(module_entry_.szModule, lModule))
 		{
 			CloseHandle(hModule);
-			return (uintptr_t)module_entry.modBaseAddr;
+			return (uintptr_t)module_entry_.modBaseAddr;
 		}
-	} while (Module32Next(hModule, &module_entry));
+	} while (Module32Next(hModule, &module_entry_));
 
 	CloseHandle(hModule);
 	return 5;
 }
 
-void Process::close()
+void Process::Close()
 {
-	CloseHandle(handle);
+	CloseHandle(handle_);
 }

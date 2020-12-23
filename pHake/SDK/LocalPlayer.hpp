@@ -15,20 +15,20 @@ public:
 	LocalPlayer(Process* const& proc) :DataWrapper(proc) {
 		position = Position(proc);
 		vehicle = Vehicle(proc);
-		playerInfo = PlayerInfo(proc);
-		weaponManager = WeaponManager(proc);
+		playerinfo = PlayerInfo(proc);
+		weapon_manager = WeaponManager(proc);
 	}
 
-	void updateSub(uint64_t baseAddress)
+	void UpdateSub(uint64_t baseAddress)
 	{
-		this->update(baseAddress);
-		position.update(this->read<uint64_t>(0x30));
-		vehicle.updateSub(this->read<uint64_t>(0xD30));
-		playerInfo.update(this->read<uint64_t>(0x10C8));
-		weaponManager.updateSub(this->read<uint64_t>(0x10D8));
+		this->Update(baseAddress);
+		position.Update(this->read<uint64_t>(0x30));
+		vehicle.UpdateSub(this->read<uint64_t>(0xD30));
+		playerinfo.Update(this->read<uint64_t>(0x10C8));
+		weapon_manager.UpdateSub(this->read<uint64_t>(0x10D8));
 	}
 
-	bool freezeMomentum()
+	bool freeze()
 	{
 		if (this->read<uint8_t>(0x2E) == 2)
 			return true;
@@ -36,7 +36,7 @@ public:
 			return true;
 	}
 
-	void freezeMomentum(bool value)
+	void freeze(bool value)
 	{
 		if (value)
 			this->write<uint8_t>(0x2E, 2);
@@ -80,54 +80,54 @@ public:
 		this->write<float>(0x2A0, value);
 	}
 
-	vec3 speedXYZ()
+	vec3 speed_xyz()
 	{
 		return this->read<vec3>(0x320);
 	}
 
-	void speedXYZ(vec3 value)
+	void speed_xyz(vec3 value)
 	{
 		this->write<vec3>(0x320, value);
 	}
 
-	void speedXYZ(float x, float y, float z)
+	void speed_xyz(float x, float y, float z)
 	{
 		this->write<vec3>(0x320, vec3(x, y, z));
 	}
 
-	float speedX()
+	float speed_x()
 	{
 		return this->read<float>(0x320);
 	}
 
-	void speedX(float value)
+	void speed_x(float value)
 	{
 		this->write<float>(0x320, value);
 	}
 
-	float speedY()
+	float speed_y()
 	{
 		return this->read<float>(0x324);
 	}
 
-	void speedY(float value)
+	void speed_y(float value)
 	{
 		this->write<float>(0x324, value);
 	}
 
-	float speedZ()
+	float speed_z()
 	{
 		return this->read<float>(0x328);
 	}
 
-	void speedZ(float value)
+	void speed_z(float value)
 	{
 		this->write<float>(0x328, value);
 	}
 
 	Vehicle vehicle;
 
-	int32_t inVehicle()
+	int32_t in_vehicle()
 	{
 		if (this->read<int32_t>(0xE50) != 0)
 			return true;
@@ -151,9 +151,9 @@ public:
 			this->write<unsigned char>(0x10B8, 32);
 	}
 
-	WeaponManager weaponManager;
+	WeaponManager weapon_manager;
 
-	PlayerInfo playerInfo;
+	PlayerInfo playerinfo;
 
 	float armor()
 	{

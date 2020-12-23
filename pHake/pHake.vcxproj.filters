@@ -113,5 +113,11 @@
     <ClCompile Include="Gui\lib\pNotificationCenter.cpp">
       <Filter>Header Files\Gui\lib</Filter>
     </ClCompile>
+    <ClCompile Include="Gui\pOverlay.cpp">
+      <Filter>Header Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui\pWindow.cpp">
+      <Filter>Header Files\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

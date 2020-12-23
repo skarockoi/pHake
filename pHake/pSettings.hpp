@@ -11,170 +11,170 @@
 class pSettings // Simple class to store/read/change values
 {
 private:
-	std::vector<std::string>* fileContent;
-	std::string filePath;
+	std::vector<std::string>* file_content_;
+	std::string file_path_;
 public:
 	pSettings() {}
 	pSettings(const std::string filePathAndName);
 
 	template <typename T>
-	T				addGet(std::string Key, T Value);
-	void			addComment(std::string Key);
+	T				AddGet(std::string Key, T Value);
+	void			AddComment(std::string Key);
 
 	template <typename T>
-	bool			edit(std::string Key, T Value);
+	bool			Edit(std::string Key, T Value);
 
-	void			save(); // save current state of "fileContent" to file
-	void			clear(); // clear "fileContent"
+	void			Save(); // save current state of "fileContent" to file
+	void			Clear(); // clear "fileContent"
 
 private:
-	void			addKeyAndValue(std::string Key, std::string Value);
-	std::string		getKeyByName(std::string Key);
-	bool			checkExistanceOfKey(std::string Key);
-	void			changeKeyValue(std::string Key, std::string Value);
-	void			deleteAndSaveToFile();
+	void			AddKeyAndValue(std::string Key, std::string Value);
+	std::string		GetKeyByName(std::string Key);
+	bool			CheckExistanceOfKey(std::string Key);
+	void			ChangeKeyValue(std::string Key, std::string Value);
+	void			DeleteAndSaveToFile();
 
 	template <typename T>
-	T lexical_cast(const std::string& str);
+	T LexicalCast(const std::string& str);
 };
 
 
 // public functions
 pSettings::pSettings(const std::string filePathAndName)
 {
-	filePath = filePathAndName;
+	file_path_ = filePathAndName;
 
 	if (std::filesystem::exists(filePathAndName)) // check if the cfg file exitst, otherwise create a new file(does not work if the path is behind a directory that does not exist
 	{
-		fileContent = new std::vector<std::string>;
+		file_content_ = new std::vector<std::string>;
 		std::ifstream file(filePathAndName);
 
 		std::string   tempStr;
 		while (std::getline(file, tempStr))
 		{
 			if (tempStr.size() > 0)
-				fileContent->push_back(tempStr); // read cfg file into vector full of strings
+				file_content_->push_back(tempStr); // read cfg file into vector full of strings
 		}
 
-		for (size_t i = 0; i < fileContent->size(); i++)
+		for (size_t i = 0; i < file_content_->size(); i++)
 		{
-			(*fileContent)[i].erase(std::remove((*fileContent)[i].begin(), (*fileContent)[i].end(), '\n'), (*fileContent)[i].end()); // remove all "\n"s from strings
+			(*file_content_)[i].erase(std::remove((*file_content_)[i].begin(), (*file_content_)[i].end(), '\n'), (*file_content_)[i].end()); // remove all "\n"s from strings
 		}
 	}
 	else
 	{
-		fileContent = new std::vector<std::string>;
+		file_content_ = new std::vector<std::string>;
 		std::ofstream file{ filePathAndName };
 		file.close();
 	}
 }
 
 template<typename T>
-inline T pSettings::addGet(std::string Key, T Value)
+inline T pSettings::AddGet(std::string Key, T Value)
 {
-	if (this->checkExistanceOfKey(Key))
+	if (this->CheckExistanceOfKey(Key))
 	{
-		return this->lexical_cast<T>(this->getKeyByName(Key));
+		return this->LexicalCast<T>(this->GetKeyByName(Key));
 	}
 	else
 	{
-		this->addKeyAndValue(Key, std::to_string(Value));
-		return this->lexical_cast<T>(this->getKeyByName(Key));
+		this->AddKeyAndValue(Key, std::to_string(Value));
+		return this->LexicalCast<T>(this->GetKeyByName(Key));
 	}
 
 	return 0;
 }
 
-void pSettings::addComment(std::string Key)
+void pSettings::AddComment(std::string Key)
 {
-	if (!this->checkExistanceOfKey(Key))
+	if (!this->CheckExistanceOfKey(Key))
 	{
-		this->fileContent->push_back(Key);
+		this->file_content_->push_back(Key);
 	}
 }
 
 
 template<typename T>
-inline bool pSettings::edit(std::string Key, T Value)
+inline bool pSettings::Edit(std::string Key, T Value)
 {
-	if (this->checkExistanceOfKey(Key))
+	if (this->CheckExistanceOfKey(Key))
 	{
-		this->changeKeyValue(Key, std::to_string(Value));
+		this->ChangeKeyValue(Key, std::to_string(Value));
 		return true;
 	}
 	return false;
 }
 
-void pSettings::save()
+void pSettings::Save()
 {
-	this->deleteAndSaveToFile();
-	fileContent->clear();
-	delete fileContent;
+	this->DeleteAndSaveToFile();
+	file_content_->clear();
+	delete file_content_;
 }
 
-void pSettings::clear()
+void pSettings::Clear()
 {
 	std::ofstream del;
-	del.open(this->filePath, std::ofstream::out | std::ofstream::trunc);
+	del.open(this->file_path_, std::ofstream::out | std::ofstream::trunc);
 	del.close();
 }
 
 // private functions
-void pSettings::addKeyAndValue(std::string Key, std::string Value)
+void pSettings::AddKeyAndValue(std::string Key, std::string Value)
 {
-	this->fileContent->push_back(Key + " = " + Value);
+	this->file_content_->push_back(Key + " = " + Value);
 }
 
-std::string pSettings::getKeyByName(std::string Key)
+std::string pSettings::GetKeyByName(std::string Key)
 {
-	for (size_t i = 0; i < this->fileContent->size(); i++)
+	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*fileContent)[i].find(Key) != std::string::npos)
-			return (*fileContent)[i].substr((*fileContent)[i].find("=") + 1);
+		if ((*file_content_)[i].find(Key) != std::string::npos)
+			return (*file_content_)[i].substr((*file_content_)[i].find("=") + 1);
 
 	}
 	return "";
 }
 
-bool pSettings::checkExistanceOfKey(std::string Key)
+bool pSettings::CheckExistanceOfKey(std::string Key)
 {
-	for (size_t i = 0; i < this->fileContent->size(); i++)
+	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*fileContent)[i].find(Key) != std::string::npos) {
+		if ((*file_content_)[i].find(Key) != std::string::npos) {
 			return true;
 		}
 	}
 	return false;
 }
-void pSettings::changeKeyValue(std::string Key, std::string Value)
+void pSettings::ChangeKeyValue(std::string Key, std::string Value)
 {
-	for (size_t i = 0; i < this->fileContent->size(); i++)
+	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*fileContent)[i].find(Key) != std::string::npos)
+		if ((*file_content_)[i].find(Key) != std::string::npos)
 		{
-			(*fileContent)[i].clear();
-			(*fileContent)[i] = Key + " = " + Value;
+			(*file_content_)[i].clear();
+			(*file_content_)[i] = Key + " = " + Value;
 		}
 	}
 }
-void pSettings::deleteAndSaveToFile()
+void pSettings::DeleteAndSaveToFile()
 {
 	std::ofstream del;
-	del.open(this->filePath, std::ofstream::out | std::ofstream::trunc);
+	del.open(this->file_path_, std::ofstream::out | std::ofstream::trunc);
 	del.close();
 
 	std::ofstream file;
-	file.open(this->filePath);
+	file.open(this->file_path_);
 
-	for (size_t i = 0; i < this->fileContent->size(); i++)
+	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		file << (*fileContent)[i] + "\n";
+		file << (*file_content_)[i] + "\n";
 	}
 	file.close();
 }
 
 template<typename T>
-inline T pSettings::lexical_cast(const std::string& str)
+inline T pSettings::LexicalCast(const std::string& str)
 {
 	T var;
 	std::istringstream iss;

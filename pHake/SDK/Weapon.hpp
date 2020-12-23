@@ -10,14 +10,14 @@ class Weapon : public DataWrapper<0x2F4 + 0x4>
 public:
 	Weapon() {}
 	Weapon(Process* const& proc) :DataWrapper(proc) {
-		ammoInfo = AmmoInfo(proc);
+		ammoinfo = AmmoInfo(proc);
 
 	}
 
-	void updateSub(uint64_t baseAddress)
+	void UpdateSub(uint64_t baseAddress)
 	{
-		this->update(baseAddress);
-		ammoInfo.update(process->readMultiAddr(this->base, { 0x60, 0x8, 0x0 }));
+		this->Update(baseAddress);
+		ammoinfo.Update(process_->read_multi_addr(this->base_, { 0x60, 0x8, 0x0 }));
 	}
 
 	int32_t type()
@@ -30,54 +30,54 @@ public:
 		this->write<int32_t>(0x20, value);
 	}
 
-	int32_t explosionType()
+	int32_t explosion_type()
 	{
 		return this->read<int32_t>(0x24);
 	}
 
-	void explosionType(int32_t value)
+	void explosion_type(int32_t value)
 	{
 		this->write<int32_t>(0x24, value);
 	}
 
-	AmmoInfo ammoInfo;
+	AmmoInfo ammoinfo;
 
-	float batchSpread()
+	float batch_spread()
 	{
 		return this->read<float>(0x74);
 	}
 
-	void batchSpread(float value)
+	void batch_spread(float value)
 	{
 		this->write<float>(0x74, value);
 	}
 
-	float bulletDamage()
+	float bullet_damage()
 	{
 		return this->read<float>(0xB0);
 	}
 
-	void bulletDamage(float value)
+	void bullet_damage(float value)
 	{
 		this->write<float>(0xB0, value);
 	}
 
-	float bulletMass()
+	float bullet_mass()
 	{
 		return this->read<float>(0xE0);
 	}
 	
-	void bulletMass(float value)
+	void bullet_mass(float value)
 	{
 		this->write<float>(0xE0, value);
 	}
 
-	float reloadMP()
+	float reload_mp()
 	{
 		return this->read<float>(0x134);
 	}
 
-	void reloadMP(float value)
+	void reload_mp(float value)
 	{
 		this->write<float>(0x134, value);
 	}
@@ -92,22 +92,22 @@ public:
 		this->write(0x110, value);
 	}
 
-	float muzzleVelocity()
+	float muzzle_velocity()
 	{
 		return this->read<float>(0x11C);
 	}
 
-	void muzzleVelocity(float value)
+	void muzzle_velocity(float value)
 	{
 		this->write(0x11C, value);
 	}
 
-	uint32_t bulletInBatch()
+	uint32_t bullets_in_batch()
 	{
 		return this->read<uint32_t>(0x120);
 	}
 
-	void bulletInBatch(uint32_t value)
+	void bullets_in_batch(uint32_t value)
 	{
 		this->write<uint32_t>(0x120, value);
 	}

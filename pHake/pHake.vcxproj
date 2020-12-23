@@ -180,6 +180,8 @@
     <ClCompile Include="Gui\lib\pList.cpp" />
     <ClCompile Include="Gui\lib\pMouse.cpp" />
     <ClCompile Include="Gui\lib\pNotificationCenter.cpp" />
+    <ClCompile Include="Gui\pOverlay.cpp" />
+    <ClCompile Include="Gui\pWindow.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>

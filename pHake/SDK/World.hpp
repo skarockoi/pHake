@@ -10,15 +10,15 @@ class World : public DataWrapper<0x8 + 0x8>
 public:
 	World() {}
 	World(Process* const& proc) :DataWrapper(proc) {
-		localPlayer = LocalPlayer(proc);
+		localplayer = LocalPlayer(proc);
 	}
 
-	void updateSub(uint64_t baseAddress)
+	void UpdateSub(uint64_t baseAddress)
 	{
-		this->update(baseAddress);
-		localPlayer.updateSub(this->read<uint64_t>(0x8));
+		this->Update(baseAddress);
+		localplayer.UpdateSub(this->read<uint64_t>(0x8));
 	}
 
-	LocalPlayer localPlayer;
+	LocalPlayer localplayer;
 };
 #endif

@@ -11,7 +11,7 @@ void sleep(uint32_t ms)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
-void unpack_uint64(uint64_t number, uint8_t* result) {
+void Uint64ToArray(uint64_t number, uint8_t* result) {
 
 	result[0] = number & 0x00000000000000FF; number = number >> 8;
 	result[1] = number & 0x00000000000000FF; number = number >> 8;
@@ -23,7 +23,7 @@ void unpack_uint64(uint64_t number, uint8_t* result) {
 	result[7] = number & 0x00000000000000FF;
 }
 
-uint64_t pack_uint64(uint8_t* buffer) {
+uint64_t ArrayToUint64(uint8_t* buffer) {
 
 	uint64_t value;
 

@@ -18,22 +18,21 @@ private:
 	};
 
 	sf::RenderWindow* window;
-	sf::Font		  Font;
+	sf::Font		  font;
 	sf::Vector2i	  pos;
 	std::vector<Bone> notifications;
 
 public:
-	void create(sf::RenderWindow* const& window);
-	void draw();
-	void loop();
+	void Create(sf::RenderWindow* const& window);
+	void Draw();
+	void Loop();
 
 public:
-	void add(const std::string& name);
+	void Add(const std::string& name);
 
 private:
-	void startNotification(int index);
-	bool isListFinished();
-	uint32_t sleepTime();
+	bool IsListFinished();
+	uint32_t DecideSleep();
 };
 #endif
 

@@ -8,38 +8,38 @@
 class pButton
 {
 protected:
-	uint16_t  sleep_time = 150;
-	bool	  resize = true;
-	bool	  active = false;
-	bool	  busy = false;
+	uint16_t  sleep_time_ = 150;
+	bool	  resize_ = true;
+	bool	  active_ = false;
+	bool	  busy_ = false;
 
-	void*	  function;
+	void*	  function_;
 
-	sf::RenderWindow   *window;
-	sf::Font		   font;
+	sf::RenderWindow   *window_;
+	sf::Font		   font_;
 
-	sf::Text		   button_text;
-	sf::RectangleShape button_back;
-
-public:
-	void create(sf::RenderWindow* const& window);
-	void connect(void(&functionP)());
-	void loop();
-	void draw();
+	sf::Text		   button_text_;
+	sf::RectangleShape button_back_;
 
 public:
-	bool isActive();
-	void setText(const std::string& text);
-	void setPosition(int x, int y);
-	void setTimeout(int sleep);
-	void setFixedSize(int x, int y);
-	void setFont(sf::Font& font);
-	sf::Vector2f getSize();
+	void Create(sf::RenderWindow* const& window);
+	void Connect(void(&functionP)());
+	void Loop();
+	void Draw();
+
+public:
+	bool active();
+	void text(const std::string& text);
+	void position(int x, int y);
+	void timeout(int sleep);
+	void fixed_size(int x, int y);
+	void font(sf::Font& font);
+	sf::Vector2f size();
 
 protected:
-	bool isOnBox();
-	void setActive(bool act);
-	void setHighlight(bool value);
-	void updateLength();
+	bool IsOnBox();
+	void active(bool act);
+	void highlight(bool value);
+	void update_length();
 };
 #endif

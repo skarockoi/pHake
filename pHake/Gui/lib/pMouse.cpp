@@ -1,40 +1,50 @@
 #include "pMouse.hpp"
 
-void pMouse::create(sf::RenderWindow* const& Window)
+void pMouse::Create(sf::RenderWindow* const& Window)
 {
-	if (window == 0)
+	if (window_ == 0)
 	{
-		window = Window;
+		this->window_ = Window;
 
-		mouse_rect.setSize(sf::Vector2f(10, 10));
-		mouse_rect.setFillColor(sf::Color::Color(255, 255, 255, 255));
-		mouse_rect.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
-		mouse_rect.setOutlineThickness(1);
+		this->mouse_rect_.setSize(sf::Vector2f(10, 10));
+		this->mouse_rect_.setFillColor(sf::Color::Color(255, 255, 255, 255));
+		this->mouse_rect_.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
+		this->mouse_rect_.setOutlineThickness(1);
 	}
 }
 
-void pMouse::loop()
+void pMouse::Loop()
 {
-	if (this->active)
+	if (this->active_)
 	{
-		mouse_rect.setPosition(sf::Mouse::getPosition().x - window->getPosition().x, sf::Mouse::getPosition().y - window->getPosition().y);
+		this->mouse_rect_.setPosition(sf::Mouse::getPosition().x - window_->getPosition().x, sf::Mouse::getPosition().y - window_->getPosition().y);
 	}
 }
 
-void pMouse::draw()
+void pMouse::Draw()
 {
-	if (this->active)
+	if (this->active_)
 	{
-		window->draw(mouse_rect);
+		this->window_->draw(mouse_rect_);
 	}
 }
 
-void pMouse::toggle()
+void pMouse::Toggle()
 {
-	this->active = not this->active;
+	this->active_ = not this->active_;
 }
 
-void pMouse::setSize(int size)
+void pMouse::size(int size)
 {
-	mouse_rect.setSize(sf::Vector2f(size, size));
+	this->mouse_rect_.setSize(sf::Vector2f(size, size));
+}
+
+void pMouse::active(bool Active)
+{
+	this->active_ = Active;
+}
+
+bool pMouse::active()
+{
+	return this->active_;
 }

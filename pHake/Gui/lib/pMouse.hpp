@@ -8,17 +8,19 @@
 class pMouse
 {
 private:
-	bool active = false;
-	sf::RenderWindow*  window;
-	sf::RectangleShape mouse_rect;
+	bool active_ = false;
+	sf::RenderWindow*  window_;
+	sf::RectangleShape mouse_rect_;
 
 public:
-	void create(sf::RenderWindow* const& window);
-	void loop();
-	void draw();
-	void toggle();
+	void Create(sf::RenderWindow* const& window);
+	void Loop();
+	void Draw();
+	void Toggle();
 
 public:
-	void setSize(int size); //in pixel
+	void size(int size); //in pixel
+	void active(bool Active);
+	bool active();
 };
 #endif

@@ -1,144 +1,144 @@
 #include "pButton.hpp"
 
-void pButton::create(sf::RenderWindow* const& Window)
+void pButton::Create(sf::RenderWindow* const& Window)
 {
-	window = Window;
-	font.loadFromFile("Settings/font.ttf");
+	window_ = Window;
+	font_.loadFromFile("Settings/font.ttf");
 
-	this->button_back.setSize(sf::Vector2f(80, 28));
-	this->button_back.setPosition(0, 0);
-	this->button_back.setFillColor(sf::Color::Color(0, 0, 0, 150));
-	this->button_back.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
-	this->button_back.setOutlineThickness(1);
+	this->button_back_.setSize(sf::Vector2f(80, 28));
+	this->button_back_.setPosition(0, 0);
+	this->button_back_.setFillColor(sf::Color::Color(0, 0, 0, 150));
+	this->button_back_.setOutlineColor(sf::Color::Color(0, 0, 0, 255));
+	this->button_back_.setOutlineThickness(1);
 
-	this->button_text.setFont(font);
-	this->button_text.setCharacterSize(16);
-	this->button_text.setFillColor(sf::Color::Color(0, 0, 0, 255));
-	this->button_text.setPosition(0, 0);
+	this->button_text_.setFont(font_);
+	this->button_text_.setCharacterSize(16);
+	this->button_text_.setFillColor(sf::Color::Color(0, 0, 0, 255));
+	this->button_text_.setPosition(0, 0);
 
-	this->setActive(true);
+	this->active(true);
 }
 
-void pButton::loop()
+void pButton::Loop()
 {
-	if (this->active && !this->busy)
+	if (this->active_ && !this->busy_)
 	{
-		sf::Vector2i mouse = sf::Mouse::getPosition(*window);
-		if (!this->busy)
+		sf::Vector2i mouse = sf::Mouse::getPosition(*window_);
+		if (!this->busy_)
 		{
-			if (this->isOnBox())
+			if (this->IsOnBox())
 			{
-				this->setHighlight(true);
+				this->highlight(true);
 
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
-					if (function != NULL)
+					if (function_ != NULL)
 					{
 						std::thread([=]() {
-							this->busy = true;
+							this->busy_ = true;
 
-							((void(*)(void))function)();
+							((void(*)(void))function_)();
 							std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
-							this->busy = false; 
+							this->busy_ = false; 
 							}).detach(); 
 					}
 				}
 			}
 			else
 			{
-				this->setHighlight(false);
+				this->highlight(false);
 			}
 		}
 	}
 }
 
-void pButton::draw()
+void pButton::Draw()
 {
-	if (this->isActive())
+	if (this->active())
 	{
-		window->draw(button_back);
-		window->draw(button_text);
+		window_->draw(button_back_);
+		window_->draw(button_text_);
 	}
 }
 
-void pButton::connect(void(&functionP)())
+void pButton::Connect(void(&functionP)())
 {
-	this->function = &functionP;
+	this->function_ = &functionP;
 }
 
-void pButton::setTimeout(int sleep)
+void pButton::timeout(int sleep)
 {
-	this->sleep_time = sleep;
+	this->sleep_time_ = sleep;
 }
 
-sf::Vector2f pButton::getSize()
+sf::Vector2f pButton::size()
 {
-	return button_back.getSize();
+	return button_back_.getSize();
 }
 
-void pButton::setActive(bool act)
+void pButton::active(bool act)
 {
-	this->active = act;
+	this->active_ = act;
 }
 
-void pButton::setHighlight(bool value)
+void pButton::highlight(bool value)
 {
 	if (value)
-		button_back.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+		button_back_.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
 	else
-		button_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+		button_back_.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
 }
 
-void pButton::updateLength()
+void pButton::update_length()
 {
-	if (this->resize)
+	if (this->resize_)
 	{
 		sf::Vector2f rSize;
-		rSize.x = ((float)std::string(button_text.getString()).length() * 10) - (((std::string)button_text.getString()).length() * 2);
-		rSize.y = button_back.getSize().y;
-		button_back.setSize(rSize);
+		rSize.x = ((float)std::string(button_text_.getString()).length() * 10) - (((std::string)button_text_.getString()).length() * 2);
+		rSize.y = button_back_.getSize().y;
+		button_back_.setSize(rSize);
 	}
 }
 
-bool pButton::isOnBox()
+bool pButton::IsOnBox()
 {
-	sf::Vector2i mouse = sf::Mouse::getPosition(*window);
-	if (mouse.x > button_back.getPosition().x &&
-		mouse.x < button_back.getPosition().x + button_back.getSize().x &&
-		mouse.y > button_back.getPosition().y &&
-		mouse.y < button_back.getPosition().y + button_back.getSize().y)
+	sf::Vector2i mouse = sf::Mouse::getPosition(*window_);
+	if (mouse.x > button_back_.getPosition().x &&
+		mouse.x < button_back_.getPosition().x + button_back_.getSize().x &&
+		mouse.y > button_back_.getPosition().y &&
+		mouse.y < button_back_.getPosition().y + button_back_.getSize().y)
 		return true;
 	else
 		return false;
 }
 
-void pButton::setPosition(int x, int y)
+void pButton::position(int x, int y)
 {
-	button_back.setPosition(x, y + 1);
-	button_text.setPosition(x, y + (button_back.getSize().y / 4) - 5);
+	button_back_.setPosition(x, y + 1);
+	button_text_.setPosition(x, y + (button_back_.getSize().y / 4) - 5);
 }
 
-void pButton::setText(const std::string& text)
+void pButton::text(const std::string& text)
 {
-	button_text.setString(" " + text);
-	updateLength();
+	button_text_.setString(" " + text);
+	update_length();
 }
 
-void pButton::setFixedSize(int x, int y)
+void pButton::fixed_size(int x, int y)
 {
-	if (!resize)
-		resize = false;
+	if (!resize_)
+		resize_ = false;
 
-	button_back.setSize(sf::Vector2f(x, y));
+	button_back_.setSize(sf::Vector2f(x, y));
 }
 
-void pButton::setFont(sf::Font& font)
+void pButton::font(sf::Font& font)
 {
-	button_text.setFont(font);
+	button_text_.setFont(font);
 }
 
-bool pButton::isActive()
+bool pButton::active()
 {
-	return this->active;
+	return this->active_;
 }

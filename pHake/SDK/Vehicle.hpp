@@ -15,16 +15,16 @@ public:
 		handling = VehicleHandling(proc);
 	}
 
-	void updateSub(uint64_t baseAddress)
+	void UpdateSub(uint64_t baseAddress)
 	{
-		this->update(baseAddress);
-		position.update(this->read<uint64_t>(0x30));
-		handling.update(this->read<uint64_t>(0x938));
+		this->Update(baseAddress);
+		position.Update(this->read<uint64_t>(0x30));
+		handling.Update(this->read<uint64_t>(0x938));
 	}
 
 	Position position;
 
-	bool freezeMomentum()
+	bool freeze()
 	{
 		if (this->read<uint8_t>(0x2E) == 2)
 			return true;
@@ -32,7 +32,7 @@ public:
 			return true;
 	}
 
-	void freezeMomentum(bool value)
+	void freeze(bool value)
 	{
 		if (value)
 			this->write<uint8_t>(0x2E, 2);

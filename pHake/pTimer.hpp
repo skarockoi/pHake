@@ -7,7 +7,7 @@ class pTimer
 {
 public:
 	template <typename T>
-	void setLoop(T func, uint64_t ms)
+	void Loop(T func, uint64_t ms)
 	{
 		std::thread([=]()
 			{
@@ -20,7 +20,7 @@ public:
 	}
 
 	template <typename T>
-	void setWait(T func, uint64_t ms)
+	void Wait(T func, uint64_t ms)
 	{
 		std::thread([=]()
 			{

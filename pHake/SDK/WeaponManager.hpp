@@ -9,15 +9,15 @@ class WeaponManager : public DataWrapper<0x20 + 0x8>
 public:
 	WeaponManager() {}
 	WeaponManager(Process* const& proc) :DataWrapper(proc) {
-		currentWeapon = Weapon(proc);
+		current_weapon = Weapon(proc);
 	}
 
-	void updateSub(uint64_t baseAddress)
+	void UpdateSub(uint64_t baseAddress)
 	{
-		this->update(baseAddress);
-		currentWeapon.updateSub(this->read<uint64_t>(0x20));
+		this->Update(baseAddress);
+		current_weapon.UpdateSub(this->read<uint64_t>(0x20));
 	}
-	Weapon currentWeapon;
+	Weapon current_weapon;
 
 };
 #endif

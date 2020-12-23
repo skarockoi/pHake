@@ -20,62 +20,62 @@ public:
 		this->write<float>(0x4C, value);
 	}
 
-	float handbrakeForce()
+	float handbrake_force()
 	{
 		return this->read<float>(0x7C);
 	}
 
-	void handbrakeForce(float value)
+	void handbrake_force(float value)
 	{
 		this->write<float>(0x7C, value);
 	}
 
-	float tractionMin()
+	float traction_min()
 	{
 		return this->read<float>(0x88);
 	}
 
-	void tractionMin(float value)
+	void traction_min(float value)
 	{
 		this->write<float>(0x88, value);
 	}
 
-	float tractionMax()
+	float traction_max()
 	{
 		return this->read<float>(0x90);
 	}
 
-	void tractionMax(float value)
+	void traction_max(float value)
 	{
 		this->write<float>(0x90, value);
 	}
 
-	float suspensionForce()
+	float suspension_force()
 	{
 		return this->read<float>(0xBC);
 	}
 
-	void suspensionForce(float value)
+	void suspension_force(float value)
 	{
 		this->write<float>(0xBC, value);
 	}
 
-	float suspensionHeight()
+	float suspension_height()
 	{
 		return this->read<float>(0xD0);
 	}
 
-	void suspensionHeight(float value)
+	void suspension_height(float value)
 	{
 		this->write<float>(0xD0, value);
 	}
 
-	float collisionDamage()
+	float collisiondamage()
 	{
 		return this->read<float>(0xF8);
 	}
 
-	void collisionDamage(float value)
+	void collisiondamage(float value)
 	{
 		this->write<float>(0xF8, value);
 	}

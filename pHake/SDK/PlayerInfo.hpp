@@ -10,32 +10,32 @@ public:
 	PlayerInfo() {}
 	PlayerInfo(Process* const& proc) :DataWrapper(proc) {}
 
-	float walkMP()
+	float walk_mp()
 	{
 		return this->read<float>(0xCD0);
 	}
 
-	void walkMP(float value)
+	void walk_mp(float value)
 	{
 		this->write<float>(0xCD0, value);
 	}
 
-	float swimMP()
+	float swim_mp()
 	{
 		return this->read<float>(0x150);
 	}
 
-	void swimMP(float value)
+	void swim_mp(float value)
 	{
 		this->write<float>(0x150, value);
 	}
 
-	int32_t wantedLevel()
+	int32_t wanted_level()
 	{
 		return this->read<int32_t>(0x868);
 	}
 
-	void wantedLevel(uint32_t value)
+	void wanted_level(uint32_t value)
 	{
 		this->write<uint32_t>(0x868, value);
 	}

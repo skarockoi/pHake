@@ -7,182 +7,182 @@
 #include <iomanip>
 #include <thread>
 
-template <typename T> class pItem // No.1 reason why templates arent the best choice sometimes
+template <typename T> class pItem
 {
 protected:
-	uint16_t sleep_time = 125;
-	bool	 resize = false;
-	bool	 active = false;
-	bool     busy = false;
+	uint16_t sleep_time_ = 125;
+	bool	 resize_ = false;
+	bool	 active_ = false;
+	bool     busy_ = false;
 
-	T* Value;
-	T  dec;
-	T  inc;
+	T* value_;
+	T  dec_;
+	T  inc_;
 
-	sf::RenderWindow*  window;
-	sf::Font		   font;
+	sf::RenderWindow*  window_;
+	sf::Font		   font_;
 
-	sf::Text		   text;
-	sf::RectangleShape rect_back;
+	sf::Text		   text_;
+	sf::RectangleShape rect_back_;
 
 public:
-	void		 create(sf::RenderWindow* const& window);
-	void		 draw();
-	virtual void loop() = 0;
+	void		 Create(sf::RenderWindow* const& window);
+	void		 Draw();
+	virtual void Loop() = 0;
 
-	void		 addPtr(T& value, T Inc, T Dec);
-	void		 addPtr(T& value);
-	std::string  getText();
-	sf::Vector2f getSize();
-	void		 setFont(sf::Font &font);
-	void		 setText(const std::string &text);
-	void		 setFillColor(sf::Color color);
-	void		 setPosition(uint32_t x, uint32_t y);
-	void		 setFixedSize(uint32_t x, uint32_t y);
+	void		 AddPtr(T& value, T Inc, T Dec);
+	void		 AddPtr(T& value);
+	std::string  text();
+	sf::Vector2f size();
+	void		 font(sf::Font &font);
+	void		 text(const std::string &text);
+	void		 fill_color(sf::Color color);
+	void		 position(uint32_t x, uint32_t y);
+	void		 size(uint32_t x, uint32_t y);
 
 protected:
-	bool         isActive();
-	void         setActive(bool act);
-	bool         isOnBox();
-	void         setHighlight(bool value);
-	void         updateLength();
+	bool         active();
+	void         active(bool act);
+	bool         IsOnBox();
+	void         highlight(bool value);
+	void         length();
 };
 
 template<typename T>
-inline void pItem<T>::create(sf::RenderWindow* const& Window)
+inline void pItem<T>::Create(sf::RenderWindow* const& Window)
 {
-	this->window = Window;
-	this->font.loadFromFile("Settings/font.ttf");
+	this->window_ = Window;
+	this->font_.loadFromFile("Settings/font.ttf");
 
-	this->rect_back.setSize(sf::Vector2f(80, 28));
-	this->rect_back.setPosition(0, 0);
-	this->rect_back.setFillColor(sf::Color::Color(0, 0, 0, 0));
-	this->rect_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
-	this->rect_back.setOutlineThickness(1);
+	this->rect_back_.setSize(sf::Vector2f(80, 28));
+	this->rect_back_.setPosition(0, 0);
+	this->rect_back_.setFillColor(sf::Color::Color(0, 0, 0, 0));
+	this->rect_back_.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+	this->rect_back_.setOutlineThickness(1);
 
-	this->text.setFont(font);
-	this->text.setCharacterSize(16);
-	this->text.setFillColor(sf::Color::Color(255, 255, 255, 255));
-	this->text.setPosition(0, 0);
+	this->text_.setFont(font_);
+	this->text_.setCharacterSize(16);
+	this->text_.setFillColor(sf::Color::Color(255, 255, 255, 255));
+	this->text_.setPosition(0, 0);
 
-	this->setActive(true);
+	this->active(true);
 }
 
 template<typename T>
-inline void pItem<T>::draw()
+inline void pItem<T>::Draw()
 {
-	if (this->isActive())
+	if (this->active())
 	{
-		this->window->draw(rect_back);
-		this->window->draw(text);
+		this->window_->draw(rect_back_);
+		this->window_->draw(text_);
 	}
 }
 
 template<typename T>
-inline void pItem<T>::addPtr(T& value, T Inc, T Dec)
+inline void pItem<T>::AddPtr(T& value, T Inc, T Dec)
 {
-	Value = &value;
-	inc = Inc;
-	dec = Dec;
+	value_ = &value;
+	inc_ = Inc;
+	dec_ = Dec;
 }
 
 template<typename T>
-inline void pItem<T>::addPtr(T& value)
+inline void pItem<T>::AddPtr(T& value)
 {
-	Value = &value;
+	value_ = &value;
 }
 
 template<typename T>
-inline std::string pItem<T>::getText()
+inline std::string pItem<T>::text()
 {
-	return text.getString();
+	return text_.getString();
 }
 
 template<typename T>
-inline sf::Vector2f pItem<T>::getSize()
+inline sf::Vector2f pItem<T>::size()
 {
-	return rect_back.getSize();
+	return rect_back_.getSize();
 }
 
 template<typename T>
-inline void pItem<T>::setFont(sf::Font& font)
+inline void pItem<T>::font(sf::Font& font)
 {
-	text.setFont(font);
+	text_.setFont(font);
 }
 
 
 template<typename T>
-inline void pItem<T>::setText(const std::string& Text)
+inline void pItem<T>::text(const std::string& Text)
 {
-	text.setString(Text);
-	updateLength();
+	text_.setString(Text);
+	length();
 }
 
 template<typename T>
-inline void pItem<T>::setFillColor(sf::Color color)
+inline void pItem<T>::fill_color(sf::Color color)
 {
-	text.setFillColor(color);
+	text_.setFillColor(color);
 }
 
 template<typename T>
-inline void pItem<T>::setPosition(uint32_t x, uint32_t y)
+inline void pItem<T>::position(uint32_t x, uint32_t y)
 {
-	rect_back.setPosition(x, y);
-	text.setPosition(x, y + (rect_back.getSize().y / 4) - 5);
+	rect_back_.setPosition(x, y);
+	text_.setPosition(x, y + (rect_back_.getSize().y / 4) - 5);
 }
 
 template<typename T>
-inline void pItem<T>::setFixedSize(uint32_t x, uint32_t y)
+inline void pItem<T>::size(uint32_t x, uint32_t y)
 {
-	if (!resize)
-		resize = false;
+	if (!resize_)
+		resize_ = false;
 
-	rect_back.setSize(sf::Vector2f(x, y));
+	rect_back_.setSize(sf::Vector2f(x, y));
 }
 
 template<typename T>
-inline bool pItem<T>::isActive()
+inline bool pItem<T>::active()
 {
-	return this->active;
+	return this->active_;
 }
 
 template<typename T>
-inline void pItem<T>::setActive(bool act)
+inline void pItem<T>::active(bool act)
 {
-	active = act;
+	active_ = act;
 }
 
 template<typename T>
-inline bool pItem<T>::isOnBox()
+inline bool pItem<T>::IsOnBox()
 {
-	sf::Vector2i mouse = sf::Mouse::getPosition(*window);
-	if (mouse.x > rect_back.getPosition().x &&
-		mouse.x < rect_back.getPosition().x + rect_back.getSize().x &&
-		mouse.y > rect_back.getPosition().y &&
-		mouse.y < rect_back.getPosition().y + rect_back.getSize().y)
+	sf::Vector2i mouse = sf::Mouse::getPosition(*window_);
+	if (mouse.x > rect_back_.getPosition().x &&
+		mouse.x < rect_back_.getPosition().x + rect_back_.getSize().x &&
+		mouse.y > rect_back_.getPosition().y &&
+		mouse.y < rect_back_.getPosition().y + rect_back_.getSize().y)
 		return true;
 	else
 		return false;
 }
 
 template<typename T>
-inline void pItem<T>::setHighlight(bool value)
+inline void pItem<T>::highlight(bool value)
 {
 	if (value)
-		rect_back.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
+		rect_back_.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
 	else
-		rect_back.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
+		rect_back_.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
 }
 
 template<typename T>
-inline void pItem<T>::updateLength()
+inline void pItem<T>::length()
 {
-	if (this->resize)
+	if (this->resize_)
 	{
 		sf::Vector2f rSize;
-		rSize.x = ((float)std::string(text.getString()).length() * 10) - (((std::string)text.getString()).length() * 2);
-		rSize.y = rect_back.getSize().y;
-		rect_back.setSize(rSize);
+		rSize.x = ((float)std::string(text_.getString()).length() * 10) - (((std::string)text_.getString()).length() * 2);
+		rSize.y = rect_back_.getSize().y;
+		rect_back_.setSize(rSize);
 	}
 }
 
@@ -194,60 +194,60 @@ inline void pItem<T>::updateLength()
 class pItemFloat : public pItem<float>
 {
 private:
-	uint8_t  precision = 1;
+	uint8_t  precision_ = 1;
 
 public:
 	pItemFloat() {}
 
-	void loop()
+	void Loop()
 	{
-		if (this->isActive())
+		if (this->active())
 		{
 			std::stringstream stream;
-			stream << std::fixed << std::setprecision(this->precision) << std::stof(std::to_string(*Value));  // Convert string to std and remove obsolete zero's
-			setText(stream.str());
+			stream << std::fixed << std::setprecision(this->precision_) << std::stof(std::to_string(*value_));  // Convert string to std and remove obsolete zero's
+			text(stream.str());
 
-			if (!this->busy)
+			if (!this->busy_)
 			{ 
-				if (isOnBox())
+				if (IsOnBox())
 				{
-					setHighlight(true);
+					highlight(true);
 
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 					{
 						std::thread([=]() {
-							this->busy = true;
+							this->busy_ = true;
 
-							*Value -= dec;
-							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+							*value_ -= dec_;
+							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time_));
 
-							this->busy = false;
+							this->busy_ = false;
 							}).detach();
 
 					}
 					else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 					{
 						std::thread([=]() {
-							this->busy = true;
+							this->busy_ = true;
 
-							*Value += inc;
-							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
+							*value_ += inc_;
+							std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time_));
 
-							this->busy = false;
+							this->busy_ = false;
 							}).detach();
 					}
 				}
 				else
 				{
-					setHighlight(false);
+					highlight(false);
 				}
 			}
 		}
 	}
 public:
-	void setPrecision(uint8_t value)
+	void precision(uint8_t value)
 	{
-		this->precision = value;
+		this->precision_ = value;
 	}
 };
 
@@ -256,48 +256,48 @@ class pItemInt : public pItem<int32_t>
 public:
 	pItemInt() {}
 
-	void loop()
+	void Loop()
 	{
-		if (this->isActive())
+		if (this->active())
 		{
-			setText(std::to_string(*Value));
+			text(std::to_string(*value_));
 
-			if (!this->busy)
+			if (!this->busy_)
 			{
-				if (isOnBox())
+				if (IsOnBox())
 				{
-					setHighlight(true);
+					highlight(true);
 
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 					{
-						std::thread(&pItemInt::decToValue, this).detach();
+						std::thread(&pItemInt::DecToValue, this).detach();
 					}
 					else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 					{
-						std::thread(&pItemInt::addToValue, this).detach();
+						std::thread(&pItemInt::AddToValue, this).detach();
 					}
 				}
 				else
 				{
-					setHighlight(false);
+					highlight(false);
 				}
 			}
 		}
 	}
 private:
-	void addToValue()
+	void AddToValue()
 	{
-		this->busy = true;
-		*Value += inc;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
-		this->busy = false;
+		this->busy_ = true;
+		*value_ += inc_;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time_));
+		this->busy_ = false;
 	}
-	void decToValue()
+	void DecToValue()
 	{
-		this->busy = true;
-		*Value -= dec;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
-		this->busy = false;
+		this->busy_ = true;
+		*value_ -= dec_;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time_));
+		this->busy_ = false;
 	}
 };
 
@@ -305,45 +305,45 @@ class pItemBool : public pItem<bool>
 {
 public:
 	pItemBool() {
-		this->sleep_time = 250;
+		this->sleep_time_ = 250;
 	}
 
-	void loop()
+	void Loop()
 	{
-		if (this->isActive())
+		if (this->active())
 		{
-			if (*Value)
-				this->setText("ON");
+			if (*value_)
+				this->text("ON");
 
 			else
-				this->setText("OFF");
+				this->text("OFF");
 
-			if (!this->busy)
+			if (!this->busy_)
 			{
-				if (isOnBox())
+				if (IsOnBox())
 				{
-					this->setHighlight(true);
+					this->highlight(true);
 
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 					{
-						 std::thread(&pItemBool::flipBool, this).detach(); 
+						 std::thread(&pItemBool::flip_bool, this).detach(); 
 					}
 				}
 				else
 				{
-					this->setHighlight(false);
+					this->highlight(false);
 				}
 			}
 
 		}
 	}
 private:
-	void flipBool()
+	void flip_bool()
 	{
-		this->busy = true;
-		*Value = not *Value;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time));
-		this->busy = false;
+		this->busy_ = true;
+		*value_ = not *value_;
+		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_time_));
+		this->busy_ = false;
 	}
 };
 
@@ -352,20 +352,20 @@ class pItemString : public pItem<std::string>
 public:
 	pItemString() {}
 
-	void loop()
+	void Loop()
 	{
-		if (this->isActive())
+		if (this->active())
 		{
-			this->setText(*Value);
+			this->text(*value_);
 
-			if (isOnBox())
+			if (IsOnBox())
 			{
-				this->setHighlight(true);
+				this->highlight(true);
 
 			}
 			else
 			{
-				this->setHighlight(false);
+				this->highlight(false);
 			}
 		}
 	}
