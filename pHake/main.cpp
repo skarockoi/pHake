@@ -33,7 +33,7 @@ struct settings
 	}keys;
 }settings;
 
-struct pointer
+struct offsets
 {
 	uint64_t world = 0x24E9E50;
 	uint64_t waypoint = 0x1F97750;
@@ -42,8 +42,7 @@ struct pointer
 	uint64_t function_xyz = 0x145648F;
 	uint64_t function_speed_z = 0x790B2A;
 	uint64_t kmh = 0x25B0590;
-}pointer;
-
+}offsets;
 
 void Suicide()
 {
@@ -54,7 +53,7 @@ void Suicide()
 void TeleportToWaypoint()
 {
 	bool in_vehicle = world.localplayer.in_vehicle();
-	vec3 waypoint = proc.read<vec3>(proc.base_ + pointer.waypoint);
+	vec3 waypoint = proc.read<vec3>(proc.base_ + offsets.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification_.Add("No Waypoint set");
@@ -210,7 +209,7 @@ void loopTrigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t id_value = proc.read<int32_t>(proc.base_ + pointer.triggerbot);
+		int32_t id_value = proc.read<int32_t>(proc.base_ + offsets.triggerbot);
 		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
@@ -278,13 +277,13 @@ void loopFly() // code explained in "SDK/_info_.txt"
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
-			if (proc.read<uint8_t>(proc.base_ + pointer.function_xyz) != 0xE9)
-				proc.write_bytes(proc.base_ + pointer.function_xyz, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
+			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0xE9)
+				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
 
-			if (proc.read<uint8_t>(proc.base_ + pointer.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_ + pointer.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
+				proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
 			
-			vec3 cam_pos = proc.read<vec3>(proc.base_ + pointer.camera_pos);
+			vec3 cam_pos = proc.read<vec3>(proc.base_ + offsets.camera_pos);
 			vec3 old_pos = world.localplayer.position.xyz();
 			vec3 add_pos(
 				settings.flySpeed * (old_pos.x - cam_pos.x),
@@ -301,11 +300,11 @@ void loopFly() // code explained in "SDK/_info_.txt"
 	}
 	else // restore the original values
 	{
-		if (proc.read<uint8_t>(proc.base_ + pointer.function_xyz) != 0x0F)
-			proc.write_bytes(proc.base_ + pointer.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x0F)
+			proc.write_bytes(proc.base_ + offsets.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
 		
-		if (proc.read<uint8_t>(proc.base_ + pointer.function_speed_z) != 0xF3)
-			proc.write_bytes(proc.base_ + pointer.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+		if (proc.read<uint8_t>(proc.base_ + offsets.function_speed_z) != 0xF3)
+			proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 }
 
@@ -375,15 +374,15 @@ int main()
 
 	pTimer timer;
 	timer.Loop(loopGodmode, 100);
-	timer.Loop(loopNeverWanted, 200);
+	timer.Loop(loopNeverWanted, 10);
 	timer.Loop(loopWeaponMax, 250);
 	timer.Loop(loopRpLoop, 1);
 	timer.Loop(loopTrigger, 1);
 	timer.Loop(loopFly, 10);
 	timer.Loop(loopKeys, 10);
 	timer.Loop([]() {
-		world.UpdateSub(proc.read<uint64_t>(proc.base_ + pointer.world));
-		settings.kmh = 3.6 * proc.read<float>(proc.base_ + pointer.kmh);
+		world.UpdateSub(proc.read<uint64_t>(proc.base_ + offsets.world));
+		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);
 	}, 1);
 
 	menu = new pOverlay();
