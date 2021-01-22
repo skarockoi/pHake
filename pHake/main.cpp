@@ -1,11 +1,12 @@
-#include "Gui/pOverlay.hpp"
-#include <Windows.h>
-#include <array>
+#include "UI/pOverlay.hpp"
+#include "UI/pTimer.hpp"
+#include "UI/pSettings.hpp"
+#include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
 #include "SDK/World.hpp"
-#include "Helper.hpp"
-#include "pTimer.hpp"
-#include "pSettings.hpp"
+
+#include <Windows.h>
+#include <array>
 
 pOverlay* menu;
 pSettings* cfg;

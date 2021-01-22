@@ -152,17 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Gui\lib\pButton.hpp" />
-    <ClInclude Include="Gui\lib\pItem.hpp" />
-    <ClInclude Include="Gui\lib\pList.hpp" />
-    <ClInclude Include="Gui\lib\pMouse.hpp" />
-    <ClInclude Include="Gui\lib\pNotificationCenter.hpp" />
-    <ClInclude Include="Gui\pOverlay.hpp" />
-    <ClInclude Include="Gui\pWindow.hpp" />
-    <ClInclude Include="Helper.hpp" />
     <ClInclude Include="Memory\Datawrapper.hpp" />
     <ClInclude Include="Memory\Process.hpp" />
-    <ClInclude Include="pSettings.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\_info_.txt" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
@@ -173,20 +164,30 @@
     <ClInclude Include="SDK\Weapon.hpp" />
     <ClInclude Include="SDK\WeaponManager.hpp" />
     <ClInclude Include="SDK\World.hpp" />
-    <ClInclude Include="pTimer.hpp" />
+    <ClInclude Include="UI\pButton.hpp" />
+    <ClInclude Include="UI\pHelper.hpp" />
+    <ClInclude Include="UI\pItem.hpp" />
+    <ClInclude Include="UI\pList.hpp" />
+    <ClInclude Include="UI\pMouse.hpp" />
+    <ClInclude Include="UI\pNotificationCenter.hpp" />
+    <ClInclude Include="UI\pOverlay.hpp" />
+    <ClInclude Include="UI\pSettings.hpp" />
+    <ClInclude Include="UI\pTimer.hpp" />
+    <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Gui\lib\pButton.cpp" />
-    <ClCompile Include="Gui\lib\pList.cpp" />
-    <ClCompile Include="Gui\lib\pMouse.cpp" />
-    <ClCompile Include="Gui\lib\pNotificationCenter.cpp" />
-    <ClCompile Include="Gui\pOverlay.cpp" />
-    <ClCompile Include="Gui\pWindow.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <ClCompile Include="Memory\Process.cpp" />
+    <ClCompile Include="UI\pButton.cpp" />
+    <ClCompile Include="UI\pList.cpp" />
+    <ClCompile Include="UI\pMouse.cpp" />
+    <ClCompile Include="UI\pNotificationCenter.cpp" />
+    <ClCompile Include="UI\pOverlay.cpp" />
+    <ClCompile Include="UI\pSettings.cpp" />
+    <ClCompile Include="UI\pWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

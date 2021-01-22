@@ -1,5 +1,8 @@
 #include "pButton.hpp"
 
+#include <thread>
+#include <future>
+
 void pButton::Create(sf::RenderWindow* const& Window)
 {
 	window_ = Window;

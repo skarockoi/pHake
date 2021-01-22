@@ -13,32 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Gui">
-      <UniqueIdentifier>{43e4359f-852c-4817-b7c3-61c0c802b8d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Memory">
       <UniqueIdentifier>{5a9bc1cd-6bba-491f-ac08-8595c14c8c91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Gui\lib">
-      <UniqueIdentifier>{e3e38317-e610-489b-8acb-d084b3b3c422}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\SDK">
       <UniqueIdentifier>{5875738b-365b-4d3c-9f2f-38b4a5062ff1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{43e4359f-852c-4817-b7c3-61c0c802b8d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Gui\lib\pButton.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui\lib\pItem.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui\lib\pMouse.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Helper.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\AmmoInfo.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
@@ -54,15 +39,6 @@
     <ClInclude Include="SDK\VehicleHandling.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Gui\lib\pList.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui\pWindow.hpp">
-      <Filter>Header Files\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui\pOverlay.hpp">
-      <Filter>Header Files\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\World.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
@@ -72,17 +48,8 @@
     <ClInclude Include="SDK\Weapon.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="pTimer.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\_info_.txt">
       <Filter>Header Files\SDK</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui\lib\pNotificationCenter.hpp">
-      <Filter>Header Files\Gui\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="pSettings.hpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Memory\Datawrapper.hpp">
       <Filter>Header Files\Memory</Filter>
@@ -93,6 +60,36 @@
     <ClInclude Include="SDK\PlayerInfo.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="UI\pOverlay.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pWindow.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pTimer.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pButton.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pItem.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pList.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pMouse.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pNotificationCenter.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pHelper.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pSettings.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -101,23 +98,26 @@
     <ClCompile Include="Memory\Process.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\lib\pButton.cpp">
-      <Filter>Header Files\Gui\lib</Filter>
+    <ClCompile Include="UI\pOverlay.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\lib\pList.cpp">
-      <Filter>Header Files\Gui\lib</Filter>
+    <ClCompile Include="UI\pWindow.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\lib\pMouse.cpp">
-      <Filter>Header Files\Gui\lib</Filter>
+    <ClCompile Include="UI\pButton.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\lib\pNotificationCenter.cpp">
-      <Filter>Header Files\Gui\lib</Filter>
+    <ClCompile Include="UI\pList.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\pOverlay.cpp">
-      <Filter>Header Files\Gui</Filter>
+    <ClCompile Include="UI\pMouse.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Gui\pWindow.cpp">
-      <Filter>Header Files\Gui</Filter>
+    <ClCompile Include="UI\pNotificationCenter.cpp">
+      <Filter>Header Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\pSettings.cpp">
+      <Filter>Header Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

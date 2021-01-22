@@ -1,10 +1,11 @@
 #ifndef _PLIST_HPP_
 #define _PLIST_HPP_
 
-#include <SFML/Graphics.hpp>
-#include <vector>
 #include "pItem.hpp"
 #include "pButton.hpp"
+
+#include <SFML/Graphics.hpp>
+#include <vector>
 
 class pList
 {

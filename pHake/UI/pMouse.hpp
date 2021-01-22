@@ -2,8 +2,6 @@
 #define _PMOUSE_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <string>
-#include <sstream>  
 
 class pMouse
 {

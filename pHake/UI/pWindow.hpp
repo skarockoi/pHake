@@ -1,11 +1,12 @@
 #ifndef _PWINDOW_HPP_
 #define _PWINDOW_HPP_
 
+#include "pButton.hpp"
+#include "pItem.hpp"
+#include "pList.hpp"
+#include "pMouse.hpp"
+
 #include <SFML/Graphics.hpp>
-#include "lib/pButton.hpp"
-#include "lib/pItem.hpp"
-#include "lib/pList.hpp"
-#include "lib/pMouse.hpp"
 #pragma comment (lib, "Dwmapi.lib")
 
 class pWindow

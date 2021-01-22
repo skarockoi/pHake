@@ -2,7 +2,6 @@
 #define _PNOTIFICATIONCENTER_HPP_
 
 #include <SFML/Graphics.hpp>
-#include <thread>
 #include <vector>
 
 class pNotificationCenter

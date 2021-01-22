@@ -1,5 +1,8 @@
 #include "pMouse.hpp"
 
+#include <string>
+#include <sstream>  
+
 void pMouse::Create(sf::RenderWindow* const& Window)
 {
 	if (window_ == 0)

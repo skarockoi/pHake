@@ -1,5 +1,7 @@
 #include "pOverlay.hpp"
 
+#include <vector>
+
 GameInfo::GameInfo(LPCSTR Game)
 {
 	game_ = Game;

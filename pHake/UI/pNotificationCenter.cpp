@@ -1,5 +1,7 @@
 #include "pNotificationCenter.hpp"
 
+#include <thread>
+
 void pNotificationCenter::Create(sf::RenderWindow* const& Window)
 {
 	pos.x = 15;

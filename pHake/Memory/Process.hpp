@@ -1,11 +1,9 @@
 #ifndef _PROCESS_HPP_
 #define _PROCESS_HPP_
 
-#include <iostream>
-#include <math.h>
-#include <memory>
-#include <Windows.h>
 #include <vector>
+#include <math.h>
+#include <Windows.h>
 #include <TlHelp32.h> 
 
 struct vec3
