@@ -34,4 +34,3 @@ private:
 	uint32_t DecideSleep();
 };
 #endif
-

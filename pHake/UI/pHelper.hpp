@@ -4,6 +4,7 @@
 #include <random>
 #include <limits>
 #include <thread>
+#include <filesystem>
 #include <Windows.h>
 
 void sleep(uint32_t ms)
@@ -45,6 +46,72 @@ uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
 	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
 	return num(rng);
+}
+
+std::string CutStringBetweenTwoCharacters(std::string& origin, const std::string& left, const std::string& right)
+{
+	uint32_t first = origin.find(left);
+	uint32_t last = origin.find(right);
+	return origin.substr(first + 1, last - 1 - first);
+}
+
+std::string GetStringBeforeCharacter(std::string& origin, const std::string& Character)
+{
+	std::string::size_type pos = origin.find(Character);
+	if (pos != std::string::npos)
+		return origin.substr(0, pos);
+	else
+		return origin;
+}
+
+void SplitSpringByCharacterAndSaveToVector(std::vector<std::string>* Vector, const std::string& Origin, char Character)
+{
+	std::string token;
+	std::istringstream tokenStream(Origin);
+	while (std::getline(tokenStream, token, Character))
+		Vector->push_back(token);
+}
+
+std::vector<std::string> SplitSpringByCharacterAndSaveAsVector(const std::string& Origin, char Character)
+{
+	std::vector<std::string> the_vector;
+	std::string token;
+	std::istringstream tokenStream(Origin);
+	while (std::getline(tokenStream, token, Character))
+		the_vector.push_back(token);
+
+	return the_vector;
+}
+
+bool ReadFileByLineAndSaveToVector(std::vector<std::string>* Vector, const std::string& Filepath)
+{
+	if (std::filesystem::exists(Filepath)) // check if the cfg file exists, otherwise create a new file(does not work if the path is behind a directory that does not exist
+	{
+		std::ifstream file(Filepath);
+
+		std::string   tempStr;
+		while (std::getline(file, tempStr))
+		{
+			if (tempStr.size() > 0)
+				Vector->push_back(tempStr); // read cfg file into vector full of strings
+		}
+		return true;
+	}
+	else
+		return false;
+
+}
+
+std::string RandomString(size_t Size)
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> dist('a', 'z');
+
+	std::string result;
+	std::generate_n(std::back_inserter(result), Size, [&] {return dist(mt); });
+
+	return result;
 }
 
 namespace Key

@@ -10,7 +10,7 @@ private:
 	std::vector<std::string>* file_content_;
 	std::string file_path_;
 public:
-	pSettings() {}
+	pSettings();
 	~pSettings();
 	pSettings(const std::string& Filepath);
 	
@@ -20,7 +20,6 @@ public:
 
 	template <typename T>
 	bool			Edit(const std::string& Key, T Value);
-
 	void			Save();
 	void			Clear();
 
@@ -29,7 +28,6 @@ private:
 	std::string		GetKeyByName(const std::string& Key);
 	bool			CheckExistanceOfKey(const std::string& Key);
 	void			ChangeKeyValue(const std::string& Key, const std::string& Value);
-	void			DeleteAndSaveToFile();
 
 	template <typename T>
 	T LexicalCast(const std::string& str);
