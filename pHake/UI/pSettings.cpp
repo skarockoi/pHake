@@ -15,7 +15,7 @@ pSettings::~pSettings()
 	delete[] this->file_content_;
 }
 
-pSettings::pSettings(const std::string& Filepath)
+bool pSettings::Open(const std::string& Filepath)
 {
 	this->file_path_ = Filepath;
 
@@ -29,12 +29,13 @@ pSettings::pSettings(const std::string& Filepath)
 			if (temp_string.size() > 0)
 				this->file_content_->push_back(temp_string);
 		}
+		return 1;
 	}
 	else
 	{
-		file_content_ = new std::vector<std::string>;
 		std::ofstream file{ Filepath };
 		file.close();
+		return 0;
 	}
 }
 

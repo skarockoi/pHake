@@ -360,7 +360,8 @@ int main()
 
 	world = World(&proc);
 
-	cfg = new pSettings("Settings\\cfg.txt");
+	cfg = new pSettings();
+	cfg->Open("Settings//cfg.txt");
 	settings.godmode =	cfg->AddGet<bool>("Godmode", 0);
 	settings.neverwanted = cfg->AddGet<bool>("NeverWanted", 0);
 	settings.rploop = cfg->AddGet<bool>("RpLoop", 0);

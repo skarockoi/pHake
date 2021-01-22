@@ -12,8 +12,8 @@ private:
 public:
 	pSettings();
 	~pSettings();
-	pSettings(const std::string& Filepath);
 	
+	bool			Open(const std::string& Filepath);
 	template <typename T>
 	T				AddGet(const std::string& Key, T Value);
 	void			AddComment(const std::string& Key);
@@ -33,7 +33,6 @@ private:
 	T LexicalCast(const std::string& str);
 };
 #endif
-
 
 template<typename T>
 inline T pSettings::AddGet(const std::string& Key, T Value)
