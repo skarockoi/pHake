@@ -33,7 +33,7 @@ void pOverlay::Create(LPCSTR Name)
 	game_info_ = GameInfo(Name); // Getting game Info
 	font_.loadFromFile("Settings/font.ttf");
 
-	window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size
+	window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
 	window_.setFramerateLimit(60);
 	this->SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
 
