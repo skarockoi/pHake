@@ -1,11 +1,12 @@
 1.52 Steam
 
-uint64_t World = _base + 0x24E9E50
-uint64_t Waypoint = _base + 0x1F97750
-uint64_t Trigger = _base + 0x1F7FEE0 // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-uint64_t kmh = _base + 0x25B0590
-OPCODE FreezeXYZ = _base + 0x145648F 
-OPCODE FreezeSpeedXYZ = _base + 0x790B2A
+uint64_t world = 0x24E9E50;
+uint64_t waypoint = 0x1F97750;
+uint64_t triggerbot = 0x1F7FEE0;
+uint64_t camera_pos = 0x1D59A30;
+uint64_t function_xyz = 0x145648F;
+uint64_t function_speed_z = 0x790B2A;
+uint64_t kmh = 0x25B0590;
 
 
 ------------------------SMOOTH FLY--------------------------------------------------------------------------

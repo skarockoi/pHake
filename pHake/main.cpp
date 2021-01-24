@@ -22,7 +22,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float flySpeed = 0.05;
+	float fly_speed = 0.05;
 	float kmh = 0.f;
 
 	struct keys
@@ -101,7 +101,7 @@ void BoostPlayer()
 	case 0: 		
 		world.localplayer.playerinfo.walk_mp(1);
 		world.localplayer.playerinfo.swim_mp(1);
-		settings.flySpeed = 0.05;
+		settings.fly_speed = 0.05;
 
 		if (!settings.fly)
 			world.localplayer.ragdoll(0);
@@ -110,13 +110,13 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.flySpeed = 0.15;
+		settings.fly_speed = 0.15;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(2500);
 		world.localplayer.ragdoll(1);
-		settings.flySpeed = 0.3;
+		settings.fly_speed = 0.3;
 		break;
 	}
 	menu->notification_.Add("Player mode set to " + modes[curr_mode]);
@@ -287,9 +287,9 @@ void loopFly() // code explained in "SDK/_info_.txt"
 			vec3 cam_pos = proc.read<vec3>(proc.base_ + offsets.camera_pos);
 			vec3 old_pos = world.localplayer.position.xyz();
 			vec3 add_pos(
-				settings.flySpeed * (old_pos.x - cam_pos.x),
-				settings.flySpeed * (old_pos.y - cam_pos.y),
-				settings.flySpeed * (old_pos.z - (cam_pos.z - 0.5))
+				settings.fly_speed * (old_pos.x - cam_pos.x),
+				settings.fly_speed * (old_pos.y - cam_pos.y),
+				settings.fly_speed * (old_pos.z - (cam_pos.z - 0.5))
 			);
 
 			float len = add_pos.len();
