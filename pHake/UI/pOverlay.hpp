@@ -39,14 +39,16 @@ private:
 	sf::Font		 font_;
 	GameInfo		 game_info_;
 	pMouse			 mouse_;
-
-public:
-	pList				list_;
+	pList			    list_;
 	pNotificationCenter notification_;
 
+public:
 	void Create(LPCSTR Name);
 	void Toggle();
 	void Loop();
+
+	pList* list() { return &list_; };
+	pNotificationCenter* notification() { return &notification_; };
 private:
 	void SetWindowTransparentAndNotClickableEx(HWND handle);
 	void FixPosition();
