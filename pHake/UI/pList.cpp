@@ -87,7 +87,7 @@ void pList::AddFunction(const std::string& name, void(&functionP)())
 	buffer.Create(window_);
 	buffer.font(font_);
 	buffer.Connect(functionP);
-	buffer.fixed_size(48, 19);
+	buffer.fixed_size(48, 20);
 	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x, rect_back.getPosition().y + ((gap_count_ * 5) + count_ * 20));
 
 	items_button_.push_back(buffer);
@@ -217,7 +217,7 @@ void pList::active(bool act)
 
 void pList::resize()
 {
-	rect_back.setSize(sf::Vector2f(rect_back.getSize().x, (items_name_.size() * 20) + (gap_count_ * 5)));
+	rect_back.setSize(sf::Vector2f(rect_back.getSize().x, ((items_name_.size() * 20) + (gap_count_ * 5)) - 1));
 }
 
 void pList::used(bool act)

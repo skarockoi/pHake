@@ -5,14 +5,7 @@
 
 class pButton
 {
-protected:
-	uint16_t  sleep_time_ = 150;
-	bool	  resize_ = true;
-	bool	  active_ = false;
-	bool	  busy_ = false;
-
-	void*	  function_;
-
+private:
 	sf::RenderWindow   *window_;
 	sf::Font		   font_;
 
@@ -34,10 +27,18 @@ public:
 	void font(sf::Font& font);
 	sf::Vector2f size();
 
-protected:
+private:
 	bool IsOnBox();
 	void active(bool act);
 	void highlight(bool value);
 	void update_length();
+
+private:
+	uint16_t  sleep_time_ = 150;
+	bool	  resizeable_ = true;
+	bool	  active_ = false;
+	bool	  busy_ = false;
+
+	void* function_;
 };
 #endif

@@ -336,6 +336,12 @@ void loopKeys()
 		BoostVehicle();
 		sleep(150);
 	}
+
+	if (HIBYTE(GetAsyncKeyState(VK_MENU)))
+	{
+		menu->Toggle();
+		sleep(150);
+	}
 }
 
 void ExitProgram()
@@ -354,12 +360,12 @@ void ExitProgram()
 int main()
 {
 	FreeConsole();
-
+	
 	if (!proc.AttachProcess("GTA5.exe"))
 		ExitProgram();
-
+	
 	world = World(&proc);
-
+	
 	cfg = new pSettings();
 	cfg->Open("Settings//cfg.txt");
 	settings.godmode =	cfg->AddGet<bool>("Godmode", 0);
@@ -373,7 +379,7 @@ int main()
 	settings.keys.teleport = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
 	settings.keys.boost_player = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
-
+	
 	pTimer timer;
 	timer.Loop(loopGodmode, 100);
 	timer.Loop(loopNeverWanted, 10);

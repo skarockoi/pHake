@@ -7,7 +7,7 @@
 class pNotificationCenter
 {
 private:
-	struct Bone // Everything needed for a notification
+	struct Notification // Everything needed for a notification
 	{
 		sf::Text		   text;
 		sf::RectangleShape back;
@@ -16,10 +16,10 @@ private:
 		bool ready;
 	};
 
-	sf::RenderWindow* window;
-	sf::Font		  font;
-	sf::Vector2i	  pos;
-	std::vector<Bone> notifications;
+	sf::RenderWindow* window_;
+	sf::Font		  font_;
+	sf::Vector2i	  position_;
+	std::vector<Notification> notifications_;
 
 public:
 	void Create(sf::RenderWindow* const& window);
@@ -30,7 +30,7 @@ public:
 	void Add(const std::string& name);
 
 private:
-	bool IsListFinished();
+	bool IsEverythingFinished();
 	uint32_t DecideSleep();
 };
 #endif

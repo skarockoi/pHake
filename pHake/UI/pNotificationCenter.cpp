@@ -2,102 +2,108 @@
 
 #include <thread>
 
+
+#define TEXT_SIZE 16
+#define TEXT_COLOR sf::Color::Color(255, 255, 255, 255)
+
+#define BACK_HEIGHT 20
+#define BACK_COLOR sf::Color::Color(0, 0, 0, 150)
+#define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0)
+
+#define DISTANCE_FROM_EDGE 20
+#define DISTANCE_BETWEEN_NOTIFICATIONS 25
+
+
 void pNotificationCenter::Create(sf::RenderWindow* const& Window)
 {
-	pos.x = 15;
-	pos.y = 20;
+	this->position_.x = DISTANCE_FROM_EDGE;
+	this->position_.y = DISTANCE_FROM_EDGE;
 
-	window = Window;
-	font.loadFromFile("Settings/font.ttf");
+	this->window_ = Window;
+	this->font_.loadFromFile("Settings/font.ttf");
 }
 
 void pNotificationCenter::Add(const std::string& name)
 {
-	Bone tempBone;
-	tempBone.finished = false;
-	tempBone.started = false;
-	tempBone.ready = true;
+	Notification tmp;
+	tmp.finished = false;
+	tmp.started = false;
+	tmp.ready = true;
 
-	tempBone.back.setSize(sf::Vector2f(210, 20));
-	tempBone.back.setPosition(pos.x + 10, pos.y + (notifications.size() * 25));
-	tempBone.back.setFillColor(sf::Color::Color(0, 0, 0, 150));
-	tempBone.back.setOutlineColor(sf::Color::Color(0, 0, 0, 150));
-	tempBone.back.setOutlineThickness(1);
+	tmp.text.setFont(this->font_);
+	tmp.text.setCharacterSize(TEXT_SIZE);
+	tmp.text.setFillColor(TEXT_COLOR);
+	tmp.text.setPosition(this->position_.x, this->position_.y + (this->notifications_.size() * DISTANCE_BETWEEN_NOTIFICATIONS));
+	tmp.text.setString(" " + name + " ");
 
-	tempBone.text.setFont(font);
-	tempBone.text.setCharacterSize(16);
-	tempBone.text.setFillColor(sf::Color::Color(255, 255, 255, 255));
-	tempBone.text.setPosition(tempBone.back.getPosition().x, tempBone.back.getPosition().y);
-	tempBone.text.setString(" " + name);
+	tmp.back.setSize(sf::Vector2f(tmp.text.getGlobalBounds().width, BACK_HEIGHT));
+	tmp.back.setPosition(tmp.text.getPosition());
+	tmp.back.setFillColor(BACK_COLOR);
+	tmp.back.setOutlineColor(BACK_COLOR_OUTLINE);
+	tmp.back.setOutlineThickness(1);
 
-	notifications.push_back(tempBone);
+	this->notifications_.push_back(tmp);
 }
 
 void pNotificationCenter::Draw()
 {
-	for (int i = 0; i < notifications.size(); i++)
+	for (size_t i = 0; i < notifications_.size(); i++)
 	{
-		if (notifications[i].started && !notifications[i].finished)
+		if (this->notifications_[i].started && !this->notifications_[i].finished)
 		{
-			window->draw(notifications[i].back);
-			window->draw(notifications[i].text);
+			this->window_->draw(this->notifications_[i].back);
+			this->window_->draw(this->notifications_[i].text);
 		}
 	}
 }
 
 void pNotificationCenter::Loop()
 {
-	for (int i = 0; i < notifications.size(); i++)
+	for (size_t i = 0; i < this->notifications_.size(); i++)
 	{
-		if (notifications[i].ready && !notifications[i].started)
+		if (this->notifications_[i].ready && !this->notifications_[i].started)
 		{
-			std::thread execThread = std::thread([=]()
+			std::thread execThread = std::thread([i, this]()
 				{
-					notifications[i].ready = false;
-					notifications[i].started = true;
+					this->notifications_[i].ready = false;
+					this->notifications_[i].started = true;
 
-					for (int b = 125; b > 0; b--) // fade effect magic
+					for (int b = 127, c = 255; b > 0; b--, c -= 2) // Fade effect magic
 					{
-						notifications[i].back.setFillColor(sf::Color(0, 0, 0, b));
-						notifications[i].back.setOutlineColor(sf::Color(0, 0, 0, b));
-						notifications[i].text.setFillColor(sf::Color(255, 255, 255, b * 2));
+						this->notifications_[i].back.setFillColor(sf::Color(0, 0, 0, b));
+						this->notifications_[i].back.setOutlineColor(sf::Color(0, 0, 0, c));
+						this->notifications_[i].text.setFillColor(sf::Color(255, 255, 255, b * 2));
 
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->DecideSleep()));
 					}
-
-					notifications[i].finished = true;
+					this->notifications_[i].finished = true;
 				});
-
 			execThread.detach();
 		}
 	}
 
-	if (notifications.size() > 32 || this->IsListFinished())
-	{
-		notifications.clear();
-	}
+	if (this->notifications_.size() > 32 || this->IsEverythingFinished())
+		this->notifications_.clear();
+	
 }
 
-bool pNotificationCenter::IsListFinished()
+bool pNotificationCenter::IsEverythingFinished()
 {
 	uint8_t count = 0;
 
-	for (int i = 0; i < notifications.size(); i++)
+	for (int i = 0; i < this->notifications_.size(); i++)
 	{
-		if (notifications[i].finished && notifications.size() > 1)
-			count++;
+		if (!this->notifications_[i].finished)
+			return false;
 	}
 
-	if (count == notifications.size())
-		return true;
-	else
-		return false;
+	return true;
 }
 
 uint32_t pNotificationCenter::DecideSleep()
 {
-	if (notifications.size() < 7)
-		return 10;
-	else if (notifications.size() >= 7)
-		return 5;
+	if (this->notifications_.size() < 7) // check if there are more than 7 notifications
+		return 10; // if no, then sleep sleep for 10 seconds
+	else
+		return 5; // if yes, then sleep sleep for 5 seconds
 }

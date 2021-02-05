@@ -4,7 +4,7 @@ void pWindow::Create()
 {
 	font_.loadFromFile("Settings/font.ttf");
 
-	window_.create(sf::VideoMode(208, 148), "pHake");
+	window_.create(sf::VideoMode(208, 148), "pWindow");
 	window_.setFramerateLimit(60);
 
 	list_.Create(&window_);
@@ -35,7 +35,6 @@ void pWindow::Loop()
 		window_.clear(sf::Color::Color(255, 255, 255, 255));
 
 		list_.Draw();
-
 		window_.display();
 	}
 }

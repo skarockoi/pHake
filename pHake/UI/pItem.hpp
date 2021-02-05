@@ -11,7 +11,7 @@ template <typename T> class pItem
 {
 protected:
 	uint16_t sleep_time_ = 125;
-	bool	 resize_ = false;
+	bool	 resizeable_ = false;
 	bool	 active_ = false;
 	bool     busy_ = false;
 
@@ -134,8 +134,8 @@ inline void pItem<T>::position(uint32_t x, uint32_t y)
 template<typename T>
 inline void pItem<T>::size(uint32_t x, uint32_t y)
 {
-	if (!resize_)
-		resize_ = false;
+	if (!resizeable_)
+		resizeable_ = false;
 
 	rect_back_.setSize(sf::Vector2f(x, y));
 }
@@ -177,7 +177,7 @@ inline void pItem<T>::highlight(bool value)
 template<typename T>
 inline void pItem<T>::length()
 {
-	if (this->resize_)
+	if (this->resizeable_)
 	{
 		sf::Vector2f rSize;
 		rSize.x = ((float)std::string(text_.getString()).length() * 10) - (((std::string)text_.getString()).length() * 2);
