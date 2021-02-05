@@ -37,23 +37,23 @@ void pOverlay::Create(LPCSTR Name)
 	window_.setFramerateLimit(60);
 	this->SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
 
-	notification_.Create(&window_);
+	notification.Create(&window_);
 
 	mouse_.Create(&window_);
 	mouse_.Toggle();
 
-	list_.Create(&window_);
-	list_.position(window_.getSize().x / 2, window_.getSize().y / 4);
-	list_.Toggle();
+	list.Create(&window_);
+	list.position(window_.getSize().x / 2, window_.getSize().y / 4);
+	list.Toggle();
 }
 
 void pOverlay::Toggle()
 {
-	list_.Toggle();
+	list.Toggle();
 	mouse_.Toggle();
 
-	if (list_.active())
-		sf::Mouse::setPosition(sf::Vector2i(list_.position().x + window_.getPosition().x, list_.position().y + window_.getPosition().y));
+	if (list.active())
+		sf::Mouse::setPosition(sf::Vector2i(list.position().x + window_.getPosition().x, list.position().y + window_.getPosition().y));
 }
 
 void pOverlay::Loop()
@@ -75,15 +75,15 @@ void pOverlay::Loop()
 			}
 		}
 
-		list_.Loop();
+		list.Loop();
 		mouse_.Loop();
-		notification_.Loop();
+		notification.Loop();
 
 		window_.clear(sf::Color::Color(0, 0, 0, 0));
 
-		list_.Draw();
+		list.Draw();
 		mouse_.Draw();
-		notification_.Draw();
+		notification.Draw();
 
 		window_.display();
 	}
