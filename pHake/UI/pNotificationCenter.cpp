@@ -88,8 +88,6 @@ void pNotificationCenter::Loop()
 
 bool pNotificationCenter::IsEverythingFinished()
 {
-	uint8_t count = 0;
-
 	for (int i = 0; i < this->notifications_.size(); i++)
 	{
 		if (!this->notifications_[i].finished)
