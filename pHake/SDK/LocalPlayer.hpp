@@ -39,8 +39,7 @@ public:
 	void freeze(bool value)
 	{
 		if (value)
-			this->write<uint8_t>(0x2E, 2);
-		
+			this->write<uint8_t>(0x2E, 2);	
 		else	
 			this->write<uint8_t>(0x2E, 1);
 	}
