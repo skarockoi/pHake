@@ -14,10 +14,10 @@ class pWindow
 private:
 	sf::RenderWindow window_;
 	sf::Font		 font_;
-	pMouse			 mouse_;
+	std::unique_ptr <pMouse> mouse_;
 
 public:
-	pList			 list_;
+	std::unique_ptr<pList> list;
 
 	void Create();
 	void Loop();

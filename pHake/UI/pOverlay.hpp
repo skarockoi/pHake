@@ -8,6 +8,7 @@
 #include "pNotificationCenter.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <Windows.h>
 #include <Dwmapi.h>
 #pragma comment (lib, "Dwmapi.lib")
@@ -15,8 +16,8 @@
 struct GameInfo
 {
 private:
-	HWND hwnd_;
-	RECT rect_;
+	HWND   hwnd_;
+	RECT   rect_;
 	LPCSTR game_;
 	sf::Vector2i pos_;
 	sf::Vector2u size_;
@@ -37,13 +38,14 @@ class pOverlay
 private:
 	sf::RenderWindow window_;
 	sf::Font		 font_;
+
 	GameInfo		 game_info_;
-	pMouse			 mouse_;
+	std::unique_ptr<pMouse> mouse_;
 
 public:
-	pList			    list;
-	pNotificationCenter notification;
-
+	std::unique_ptr<pList> list;
+	std::unique_ptr<pNotificationCenter> notification;
+	
 	void Create(LPCSTR Name);
 	void Toggle();
 	void Loop();

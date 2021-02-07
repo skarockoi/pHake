@@ -2,13 +2,12 @@
 
 #include <thread>
 
-
 #define TEXT_SIZE 16
 #define TEXT_COLOR sf::Color::Color(255, 255, 255, 255)
 
 #define BACK_HEIGHT 20
 #define BACK_COLOR sf::Color::Color(0, 0, 0, 150)
-#define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0)
+#define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0, 255)
 
 #define DISTANCE_FROM_EDGE 20
 #define DISTANCE_BETWEEN_NOTIFICATIONS 25

@@ -30,35 +30,39 @@ bool GameInfo::IsActive()
 
 void pOverlay::Create(LPCSTR Name)
 {
-	game_info_ = GameInfo(Name); // Getting game Info
-	font_.loadFromFile("Settings/font.ttf");
+	this->list = std::make_unique<pList>();
+	this->notification = std::make_unique<pNotificationCenter>();
+	this->mouse_ = std::make_unique<pMouse>();
 
-	window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
-	window_.setFramerateLimit(60);
+	this->game_info_ = GameInfo(Name); // Getting game Info
+	this->font_.loadFromFile("Settings/font.ttf");
+
+	this->window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
+	this->window_.setFramerateLimit(60);
 	this->SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
 
-	notification.Create(&window_);
+	this->notification->Create(&window_);
 
-	mouse_.Create(&window_);
-	mouse_.Toggle();
+	this->mouse_->Create(&window_);
+	this->mouse_->Toggle();
 
-	list.Create(&window_);
-	list.position(window_.getSize().x / 2, window_.getSize().y / 4);
-	list.Toggle();
+	this->list->Create(&window_);
+	this->list->position(window_.getSize().x / 2, window_.getSize().y / 4);
+	this->list->Toggle();
 }
 
 void pOverlay::Toggle()
 {
-	list.Toggle();
-	mouse_.Toggle();
+	this->list->Toggle();
+	this->mouse_->Toggle();
 
-	if (list.active())
-		sf::Mouse::setPosition(sf::Vector2i(list.position().x + window_.getPosition().x, list.position().y + window_.getPosition().y));
+	if (this->list->active())
+		sf::Mouse::setPosition(sf::Vector2i(this->list->position().x + window_.getPosition().x, this->list->position().y + window_.getPosition().y));
 }
 
 void pOverlay::Loop()
 {
-	while (window_.isOpen() && game_info_.IsActive())
+	while (this->window_.isOpen() && this->game_info_.IsActive())
 	{
 		this->FixPosition();
 
@@ -75,17 +79,17 @@ void pOverlay::Loop()
 			}
 		}
 
-		list.Loop();
-		mouse_.Loop();
-		notification.Loop();
-
-		window_.clear(sf::Color::Color(0, 0, 0, 0));
-
-		list.Draw();
-		mouse_.Draw();
-		notification.Draw();
-
-		window_.display();
+		this->list->Loop();
+		this->mouse_->Loop();
+		this->notification->Loop();
+		
+		this->window_.clear(sf::Color::Color(0, 0, 0, 0));
+		
+		this->list->Draw();
+		this->mouse_->Draw();
+		this->notification->Draw();
+		
+		this->window_.display();
 	}
 }
 
@@ -102,12 +106,12 @@ void pOverlay::SetWindowTransparentAndNotClickableEx(HWND handle)
 
 void pOverlay::FixPosition()
 {
-	game_info_.Update();
+	this->game_info_.Update();
 	sf::Vector2i game_pos = game_info_.position();
 	sf::Vector2i window_pos = window_.getPosition();
 
 	if (game_pos.x != window_pos.x + 1 || game_pos.y != window_pos.y - 1)
 	{
-		window_.setPosition(sf::Vector2i(game_pos.x - 1, game_pos.y + 1));
+		this->window_.setPosition(sf::Vector2i(game_pos.x - 1, game_pos.y + 1));
 	}
 }

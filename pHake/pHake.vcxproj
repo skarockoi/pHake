@@ -182,6 +182,7 @@
     </ClCompile>
     <ClCompile Include="Memory\Process.cpp" />
     <ClCompile Include="UI\pButton.cpp" />
+    <ClCompile Include="UI\pItem.cpp" />
     <ClCompile Include="UI\pList.cpp" />
     <ClCompile Include="UI\pMouse.cpp" />
     <ClCompile Include="UI\pNotificationCenter.cpp" />

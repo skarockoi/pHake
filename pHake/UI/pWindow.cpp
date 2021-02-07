@@ -2,14 +2,17 @@
 
 void pWindow::Create()
 {
+	this->list = std::make_unique<pList>();
+	this->mouse_ = std::make_unique<pMouse>();
+
 	font_.loadFromFile("Settings/font.ttf");
 
 	window_.create(sf::VideoMode(208, 148), "pWindow");
 	window_.setFramerateLimit(60);
 
-	list_.Create(&window_);
-	list_.position(0, 0);
-	list_.Toggle();
+	list->Create(&window_);
+	list->position(0, 0);
+	list->Toggle();
 }
 
 void pWindow::Loop()
@@ -30,18 +33,18 @@ void pWindow::Loop()
 			}
 		}
 
-		list_.Loop();
+		list->Loop();
 
 		window_.clear(sf::Color::Color(255, 255, 255, 255));
 
-		list_.Draw();
+		list->Draw();
 		window_.display();
 	}
 }
 
 void pWindow::FixSize()
 {
-	sf::Vector2f size_list = list_.size();
+	sf::Vector2f size_list = list->size();
 
 	sf::Vector2u new_size;
 	new_size.x = size_list.x;

@@ -24,7 +24,7 @@ private:
 	std::vector<pItemString> items_string_;
 	std::vector<pButton>	 items_button_;
 
-	uint8_t count_ = 0;
+	uint8_t item_count_ = 0;
 	uint8_t gap_count_ = 0;
 
 public:
@@ -34,8 +34,7 @@ public:
 	void Toggle();
 
 	void AddFloat(const std::string& name, float& value, float inc, float dec);
-	void AddFloat(const std::string& name, float& value, float inc, float dec, uint8_t prec);
-	void AddInt(const std::string& name, int& value, int inc, int dec);
+	void AddInt(const std::string& name, uint32_t& value, int inc, int dec);
 	void AddBool(const std::string& name, bool& value);
 	void AddFunction(const std::string& name, void(&functionP)());
 	void AddString(const std::string& name, std::string& value);

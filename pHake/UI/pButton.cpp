@@ -11,13 +11,12 @@
 #define BACK_COLOR sf::Color::Color(0, 0, 0, 150)
 #define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0, 255)
 
-#define DISTANCE_FROM_EDGE 20
-#define DISTANCE_BETWEEN_NOTIFICATIONS 25
+#define HIGHLIGHT_COLOR sf::Color::Color(255, 255, 255, 255)
 
-void pButton::Create(sf::RenderWindow* const& Window)
+void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 {
 	window_ = Window;
-	font_.loadFromFile("Settings/font.ttf");
+	this->font_ = Font;
 
 	this->button_back_.setSize(sf::Vector2f(BACK_WIDTH - 1, BACK_HEIGHT - 1));
 	this->button_back_.setFillColor(BACK_COLOR);
@@ -25,12 +24,12 @@ void pButton::Create(sf::RenderWindow* const& Window)
 	this->button_back_.setOutlineThickness(1);
 	this->button_back_.setPosition(0, 0);
 
-	this->button_text_.setFont(font_);
+	this->button_text_.setFont(*font_);
 	this->button_text_.setCharacterSize(TEXT_SIZE);
 	this->button_text_.setFillColor(TEXT_COLOR);
 	this->button_text_.setPosition(0, 0);
 
-	this->active(true);
+	this->active_ = true;
 }
 
 void pButton::Loop()
@@ -41,7 +40,7 @@ void pButton::Loop()
 		{
 			if (this->IsOnBox())
 			{
-				this->highlight(true);
+				this->Hightlight(true);
 
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
@@ -60,14 +59,14 @@ void pButton::Loop()
 				}
 			}
 			else
-				this->highlight(false);
+				this->Hightlight(false);
 		}
 	}
 }
 
 void pButton::Draw()
 {
-	if (this->active())
+	if (this->active_)
 	{
 		window_->draw(button_back_);
 		window_->draw(button_text_);
@@ -79,38 +78,17 @@ void pButton::Connect(void(&functionP)())
 	this->function_ = &functionP;
 }
 
-void pButton::timeout(int sleep)
-{
-	this->sleep_time_ = sleep;
-}
-
 sf::Vector2f pButton::size()
 {
 	return button_back_.getSize();
 }
 
-void pButton::active(bool act)
+void pButton::Hightlight(bool value)
 {
-	this->active_ = act;
-}
-
-void pButton::highlight(bool value)
-{
-	if (value)
-		button_back_.setOutlineColor(sf::Color::Color(255, 255, 255, 255));
-	else
-		button_back_.setOutlineColor(sf::Color::Color(0, 0, 0, 0));
-}
-
-void pButton::update_length()
-{
-	if (this->resizeable_)
-	{
-		sf::Vector2f rSize;
-		rSize.x = ((float)std::string(button_text_.getString()).length() * 10) - (((std::string)button_text_.getString()).length() * 2);
-		rSize.y = button_back_.getSize().y;
-		button_back_.setSize(rSize);
-	}
+	if (value && this->button_back_.getOutlineColor() != HIGHLIGHT_COLOR)
+		this->button_back_.setOutlineColor(HIGHLIGHT_COLOR);
+	else if (!value && this->button_back_.getOutlineColor() == HIGHLIGHT_COLOR)
+		button_back_.setOutlineColor(BACK_COLOR_OUTLINE);
 }
 
 bool pButton::IsOnBox()
@@ -134,23 +112,9 @@ void pButton::position(int x, int y)
 void pButton::text(const std::string& text)
 {
 	button_text_.setString(" " + text);
-	update_length();
 }
 
-void pButton::fixed_size(int x, int y)
+void pButton::size(int x, int y)
 {
-	if (!resizeable_)
-		resizeable_ = false;
-
 	button_back_.setSize(sf::Vector2f(x - 1, y - 1));
-}
-
-void pButton::font(sf::Font& font)
-{
-	button_text_.setFont(font);
-}
-
-bool pButton::active()
-{
-	return this->active_;
 }

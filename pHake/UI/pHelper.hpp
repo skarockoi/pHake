@@ -6,6 +6,9 @@
 #include <thread>
 #include <filesystem>
 #include <Windows.h>
+#include <sstream>  
+#include <iomanip>
+#include <thread>
 
 void sleep(uint32_t ms)
 {

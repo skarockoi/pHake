@@ -48,7 +48,7 @@ struct offsets
 void Suicide()
 {
 	world.localplayer.health(0.f);
-	menu->notification.Add("Player health set to 0");
+	menu->notification->Add("Player health set to 0");
 }
 
 void TeleportToWaypoint()
@@ -57,7 +57,7 @@ void TeleportToWaypoint()
 	vec3 waypoint = proc.read<vec3>(proc.base_ + offsets.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		menu->notification.Add("No Waypoint set");
+		menu->notification->Add("No Waypoint set");
 		return;
 	}
 
@@ -79,12 +79,12 @@ void TeleportToWaypoint()
 		}
 		else
 		{
-			menu->notification.Add("Please don't move");
+			menu->notification->Add("Please don't move");
 			return;
 		}
 	}
 
-	menu->notification.Add("Teleported to Waypoint");
+	menu->notification->Add("Teleported to Waypoint");
 }
 
 void BoostPlayer()
@@ -119,7 +119,7 @@ void BoostPlayer()
 		settings.fly_speed = 0.3;
 		break;
 	}
-	menu->notification.Add("Player mode set to " + modes[curr_mode]);
+	menu->notification->Add("Player mode set to " + modes[curr_mode]);
 }
 
 void BoostVehicle()
@@ -162,7 +162,7 @@ void BoostVehicle()
 		world.localplayer.vehicle.handling.acceleration(2.f);
 		break;
 	}
-	menu->notification.Add("Vehicle mode set to " + modes[curr_mode]);
+	menu->notification->Add("Vehicle mode set to " + modes[curr_mode]);
 }
 
 void loopGodmode()
@@ -306,6 +306,7 @@ void loopFly() // code explained in "SDK/_info_.txt"
 		
 		if (proc.read<uint8_t>(proc.base_ + offsets.function_speed_z) != 0xF3)
 			proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+
 	}
 }
 
@@ -334,12 +335,6 @@ void loopKeys()
 	if (HIBYTE(GetAsyncKeyState(settings.keys.boost_vehicle)))
 	{
 		BoostVehicle();
-		sleep(150);
-	}
-
-	if (HIBYTE(GetAsyncKeyState(VK_MENU)))
-	{
-		menu->Toggle();
 		sleep(150);
 	}
 }
@@ -395,18 +390,19 @@ int main()
 
 	menu = new pOverlay();
 	menu->Create("Grand Theft Auto V");
-	menu->list.AddBool("Godmode", settings.godmode);
-	menu->list.AddBool("NeverWanted", settings.neverwanted);
-	menu->list.AddBool("Trigger", settings.trigger);
-	menu->list.AddBool("RpLoop", settings.rploop);
-	menu->list.AddBool("MaxWeapon", settings.weaponmax);
-	menu->list.AddBool("Fly", settings.fly);
-	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
-	menu->list.AddFunction("Boost Player", BoostPlayer);
-	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
-	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint);
-	menu->list.AddFunction("Suicide", Suicide);
-	menu->list.AddFunction("Exit", ExitProgram);
+	menu->list->AddBool("Godmode", settings.godmode);
+	menu->list->AddBool("NeverWanted", settings.neverwanted);
+	menu->list->AddBool("Trigger", settings.trigger);
+	menu->list->AddBool("RpLoop", settings.rploop);
+	menu->list->AddBool("MaxWeapon", settings.weaponmax);
+	menu->list->AddBool("Fly", settings.fly);
+
+	menu->list->AddFloat("Kms/h", settings.kmh, 0, 0);
+	menu->list->AddFunction("Boost Player", BoostPlayer);
+	menu->list->AddFunction("Boost Vehicle", BoostVehicle);
+	menu->list->AddFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->list->AddFunction("Suicide", Suicide);
+	menu->list->AddFunction("Exit", ExitProgram);
 	menu->Loop();
 	return 0;
 }

@@ -72,9 +72,6 @@
     <ClInclude Include="UI\pButton.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\pItem.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\pList.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
@@ -88,6 +85,9 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\pSettings.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\pItem.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -117,6 +117,9 @@
       <Filter>Header Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="UI\pSettings.cpp">
+      <Filter>Header Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\pItem.cpp">
       <Filter>Header Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
