@@ -22,7 +22,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float fly_speed = 0.05;
+	float fly_speed = 0.1;
 	float kmh = 0.f;
 
 	struct keys
@@ -36,13 +36,13 @@ struct settings
 
 struct offsets
 {
-	uint64_t world = 0x24E9E50;
-	uint64_t waypoint = 0x1F97750;
-	uint64_t triggerbot = 0x1F7FEE0;
-	uint64_t camera_pos = 0x1D59A30;
-	uint64_t function_xyz = 0x145648F;
-	uint64_t function_speed_z = 0x790B2A;
-	uint64_t kmh = 0x25B0590;
+	uint64_t world = 0x024F2E18;
+	uint64_t waypoint = 0x1FA06C0;
+	uint64_t triggerbot = 0x1F88E50;
+	uint64_t camera_pos = 0x1D5AA40;
+	uint64_t function_xyz = 0x1456CF7;
+	uint64_t function_speed_z = 0x791712;
+	uint64_t kmh = 0x295B208;
 }offsets;
 
 void Suicide()
@@ -101,7 +101,7 @@ void BoostPlayer()
 	case 0: 		
 		world.localplayer.playerinfo.walk_mp(1);
 		world.localplayer.playerinfo.swim_mp(1);
-		settings.fly_speed = 0.05;
+		settings.fly_speed = 0.1;
 
 		if (!settings.fly)
 			world.localplayer.ragdoll(0);
@@ -110,13 +110,13 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.15;
+		settings.fly_speed = 0.4;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(2500);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.3;
+		settings.fly_speed = 0.7;
 		break;
 	}
 	menu->notification->Add("Player mode set to " + modes[curr_mode]);
@@ -256,12 +256,13 @@ void loopWeaponMax()
 
 void loopFly() // code explained in "SDK/_info_.txt"
 {
+	sleep(10);
+
 	static uint64_t position_base = 0;
 	if (position_base != world.localplayer.position.base())
 	{
 		position_base = world.localplayer.position.base();
-		sleep(10);
-		
+
 		uint8_t position_base_patch[8];
 		Uint64ToArray(position_base, position_base_patch);
 
@@ -279,7 +280,7 @@ void loopFly() // code explained in "SDK/_info_.txt"
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
 			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0xE9)
-				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x86, 0x9B, 0xBA, 0xFE });
+				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x1E, 0x93, 0xBA, 0xFE });
 
 			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
 				proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
@@ -306,7 +307,6 @@ void loopFly() // code explained in "SDK/_info_.txt"
 		
 		if (proc.read<uint8_t>(proc.base_ + offsets.function_speed_z) != 0xF3)
 			proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
-
 	}
 }
 
@@ -396,7 +396,6 @@ int main()
 	menu->list->AddBool("RpLoop", settings.rploop);
 	menu->list->AddBool("MaxWeapon", settings.weaponmax);
 	menu->list->AddBool("Fly", settings.fly);
-
 	menu->list->AddFloat("Kms/h", settings.kmh, 0, 0);
 	menu->list->AddFunction("Boost Player", BoostPlayer);
 	menu->list->AddFunction("Boost Vehicle", BoostVehicle);

@@ -1,12 +1,12 @@
-1.52 Steam
+1.53 Steam
 
-uint64_t world = 0x24E9E50;
-uint64_t waypoint = 0x1F97750;
-uint64_t triggerbot = 0x1F7FEE0;
-uint64_t camera_pos = 0x1D59A30;
-uint64_t function_xyz = 0x145648F;
-uint64_t function_speed_z = 0x790B2A;
-uint64_t kmh = 0x25B0590;
+uint64_t world = 0x024F2E18;
+uint64_t waypoint = 0x1FA06C0;
+uint64_t triggerbot = 0x1F88E50;
+uint64_t camera_pos = 0x1D5AA40;
+uint64_t function_xyz = 0x1456CF7;
+uint64_t function_speed_z = 0x791712;
+uint64_t kmh = 0x295B208;
 
 
 ------------------------SMOOTH FLY--------------------------------------------------------------------------
