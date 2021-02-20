@@ -22,7 +22,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float fly_speed = 0.1;
+	float fly_speed = 0.05;
 	float kmh = 0.f;
 
 	struct keys
@@ -101,7 +101,7 @@ void BoostPlayer()
 	case 0: 		
 		world.localplayer.playerinfo.walk_mp(1);
 		world.localplayer.playerinfo.swim_mp(1);
-		settings.fly_speed = 0.1;
+		settings.fly_speed = 0.05;
 
 		if (!settings.fly)
 			world.localplayer.ragdoll(0);
@@ -110,16 +110,16 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.4;
+		settings.fly_speed = 0.2;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(2500);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.7;
+		settings.fly_speed = 0.5;
 		break;
 	}
-	menu->notification->Add("Player mode set to " + modes[curr_mode]);
+	menu->notification->Add("Player set to " + modes[curr_mode]);
 }
 
 void BoostVehicle()
@@ -162,7 +162,7 @@ void BoostVehicle()
 		world.localplayer.vehicle.handling.acceleration(2.f);
 		break;
 	}
-	menu->notification->Add("Vehicle mode set to " + modes[curr_mode]);
+	menu->notification->Add("Vehicle set to " + modes[curr_mode]);
 }
 
 void loopGodmode()
@@ -256,10 +256,8 @@ void loopWeaponMax()
 
 void loopFly() // code explained in "SDK/_info_.txt"
 {
-	sleep(10);
-
 	static uint64_t position_base = 0;
-	if (position_base != world.localplayer.position.base())
+	if (position_base != world.localplayer.position.base()) // setup
 	{
 		position_base = world.localplayer.position.base();
 
