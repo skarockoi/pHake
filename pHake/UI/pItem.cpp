@@ -14,7 +14,7 @@
 #define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0, 0)
 
 #define HIGHLIGHT_COLOR sf::Color::Color(255, 255, 255, 255)
-#define SLEEP_DURATION 125
+#define SLEEP_DURATION 100
 #define FLOAT_PRECISION 1
 
 void pItemBone::Create(sf::RenderWindow* const& Window, sf::Font* Font)
@@ -109,10 +109,11 @@ void pItemInt::Loop()
 					std::thread([this] {
 
 						this->busy_ = true;
+
 						*value_ -= dec_;
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
-						this->busy_ = false;
 
+						this->busy_ = false;
 
 						}).detach();
 				}
@@ -121,8 +122,10 @@ void pItemInt::Loop()
 					std::thread([this] {
 
 						this->busy_ = true;
+
 						*this->value_ += this->inc_;
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+
 						this->busy_ = false;
 
 						}).detach();
@@ -130,7 +133,6 @@ void pItemInt::Loop()
 			}
 			else
 				this->Hightlight(false);
-			
 		}
 	}
 }
@@ -154,7 +156,7 @@ void pItemFloat::Loop()
 		{
 			if (IsOnBox())
 			{
-				Hightlight(true);
+				this->Hightlight(true);
 
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
@@ -165,6 +167,7 @@ void pItemFloat::Loop()
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
 
 						this->busy_ = false;
+
 						}).detach();
 
 				}
@@ -177,12 +180,12 @@ void pItemFloat::Loop()
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
 
 						this->busy_ = false;
+
 						}).detach();
 				}
 			}
 			else
 				this->Hightlight(false);
-			
 		}
 	}
 }
@@ -212,8 +215,10 @@ void pItemBool::Loop()
 					std::thread([this] { 
 
 						this->busy_ = true;
+
 						*value_ = not *value_;
 						std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+
 						this->busy_ = false;
 
 						}).detach();
@@ -222,7 +227,6 @@ void pItemBool::Loop()
 			else
 				this->Hightlight(false);
 		}
-
 	}
 }
 

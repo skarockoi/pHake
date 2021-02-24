@@ -292,7 +292,7 @@ void loopFly() // code explained in "SDK/_info_.txt"
 			);
 
 			float len = add_pos.len();
-			if (len > 50.f || len < -50.f) // to prevent spikes while flying
+			if (len > 50.f || len < -50.f) // to prevent speed spikes while flying
 				return;
 			else
 				world.localplayer.position.xyz(old_pos + add_pos);

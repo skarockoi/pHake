@@ -36,31 +36,30 @@ void pButton::Loop()
 {
 	if (this->active_ && !this->busy_)
 	{
-		if (!this->busy_)
+		if (this->IsOnBox())
 		{
-			if (this->IsOnBox())
+			this->Hightlight(true);
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 			{
-				this->Hightlight(true);
-
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (this->function_ != NULL)
 				{
-					if (this->function_ != NULL)
-					{
-						std::thread([=]() {
-							this->busy_ = true;
+					std::thread([=]() {
 
-							((void(*)(void))function_)();
-							std::this_thread::sleep_for(std::chrono::milliseconds(150));
+						this->busy_ = true;
+						((void(*)(void))function_)();
 
-							this->busy_ = false;
-							}).detach();
-					}
+						while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && this->IsOnBox())
+							std::this_thread::sleep_for(std::chrono::milliseconds(10));
+						
 
+						this->busy_ = false;
+					}).detach();
 				}
 			}
-			else
-				this->Hightlight(false);
 		}
+		else
+			this->Hightlight(false);
 	}
 }
 
