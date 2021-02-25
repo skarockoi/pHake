@@ -42,7 +42,7 @@ struct offsets
 	uint64_t camera_pos = 0x1D5AA40;
 	uint64_t function_xyz = 0x1456CF7;
 	uint64_t function_speed_z = 0x791712;
-	uint64_t kmh = 0x295B208;
+	uint64_t kmh = 0x25B94F0;
 }offsets;
 
 void Suicide()
