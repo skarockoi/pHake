@@ -36,13 +36,13 @@ struct settings
 
 struct offsets
 {
-	uint64_t world = 0x024F2E18;
-	uint64_t waypoint = 0x1FA06C0;
-	uint64_t triggerbot = 0x1F88E50;
-	uint64_t camera_pos = 0x1D5AA40;
-	uint64_t function_xyz = 0x1456CF7;
-	uint64_t function_speed_z = 0x791712;
-	uint64_t kmh = 0x25B94F0;
+	uint64_t world = 0x02506270;
+	uint64_t waypoint = 0x1FB37E0;
+	uint64_t triggerbot = 0x1F9BF60;
+	uint64_t camera_pos = 0x2E391A0;
+	uint64_t function_xyz = 0x1468BC7;
+	uint64_t function_speed_z = 0x79086A;
+	uint64_t kmh = 0x25CC640;
 }offsets;
 
 void Suicide()
@@ -278,7 +278,7 @@ void loopFly() // code explained in "SDK/_info_.txt"
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
 			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0xE9)
-				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x1E, 0x93, 0xBA, 0xFE });
+				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x4E, 0x74, 0xB9, 0xFE });
 
 			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
 				proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });

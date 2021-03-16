@@ -1,12 +1,12 @@
-1.53 Steam
+1.54 Steam
 
-uint64_t world = 0x024F2E18;
-uint64_t waypoint = 0x1FA06C0;
-uint64_t triggerbot = 0x1F88E50;
-uint64_t camera_pos = 0x1D5AA40;
-uint64_t function_xyz = 0x1456CF7;
-uint64_t function_speed_z = 0x791712;
-uint64_t kmh = 0x295B208;
+uint64_t world = 0x02506270;
+uint64_t waypoint = 0x1FB37E0;
+uint64_t triggerbot = 0x1F9BF60;
+uint64_t camera_pos = 0x2E391A0;
+uint64_t function_xyz = 0x1468BC7;
+uint64_t function_speed_z = 0x79086A;
+uint64_t kmh = 0x25CC640;
 
 
 ------------------------SMOOTH FLY--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public:
     char pad_0078[12]; //0x0078
     char m_Name[20]; //0x0084
     char pad_0098[184]; //0x0098
-    float m_SwimSpeed; //0x0150
+    float m_SwimSpeed; //0x0170
     char pad_0154[24]; //0x0154
     float m_StealthWalkSpeed; //0x016C
     char pad_0170[88]; //0x0170
@@ -104,10 +104,10 @@ public:
     uint32_t m_FrameFlags; //0x01F8
     char pad_01FC[1640]; //0x01FC
     uint32_t m_WantedLevelDisplay; //0x0864
-    uint32_t m_WantedLevel; //0x0868
+    uint32_t m_WantedLevel; //0x0888
     char pad_086C[1124]; //0x086C
-    float m_RunSpeed; //0x0CD0
-    float m_Stamina; //0x0CD4
+    float m_RunSpeed; //0x0CF0
+    float m_Stamina; //0x0CF4
     float m_MaxStaminaRegeneration; //0x0CD8
 }; //Size: 0x0CDC
 
