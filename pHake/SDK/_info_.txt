@@ -44,6 +44,7 @@ Code(GTA5.exe + 0):
 35. pop rbx                                           // vanilla code
 36. ret                                               // vanilla code
 1E02D310000
+
 ----------------------------CLASSES---------------------------------------------------------------------------
 
 class CPed // World + 0x8
