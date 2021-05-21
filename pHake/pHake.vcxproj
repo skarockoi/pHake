@@ -172,7 +172,6 @@
     <ClInclude Include="UI\pNotificationCenter.hpp" />
     <ClInclude Include="UI\pOverlay.hpp" />
     <ClInclude Include="UI\pSettings.hpp" />
-    <ClInclude Include="UI\pTimer.hpp" />
     <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
   <ItemGroup>

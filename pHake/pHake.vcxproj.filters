@@ -66,9 +66,6 @@
     <ClInclude Include="UI\pWindow.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\pTimer.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="UI\pButton.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>

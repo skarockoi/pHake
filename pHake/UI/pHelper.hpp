@@ -10,6 +10,30 @@
 #include <iomanip>
 #include <thread>
 
+template <typename T>
+void CreateLoop(T func, uint64_t ms)
+{
+	std::thread([=]()
+		{
+			while (true)
+			{
+				func();
+				std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+			}
+		}).detach();
+}
+
+template <typename T>
+void ExecuteFunctionAfterMs(T func, uint64_t ms)
+{
+	std::thread([=]()
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+			func();
+		}).detach();
+}
+
+
 void sleep(uint32_t ms)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));

@@ -1,5 +1,4 @@
 #include "UI/pOverlay.hpp"
-#include "UI/pTimer.hpp"
 #include "UI/pSettings.hpp"
 #include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
@@ -361,27 +360,26 @@ int main()
 	
 	cfg = new pSettings();
 	cfg->Open("Settings//cfg.txt");
-	settings.godmode =	cfg->AddGet<bool>("Godmode", 0);
+	settings.godmode     = cfg->AddGet<bool>("Godmode", 0);
 	settings.neverwanted = cfg->AddGet<bool>("NeverWanted", 0);
-	settings.rploop = cfg->AddGet<bool>("RpLoop", 0);
-	settings.trigger = cfg->AddGet<bool>("Trigger", 0);
-	settings.weaponmax = cfg->AddGet<bool>("WeaponMax", 0);
-	settings.fly = cfg->AddGet<bool>("Fly", 0);
+	settings.rploop		 = cfg->AddGet<bool>("RpLoop", 0);
+	settings.trigger     = cfg->AddGet<bool>("Trigger", 0);
+	settings.weaponmax   = cfg->AddGet<bool>("WeaponMax", 0);
+	settings.fly         = cfg->AddGet<bool>("Fly", 0);
 	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
-	settings.keys.menu = cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
-	settings.keys.teleport = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
-	settings.keys.boost_player = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
+	settings.keys.menu          = cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
+	settings.keys.teleport      = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
+	settings.keys.boost_player  = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 	
-	pTimer timer;
-	timer.Loop(loopGodmode, 100);
-	timer.Loop(loopNeverWanted, 10);
-	timer.Loop(loopWeaponMax, 250);
-	timer.Loop(loopRpLoop, 1);
-	timer.Loop(loopTrigger, 1);
-	timer.Loop(loopFly, 10);
-	timer.Loop(loopKeys, 10);
-	timer.Loop([]() {
+	CreateLoop(loopGodmode, 100);
+	CreateLoop(loopNeverWanted, 10);
+	CreateLoop(loopWeaponMax, 250);
+	CreateLoop(loopRpLoop, 1);
+	CreateLoop(loopTrigger, 1);
+	CreateLoop(loopFly, 10);
+	CreateLoop(loopKeys, 10);
+	CreateLoop([]() {
 		world.UpdateSub(proc.read<uint64_t>(proc.base_ + offsets.world));
 		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);
 	}, 1);
