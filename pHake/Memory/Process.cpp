@@ -36,6 +36,31 @@ bool Process::AttachProcess(const char* ProcessName)
 	return false;
 }
 
+bool Process::AttachWindow(LPCWSTR WindowName)
+{
+	HWND windowHandle = FindWindowW(nullptr, WindowName);
+	if (windowHandle)
+		GetWindowThreadProcessId(windowHandle, &pid_);
+
+	if (pid_)
+	{
+		handle_ = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid_);
+		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
+		module_entry_.dwSize = sizeof(MODULEENTRY32);
+		if (!Module32First(hModule, &module_entry_))
+			//exit(2);
+
+			Module32First(hModule, &module_entry_);
+		base_ = (uintptr_t)module_entry_.modBaseAddr;
+
+		CloseHandle(hModule);
+
+		return true;
+	}
+
+	return false;
+}
+
 DWORD64 Process::GetModule(const char* lModule)
 {
 	HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);

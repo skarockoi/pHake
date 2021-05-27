@@ -42,6 +42,7 @@ public:
 	DWORD	  pid_;
 
 	bool    AttachProcess(const char* ProcessName);
+	bool    AttachWindow(LPCWSTR WindowName);
 	DWORD64 GetModule(const char* lModule);
 	void    Close();
 
