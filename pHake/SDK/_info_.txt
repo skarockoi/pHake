@@ -31,11 +31,11 @@ Update Entity Position(GTA5.exe + 145648F): // This function is used by all near
 18. shufps xmm0,[rax+50],-02
 19. shufps xmm1,xmm0,-7C
 20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0x1A // We jump to "GTA5.exe + 0x1A" because overwriting the code here would damage important code.
-21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed which code the game doesnt need anymore
+21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed code which the gamedoesn't need anymore
 22. pop rbx
 23. ret 
 
-Code(GTA5.exe + 0):
+Code(GTA5.exe + 0x1A):
 30. mov rcx, &localplayer_position_class              // first we move the local player position base to rcx
 31. cmp rcx, rax                                      // then we compare wether rcx and rax are the same
 32. je GTA5.exe + 13.                                 // if yes, we skip the next line
@@ -43,7 +43,6 @@ Code(GTA5.exe + 0):
 34. add rsp, 60                                       // vanilla code
 35. pop rbx                                           // vanilla code
 36. ret                                               // vanilla code
-1E02D310000
 
 ----------------------------CLASSES---------------------------------------------------------------------------
 
