@@ -23,7 +23,7 @@
 - Space : To change speed while flying<br/>
 
 # Download
-<a href="https://github.com/xhz8s/pHake/releases/download/5.0/pHake5.0_1.54.zip">Latest (1.54 Steam, will be updated shortly)</a>
+<a href="https://github.com/xhz8s/pHake/releases/download/5.0/pHake5.0_1.57.zip">Latest (1.57 Steam)</a>
 
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> Version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
