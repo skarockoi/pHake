@@ -189,7 +189,7 @@ void loopNeverWanted()
 {
 	if (settings.neverwanted)
 	{
-		if (world.localplayer.playerinfo.wanted_level() > 0)
+		if (world.localplayer.playerinfo.wanted_level() != 0)
 			world.localplayer.playerinfo.wanted_level(0);
 	}
 }
@@ -257,20 +257,25 @@ void loopWeaponMax()
 void loopFly() // code explained in "SDK/_info_.txt"
 {
 	static uint64_t position_base = 0;
-	if (position_base != world.localplayer.position.base()) // setup
+	if (position_base != world.localplayer.position.base()) 
 	{
 		position_base = world.localplayer.position.base();
 
 		uint8_t position_base_patch[8];
-		Uint64ToArray(position_base, position_base_patch);
+		Uint64ToArray(position_base, position_base_patch); // convert the position base to int array
 
-		std::vector<uint8_t> mov_rcx_localplayer{ 0x48, 0xB9 };
-		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(position_base_patch), std::end(position_base_patch));
+		std::vector<uint8_t> patch_beginning{ 0x48, 0xB9 }; // mov player location base to rcx
+		patch_beginning.insert(std::end(patch_beginning), std::begin(position_base_patch), std::end(position_base_patch));
 
-		std::vector<uint8_t> cmp_rax_rcx_je_movaps_add_pop_ret{ 0x48, 0x39, 0xC1, 0x74, 0x4, 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 };
-		mov_rcx_localplayer.insert(std::end(mov_rcx_localplayer), std::begin(cmp_rax_rcx_je_movaps_add_pop_ret), std::end(cmp_rax_rcx_je_movaps_add_pop_ret));
+		std::vector<uint8_t> patch_ending{ 
+			0x48, 0x39, 0xC1,       // compare rcx rax registers 
+			0x74, 0x04,             // if it's the same skip to GTA5.exe + 0x2D
+			0x0F, 0x29, 0x48, 0x50, // update location of entity from rax register
+			0x48, 0x83, 0xC4, 0x60, // vanilla code 
+			0x5B, 0xC3 };           // vabilla code 
 
-		proc.write_bytes((uint64_t)proc.base_ + 0x1A, mov_rcx_localplayer);
+		patch_beginning.insert(std::end(patch_beginning), std::begin(patch_ending), std::end(patch_ending));
+		proc.write_bytes((uint64_t)proc.base_ + 0x1A, patch_beginning);
 	}
 
 	if (settings.fly)
