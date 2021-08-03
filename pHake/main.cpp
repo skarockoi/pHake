@@ -5,6 +5,7 @@
 #include "SDK/World.hpp"
 
 #include <Windows.h>
+#include <iostream>
 #include <array>
 
 pOverlay* menu;
@@ -354,8 +355,17 @@ int main()
 	FreeConsole();
 	
 	if (!proc.AttachProcess("GTA5.exe"))
-		ExitProgram();
+	{
+		MessageBoxW(NULL, L"could not find the game", L"Error", NULL);
+		return false;
+	}
 	
+	if (proc.read<uint64_t>(proc.base_ + offsets.world) == NULL)
+	{
+		MessageBoxW(NULL, L"game version does not match cheat version (1.57) ", L"Error", NULL);
+		return false;
+	}
+
 	world = World(&proc);
 	
 	cfg = new pSettings();
