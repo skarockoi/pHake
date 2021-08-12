@@ -5,7 +5,6 @@
 #include "SDK/World.hpp"
 
 #include <Windows.h>
-#include <iostream>
 #include <array>
 
 pOverlay* menu;
