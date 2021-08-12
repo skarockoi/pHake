@@ -14,7 +14,7 @@ public:
 
 	}
 
-	void UpdateSub(uint64_t baseAddress)
+	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
 		ammoinfo.Update(process_->read_multi_addr(this->base_, { 0x60, 0x8, 0x0 }));

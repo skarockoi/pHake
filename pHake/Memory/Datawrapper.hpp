@@ -7,7 +7,7 @@
 template <uintptr_t maxSize> class DataWrapper
 {
 public:
-	DataWrapper() {}
+	DataWrapper(){}
 	DataWrapper(Process* const& proc)
 	{
 		this->process_ = proc;
@@ -18,7 +18,7 @@ public:
 	void Update(uint64_t baseAddress)
 	{
 		this->base_ = baseAddress;
-		ReadProcessMemory(process_->handle_, (void*)(baseAddress), this->data_.get(), this->max_offset_, NULL);
+		ReadProcessMemory(this->process_->handle_, (void*)(baseAddress), this->data_.get(), this->max_offset_, NULL);
 	}
 
 	template <typename T>
@@ -30,7 +30,7 @@ public:
 	template<class T>
 	void write(uint64_t offset, T value)
 	{
-		WriteProcessMemory(process_->handle_, (void*)(base_ + offset), &value, sizeof(T), 0);
+		WriteProcessMemory(this->process_->handle_, (void*)(this->base_ + offset), &value, sizeof(T), 0);
 	}
 
 public:

@@ -19,13 +19,13 @@ public:
 		weapon_manager = WeaponManager(proc);
 	}
 
-	void UpdateSub(uint64_t baseAddress)
+	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uint64_t>(0x30));
-		vehicle.UpdateSub(this->read<uint64_t>(0xD30));
+		vehicle.UpdateAll(this->read<uint64_t>(0xD30));
 		playerinfo.Update(this->read<uint64_t>(0x10C8));
-		weapon_manager.UpdateSub(this->read<uint64_t>(0x10D8));
+		weapon_manager.UpdateAll(this->read<uint64_t>(0x10D8));
 	}
 
 	bool freeze()

@@ -15,7 +15,7 @@ public:
 		handling = VehicleHandling(proc);
 	}
 
-	void UpdateSub(uint64_t baseAddress)
+	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uint64_t>(0x30));

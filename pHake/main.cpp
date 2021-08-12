@@ -395,7 +395,7 @@ int main()
 	CreateLoop(loopFly, 10);
 	CreateLoop(loopKeys, 10);
 	CreateLoop([]() {
-		world.UpdateSub(proc.read<uint64_t>(proc.base_ + offsets.world));
+		world.UpdateAll(proc.read<uint64_t>(proc.base_ + offsets.world));
 		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);
 	}, 1);
 
