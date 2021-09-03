@@ -356,6 +356,7 @@ void ExitProgram()
 
 int main()
 {
+	atexit(ExitProgram);
 	FreeConsole();
 	
 	if (!proc.AttachProcess("GTA5.exe"))
