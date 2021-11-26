@@ -31,7 +31,7 @@ Update Entity Position(GTA5.exe + 145648F): // This function is used by all near
 18. shufps xmm0,[rax+50],-02
 19. shufps xmm1,xmm0,-7C
 20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0x1A // We jump to "GTA5.exe + 0x1A" because overwriting the code here would damage important code.
-21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed code which the gamedoesn't need anymore
+21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed code which the game doesn't need anymore
 22. pop rbx
 23. ret 
 

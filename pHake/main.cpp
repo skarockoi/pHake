@@ -7,10 +7,10 @@
 #include <Windows.h>
 #include <array>
 
-pOverlay* menu;
+pOverlay*  menu;
 pSettings* cfg;
-Process   proc;
-World     world;
+Process    proc;
+World      world;
 
 struct settings
 {
@@ -60,29 +60,41 @@ void TeleportToWaypoint()
 		return;
 	}
 
-	if (!in_vehicle && settings.fly) {
-		waypoint.z = 300.f;
-		world.localplayer.position.xyz(waypoint);
-	}
-	else
+	if (in_vehicle)
 	{
-		if (in_vehicle && world.localplayer.vehicle.speedXYZ().len() < 0.1)
+		if (world.localplayer.vehicle.speedXYZ().len() > 0.1)
+		{
+			menu->notification->Add("Don't move");
+			return;
+		}
+		else
 		{
 			waypoint.z = -210.f;
 			world.localplayer.vehicle.position.xyz(waypoint);
 		}
-		else if (!in_vehicle && world.localplayer.speed_xyz().len() < 0.1)
+	}
+	else
+	{
+		if (settings.fly)
 		{
-			waypoint.z = -210.f;
+			waypoint.z = 300.f;
 			world.localplayer.position.xyz(waypoint);
 		}
 		else
 		{
-			menu->notification->Add("Please don't move");
-			return;
+			if (world.localplayer.speed_xyz().len() > 0.1)
+			{
+				menu->notification->Add("Don't move");
+				return;
+			}
+			
+			else
+			{
+				waypoint.z = -210.f;
+				world.localplayer.position.xyz(waypoint);
+			}
 		}
 	}
-
 	menu->notification->Add("Teleported to Waypoint");
 }
 
@@ -164,7 +176,7 @@ void BoostVehicle()
 	menu->notification->Add("Vehicle set to " + modes[curr_mode]);
 }
 
-void loopGodmode()
+void GodMode()
 {
 	if (settings.godmode)
 	{
@@ -184,7 +196,7 @@ void loopGodmode()
 	}
 }
 
-void loopNeverWanted()
+void NeverWanted()
 {
 	if (settings.neverwanted)
 	{
@@ -193,7 +205,7 @@ void loopNeverWanted()
 	}
 }
 
-void loopRpLoop()
+void RPLoop()
 {
 	if (settings.rploop)
 	{
@@ -202,7 +214,7 @@ void loopRpLoop()
 	}
 }
 
-void loopTrigger()
+void Trigger()
 {
 	if (settings.trigger)
 	{
@@ -228,7 +240,7 @@ void loopTrigger()
 	}
 }
 
-void loopWeaponMax()
+void WeaponMax()
 {
 	if (settings.weaponmax)
 	{
@@ -253,7 +265,7 @@ void loopWeaponMax()
 	}
 }
 
-void loopFly() // code explained in "SDK/_info_.txt"
+void Fly() // code explained in "SDK/_info_.txt"
 {
 	static uint64_t position_base = 0;
 	if (position_base != world.localplayer.position.base()) 
@@ -312,7 +324,7 @@ void loopFly() // code explained in "SDK/_info_.txt"
 	}
 }
 
-void loopKeys()
+void Toggles()
 {
 	if (HIBYTE(GetAsyncKeyState(settings.keys.menu)))
 	{
@@ -351,7 +363,7 @@ void ExitProgram()
 	cfg->Edit<bool>("Fly", settings.fly);
 	cfg->Save();
 	proc.Close();
-	exit(-1);
+	exit(0);
 }
 
 int main()
@@ -367,13 +379,13 @@ int main()
 	
 	if (proc.read<uint64_t>(proc.base_ + offsets.world) == NULL)
 	{
-		MessageBoxW(NULL, L"game version does not match cheat version (1.57) ", L"Error", NULL);
+		MessageBoxW(NULL, L"game version does not match cheat version (steam 1.57) ", L"Error", NULL);
 		return false;
 	}
 
 	world = World(&proc);
 	
-	cfg = new pSettings();
+	cfg = new pSettings(); // reading out config file
 	cfg->Open("Settings//cfg.txt");
 	settings.godmode     = cfg->AddGet<bool>("Godmode", 0);
 	settings.neverwanted = cfg->AddGet<bool>("NeverWanted", 0);
@@ -387,13 +399,13 @@ int main()
 	settings.keys.boost_player  = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 	
-	CreateLoop(loopGodmode, 100);
-	CreateLoop(loopNeverWanted, 10);
-	CreateLoop(loopWeaponMax, 250);
-	CreateLoop(loopRpLoop, 1);
-	CreateLoop(loopTrigger, 1);
-	CreateLoop(loopFly, 10);
-	CreateLoop(loopKeys, 10);
+	CreateLoop(GodMode, 100); // cheats that need to be run in a loop 
+	CreateLoop(NeverWanted, 10);
+	CreateLoop(WeaponMax, 250);
+	CreateLoop(RPLoop, 1);
+	CreateLoop(Trigger, 1);
+	CreateLoop(Fly, 10);
+	CreateLoop(Toggles, 10);
 	CreateLoop([]() {
 		world.UpdateAll(proc.read<uint64_t>(proc.base_ + offsets.world));
 		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);

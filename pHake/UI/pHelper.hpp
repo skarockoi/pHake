@@ -33,7 +33,6 @@ void ExecuteFunctionAfterMs(T func, uint64_t ms)
 		}).detach();
 }
 
-
 void sleep(uint32_t ms)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
