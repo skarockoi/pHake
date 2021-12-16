@@ -379,7 +379,7 @@ int main()
 	
 	if (proc.read<uint64_t>(proc.base_ + offsets.world) == NULL)
 	{
-		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.57) ", L"Error", NULL);
+		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.58) ", L"Error", NULL);
 		return false;
 	}
 
