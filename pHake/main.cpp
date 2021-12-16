@@ -35,13 +35,13 @@ struct settings
 
 struct offsets
 {
-	uint64_t world = 0x025333D8;
-	uint64_t waypoint = 0x1FC4850;
-	uint64_t triggerbot = 0x1FB2380;
-	uint64_t camera_pos = 0x1D7ED50;
-	uint64_t function_xyz = 0x1473587;
-	uint64_t function_speed_z = 0x77CCA6;
-	uint64_t kmh = 0x25E9680;
+	uint64_t world = 0x0256A878;
+	uint64_t waypoint = 0x1FFBC20;
+	uint64_t triggerbot = 0x1FE9560;
+	uint64_t camera_pos = 0x1DA5FA0;
+	uint64_t function_xyz = 0x14842BB;
+	uint64_t function_speed_z = 0x781096;
+	uint64_t kmh = 0x2621FD0;
 }offsets;
 
 void Suicide()
@@ -293,8 +293,8 @@ void Fly() // code explained in "SDK/_info_.txt"
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
-			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0xE9)
-				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x8E, 0xCA, 0xB8, 0xFE });
+			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
+				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x5A, 0xBD, 0xB7, 0xFE });
 
 			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
 				proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
@@ -379,7 +379,7 @@ int main()
 	
 	if (proc.read<uint64_t>(proc.base_ + offsets.world) == NULL)
 	{
-		MessageBoxW(NULL, L"game version does not match cheat version (steam 1.57) ", L"Error", NULL);
+		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.57) ", L"Error", NULL);
 		return false;
 	}
 
