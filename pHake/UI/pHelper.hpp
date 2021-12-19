@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _PHELPER_HPP_
+#define _PHELPER_HPP_
+
 #include <string>
 #include <fstream>
 #include <random>
@@ -174,3 +176,4 @@ namespace Key
 		}
 	}
 }
+#endif

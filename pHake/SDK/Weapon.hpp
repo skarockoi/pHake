@@ -11,7 +11,6 @@ public:
 	Weapon() {}
 	Weapon(Process* const& proc) :DataWrapper(proc) {
 		ammoinfo = AmmoInfo(proc);
-
 	}
 
 	void UpdateAll(uint64_t baseAddress)

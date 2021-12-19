@@ -1,5 +1,6 @@
 #include "UI/pOverlay.hpp"
 #include "UI/pSettings.hpp"
+#include "UI/pThread.hpp"
 #include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
 #include "SDK/World.hpp"
@@ -408,14 +409,14 @@ int main()
 	settings.keys.boost_player  = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 	
-	CreateLoop(GodMode, 100); // cheats that need to be run in a loop 
-	CreateLoop(NeverWanted, 10);
-	CreateLoop(WeaponMax, 250);
-	CreateLoop(RPLoop, 1);
-	CreateLoop(Trigger, 1);
-	CreateLoop(Fly, 10);
-	CreateLoop(Toggles, 10);
-	CreateLoop([]() {
+	pThread(GodMode, 100);
+	pThread(NeverWanted, 10);
+	pThread(WeaponMax, 250);
+	pThread(RPLoop, 1);
+	pThread(Trigger, 1);
+	pThread(Fly, 10);
+	pThread(Toggles, 10);
+	pThread([]() {
 		world.UpdateAll(proc.read<uint64_t>(proc.base_ + offsets.world));
 		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);
 	}, 1);

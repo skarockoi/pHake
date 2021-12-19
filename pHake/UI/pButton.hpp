@@ -13,8 +13,8 @@ private:
 	sf::RectangleShape button_back_;
 
 public:
-	void Create(sf::RenderWindow* const& Window, sf::Font* Font);
-	void Connect(void(&functionP)());
+	void Create(sf::RenderWindow* const& Window, sf::Font* font);
+	void Connect(void(&function)());
 	void Loop();
 	void Draw();
 
