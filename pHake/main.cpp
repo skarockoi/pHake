@@ -40,6 +40,8 @@ struct offsets
 	uint64_t triggerbot = 0x1FE9560;
 	uint64_t camera_pos = 0x1DA5FA0;
 	uint64_t function_xyz = 0x14842BB;
+	uint64_t function_speed_x = 0x78107C;
+	uint64_t function_speed_y = 0x781089;
 	uint64_t function_speed_z = 0x781096;
 	uint64_t kmh = 0x2621FD0;
 }offsets;
@@ -71,6 +73,9 @@ void TeleportToWaypoint()
 		{
 			waypoint.z = -210.f;
 			world.localplayer.vehicle.position.xyz(waypoint);
+			Key::Down::W();
+			sleep(50);
+			Key::Up::W();
 		}
 	}
 	else
@@ -92,6 +97,10 @@ void TeleportToWaypoint()
 			{
 				waypoint.z = -210.f;
 				world.localplayer.position.xyz(waypoint);
+
+				Key::Down::W();
+				sleep(50);
+				Key::Up::W();
 			}
 		}
 	}
