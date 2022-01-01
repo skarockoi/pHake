@@ -22,7 +22,7 @@ struct settings
 	bool weaponmax = false;
 	bool fly = false;
 
-	float fly_speed = 0.05;
+	float fly_speed = 0.05f;
 	float kmh = 0.f;
 
 	struct keys
@@ -122,7 +122,7 @@ void BoostPlayer()
 	case 0: 		
 		world.localplayer.playerinfo.walk_mp(1);
 		world.localplayer.playerinfo.swim_mp(1);
-		settings.fly_speed = 0.05;
+		settings.fly_speed = 0.05f;
 
 		if (!settings.fly)
 			world.localplayer.ragdoll(0);
@@ -131,13 +131,13 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.2;
+		settings.fly_speed = 0.2f;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(2500);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.5;
+		settings.fly_speed = 0.5f;
 		break;
 	}
 	menu->notification->Add("Player set to " + modes[curr_mode]);
@@ -155,7 +155,7 @@ void BoostVehicle()
 	switch (curr_mode)
 	{
 	case 0:
-		world.localplayer.vehicle.gravity(9.8);
+		world.localplayer.vehicle.gravity(9.8f);
 		world.localplayer.vehicle.handling.traction_max(2.f);
 		world.localplayer.vehicle.handling.traction_min(2.f);
 		world.localplayer.vehicle.handling.acceleration(1.f);
@@ -314,7 +314,7 @@ void Fly() // code explained in "SDK/_info_.txt"
 			vec3 add_pos(
 				settings.fly_speed * (old_pos.x - cam_pos.x),
 				settings.fly_speed * (old_pos.y - cam_pos.y),
-				settings.fly_speed * (old_pos.z - (cam_pos.z - 0.5))
+				settings.fly_speed * (old_pos.z - (cam_pos.z - 0.5f))
 			);
 
 			float len = add_pos.len();
@@ -409,17 +409,18 @@ int main()
 	settings.keys.boost_player  = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 	
-	pThread(GodMode, 100);
-	pThread(NeverWanted, 10);
-	pThread(WeaponMax, 250);
-	pThread(RPLoop, 1);
-	pThread(Trigger, 1);
-	pThread(Fly, 10);
-	pThread(Toggles, 10);
-	pThread([]() {
+	std::array<pThread, 8> threads{ 
+	pThread(GodMode, 100),
+	pThread(NeverWanted, 10),
+	pThread(WeaponMax, 250),
+	pThread(RPLoop, 1),
+	pThread(Trigger, 1),
+	pThread(Fly, 10),
+	pThread(Toggles, 10),
+	pThread([](){ 
 		world.UpdateAll(proc.read<uint64_t>(proc.base_ + offsets.world));
-		settings.kmh = 3.6 * proc.read<float>(proc.base_ + offsets.kmh);
-	}, 1);
+		settings.kmh = 3.6f * proc.read<float>(proc.base_ + offsets.kmh); }, 1)
+	};
 
 	menu = new pOverlay();
 	menu->Create("Grand Theft Auto V");

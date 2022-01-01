@@ -13,6 +13,7 @@ private:
 	int64_t interval_ = 0;
 
 public:
+	pThread() {};
 	template <typename T>
 	pThread(T func)
 	{

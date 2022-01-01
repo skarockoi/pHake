@@ -23,7 +23,8 @@ private:
 	sf::Vector2u size_;
 
 public:
-	GameInfo() {}
+	//vec3() : x(0), y(0), z(0) {}
+	GameInfo() : hwnd_(0), rect_({0,0}), game_(0) {}
 	GameInfo(LPCSTR Game);
 
 	void Update();

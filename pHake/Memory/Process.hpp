@@ -10,7 +10,7 @@ struct vec3
 {
 	float x, y, z;
 
-	vec3() {}
+	vec3() : x(0), y(0), z(0) {}
 	vec3(float X, float Y, float Z) : x(X), y(Y), z(Z) {}
 
 	vec3 operator+(const vec3& ext) {
@@ -26,7 +26,7 @@ struct vec3
 	}
 
 	float len() {
-		return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+		return (float)sqrt(pow(x, 2.f) + pow(y, 2.f) + pow(z, 2.f));
 	}
 };
 
@@ -55,7 +55,7 @@ public:
 	template<class T>
 	T read(uint64_t address)
 	{
-		T buffer;
+		T buffer{};
 		ReadProcessMemory(handle_, (PBYTE*)address, &buffer, sizeof(T), 0);
 		return buffer;
 	}

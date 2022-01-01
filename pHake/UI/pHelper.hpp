@@ -54,8 +54,8 @@ uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
 
 std::string CutStringBetweenTwoCharacters(std::string& origin, const std::string& left, const std::string& right)
 {
-	uint32_t first = origin.find(left);
-	uint32_t last = origin.find(right);
+	size_t first = origin.find(left);
+	size_t last = origin.find(right);
 	return origin.substr(first + 1, last - 1 - first);
 }
 
