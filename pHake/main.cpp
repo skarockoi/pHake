@@ -293,7 +293,7 @@ void Fly() // code explained in "SDK/_info_.txt"
 			0x74, 0x04,             // if it's the same skip to GTA5.exe + 0x2D
 			0x0F, 0x29, 0x48, 0x50, // update location of entity from rax register
 			0x48, 0x83, 0xC4, 0x60, // vanilla code 
-			0x5B, 0xC3 };           // vabilla code 
+			0x5B, 0xC3 };           // vanilla code 
 
 		patch_beginning.insert(std::end(patch_beginning), std::begin(patch_ending), std::end(patch_ending));
 		proc.write_bytes((uint64_t)proc.base_ + 0x1A, patch_beginning);
