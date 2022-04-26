@@ -134,13 +134,13 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.3f;
+		settings.fly_speed = 0.2f;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.6f;
+		settings.fly_speed = 0.5f;
 		break;
 	}
 	menu->notification->Add("Player set to " + modes[curr_mode]);
