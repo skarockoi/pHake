@@ -13,10 +13,10 @@ public:
 		localplayer = LocalPlayer(proc);
 	}
 
-	void UpdateAll(uint64_t baseAddress)
+	void UpdateAll(uintptr_t baseAddress)
 	{
 		this->Update(baseAddress);
-		localplayer.UpdateAll(this->read<uint64_t>(0x8));
+		localplayer.UpdateAll(this->read<uintptr_t>(0x8));
 	}
 
 	LocalPlayer localplayer;

@@ -22,10 +22,10 @@ public:
 	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
-		position.Update(this->read<uint64_t>(0x30));
-		vehicle.UpdateAll(this->read<uint64_t>(0xD30));
-		playerinfo.Update(this->read<uint64_t>(0x10C8));
-		weapon_manager.UpdateAll(this->read<uint64_t>(0x10D8));
+		position.Update(this->read<uintptr_t>(0x30));
+		vehicle.UpdateAll(this->read<uintptr_t>(0xD30));
+		playerinfo.Update(this->read<uintptr_t>(0x10C8));
+		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10D8));
 	}
 
 	bool freeze()

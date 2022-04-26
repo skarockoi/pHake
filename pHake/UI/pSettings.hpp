@@ -13,21 +13,21 @@ public:
 	pSettings();
 	~pSettings();
 	
-	bool			Open(const std::string& Filepath);
+	bool			Open(const std::string& filepath);
 	template <typename T>
-	T				AddGet(const std::string& Key, T Value);
-	void			AddComment(const std::string& Key);
+	T				AddGet(const std::string& key, T value);
+	void			AddComment(const std::string& key);
 
 	template <typename T>
-	bool			Edit(const std::string& Key, T Value);
+	bool			Edit(const std::string& key, T value);
 	void			Save();
 	void			Clear();
 
 private:
-	void			AddKeyAndValue(const std::string& Key, const std::string& Value);
-	std::string		GetKeyByName(const std::string& Key);
-	bool			CheckExistanceOfKey(const std::string& Key);
-	void			ChangeKeyValue(const std::string& Key, const std::string& Value);
+	void			AddKeyAndValue(const std::string& key, const std::string& value);
+	std::string		GetKeyByName(const std::string& key);
+	bool			CheckExistanceOfKey(const std::string& key);
+	void			ChangeKeyValue(const std::string& key, const std::string& value);
 
 	template <typename T>
 	T LexicalCast(const std::string& str);
@@ -35,27 +35,27 @@ private:
 #endif
 
 template<typename T>
-inline T pSettings::AddGet(const std::string& Key, T Value)
+inline T pSettings::AddGet(const std::string& key, T value)
 {
-	if (this->CheckExistanceOfKey(Key))
+	if (this->CheckExistanceOfKey(key))
 	{
-		return this->LexicalCast<T>(this->GetKeyByName(Key));
+		return this->LexicalCast<T>(this->GetKeyByName(key));
 	}
 	else
 	{
-		this->AddKeyAndValue(Key, std::to_string(Value));
-		return this->LexicalCast<T>(this->GetKeyByName(Key));
+		this->AddKeyAndValue(key, std::to_string(value));
+		return this->LexicalCast<T>(this->GetKeyByName(key));
 	}
 
 	return 0;
 }
 
 template<typename T>
-inline bool pSettings::Edit(const std::string& Key, T Value)
+inline bool pSettings::Edit(const std::string& key, T value)
 {
-	if (this->CheckExistanceOfKey(Key))
+	if (this->CheckExistanceOfKey(key))
 	{
-		this->ChangeKeyValue(Key, std::to_string(Value));
+		this->ChangeKeyValue(key, std::to_string(value));
 		return true;
 	}
 	return false;

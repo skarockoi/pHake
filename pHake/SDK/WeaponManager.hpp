@@ -12,10 +12,10 @@ public:
 		current_weapon = Weapon(proc);
 	}
 
-	void UpdateAll(uint64_t baseAddress)
+	void UpdateAll(uintptr_t baseAddress)
 	{
 		this->Update(baseAddress);
-		current_weapon.UpdateAll(this->read<uint64_t>(0x20));
+		current_weapon.UpdateAll(this->read<uintptr_t>(0x20));
 	}
 	Weapon current_weapon;
 

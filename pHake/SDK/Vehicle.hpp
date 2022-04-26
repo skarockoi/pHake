@@ -15,11 +15,11 @@ public:
 		handling = VehicleHandling(proc);
 	}
 
-	void UpdateAll(uint64_t baseAddress)
+	void UpdateAll(uintptr_t baseAddress)
 	{
 		this->Update(baseAddress);
-		position.Update(this->read<uint64_t>(0x30));
-		handling.Update(this->read<uint64_t>(0x938));
+		position.Update(this->read<uintptr_t>(0x30));
+		handling.Update(this->read<uintptr_t>(0x938));
 	}
 
 	Position position;

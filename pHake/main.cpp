@@ -36,15 +36,15 @@ struct settings
 
 struct offsets
 {
-	uint64_t world = 0x0256A878;
-	uint64_t waypoint = 0x1FFBC20;
-	uint64_t triggerbot = 0x1FE9560;
-	uint64_t camera_pos = 0x1DA5FA0;
-	uint64_t function_xyz = 0x14842BB;
-	uint64_t function_speed_x = 0x78107C;
-	uint64_t function_speed_y = 0x781089;
-	uint64_t function_speed_z = 0x781096;
-	uint64_t kmh = 0x2621FD0;
+	uintptr_t world = 0x0256BDE8; // "\x48\x8D\x3D\x00\x00\x00\x00\x75\x16" "xxx????xx"
+	uintptr_t waypoint = 0x1FFD190;
+	uintptr_t triggerbot = 0x1FEAAD0;
+	uintptr_t camera_pos = 0x1DA6F50;
+	uintptr_t function_xyz = 0x1484B27; // "\x0F\x29\x48\x50\x48\x83\xC4\x60" "xxxxxxxx"
+	uintptr_t function_speed_x = 0x780BC4; // "\xF3\x0F\x11\x83\x20\x03\x00\x00" "xxxxxxxx"
+	uintptr_t function_speed_y = 0x780BD1; // + 0xD
+	uintptr_t function_speed_z = 0x780BDE; // + 0x1A
+	uintptr_t kmh = 0x2623600;
 }offsets;
 
 void Suicide()
@@ -56,7 +56,7 @@ void Suicide()
 void TeleportToWaypoint()
 {
 	bool in_vehicle = world.localplayer.in_vehicle();
-	vec3 waypoint = proc.read<vec3>(proc.base_ + offsets.waypoint);
+	vec3 waypoint = proc.read<vec3>(proc.base_module_.base + offsets.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification->Add("No Waypoint set");
@@ -85,6 +85,9 @@ void TeleportToWaypoint()
 		{
 			waypoint.z = 300.f;
 			world.localplayer.position.xyz(waypoint);
+			Key::Down::W();
+			sleep(50);
+			Key::Up::W();
 		}
 		else
 		{
@@ -131,13 +134,13 @@ void BoostPlayer()
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.2f;
+		settings.fly_speed = 0.3f;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
-		world.localplayer.playerinfo.swim_mp(2500);
+		world.localplayer.playerinfo.swim_mp(5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.5f;
+		settings.fly_speed = 0.6f;
 		break;
 	}
 	menu->notification->Add("Player set to " + modes[curr_mode]);
@@ -231,7 +234,7 @@ void Trigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t id_value = proc.read<int32_t>(proc.base_ + offsets.triggerbot);
+		int32_t id_value = proc.read<int32_t>(proc.base_module_.base + offsets.triggerbot);
 		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
@@ -296,20 +299,20 @@ void Fly() // code explained in "SDK/_info_.txt"
 			0x5B, 0xC3 };           // vanilla code 
 
 		patch_beginning.insert(std::end(patch_beginning), std::begin(patch_ending), std::end(patch_ending));
-		proc.write_bytes((uint64_t)proc.base_ + 0x1A, patch_beginning);
+		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, patch_beginning);
 	}
 
 	if (settings.fly)
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
-			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_ + offsets.function_xyz, { 0xE9, 0x5A, 0xBD, 0xB7, 0xFE });
+			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
+				proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0xE9, 0xEE, 0xB4, 0xB7, 0xFE });
 
-			if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
+				proc.write_bytes(proc.base_module_.base + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
 			
-			vec3 cam_pos = proc.read<vec3>(proc.base_ + offsets.camera_pos);
+			vec3 cam_pos = proc.read<vec3>(proc.base_module_.base + offsets.camera_pos);
 			vec3 old_pos = world.localplayer.position.xyz();
 			vec3 add_pos(
 				settings.fly_speed * (old_pos.x - cam_pos.x),
@@ -326,11 +329,11 @@ void Fly() // code explained in "SDK/_info_.txt"
 	}
 	else // restore the original values
 	{
-		if (proc.read<uint8_t>(proc.base_ + offsets.function_xyz) != 0x0F)
-			proc.write_bytes(proc.base_ + offsets.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x0F)
+			proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
 		
-		if (proc.read<uint8_t>(proc.base_ + offsets.function_speed_z) != 0xF3)
-			proc.write_bytes(proc.base_ + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+		if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_speed_z) != 0xF3)
+			proc.write_bytes(proc.base_module_.base + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 }
 
@@ -386,10 +389,9 @@ int main()
 		MessageBoxW(NULL, L"could not find the game", L"Error", NULL);
 		return false;
 	}
-	
-	if (proc.read<uint64_t>(proc.base_ + offsets.world) == NULL)
+	if (proc.read<uintptr_t>(proc.base_module_.base + offsets.world) == NULL)
 	{
-		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.58) ", L"Error", NULL);
+		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.59) ", L"Error", NULL);
 		return false;
 	}
 
@@ -409,7 +411,7 @@ int main()
 	settings.keys.boost_player  = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 	
-	std::array<pThread, 8> threads{ 
+	std::array<pThread, 8> threads { 
 	pThread(GodMode, 100),
 	pThread(NeverWanted, 10),
 	pThread(WeaponMax, 250),
@@ -418,8 +420,8 @@ int main()
 	pThread(Fly, 10),
 	pThread(Toggles, 10),
 	pThread([](){ 
-		world.UpdateAll(proc.read<uint64_t>(proc.base_ + offsets.world));
-		settings.kmh = 3.6f * proc.read<float>(proc.base_ + offsets.kmh); }, 1)
+		world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
+		settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
 	};
 
 	menu = new pOverlay();
