@@ -331,3 +331,36 @@ void ExitProgram()
 	proc.Close();
 	exit(0);
 }
+
+void ReadOutConfig()
+{
+	cfg = new pSettings(); // reading out config file
+	cfg->Open("Settings//cfg.txt");
+	settings.godmode = cfg->AddGet<bool>("Godmode", 0);
+	settings.neverwanted = cfg->AddGet<bool>("NeverWanted", 0);
+	settings.rploop = cfg->AddGet<bool>("RpLoop", 0);
+	settings.trigger = cfg->AddGet<bool>("Trigger", 0);
+	settings.weaponmax = cfg->AddGet<bool>("WeaponMax", 0);
+	settings.fly = cfg->AddGet<bool>("Fly", 0);
+	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
+	settings.keys.menu = cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
+	settings.keys.teleport = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
+	settings.keys.boost_player = cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
+	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+}
+
+void StartCheats()
+{
+	std::array<pThread, 8> threads{
+	pThread(GodMode, 100),
+	pThread(NeverWanted, 10),
+	pThread(WeaponMax, 250),
+	pThread(RPLoop, 1),
+	pThread(Trigger, 1),
+	pThread(Fly, 10),
+	pThread(Toggles, 10),
+	pThread([]() {
+	world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
+	settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
+	};
+}
