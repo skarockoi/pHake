@@ -32,7 +32,6 @@ private:
 	template <typename T>
 	T LexicalCast(const std::string& str);
 };
-#endif
 
 template<typename T>
 inline T pSettings::AddGet(const std::string& key, T value)
@@ -70,3 +69,4 @@ inline T pSettings::LexicalCast(const std::string& str)
 	iss >> var;
 	return var;
 }
+#endif

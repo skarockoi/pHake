@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="main.hpp" />
     <ClInclude Include="Memory\Datawrapper.hpp" />
     <ClInclude Include="Memory\Process.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />

@@ -90,6 +90,9 @@
     <ClInclude Include="UI\pThread.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="main.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

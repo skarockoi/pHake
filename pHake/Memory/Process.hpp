@@ -44,11 +44,11 @@ public:
 	ProcessModule base_module_;
 
 private:
-	uint32_t FindProcessIdByProcessName(const char* ProcessName);
+	uint32_t FindProcessIdByProcessName(const char* process_name);
 	uint32_t FindProcessIdByWindowName(const char* window_name);
 
 public:
-	bool AttachProcess(const char* ProcessName);
+	bool AttachProcess(const char* process_name);
 	bool AttachWindow(const char* window_name);
 	void Close();
 
