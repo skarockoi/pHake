@@ -351,16 +351,16 @@ void ReadOutConfig()
 
 void StartCheats()
 {
-	std::array<pThread, 8> threads{
-	pThread(GodMode, 100),
-	pThread(NeverWanted, 10),
-	pThread(WeaponMax, 250),
-	pThread(RPLoop, 1),
-	pThread(Trigger, 1),
-	pThread(Fly, 10),
-	pThread(Toggles, 10),
-	pThread([]() {
-	world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
-	settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
+	std::array<pThread*, 8> threads{ // I know
+	new pThread(GodMode, 100),
+	new pThread(NeverWanted, 10),
+	new pThread(WeaponMax, 250),
+	new pThread(RPLoop, 1),
+	new pThread(Trigger, 1),
+	new pThread(Fly, 10),
+	new pThread(Toggles, 10),
+	new pThread([]() {
+		world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
+		settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
 	};
 }
