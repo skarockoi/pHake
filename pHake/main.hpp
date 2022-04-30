@@ -11,18 +11,18 @@
 #include <Windows.h>
 #include <array>
 
-pOverlay* menu;
-pSettings* cfg;
+std::unique_ptr<pOverlay> menu;
+std::unique_ptr<pSettings> cfg;
 Process    proc;
 World      world;
 
 struct settings
 {
-	bool godmode = false;
-	bool neverwanted = false;
-	bool rploop = false;
-	bool trigger = false;
 	bool weaponmax = false;
+	bool nowanted = false;
+	bool godmode = false;
+	bool trigger = false;
+	bool rploop = false;
 	bool noclip = false;
 
 	float noclip_speed = 0.05f;
@@ -50,20 +50,20 @@ struct offsets
 	uintptr_t kmh = 0x2623600;
 }offsets;
 
-void Suicide();
-void TeleportToWaypoint();
-void BoostPlayer();
-void BoostVehicle();
-void GodMode();
-void NeverWanted();
-void RPLoop();
-void Trigger();
 void WeaponMax();
+void GodMode();
+void NoWanted();
+void Trigger();
+void RPLoop();
 void NoClip();
-void Toggles();
+void TeleportToWaypoint();
+void BoostVehicle();
+void BoostPlayer();
+void Suicide();
 
-void ExitProgram();
+void Toggles();
 void ReadOutConfig();
+void ExitProgram();
 
 int main()
 {
@@ -87,7 +87,7 @@ int main()
 	
 	std::array<pThread, 8> threads{ // start cheat threads
 		pThread(GodMode, 100),
-		pThread(NeverWanted, 10),
+		pThread(NoWanted, 10),
 		pThread(WeaponMax, 250),
 		pThread(RPLoop, 1),
 		pThread(Trigger, 1),
@@ -97,11 +97,10 @@ int main()
 			world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
 			settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
 	};
-
-	menu = new pOverlay();
+	menu = std::make_unique<pOverlay>();
 	menu->Create("Grand Theft Auto V");
 	menu->list->AddBool("MaxWeapon", settings.weaponmax);
-	menu->list->AddBool("NoWanted", settings.neverwanted);
+	menu->list->AddBool("NoWanted", settings.nowanted);
 	menu->list->AddBool("Godmode", settings.godmode);
 	menu->list->AddBool("Trigger", settings.trigger);
 	menu->list->AddBool("RpLoop", settings.rploop);

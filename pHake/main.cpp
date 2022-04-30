@@ -1,145 +1,28 @@
 #include "main.hpp"
 
-void Suicide()
+void WeaponMax()
 {
-	world.localplayer.health(0.f);
-	menu->notification->Add("Player health set to 0");
-}
-
-void TeleportToWaypoint()
-{
-	bool in_vehicle = world.localplayer.in_vehicle();
-	vec3 waypoint = proc.read<vec3>(proc.base_module_.base + offsets.waypoint);
-
-	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		menu->notification->Add("No Waypoint set");
-		return;
-	}
-
-	if (in_vehicle)
+	if (settings.weaponmax)
 	{
-		if (world.localplayer.vehicle.speedXYZ().len() > 0.1)
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
 		{
-			menu->notification->Add("Don't move");
-			return;
-		}
-		else
-		{
-			waypoint.z = -210.f;
-			world.localplayer.vehicle.position.xyz(waypoint);
-			Key::Down::W();
-			sleep(50);
-			Key::Up::W();
+			world.localplayer.weapon_manager.current_weapon.type(5);
+			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
+			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
+			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
+			world.localplayer.weapon_manager.current_weapon.range(99999.f);
+			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
 		}
 	}
 	else
 	{
-		if (settings.noclip)
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
 		{
-			waypoint.z = 300.f;
-			world.localplayer.position.xyz(waypoint);
-			Key::Down::W();
-			sleep(50);
-			Key::Up::W();
-		}
-		else
-		{
-			if (world.localplayer.speed_xyz().len() > 0.1)
-			{
-				menu->notification->Add("Don't move");
-				return;
-			}
-			
-			else
-			{
-				waypoint.z = -210.f;
-				world.localplayer.position.xyz(waypoint);
-
-				Key::Down::W();
-				sleep(50);
-				Key::Up::W();
-			}
+			world.localplayer.weapon_manager.current_weapon.type(3);
+			world.localplayer.weapon_manager.current_weapon.bullet_damage(100.f);
+			world.localplayer.weapon_manager.current_weapon.reload_mp(1.f);
 		}
 	}
-	menu->notification->Add("Teleported to Waypoint");
-}
-
-void BoostPlayer()
-{
-	static std::array<std::string, 3> modes = { "default", "fast", "max" };
-	static uint8_t curr_mode = 0;
-
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-	
-	switch (curr_mode)
-	{
-	case 0: 		
-		world.localplayer.playerinfo.walk_mp(1);
-		world.localplayer.playerinfo.swim_mp(1);
-		settings.noclip_speed = 0.05f;
-
-		if (!settings.noclip)
-			world.localplayer.ragdoll(0);
-		break;
-	case 1: 
-		world.localplayer.playerinfo.walk_mp(2.5);
-		world.localplayer.playerinfo.swim_mp(2.5);
-		world.localplayer.ragdoll(1);
-		settings.noclip_speed = 0.2f;
-		break;
-	case 2:
-		world.localplayer.playerinfo.walk_mp(2500);
-		world.localplayer.playerinfo.swim_mp(5);
-		world.localplayer.ragdoll(1);
-		settings.noclip_speed = 0.5f;
-		break;
-	}
-	menu->notification->Add("Player set to " + modes[curr_mode]);
-}
-
-void BoostVehicle()
-{
-	static std::array<std::string, 4> modes = { "default", "race", "max", "fly" };
-	static uint8_t curr_mode = 0;
-
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-
-	switch (curr_mode)
-	{
-	case 0:
-		world.localplayer.vehicle.gravity(9.8f);
-		world.localplayer.vehicle.handling.traction_max(2.f);
-		world.localplayer.vehicle.handling.traction_min(2.f);
-		world.localplayer.vehicle.handling.acceleration(1.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		break;
-	case 1:
-		world.localplayer.vehicle.gravity(20.f);
-		world.localplayer.vehicle.handling.traction_max(3.f);
-		world.localplayer.vehicle.handling.traction_min(3.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(3.f);
-		break;
-	case 2:
-		world.localplayer.vehicle.gravity(25.f);
-		world.localplayer.vehicle.handling.traction_max(5.f);
-		world.localplayer.vehicle.handling.traction_min(5.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(20.f);
-		break;
-	case 3:
-		world.localplayer.vehicle.gravity(-10.f);
-		world.localplayer.vehicle.handling.traction_max(2.f);
-		world.localplayer.vehicle.handling.traction_min(2.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(2.f);
-		break;
-	}
-	menu->notification->Add("Vehicle set to " + modes[curr_mode]);
 }
 
 void GodMode()
@@ -162,21 +45,12 @@ void GodMode()
 	}
 }
 
-void NeverWanted()
+void NoWanted()
 {
-	if (settings.neverwanted)
+	if (settings.nowanted)
 	{
 		if (world.localplayer.playerinfo.wanted_level() != 0)
 			world.localplayer.playerinfo.wanted_level(0);
-	}
-}
-
-void RPLoop()
-{
-	if (settings.rploop)
-	{
-		world.localplayer.playerinfo.wanted_level(5);
-		world.localplayer.playerinfo.wanted_level(0);
 	}
 }
 
@@ -206,28 +80,12 @@ void Trigger()
 	}
 }
 
-void WeaponMax()
+void RPLoop()
 {
-	if (settings.weaponmax)
+	if (settings.rploop)
 	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
-		{
-			world.localplayer.weapon_manager.current_weapon.type(5);
-			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
-			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
-			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
-			world.localplayer.weapon_manager.current_weapon.range(99999.f);
-			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
-		}
-	}
-	else
-	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
-		{
-			world.localplayer.weapon_manager.current_weapon.type(3);
-			world.localplayer.weapon_manager.current_weapon.bullet_damage(100.f);
-			world.localplayer.weapon_manager.current_weapon.reload_mp(1.f);
-		}
+		world.localplayer.playerinfo.wanted_level(5);
+		world.localplayer.playerinfo.wanted_level(0);
 	}
 }
 
@@ -290,6 +148,150 @@ void NoClip() // code explained in "SDK/_info_.txt"
 	}
 }
 
+void TeleportToWaypoint()
+{
+	bool in_vehicle = world.localplayer.in_vehicle();
+	vec3 waypoint = proc.read<vec3>(proc.base_module_.base + offsets.waypoint);
+
+	if (waypoint.x == 64000 && waypoint.y == 64000) {
+		menu->notification->Add("No Waypoint set");
+		return;
+	}
+
+	if (in_vehicle)
+	{
+		if (world.localplayer.vehicle.speedXYZ().len() > 0.1)
+		{
+			menu->notification->Add("Don't move");
+			return;
+		}
+		else
+		{
+			waypoint.z = -210.f;
+			world.localplayer.vehicle.position.xyz(waypoint);
+
+			Key::Down::W();
+			sleep(50);
+			Key::Up::W();
+		}
+	}
+	else
+	{
+		if (settings.noclip)
+		{
+			waypoint.z = 300.f;
+			world.localplayer.position.xyz(waypoint);
+
+			Key::Down::W();
+			sleep(50);
+			Key::Up::W();
+		}
+		else
+		{
+			if (world.localplayer.speed_xyz().len() > 0.1)
+			{
+				menu->notification->Add("Don't move");
+				return;
+			}
+
+			else
+			{
+				waypoint.z = -210.f;
+				world.localplayer.position.xyz(waypoint);
+
+				Key::Down::W();
+				sleep(50);
+				Key::Up::W();
+			}
+		}
+	}
+	menu->notification->Add("Teleported to Waypoint");
+}
+
+void BoostVehicle()
+{
+	static std::array<std::string, 4> modes = { "default", "race", "max", "fly" };
+	static uint8_t curr_mode = 0;
+
+	curr_mode++;
+	if (curr_mode > modes.size() - 1)
+		curr_mode = 0;
+
+	switch (curr_mode)
+	{
+	case 0:
+		world.localplayer.vehicle.gravity(9.8f);
+		world.localplayer.vehicle.handling.traction_max(2.f);
+		world.localplayer.vehicle.handling.traction_min(2.f);
+		world.localplayer.vehicle.handling.acceleration(1.f);
+		world.localplayer.vehicle.handling.collisiondamage(0.f);
+		break;
+	case 1:
+		world.localplayer.vehicle.gravity(20.f);
+		world.localplayer.vehicle.handling.traction_max(3.f);
+		world.localplayer.vehicle.handling.traction_min(3.f);
+		world.localplayer.vehicle.handling.collisiondamage(0.f);
+		world.localplayer.vehicle.handling.acceleration(3.f);
+		break;
+	case 2:
+		world.localplayer.vehicle.gravity(25.f);
+		world.localplayer.vehicle.handling.traction_max(5.f);
+		world.localplayer.vehicle.handling.traction_min(5.f);
+		world.localplayer.vehicle.handling.collisiondamage(0.f);
+		world.localplayer.vehicle.handling.acceleration(20.f);
+		break;
+	case 3:
+		world.localplayer.vehicle.gravity(-10.f);
+		world.localplayer.vehicle.handling.traction_max(2.f);
+		world.localplayer.vehicle.handling.traction_min(2.f);
+		world.localplayer.vehicle.handling.collisiondamage(0.f);
+		world.localplayer.vehicle.handling.acceleration(2.f);
+		break;
+	}
+	menu->notification->Add("Vehicle set to " + modes[curr_mode]);
+}
+
+void BoostPlayer()
+{
+	static std::array<std::string, 3> modes = { "default", "fast", "max" };
+	static uint8_t curr_mode = 0;
+
+	curr_mode++;
+	if (curr_mode > modes.size() - 1)
+		curr_mode = 0;
+
+	switch (curr_mode)
+	{
+	case 0:
+		world.localplayer.playerinfo.walk_mp(1);
+		world.localplayer.playerinfo.swim_mp(1);
+		settings.noclip_speed = 0.05f;
+
+		if (!settings.noclip)
+			world.localplayer.ragdoll(0);
+		break;
+	case 1:
+		world.localplayer.playerinfo.walk_mp(2.5);
+		world.localplayer.playerinfo.swim_mp(2.5);
+		world.localplayer.ragdoll(1);
+		settings.noclip_speed = 0.2f;
+		break;
+	case 2:
+		world.localplayer.playerinfo.walk_mp(2500);
+		world.localplayer.playerinfo.swim_mp(5);
+		world.localplayer.ragdoll(1);
+		settings.noclip_speed = 0.5f;
+		break;
+	}
+	menu->notification->Add("Player set to " + modes[curr_mode]);
+}
+
+void Suicide()
+{
+	world.localplayer.health(0.f);
+	menu->notification->Add("Player health set to 0");
+}
+
 void Toggles()
 {
 	if (HIBYTE(GetAsyncKeyState(settings.keys.menu)))
@@ -319,26 +321,12 @@ void Toggles()
 	}
 }
 
-void ExitProgram()
-{
-	cfg->Edit<bool>("Godmode", settings.godmode);
-	cfg->Edit<bool>("NeverWanted", settings.neverwanted);
-	cfg->Edit<bool>("RpLoop", settings.rploop);
-	cfg->Edit<bool>("Trigger", settings.trigger);
-	cfg->Edit<bool>("WeaponMax", settings.weaponmax);
-	cfg->Edit<bool>("Fly", settings.noclip);
-	cfg->Save();
-
-	proc.Close();
-	menu->Close();
-}
-
 void ReadOutConfig()
 {
-	cfg = new pSettings();
+	cfg = std::make_unique<pSettings>();
 	cfg->Open("Settings//cfg.txt");
 	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
-	settings.neverwanted =		  cfg->AddGet<bool>("NeverWanted", 0);
+	settings.nowanted =		  cfg->AddGet<bool>("NeverWanted", 0);
 	settings.rploop =			  cfg->AddGet<bool>("RpLoop", 0);
 	settings.trigger =			  cfg->AddGet<bool>("Trigger", 0);
 	settings.weaponmax =		  cfg->AddGet<bool>("WeaponMax", 0);
@@ -348,4 +336,19 @@ void ReadOutConfig()
 	settings.keys.teleport =	  cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
 	settings.keys.boost_player =  cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+}
+
+void ExitProgram()
+{
+	cfg->Edit<bool>("Godmode", settings.godmode);
+	cfg->Edit<bool>("NeverWanted", settings.nowanted);
+	cfg->Edit<bool>("RpLoop", settings.rploop);
+	cfg->Edit<bool>("Trigger", settings.trigger);
+	cfg->Edit<bool>("WeaponMax", settings.weaponmax);
+	cfg->Edit<bool>("Fly", settings.noclip);
+	cfg->Save();
+
+	proc.Close();
+	menu->Toggle();
+	menu->Close();
 }
