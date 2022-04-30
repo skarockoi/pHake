@@ -72,12 +72,12 @@ int main()
 
 	if (!proc.AttachProcess("GTA5.exe"))
 	{
-		MessageBoxW(NULL, L"could not find the game", L"Error", NULL);
+		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
 	}
 	if (proc.read<uintptr_t>(proc.base_module_.base + offsets.world) == NULL)
 	{
-		MessageBoxW(NULL, L"game version does not match cheat version (Steam 1.59) ", L"Error", NULL);
+		MessageBox(NULL, "game version does not match cheat version (Steam 1.59) ", "Error", NULL);
 		return false;
 	}
 
