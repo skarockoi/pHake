@@ -8,7 +8,7 @@
 
 #define BACK_WIDTH 80
 #define BACK_HEIGHT 28
-#define BACK_COLOR sf::Color::Color(0, 0, 0, 150)
+#define BACK_COLOR sf::Color::Color(120, 120, 120, 150)
 #define BACK_COLOR_OUTLINE sf::Color::Color(0, 0, 0, 255)
 
 #define HIGHLIGHT_COLOR sf::Color::Color(255, 255, 255, 255)

@@ -100,16 +100,16 @@ int main()
 
 	menu = new pOverlay();
 	menu->Create("Grand Theft Auto V");
+	menu->list->AddBool("MaxWeapon", settings.weaponmax);
+	menu->list->AddBool("NoWanted", settings.neverwanted);
 	menu->list->AddBool("Godmode", settings.godmode);
-	menu->list->AddBool("NeverWanted", settings.neverwanted);
 	menu->list->AddBool("Trigger", settings.trigger);
 	menu->list->AddBool("RpLoop", settings.rploop);
-	menu->list->AddBool("MaxWeapon", settings.weaponmax);
 	menu->list->AddBool("NoClip", settings.noclip);
-	menu->list->AddFloat("Kms/h", settings.kmh, 0, 0);
-	menu->list->AddFunction("Boost Player", BoostPlayer);
-	menu->list->AddFunction("Boost Vehicle", BoostVehicle);
+	menu->list->AddFloat("Km/h", settings.kmh, 0, 0);
 	menu->list->AddFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->list->AddFunction("Boost Vehicle", BoostVehicle);
+	menu->list->AddFunction("Boost Player", BoostPlayer);
 	menu->list->AddFunction("Suicide", Suicide);
 	menu->list->AddFunction("Exit", ExitProgram);
 	menu->Loop();
