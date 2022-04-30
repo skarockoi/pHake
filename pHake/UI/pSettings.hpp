@@ -63,7 +63,7 @@ inline bool pSettings::Edit(const std::string& key, T value)
 template<typename T>
 inline T pSettings::LexicalCast(const std::string& str)
 {
-	T var;
+	T var{};
 	std::istringstream iss;
 	iss.str(str);
 	iss >> var;
