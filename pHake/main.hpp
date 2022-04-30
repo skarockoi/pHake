@@ -113,5 +113,6 @@ int main()
 	menu->list->AddFunction("Suicide", Suicide);
 	menu->list->AddFunction("Exit", ExitProgram);
 	menu->Loop();
+	ExitProgram();
 }
 #endif
