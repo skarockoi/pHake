@@ -89,7 +89,7 @@ std::vector<std::string> SplitSpringByCharacterAndSaveAsVector(const std::string
 
 bool ReadFileByLineAndSaveToVector(std::vector<std::string>* Vector, const std::string& Filepath)
 {
-	if (std::filesystem::exists(Filepath)) // check if the cfg file exists, otherwise create a new file(does not work if the path is behind a directory that does not exist
+	if (std::filesystem::exists(Filepath)) // check if the cfg file exists, otherwise create a new file (does not work if the path is behind a directory that does not exist
 	{
 		std::ifstream file(Filepath);
 

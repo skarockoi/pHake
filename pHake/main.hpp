@@ -11,14 +11,15 @@
 #include <Windows.h>
 #include <array>
 
-std::unique_ptr<pOverlay> menu;
+std::array<std::unique_ptr<pThread>, 8> threads;
+std::unique_ptr<pOverlay>  menu;
 std::unique_ptr<pSettings> cfg;
 Process    proc;
 World      world;
 
 struct settings
 {
-	bool weaponmax = false;
+	bool maxweapon = false;
 	bool nowanted = false;
 	bool godmode = false;
 	bool trigger = false;
@@ -50,7 +51,7 @@ struct offsets
 	uintptr_t kmh = 0x2623600;
 }offsets;
 
-void WeaponMax();
+void MaxWeapon();
 void GodMode();
 void NoWanted();
 void Trigger();
@@ -67,7 +68,6 @@ void ExitProgram();
 
 int main()
 {
-	atexit(ExitProgram);
 	FreeConsole();
 
 	if (!proc.AttachProcess("GTA5.exe"))
@@ -85,21 +85,22 @@ int main()
 
 	ReadOutConfig();
 	
-	std::array<pThread, 8> threads{ // start cheat threads
-		pThread(GodMode, 100),
-		pThread(NoWanted, 10),
-		pThread(WeaponMax, 250),
-		pThread(RPLoop, 1),
-		pThread(Trigger, 1),
-		pThread(NoClip, 10),
-		pThread(Toggles, 10),
-		pThread([]() {
+	threads = { // start cheat threads
+		std::make_unique<pThread>(GodMode, 100),
+		std::make_unique<pThread>(NoWanted, 10),
+		std::make_unique<pThread>(MaxWeapon, 250),
+		std::make_unique<pThread>(RPLoop, 1),
+		std::make_unique<pThread>(Trigger, 1),
+		std::make_unique<pThread>(NoClip, 10),
+		std::make_unique<pThread>(Toggles, 10),
+		std::make_unique<pThread>([]() {
 			world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
 			settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
 	};
+	
 	menu = std::make_unique<pOverlay>();
 	menu->Create("Grand Theft Auto V");
-	menu->list->AddBool("MaxWeapon", settings.weaponmax);
+	menu->list->AddBool("MaxWeapon", settings.maxweapon);
 	menu->list->AddBool("NoWanted", settings.nowanted);
 	menu->list->AddBool("Godmode", settings.godmode);
 	menu->list->AddBool("Trigger", settings.trigger);

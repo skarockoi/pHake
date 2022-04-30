@@ -1,8 +1,8 @@
 #include "main.hpp"
 
-void WeaponMax()
+void MaxWeapon()
 {
-	if (settings.weaponmax)
+	if (settings.maxweapon)
 	{
 		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
 		{
@@ -325,12 +325,12 @@ void ReadOutConfig()
 {
 	cfg = std::make_unique<pSettings>();
 	cfg->Open("Settings//cfg.txt");
+	settings.maxweapon =		  cfg->AddGet<bool>("MaxWeapon", 0);
+	settings.nowanted =			  cfg->AddGet<bool>("NoWanted", 0);
 	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
-	settings.nowanted =		  cfg->AddGet<bool>("NeverWanted", 0);
-	settings.rploop =			  cfg->AddGet<bool>("RpLoop", 0);
 	settings.trigger =			  cfg->AddGet<bool>("Trigger", 0);
-	settings.weaponmax =		  cfg->AddGet<bool>("WeaponMax", 0);
-	settings.noclip =			  cfg->AddGet<bool>("Fly", 0);
+	settings.rploop =			  cfg->AddGet<bool>("RpLoop", 0);
+	settings.noclip =			  cfg->AddGet<bool>("NoClip", 0);
 	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
 	settings.keys.menu =		  cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
 	settings.keys.teleport =	  cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
@@ -340,15 +340,18 @@ void ReadOutConfig()
 
 void ExitProgram()
 {
+	for (size_t i = 0; i < threads.size() - 1; i++)
+		threads[i]->Destroy();
+
+	cfg->Edit<bool>("MaxWeapon", settings.maxweapon);
+	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
-	cfg->Edit<bool>("NeverWanted", settings.nowanted);
-	cfg->Edit<bool>("RpLoop", settings.rploop);
 	cfg->Edit<bool>("Trigger", settings.trigger);
-	cfg->Edit<bool>("WeaponMax", settings.weaponmax);
-	cfg->Edit<bool>("Fly", settings.noclip);
+	cfg->Edit<bool>("RpLoop", settings.rploop);
+	cfg->Edit<bool>("NoClip", settings.noclip);
 	cfg->Save();
 
 	proc.Close();
-	menu->Toggle();
 	menu->Close();
+	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS);
 }

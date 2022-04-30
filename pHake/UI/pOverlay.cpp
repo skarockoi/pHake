@@ -62,7 +62,7 @@ void pOverlay::Toggle()
 
 void pOverlay::Loop()
 {
-	while (this->window_.isOpen() && this->game_info_.IsActive() && !this->close_)
+	while (this->window_.isOpen() && this->game_info_.IsActive())
 	{
 		this->FixPosition();
 
@@ -95,7 +95,6 @@ void pOverlay::Loop()
 
 void pOverlay::Close()
 {
-	this->close_ = true;
 	this->window_.close();
 }
 
