@@ -14,7 +14,7 @@
 # Usage
 - Fullscreen Windowed<br/>
 - Start in game<br/>
-- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in cfg.txt<br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in Settings\cfg.txt<br/>
 - ALT : Toggle Menu<br/>
 - Left/Right Mouse: Toggle Features<br/>
 - Num0 : Teleport to Waypoint<br/>
