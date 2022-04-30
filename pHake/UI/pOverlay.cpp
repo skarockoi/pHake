@@ -62,7 +62,7 @@ void pOverlay::Toggle()
 
 void pOverlay::Loop()
 {
-	while (this->window_.isOpen() && this->game_info_.IsActive())
+	while (this->window_.isOpen() && this->game_info_.IsActive() && !this->close_)
 	{
 		this->FixPosition();
 
@@ -91,6 +91,12 @@ void pOverlay::Loop()
 		
 		this->window_.display();
 	}
+}
+
+void pOverlay::Close()
+{
+	this->close_ = true;
+	this->window_.close();
 }
 
 void pOverlay::SetWindowTransparentAndNotClickableEx(HWND handle)

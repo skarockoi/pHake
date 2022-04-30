@@ -38,6 +38,7 @@ class pOverlay
 private:
 	sf::RenderWindow window_;
 	sf::Font		 font_;
+	bool			 close_ = false;
 
 	GameInfo		 game_info_;
 	std::unique_ptr<pMouse> mouse_;
@@ -49,6 +50,8 @@ public:
 	void Create(LPCSTR Name);
 	void Toggle();
 	void Loop();
+	void Close();
+
 private:
 	void SetWindowTransparentAndNotClickableEx(HWND handle);
 	void FixPosition();

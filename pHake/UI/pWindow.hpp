@@ -21,6 +21,7 @@ public:
 
 	void Create();
 	void Loop();
+	void Close();
 
 private:
 	void FixSize();

@@ -61,9 +61,9 @@ void Trigger();
 void WeaponMax();
 void NoClip();
 void Toggles();
+
 void ExitProgram();
 void ReadOutConfig();
-void StartCheats();
 
 int main()
 {
@@ -84,7 +84,19 @@ int main()
 	world = World(&proc);
 
 	ReadOutConfig();
-	StartCheats();
+	
+	std::array<pThread, 8> threads{ // start cheat threads
+		pThread(GodMode, 100),
+		pThread(NeverWanted, 10),
+		pThread(WeaponMax, 250),
+		pThread(RPLoop, 1),
+		pThread(Trigger, 1),
+		pThread(NoClip, 10),
+		pThread(Toggles, 10),
+		pThread([]() {
+			world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
+			settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
+	};
 
 	menu = new pOverlay();
 	menu->Create("Grand Theft Auto V");
@@ -101,6 +113,5 @@ int main()
 	menu->list->AddFunction("Suicide", Suicide);
 	menu->list->AddFunction("Exit", ExitProgram);
 	menu->Loop();
-	return 0;
 }
 #endif

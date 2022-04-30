@@ -42,6 +42,11 @@ void pWindow::Loop()
 	}
 }
 
+void pWindow::Close()
+{
+	this->window_.close();
+}
+
 void pWindow::FixSize()
 {
 	sf::Vector2f size_list = list->size();
