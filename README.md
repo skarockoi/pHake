@@ -12,15 +12,15 @@
 - Boost Player<br/>
 - Suicide<br/>
 # Usage
-- Fullscreen Windowed<br/>
 - Start in game<br/>
-- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in Settings\cfg.txt<br/>
+- Fullscreen Windowed<br/>
 - ALT : Toggle Menu<br/>
 - Left/Right Mouse: Toggle Features<br/>
 - Num0 : Teleport to Waypoint<br/>
 - Num1 : Boost Player<br/>
 - Num2 : Boost Vehicle<br/>
 - Space : To change speed while flying<br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in Settings\cfg.txt<br/>
 
 # Download
 <a href="https://github.com/xhz8s/pHake/releases/download/5.2/pHake5.2_1.59.zip">pHake 5.2 (1.59 Steam)</a>
