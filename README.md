@@ -2,10 +2,10 @@
 ![pHake4](https://user-images.githubusercontent.com/52607377/78054921-13e66e00-7383-11ea-8082-2f80ff9fb0b9.png)
 # Features<br/>
 - GodMode<br/>
-- Triggerbot<br/>
-- NeverWanted<br/>
+- Trigger<br/>
+- NoWanted<br/>
 - RpLoop<br/>
-- WeaponMax<br/>
+- MaxWeapon<br/>
 - NoClip<br/>
 - Teleport to Waypoint<br/>
 - Boost Vehicle<br/>
