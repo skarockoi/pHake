@@ -6,7 +6,7 @@
 - NeverWanted<br/>
 - RpLoop<br/>
 - WeaponMax<br/>
-- Fly<br/>
+- NoClip<br/>
 - Teleport to Waypoint<br/>
 - Boost Vehicle<br/>
 - Boost Player<br/>
