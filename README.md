@@ -1,16 +1,16 @@
 # pHake GTA:O Mod Menu 
 ![pHake4](https://user-images.githubusercontent.com/52607377/166122940-60770068-410b-413c-b21d-622af5a7e95d.png)
 # Features<br/>
+- MaxWeapon<br/>
+- NoWanted<br/>
 - GodMode<br/>
 - Trigger<br/>
-- NoWanted<br/>
 - RpLoop<br/>
-- MaxWeapon<br/>
 - NoClip<br/>
 - Teleport to Waypoint<br/>
 - Boost Vehicle<br/>
 - Boost Player<br/>
-
+- Suicide<br/>
 # Usage
 - Fullscreen Windowed<br/>
 - Start in game<br/>
