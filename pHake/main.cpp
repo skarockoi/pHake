@@ -34,7 +34,7 @@ void TeleportToWaypoint()
 	}
 	else
 	{
-		if (settings.fly)
+		if (settings.noclip)
 		{
 			waypoint.z = 300.f;
 			world.localplayer.position.xyz(waypoint);
@@ -78,22 +78,22 @@ void BoostPlayer()
 	case 0: 		
 		world.localplayer.playerinfo.walk_mp(1);
 		world.localplayer.playerinfo.swim_mp(1);
-		settings.fly_speed = 0.05f;
+		settings.noclip_speed = 0.05f;
 
-		if (!settings.fly)
+		if (!settings.noclip)
 			world.localplayer.ragdoll(0);
 		break;
 	case 1: 
 		world.localplayer.playerinfo.walk_mp(2.5);
 		world.localplayer.playerinfo.swim_mp(2.5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.2f;
+		settings.noclip_speed = 0.2f;
 		break;
 	case 2:
 		world.localplayer.playerinfo.walk_mp(2500);
 		world.localplayer.playerinfo.swim_mp(5);
 		world.localplayer.ragdoll(1);
-		settings.fly_speed = 0.5f;
+		settings.noclip_speed = 0.5f;
 		break;
 	}
 	menu->notification->Add("Player set to " + modes[curr_mode]);
@@ -231,7 +231,7 @@ void WeaponMax()
 	}
 }
 
-void Fly() // code explained in "SDK/_info_.txt"
+void NoClip() // code explained in "SDK/_info_.txt"
 {
 	static uint64_t position_base = 0;
 	if (position_base != world.localplayer.position.base()) 
@@ -255,7 +255,7 @@ void Fly() // code explained in "SDK/_info_.txt"
 		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, patch_beginning);
 	}
 
-	if (settings.fly)
+	if (settings.noclip)
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
@@ -268,9 +268,9 @@ void Fly() // code explained in "SDK/_info_.txt"
 			vec3 cam_pos = proc.read<vec3>(proc.base_module_.base + offsets.camera_pos);
 			vec3 old_pos = world.localplayer.position.xyz();
 			vec3 add_pos(
-				settings.fly_speed * (old_pos.x - cam_pos.x),
-				settings.fly_speed * (old_pos.y - cam_pos.y),
-				settings.fly_speed * (old_pos.z - (cam_pos.z - 0.5f))
+				settings.noclip_speed * (old_pos.x - cam_pos.x),
+				settings.noclip_speed * (old_pos.y - cam_pos.y),
+				settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
 			);
 
 			float len = add_pos.len();
@@ -297,7 +297,7 @@ void Toggles()
 		menu->Toggle();
 		sleep(150);
 	}
-	if (settings.fly && HIBYTE(GetAsyncKeyState(VK_SPACE)))
+	if (settings.noclip && HIBYTE(GetAsyncKeyState(VK_SPACE)))
 	{
 		BoostPlayer();
 		sleep(150);
@@ -326,7 +326,7 @@ void ExitProgram()
 	cfg->Edit<bool>("RpLoop", settings.rploop);
 	cfg->Edit<bool>("Trigger", settings.trigger);
 	cfg->Edit<bool>("WeaponMax", settings.weaponmax);
-	cfg->Edit<bool>("Fly", settings.fly);
+	cfg->Edit<bool>("Fly", settings.noclip);
 	cfg->Save();
 	proc.Close();
 	exit(0);
@@ -341,7 +341,7 @@ void ReadOutConfig()
 	settings.rploop = cfg->AddGet<bool>("RpLoop", 0);
 	settings.trigger = cfg->AddGet<bool>("Trigger", 0);
 	settings.weaponmax = cfg->AddGet<bool>("WeaponMax", 0);
-	settings.fly = cfg->AddGet<bool>("Fly", 0);
+	settings.noclip = cfg->AddGet<bool>("Fly", 0);
 	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
 	settings.keys.menu = cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
 	settings.keys.teleport = cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
@@ -357,7 +357,7 @@ void StartCheats()
 	new pThread(WeaponMax, 250),
 	new pThread(RPLoop, 1),
 	new pThread(Trigger, 1),
-	new pThread(Fly, 10),
+	new pThread(NoClip, 10),
 	new pThread(Toggles, 10),
 	new pThread([]() {
 		world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));

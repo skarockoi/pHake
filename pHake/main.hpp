@@ -23,9 +23,9 @@ struct settings
 	bool rploop = false;
 	bool trigger = false;
 	bool weaponmax = false;
-	bool fly = false;
+	bool noclip = false;
 
-	float fly_speed = 0.05f;
+	float noclip_speed = 0.05f;
 	float kmh = 0.f;
 
 	struct keys
@@ -59,7 +59,7 @@ void NeverWanted();
 void RPLoop();
 void Trigger();
 void WeaponMax();
-void Fly();
+void NoClip();
 void Toggles();
 void ExitProgram();
 void ReadOutConfig();
@@ -93,7 +93,7 @@ int main()
 	menu->list->AddBool("Trigger", settings.trigger);
 	menu->list->AddBool("RpLoop", settings.rploop);
 	menu->list->AddBool("MaxWeapon", settings.weaponmax);
-	menu->list->AddBool("Fly", settings.fly);
+	menu->list->AddBool("NoClip", settings.noclip);
 	menu->list->AddFloat("Kms/h", settings.kmh, 0, 0);
 	menu->list->AddFunction("Boost Player", BoostPlayer);
 	menu->list->AddFunction("Boost Vehicle", BoostVehicle);
