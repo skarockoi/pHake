@@ -160,7 +160,7 @@ void TeleportToWaypoint()
 
 	if (in_vehicle)
 	{
-		if (world.localplayer.vehicle.speedXYZ().len() > 0.1)
+		if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
 		{
 			menu->notification->Add("Don't move");
 			return;

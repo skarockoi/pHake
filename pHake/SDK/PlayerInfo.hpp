@@ -30,6 +30,16 @@ public:
 		this->write<float>(0x170, value);
 	}
 
+	uint32_t freeze()
+	{
+		return this->read<float>(0x238);
+	}
+
+	void freeze(uint32_t value) // 2 = freeze player, 1 = freeze player and cam , 0 unfreeze
+	{
+		this->write<uint32_t>(0x238, value);
+	}
+
 	int32_t wanted_level()
 	{
 		return this->read<int32_t>(0x888);

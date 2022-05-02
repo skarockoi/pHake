@@ -54,57 +54,57 @@ public:
 		this->write<uint8_t>(0x189, value);
 	}
 
-	float engineHealth1()
+	float engine_health1()
 	{
 		return this->read<float>(0x280);
 	}
 
-	void engineHealth1(float value)
+	void engine_health1(float value)
 	{
 		this->write<float>(0x280, value);
 	}
 
-	vec3 speedXYZ()
+	vec3 speed_xyz()
 	{
 		return this->read<vec3>(0x7F0);
 	}
 
-	void speedXYZ(vec3 value)
+	void speed_xyz(vec3 value)
 	{
 		this->write<vec3>(0x7F0, value);
 	}
 
-	void speedXYZ(float x, float y, float z)
+	void speed_xyz(float x, float y, float z)
 	{
 		this->write<vec3>(0x7F0, vec3(x, y, z));
 	}
 
-	float speedX()
+	float speed_x()
 	{
 		return this->read<float>(0x7F0);
 	}
 
-	void speedX(float value)
+	void speed_x(float value)
 	{
 		this->write<float>(0x7F0, value);
 	}
 
-	float speedY()
+	float speed_y()
 	{
 		return this->read<float>(0x7F4);
 	}
 
-	void speedY(float value)
+	void speed_y(float value)
 	{
 		this->write<float>(0x7F4, value);
 	}
 
-	float speedZ()
+	float speed_z()
 	{
 		return this->read<float>(0x7F8);
 	}
 
-	void speedZ(float value)
+	void speed_z(float value)
 	{
 		this->write<float>(0x7F8, value);
 	}
@@ -119,12 +119,12 @@ public:
 		this->write<float>(0xC5C, value);
 	}
 
-	float engineHealth2()
+	float engine_health2()
 	{
 		return this->read<float>(0x908);
 	}
 
-	void engineHealth2(float value)
+	void engine_health2(float value)
 	{
 		this->write<float>(0x908, value);
 	}
