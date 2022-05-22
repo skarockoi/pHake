@@ -99,49 +99,56 @@ void pList::AddString(const std::string& name, std::string& value)
 
 void pList::Loop()
 {
-	if (this->active() && this->used())
-	{
-		for (int i = 0; i < items_bool_.size(); i++)
-			items_bool_[i].Loop();
+	if (!this->active_)
+		return;
+	
+	if (!this->used_)
+		return;
+	
+	for (int i = 0; i < items_bool_.size(); i++)
+		items_bool_[i].Loop();
 
-		for (int i = 0; i < items_float_.size(); i++)
-			items_float_[i].Loop();
+	for (int i = 0; i < items_float_.size(); i++)
+		items_float_[i].Loop();
 
-		for (int i = 0; i < items_int_.size(); i++)
-			items_int_[i].Loop();
+	for (int i = 0; i < items_int_.size(); i++)
+		items_int_[i].Loop();
 
-		for (int i = 0; i < items_button_.size(); i++)
-			items_button_[i].Loop();
+	for (int i = 0; i < items_button_.size(); i++)
+		items_button_[i].Loop();
 
-		for (int i = 0; i < items_string_.size(); i++)
-			items_string_[i].Loop();
-	}
+	for (int i = 0; i < items_string_.size(); i++)
+		items_string_[i].Loop();
 }
 
 void pList::Draw()
 {
-	if (this->active() && this->used())
-	{
-		window_->draw(rect_back);
+	if (!this->active_)
+		return;
 
-		for (int i = 0; i < items_name_.size(); i++)
-			window_->draw(items_name_[i]);
+	if (!this->used_)
+		return;
 
-		for (int i = 0; i < items_bool_.size(); i++)
-			items_bool_[i].Draw();
+	window_->draw(rect_back);
 
-		for (int i = 0; i < items_float_.size(); i++)
-			items_float_[i].Draw();
+	for (int i = 0; i < items_name_.size(); i++)
+		window_->draw(items_name_[i]);
 
-		for (int i = 0; i < items_int_.size(); i++)
-			items_int_[i].Draw();
+	for (int i = 0; i < items_bool_.size(); i++)
+		items_bool_[i].Draw();
 
-		for (int i = 0; i < items_button_.size(); i++)
-			items_button_[i].Draw();
+	for (int i = 0; i < items_float_.size(); i++)
+		items_float_[i].Draw();
 
-		for (int i = 0; i < items_string_.size(); i++)
-			items_string_[i].Draw();
-	}
+	for (int i = 0; i < items_int_.size(); i++)
+		items_int_[i].Draw();
+
+	for (int i = 0; i < items_button_.size(); i++)
+		items_button_[i].Draw();
+
+	for (int i = 0; i < items_string_.size(); i++)
+		items_string_[i].Draw();
+	
 }
 
 void pList::AddGap()
