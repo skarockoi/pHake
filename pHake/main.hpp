@@ -7,9 +7,11 @@
 #include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
 #include "SDK/World.hpp"
+#include "SDK/Entity.hpp"
 
 #include <Windows.h>
 #include <array>
+#include <iostream>
 
 std::array<std::unique_ptr<pThread>, 8> threads;
 std::unique_ptr<pOverlay>  menu;
@@ -42,12 +44,13 @@ struct offsets
 {
 	uintptr_t world = 0x0256BDE8; // "\x48\x8D\x3D\x00\x00\x00\x00\x75\x16" "xxx????xx"
 	uintptr_t waypoint = 0x1FFD190;
-	uintptr_t triggerbot = 0x1FEAAD0;
-	uintptr_t camera_pos = 0x1DA6F50;
-	uintptr_t function_xyz = 0x1484B27; // "\x0F\x29\x48\x50\x48\x83\xC4\x60" "xxxxxxxx"
-	uintptr_t function_speed_x = 0x780BC4; // "\xF3\x0F\x11\x83\x20\x03\x00\x00" "xxxxxxxx"
-	uintptr_t function_speed_y = 0x780BD1; // + 0xD
-	uintptr_t function_speed_z = 0x780BDE; // + 0x1A
+	uintptr_t crosshair_value = 0x1FEAAF0;
+	uintptr_t last_entity_aimed_at = 0x1FEAAE0;
+	uintptr_t camera_pos = 0x1FDCD80;
+	uintptr_t function_xyz = 0x1484437; // "\x0F\x29\x48\x50\x48\x83\xC4\x60" "xxxxxxxx"
+	uintptr_t function_speed_x = 0x7809F0; // "\xF3\x0F\x11\x83\x20\x03\x00\x00" "xxxxxxxx"
+	uintptr_t function_speed_y = 0x7809FD; // + 0xD
+	uintptr_t function_speed_z = 0x780A0A; // + 0x1A
 	uintptr_t kmh = 0x2623600;
 }offsets;
 
@@ -82,6 +85,8 @@ int main()
 	}
 
 	world = World(&proc);
+
+	//std::cout << std::hex << proc.FindPattern({ 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60 });
 
 	ReadOutConfig();
 	

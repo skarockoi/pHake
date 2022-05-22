@@ -156,8 +156,9 @@
     <ClInclude Include="Memory\Datawrapper.hpp" />
     <ClInclude Include="Memory\Process.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
+    <ClInclude Include="SDK\Entity.hpp" />
     <ClInclude Include="SDK\_info_.txt" />
-    <ClInclude Include="SDK\LocalPlayer.hpp" />
+    <ClInclude Include="SDK\Player.hpp" />
     <ClInclude Include="SDK\PlayerInfo.hpp" />
     <ClInclude Include="SDK\Position.hpp" />
     <ClInclude Include="SDK\Vehicle.hpp" />

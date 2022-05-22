@@ -58,17 +58,22 @@ void Trigger()
 {
 	if (settings.trigger)
 	{
+		static Entity entity(&proc);
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t id_value = proc.read<int32_t>(proc.base_module_.base + offsets.triggerbot);
+		int32_t id_value = proc.read<int32_t>(proc.base_module_.base + offsets.crosshair_value);
 		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
 			can_shoot = false;
 
+
 		if (can_shoot && !already_shooting)
 		{
+			entity.Update(proc.read<uintptr_t>(proc.base_module_.base + offsets.last_entity_aimed_at));
+			entity.health(0.f);
+
 			Key::Down::LMouse();
 			already_shooting = true;
 		}
@@ -104,7 +109,7 @@ void NoClip() // code explained in "SDK/_info_.txt"
 
 		std::vector<uint8_t> patch_ending{ 
 			0x48, 0x39, 0xC1,       // compare rcx rax registers 
-			0x74, 0x04,             // if it's the same skip to GTA5.exe + 0x2D
+			0x74, 0x04,             // if it's the same skip to GTA5.exe + 0x1A
 			0x0F, 0x29, 0x48, 0x50, // update location of entity from rax register
 			0x48, 0x83, 0xC4, 0x60, // vanilla code 
 			0x5B, 0xC3 };           // vanilla code 
@@ -118,7 +123,7 @@ void NoClip() // code explained in "SDK/_info_.txt"
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
 			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0xE9, 0xEE, 0xB4, 0xB7, 0xFE });
+				proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0xE9, 0xDE, 0xBB, 0xB7, 0xFE });
 
 			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
 				proc.write_bytes(proc.base_module_.base + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });

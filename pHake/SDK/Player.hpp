@@ -8,11 +8,11 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class LocalPlayer : public DataWrapper<0x14E0 + 0x4>
+class Player : public DataWrapper<0x14E0 + 0x4>
 {
 public:
-	LocalPlayer() {}
-	LocalPlayer(Process* const& proc) :DataWrapper(proc) {
+	Player() {}
+	Player(Process* const& proc) :DataWrapper(proc) {
 		position = Position(proc);
 		vehicle = Vehicle(proc);
 		playerinfo = PlayerInfo(proc);

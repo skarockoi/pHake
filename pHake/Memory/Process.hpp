@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 #include <string>
+#include <iostream>
 
 struct vec3
 {
@@ -24,6 +25,12 @@ struct vec3
 
 	vec3 operator*(const float& ext) {
 		return vec3(ext * x, ext * y, ext * z);
+	}
+
+	std::ostream& operator<<(std::ostream& os)
+	{
+		os << this->x << " " << this->y << " " << this->z;
+		return os;
 	}
 
 	float len() {
@@ -53,11 +60,12 @@ public:
 	void Close();
 
 	ProcessModule GetModule(const char* module_name);
-	LPVOID		  CreateCodeCave(size_t size_in_bytes);
-	uintptr_t	  FindCodeCave(uint32_t length_in_bytes);
-	uintptr_t	  FindSignature(byte* base, size_t size, std::string pattern, std::string Mask);
-	uintptr_t	  FindSignatureInBaseModule(std::string pattern, std::string mask);
-	uintptr_t	  FindPatternExOffset(std::string pattern, std::string mask, size_t size, size_t offset, bool little_endian, size_t inst_size);
+	LPVOID		  Allocate(size_t size_in_bytes);
+	//uintptr_t	  FindCodeCave(uint32_t length_in_bytes);
+	uintptr_t FindPattern(std::vector<uint8_t> signature);
+	uintptr_t FindPattern(ProcessModule target_module, std::vector<uint8_t> signature);
+
+
 
 	void Uint64ToArray(uint64_t number, uint8_t* result);
 

@@ -3,14 +3,14 @@
 
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
-#include "LocalPlayer.hpp"
+#include "Player.hpp"
 
 class World : public DataWrapper<0x8 + 0x8>
 {
 public:
 	World() {}
 	World(Process* const& proc) :DataWrapper(proc) {
-		localplayer = LocalPlayer(proc);
+		localplayer = Player(proc);
 	}
 
 	void UpdateAll(uintptr_t baseAddress)
@@ -19,6 +19,6 @@ public:
 		localplayer.UpdateAll(this->read<uintptr_t>(0x8));
 	}
 
-	LocalPlayer localplayer;
+	Player localplayer;
 };
 #endif
