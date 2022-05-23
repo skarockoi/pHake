@@ -1,5 +1,4 @@
 #include "Process.hpp"
-#include <iostream> // don't remove, everything crashes
 
 uint32_t Process::FindProcessIdByProcessName(const char* ProcessName)
 {
