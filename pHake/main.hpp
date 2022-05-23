@@ -72,7 +72,7 @@ void ExitProgram();
 
 int main()
 {
-	//FreeConsole();
+	FreeConsole();
 
 	if (!proc.AttachProcess("GTA5.exe"))
 	{
@@ -88,10 +88,10 @@ int main()
 		return false;
 	}
 
-	world = World(&proc);
-
 	ReadConfig();
 	
+	world = World(&proc);
+
 	threads = { // start cheat threads
 		std::make_unique<pThread>(GodMode, 100),
 		std::make_unique<pThread>(NoWanted, 10),
