@@ -98,7 +98,7 @@ ProcessModule Process::GetModule(const char* lModule)
 
 LPVOID Process::Allocate(size_t size_in_bytes)
 {
-	return VirtualAllocEx(this->handle_, NULL, size_in_bytes, MEM_COMMIT, PAGE_READWRITE);
+	return VirtualAllocEx(this->handle_, NULL, size_in_bytes, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 }
 
 uintptr_t Process::FindSignature(std::vector<uint8_t> signature)

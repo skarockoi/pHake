@@ -94,8 +94,18 @@ void RPLoop()
 	}
 }
 
-void NoClip() // code explained in "SDK/_info_.txt"
+void NoClip() // GHETTOCODE
 {
+	static bool allocated = false;
+	static uintptr_t target{};
+	if (!allocated)
+	{
+		target = proc.base_module_.base + 0x1A;
+		//target = (uintptr_t)proc.Allocate(100);
+		std::cout << target << std::endl;
+		allocated = true;
+	}
+
 	static uint64_t position_base = 0;
 	if (position_base != world.localplayer.position.base()) 
 	{
@@ -109,21 +119,29 @@ void NoClip() // code explained in "SDK/_info_.txt"
 
 		std::vector<uint8_t> patch_ending{ 
 			0x48, 0x39, 0xC1,       // compare rcx rax registers 
-			0x74, 0x04,             // if it's the same skip to GTA5.exe + 0x1A
+			0x74, 0x04,             // if it's the same skip to + 0x1A
 			0x0F, 0x29, 0x48, 0x50, // update location of entity from rax register
 			0x48, 0x83, 0xC4, 0x60, // vanilla code 
 			0x5B, 0xC3 };           // vanilla code 
 
 		patch_beginning.insert(std::end(patch_beginning), std::begin(patch_ending), std::end(patch_ending));
-		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, patch_beginning);
+		proc.write_bytes((uint64_t)target, patch_beginning);
 	}
 
-	if (settings.noclip)
+	if (settings.noclip) 
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
 			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
-				proc.write_bytes(pointers.function_xyz, { 0xE9, 0xDE, 0xBB, 0xB7, 0xFE });
+			{
+				std::vector<uint8_t> jmp_target{ 0xE9 };
+				uint8_t target_in_byte[4];
+				uintptr_t lol = proc.base_module_.base + 0x1A - pointers.function_xyz - 1 - sizeof(target_in_byte);
+
+				Uint64ToArray(lol, target_in_byte); // convert the position base to int arraywww
+				jmp_target.insert(std::end(jmp_target), std::begin(target_in_byte), std::end(target_in_byte));
+				proc.write_bytes(pointers.function_xyz, jmp_target);
+			}
 
 			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
 				proc.write_bytes(pointers.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });

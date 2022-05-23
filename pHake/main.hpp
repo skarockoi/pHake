@@ -89,7 +89,7 @@ int main()
 	}
 
 	ReadConfig();
-	
+
 	world = World(&proc);
 
 	threads = { // start cheat threads
