@@ -62,7 +62,7 @@ void Trigger()
 		static bool can_shoot = true;
 		static bool already_shooting = false;
 
-		int32_t id_value = proc.read<int32_t>(proc.base_module_.base + offsets.crosshair_value);
+		int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
 		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 			can_shoot = true;
 		else
@@ -71,7 +71,7 @@ void Trigger()
 
 		if (can_shoot && !already_shooting)
 		{
-			entity.Update(proc.read<uintptr_t>(proc.base_module_.base + offsets.last_entity_aimed_at));
+			entity.Update(proc.read<uintptr_t>(pointers.last_entity_aimed_at));
 			entity.health(0.f);
 
 			Key::Down::LMouse();
@@ -122,13 +122,13 @@ void NoClip() // code explained in "SDK/_info_.txt"
 	{
 		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
 		{
-			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0xE9, 0xDE, 0xBB, 0xB7, 0xFE });
+			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
+				proc.write_bytes(pointers.function_xyz, { 0xE9, 0xDE, 0xBB, 0xB7, 0xFE });
 
-			if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x90)
-				proc.write_bytes(proc.base_module_.base + offsets.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
+				proc.write_bytes(pointers.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
 			
-			vec3 cam_pos = proc.read<vec3>(proc.base_module_.base + offsets.camera_pos);
+			vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
 			vec3 old_pos = world.localplayer.position.xyz();
 			vec3 add_pos(
 				settings.noclip_speed * (old_pos.x - cam_pos.x),
@@ -145,18 +145,18 @@ void NoClip() // code explained in "SDK/_info_.txt"
 	}
 	else // restore the original values
 	{
-		if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_xyz) != 0x0F)
-			proc.write_bytes(proc.base_module_.base + offsets.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		if (proc.read<uint8_t>(pointers.function_xyz) != 0x0F)
+			proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
 		
-		if (proc.read<uint8_t>(proc.base_module_.base + offsets.function_speed_z) != 0xF3)
-			proc.write_bytes(proc.base_module_.base + offsets.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+		if (proc.read<uint8_t>(pointers.function_speed_z) != 0xF3)
+			proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 }
 
 void TeleportToWaypoint()
 {
 	bool in_vehicle = world.localplayer.in_vehicle();
-	vec3 waypoint = proc.read<vec3>(proc.base_module_.base + offsets.waypoint);
+	vec3 waypoint = proc.read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		menu->notification->Add("No Waypoint set");
@@ -326,7 +326,26 @@ void Toggles()
 	}
 }
 
-void ReadOutConfig()
+void ReadSignatures()
+{
+	pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3);
+	pointers.waypoint = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 }, 3) + 0x20;
+	
+	pointers.camera_pos = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x5C, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC6, 0xD9 }, 4);
+
+	pointers.last_entity_aimed_at = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC9, 0x74, 0x0C, 0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x48, 0x89, 0x1D }, 3);
+	pointers.crosshair_value = pointers.last_entity_aimed_at + 0x10;
+	
+	pointers.function_xyz = proc.FindSignature({ 0x0F, 0x29, 0x48, 0x00, 0x48, 0x83, 0xC4, 0x00, 0x5B, 0xC3, 0xCC });
+	
+	pointers.function_speed_x = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x45, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x4D, 0x00, 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24 });
+	pointers.function_speed_y = pointers.function_speed_x + 0xD;
+	pointers.function_speed_z = pointers.function_speed_x + 0x1A;
+
+	pointers.kmh = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x10, 0x05, 0x00 ,0x00, 0x00, 0x00, 0xC6, 0x85 }, 4);
+}
+
+void ReadConfig()
 {
 	cfg = std::make_unique<pSettings>();
 	cfg->Open("Settings//cfg.txt");
@@ -355,6 +374,12 @@ void ExitProgram()
 	cfg->Edit<bool>("RpLoop", settings.rploop);
 	cfg->Edit<bool>("NoClip", settings.noclip);
 	cfg->Save();
+
+	if (settings.noclip)
+	{
+		proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+	}
 
 	proc.Close();
 	menu->Close();

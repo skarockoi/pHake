@@ -7,7 +7,7 @@
 #include <TlHelp32.h>
 #include <string>
 #include <iostream>
-
+#include <Psapi.h> 
 struct vec3
 {
 	float x, y, z;
@@ -61,14 +61,22 @@ public:
 
 	ProcessModule GetModule(const char* module_name);
 	LPVOID		  Allocate(size_t size_in_bytes);
-	//uintptr_t	  FindCodeCave(uint32_t length_in_bytes);
-	uintptr_t FindPattern(std::vector<uint8_t> signature);
-	uintptr_t FindPattern(ProcessModule target_module, std::vector<uint8_t> signature);
+	uintptr_t	  FindCodeCave(uint32_t length_in_bytes);
+	uintptr_t     FindSignature(std::vector<uint8_t> signature);
+	uintptr_t     FindSignature(ProcessModule target_module, std::vector<uint8_t> signature);
 
-
+	template<class T>
+	uintptr_t ReadOffsetFromSignature(std::vector<uint8_t> signature, uint8_t offset)
+	{
+		uintptr_t pattern_address = this->FindSignature(signature);
+		if (!pattern_address)
+			return 0x0;
+		
+		T offset_value = this->read<T>(pattern_address + offset);
+		return pattern_address + offset_value + offset + sizeof(T);
+	}
 
 	void Uint64ToArray(uint64_t number, uint8_t* result);
-
 
 	template<class T>
 	void write(uintptr_t address, T value)
@@ -89,13 +97,12 @@ public:
 		WriteProcessMemory(handle_, (void*)addr, &patch[0], patch.size(), 0);
 	}
 
-	uintptr_t read_multi_addr(uintptr_t ptr, std::vector<uintptr_t> offsets)
+	uintptr_t read_multi_address(uintptr_t ptr, std::vector<uintptr_t> offsets)
 	{
 		uintptr_t buffer = ptr;
 		for (int i = 0; i < offsets.size(); i++)
-		{
 			buffer = this->read<uintptr_t>(buffer + offsets[i]);
-		}
+		
 		return buffer;
 	}
 

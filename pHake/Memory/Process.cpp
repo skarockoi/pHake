@@ -38,16 +38,17 @@ bool Process::AttachProcess(const char* ProcessName)
 
 	if (pid_)
 	{
+		HMODULE modules[0xFF];
+		MODULEINFO module_info;
+		DWORD _;
+
 		handle_ = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid_);
-		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
-		MODULEENTRY32  module_entry_{};
-		module_entry_.dwSize = sizeof(MODULEENTRY32);
 
-		if (!Module32First(hModule, &module_entry_))
-			Module32First(hModule, &module_entry_);
+		EnumProcessModulesEx(this->handle_, modules, sizeof(modules), &_, LIST_MODULES_64BIT);
+		base_module_.base = (uintptr_t)modules[0];
 
-		this->base_module_ = { (uintptr_t)module_entry_.modBaseAddr , module_entry_.dwSize };
-		CloseHandle(hModule);
+		GetModuleInformation(this->handle_, modules[0], &module_info, sizeof(module_info));
+		base_module_.size = module_info.SizeOfImage;
 
 		return true;
 	}
@@ -60,17 +61,17 @@ bool Process::AttachWindow(const char* WindowName)
 
 	if (pid_)
 	{
+		HMODULE modules[0xFF];
+		MODULEINFO module_info;
+		DWORD _;
+
 		handle_ = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid_);
-		HANDLE hModule = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
-		MODULEENTRY32  module_entry_{};
-		module_entry_.dwSize = sizeof(MODULEENTRY32);
 
-		if (!Module32First(hModule, &module_entry_))
-			Module32First(hModule, &module_entry_);
+		EnumProcessModulesEx(this->handle_, modules, sizeof(modules), &_, LIST_MODULES_64BIT);
+		base_module_.base = (uintptr_t)modules[0];
 
-		this->base_module_ = { (DWORD)module_entry_.modBaseAddr , module_entry_.dwSize };
-
-		CloseHandle(hModule);
+		GetModuleInformation(this->handle_, modules[0], &module_info, sizeof(module_info));
+		base_module_.size = module_info.SizeOfImage;
 
 		return true;
 	}
@@ -101,92 +102,73 @@ LPVOID Process::Allocate(size_t size_in_bytes)
 	return VirtualAllocEx(this->handle_, NULL, size_in_bytes, MEM_COMMIT, PAGE_READWRITE);
 }
 
-uintptr_t Process::FindPattern(std::vector<uint8_t> signature)
+uintptr_t Process::FindSignature(std::vector<uint8_t> signature)
 {
 	std::unique_ptr<uint8_t[]> data;
-	data = std::make_unique<uint8_t[]>(0xFFFFFFFF);
+	data = std::make_unique<uint8_t[]>(this->base_module_.size);
 
-	if (!ReadProcessMemory(this->handle_, (void*)(this->base_module_.base), data.get(), 0xFFFFFFFF, NULL)) {
+	if (!ReadProcessMemory(this->handle_, (void*)(this->base_module_.base), data.get(), this->base_module_.size, NULL)) {
 		return NULL;
 	}
 
-	for (uint64_t i = 0; i < 0xFFFFFFFF; i++) {
-		
-		if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i])) == signature.at(0))
+	for (uintptr_t i = 0; i < this->base_module_.size; i++)
+	{
+		for (uintptr_t j = 0; j < signature.size(); j++)
 		{
-			for (size_t j = 0; j < signature.size(); j++) {
-				if ((*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == 0x00))
-					continue;
-				
-				if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == signature.at(j) && j == signature.size() - 1)
+			if (signature.at(j) == 0x00)
+				continue;
+
+			if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == signature.at(j))
+			{
+				if (j == signature.size() - 1)
+					return this->base_module_.base + i; 
+				continue;
+			}
+			break;
+		}
+	}
+	return 0x0;
+}
+
+uintptr_t Process::FindSignature(ProcessModule target_module, std::vector<uint8_t> signature)
+{
+	std::unique_ptr<uint8_t[]> data;
+	data = std::make_unique<uint8_t[]>(0xFFFFFFF);
+
+	if (!ReadProcessMemory(this->handle_, (void*)(target_module.base), data.get(), 0xFFFFFFF, NULL)) {
+		return NULL;
+	}
+
+	for (uintptr_t i = 0; i < 0xFFFFFFF; i++)
+	{
+		for (uintptr_t j = 0; j < signature.size(); j++)
+		{
+			if (signature.at(j) == 0x00)
+				continue;
+
+			if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == signature.at(j))
+			{
+				if (j == signature.size() - 1)
 					return this->base_module_.base + i;
+				continue;
 			}
+			break;
 		}
 	}
 	return 0x0;
 }
 
-uintptr_t Process::FindPattern(ProcessModule target_module, std::vector<uint8_t> signature)
+
+uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
 {
-	std::unique_ptr<uint8_t[]> data;
-	data = std::make_unique<uint8_t[]>(0x1484B27 + 0x40);
+	std::vector<uint8_t> cave_pattern = {};
 
-	if (!ReadProcessMemory(this->handle_, (void*)(target_module.base), data.get(), target_module.size, NULL)) {
-		return NULL;
+	for (uint32_t i = 0; i < length_in_bytes; i++) {
+		cave_pattern.push_back(0x00);
 	}
 
-	for (uint64_t i = 0; i < 0x1484B27 + 0x40; i++) {
-		if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i])) == signature.at(0))
-		{
-			for (uintptr_t j = 0; j < signature.size(); j++) {
-				if ((*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == 0x00))
-					continue;
-
-				if (*reinterpret_cast<uint8_t*>(reinterpret_cast<uintptr_t>(&data[i + j])) == signature.at(j) && j == signature.size() - 1)
-					return target_module.base + i;
-			}
-		}
-	}
-	return 0x0;
+	return FindSignature(cave_pattern);
 }
-
-
-
-
-//uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
-//{
-//	uintptr_t start = (uintptr_t)this->base_module_.base;
-//	uintptr_t end = start + this->base_module_.size;
-//	uintptr_t chunk = start;
-//	SIZE_T bytes_read;
-//
-//	std::string cave_pattern = "";
-//	std::string cave_mask = "";
-//
-//	for (uint32_t i = 0; i < length_in_bytes; i++) {
-//		cave_pattern.append("\x00");
-//		cave_mask.append("x");
-//	}
-//
-//	while (chunk < end) {
-//		std::vector<BYTE> buffer(4096);
-//
-//		ReadProcessMemory(handle_, (void*)chunk, &buffer.front(), 4096, &bytes_read);
-//
-//		if (bytes_read == 0) { return 0; }
-//
-//		uintptr_t internal_address = FindSignature(&buffer.front(), bytes_read, cave_pattern, cave_mask);
-//
-//		if (internal_address != 0) {
-//			uintptr_t offset = internal_address - (uintptr_t)&buffer.front();
-//			return chunk + offset;
-//		}
-//
-//		else { chunk += bytes_read; }
-//	}
-//
-//	return 0;
-//}
 
 void Process::Uint64ToArray(uint64_t number, uint8_t* result)
 {

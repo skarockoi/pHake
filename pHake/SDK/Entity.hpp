@@ -26,7 +26,7 @@ public:
 
 	bool is_player()
 	{
-		if (this->read<uintptr_t>(0x10C8) == 0);
+		if (this->read<uintptr_t>(0x10C8) == 0)
 			return false;
 		return true;
 	}

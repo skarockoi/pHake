@@ -32,7 +32,7 @@ public:
 
 	uint32_t freeze()
 	{
-		return this->read<float>(0x238);
+		return this->read<uint32_t>(0x238);
 	}
 
 	void freeze(uint32_t value) // 2 = freeze player, 1 = freeze player and cam , 0 unfreeze

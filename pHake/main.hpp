@@ -40,19 +40,19 @@ struct settings
 	}keys;
 }settings;
 
-struct offsets
+struct pointers
 {
-	uintptr_t world = 0x0256BDE8; // "\x48\x8D\x3D\x00\x00\x00\x00\x75\x16" "xxx????xx"
-	uintptr_t waypoint = 0x1FFD190;
-	uintptr_t crosshair_value = 0x1FEAAF0;
-	uintptr_t last_entity_aimed_at = 0x1FEAAE0;
-	uintptr_t camera_pos = 0x1FDCD80;
-	uintptr_t function_xyz = 0x1484437; // "\x0F\x29\x48\x50\x48\x83\xC4\x60" "xxxxxxxx"
-	uintptr_t function_speed_x = 0x7809F0; // "\xF3\x0F\x11\x83\x20\x03\x00\x00" "xxxxxxxx"
-	uintptr_t function_speed_y = 0x7809FD; // + 0xD
-	uintptr_t function_speed_z = 0x780A0A; // + 0x1A
-	uintptr_t kmh = 0x2623600;
-}offsets;
+	uintptr_t world;
+	uintptr_t waypoint;
+	uintptr_t camera_pos;
+	uintptr_t crosshair_value;
+	uintptr_t last_entity_aimed_at;
+	uintptr_t function_xyz;
+	uintptr_t function_speed_x;
+	uintptr_t function_speed_y;
+	uintptr_t function_speed_z;
+	uintptr_t kmh;
+}pointers;
 
 void MaxWeapon();
 void GodMode();
@@ -66,29 +66,31 @@ void BoostPlayer();
 void Suicide();
 
 void Toggles();
-void ReadOutConfig();
+void ReadSignatures();
+void ReadConfig();
 void ExitProgram();
 
 int main()
 {
-	FreeConsole();
+	//FreeConsole();
 
 	if (!proc.AttachProcess("GTA5.exe"))
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
 	}
-	if (proc.read<uintptr_t>(proc.base_module_.base + offsets.world) == NULL)
+
+	ReadSignatures();
+
+	if (proc.read<uintptr_t>(pointers.world) == NULL)
 	{
-		MessageBox(NULL, "game version does not match cheat version (Steam 1.60) ", "Error", NULL);
+		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
 	}
 
 	world = World(&proc);
 
-	//std::cout << std::hex << proc.FindPattern({ 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60 });
-
-	ReadOutConfig();
+	ReadConfig();
 	
 	threads = { // start cheat threads
 		std::make_unique<pThread>(GodMode, 100),
@@ -98,11 +100,11 @@ int main()
 		std::make_unique<pThread>(Trigger, 1),
 		std::make_unique<pThread>(NoClip, 10),
 		std::make_unique<pThread>(Toggles, 10),
-		std::make_unique<pThread>([]() {
-			world.UpdateAll(proc.read<uintptr_t>(proc.base_module_.base + offsets.world));
-			settings.kmh = 3.6f * proc.read<float>(proc.base_module_.base + offsets.kmh); }, 1)
+		std::make_unique<pThread>([=]() {
+			world.UpdateAll(proc.read<uintptr_t>(pointers.world));
+			settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1)
 	};
-	
+
 	menu = std::make_unique<pOverlay>();
 	menu->Create("Grand Theft Auto V");
 	menu->list->AddBool("MaxWeapon", settings.maxweapon);
