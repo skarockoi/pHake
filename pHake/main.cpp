@@ -4,15 +4,15 @@ void MaxWeapon()
 {
 	if (settings.maxweapon)
 	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
-		{
-			world.localplayer.weapon_manager.current_weapon.type(5);
-			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
-			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
-			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
-			world.localplayer.weapon_manager.current_weapon.range(99999.f);
-			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
-		}
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
+			return;
+
+		world.localplayer.weapon_manager.current_weapon.type(5);
+		world.localplayer.weapon_manager.current_weapon.explosion_type(25);
+		world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
+		world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
+		world.localplayer.weapon_manager.current_weapon.range(99999.f);
+		world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
 	}
 	else
 	{
@@ -158,7 +158,6 @@ void NoClip()
 
 void TeleportToWaypoint()
 {
-	bool in_vehicle = world.localplayer.in_vehicle();
 	vec3 waypoint = proc.read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
@@ -166,54 +165,53 @@ void TeleportToWaypoint()
 		return;
 	}
 
-	if (in_vehicle)
+	if (world.localplayer.in_vehicle())
 	{
 		if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
 		{
 			menu->notification->Add("Don't move");
 			return;
 		}
-		else
-		{
-			waypoint.z = -210.f;
-			world.localplayer.vehicle.position.xyz(waypoint);
 
-			Key::Down::W();
-			sleep(50);
-			Key::Up::W();
-		}
+		waypoint.z = -210.f;
+		world.localplayer.vehicle.position.xyz(waypoint);
+
+		Key::Down::W();
+		sleep(50);
+		Key::Up::W();
+
+		menu->notification->Add("Teleported to Waypoint");
+		return;
 	}
-	else
+
+	if (settings.noclip)
 	{
-		if (settings.noclip)
-		{
-			waypoint.z = 300.f;
-			world.localplayer.position.xyz(waypoint);
+		waypoint.z = 300.f;
+		world.localplayer.position.xyz(waypoint);
 
-			Key::Down::W();
-			sleep(50);
-			Key::Up::W();
-		}
-		else
-		{
-			if (world.localplayer.speed_xyz().len() > 0.1)
-			{
-				menu->notification->Add("Don't move");
-				return;
-			}
+		Key::Down::W();
+		sleep(50);
+		Key::Up::W();
 
-			else
-			{
-				waypoint.z = -210.f;
-				world.localplayer.position.xyz(waypoint);
-
-				Key::Down::W();
-				sleep(50);
-				Key::Up::W();
-			}
-		}
+		menu->notification->Add("Teleported to Waypoint");
+		return;
 	}
+
+	if (world.localplayer.speed_xyz().len() > 0.1)
+	{
+		menu->notification->Add("Don't move");
+		return;
+	}
+
+	waypoint.z = -210.f;
+	world.localplayer.position.xyz(waypoint);
+
+	Key::Down::W();
+	sleep(50);
+	Key::Up::W();
+
 	menu->notification->Add("Teleported to Waypoint");
+	return;
 }
 
 void BoostVehicle()
