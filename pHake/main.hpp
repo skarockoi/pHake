@@ -72,7 +72,7 @@ void ExitProgram();
 
 int main()
 {
-	FreeConsole();
+	//FreeConsole();
 
 	if (!proc.AttachProcess("GTA5.exe"))
 	{
@@ -81,6 +81,7 @@ int main()
 	}
 
 	ReadSignatures();
+	std::cout << std::hex << pointers.function_xyz << std::endl;
 
 	if (proc.read<uintptr_t>(pointers.world) == NULL)
 	{
