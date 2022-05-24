@@ -94,58 +94,66 @@ void RPLoop()
 	}
 }
 
-void NoClip() // explained in info.txt
+void NoClip()
 {
+	static bool     restore = false; // check to restore or patch game code
 	static uint64_t position_base = 0;
-	if (position_base != world.localplayer.position.base()) 
-	{
-		AssemblyByte detour({ 0x48, 0xB9 }); detour.add(world.localplayer.position.base(), 8); // mov rcx, player.position.base()
-		detour.add({ 0x48, 0x39, 0xC1,														   // cmp rcx, rax 
-					 0x74, 0x04,															   // je GTA5.exe + 2D
-					 0x0F, 0x29, 0x48, 0x50,												   // movaps [rax+50],xmm1 (update entity position)
-					 0x48, 0x83, 0xC4, 0x60,												   // add rsp, 60 
-					 0x5B,																	   // pop rbx
-					 0xC3 });																   // ret
 
-		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, detour.base());
+	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
+	{
+		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
+		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
+		patched_code.add({0x48, 0x39, 0xC1,								// cmp rcx, rax 
+					0x74, 0x04,											// je GTA5.exe + 2D
+					0x0F, 0x29, 0x48, 0x50,								// movaps [rax+50],xmm1 (update entity position)
+					0x48, 0x83, 0xC4, 0x60,								// add rsp, 60 
+					0x5B,												// pop rbx
+					0xC3});												// ret
+
+		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
 	}
 
-	if (settings.noclip) 
+	if (!settings.noclip)
 	{
-		if (HIBYTE(GetAsyncKeyState(0x57)) && !world.localplayer.in_vehicle())
+		if (restore)
 		{
-			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
-			{
-				AssemblyByte jmp_to_patch({ 0xE9 }); 
-				jmp_to_patch.addConvertAddressToJmp(pointers.function_xyz + 1, proc.base_module_.base + 0x1A, 4);
-				proc.write_bytes(pointers.function_xyz, jmp_to_patch.base());
-			}
-
-			if (proc.read<uint8_t>(pointers.function_xyz) != 0x90)
-				proc.write_bytes(pointers.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-			
-			vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
-			vec3 old_pos = world.localplayer.position.xyz();
-			vec3 add_pos(
-				settings.noclip_speed * (old_pos.x - cam_pos.x),
-				settings.noclip_speed * (old_pos.y - cam_pos.y),
-				settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
-			);
-
-			float len = add_pos.len();
-			if (len > 50.f || len < -50.f) // to prevent speed spikes while flying
-				return;
-			else
-				world.localplayer.position.xyz(old_pos + add_pos);
-		}
-	}
-	else // restore the original values
-	{
-		if (proc.read<uint8_t>(pointers.function_xyz) != 0x0F)
-			proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
-		
-		if (proc.read<uint8_t>(pointers.function_speed_z) != 0xF3)
+			proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restore default assembly code if noclip is turned off
 			proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			std::cout << "re" << std::endl;
+		}
+		restore = false;
+		return;
+	}
+
+	if (world.localplayer.in_vehicle())
+		return;
+	
+	if (!restore)
+	{
+		AssemblyByte detour{};
+		detour.addJump(pointers.function_xyz + 1, proc.base_module_.base + 0x1A, 4); // jmp'ing to proc.base_module_.base + 0x1A because there is unused code
+
+		proc.write_bytes(pointers.function_xyz, detour.base()); // apply detour to jmp to our patched code
+		proc.write_bytes(pointers.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop function_speed_z function to prevent the game from knowing we are flying
+
+		restore = true;
+	}
+
+	if (HIBYTE(GetAsyncKeyState(0x57))) // W-Key
+	{			
+		vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
+		vec3 old_pos = world.localplayer.position.xyz();
+		vec3 add_pos(
+			settings.noclip_speed * (old_pos.x - cam_pos.x),
+			settings.noclip_speed * (old_pos.y - cam_pos.y),
+			settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
+		);
+
+		float len = add_pos.len();
+		if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
+			return;
+		
+		world.localplayer.position.xyz(old_pos + add_pos);
 	}
 }
 

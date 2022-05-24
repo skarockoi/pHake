@@ -3,6 +3,7 @@
 
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
+#include "../Memory/vec3.hpp"
 
 class Position : public DataWrapper<0x58 + 0x4>
 {

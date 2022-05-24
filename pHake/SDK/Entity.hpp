@@ -3,6 +3,7 @@
 
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
+#include "../Memory/vec3.hpp"
 #include "Position.hpp"
 #include "Vehicle.hpp"
 #include "PlayerInfo.hpp"

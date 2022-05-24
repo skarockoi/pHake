@@ -96,6 +96,12 @@
     <ClInclude Include="SDK\Entity.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\AssemblyByte.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\vec3.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
