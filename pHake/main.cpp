@@ -96,8 +96,8 @@ void RPLoop()
 
 void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
 {
-	static bool     restore = false; // check to restore or patch game code
-	static uint64_t position_base = 0;
+	static bool      restore = false; // check to restore or patch game code
+	static uintptr_t position_base = 0x1;
 
 	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
 	{
@@ -110,7 +110,7 @@ void NoClip() // the game updates every entity position in a shared function, so
 						  0x5B,											// pop rbx
 						  0xC3});										// ret
 
-		proc.write_bytes((uint64_t)proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
+		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
 	}
 
 	if (!settings.noclip)
@@ -327,7 +327,7 @@ void Toggles()
 	}
 }
 
-void ReadSignatures() // signatures in std::vector<uint8_t> format
+void ReadSignatures() // signatures in std::vector<uint8_t> format // multithreading
 {
 	std::thread t0([=]() { pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); });
 	std::thread t1([=]() { pointers.waypoint = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 }, 3) + 0x20; });
@@ -354,7 +354,7 @@ void ReadConfig()
 {
 	cfg = std::make_unique<pSettings>();
 	cfg->Open("Settings//cfg.txt");
-	settings.maxweapon =		  cfg->AddGet<bool>("MaxWeapon", 0);
+	settings.maxweapon =		  cfg->AddGet<bool>("MaxWeapon", 0); // restore to default values if config file is broken
 	settings.nowanted =			  cfg->AddGet<bool>("NoWanted", 0);
 	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
 	settings.trigger =			  cfg->AddGet<bool>("Trigger", 0);
@@ -369,10 +369,10 @@ void ReadConfig()
 
 void ExitProgram()
 {
-	for (size_t i = 0; i < threads.size() - 1; i++)
+	for (size_t i = 0; i < threads.size() - 1; i++) // destroy threads
 		threads[i]->Destroy();
 
-	cfg->Edit<bool>("MaxWeapon", settings.maxweapon);
+	cfg->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
 	cfg->Edit<bool>("Trigger", settings.trigger);
@@ -380,15 +380,15 @@ void ExitProgram()
 	cfg->Edit<bool>("NoClip", settings.noclip);
 	cfg->Save();
 
-	if (settings.noclip)
+	if (settings.noclip) // restore original opcode
 	{
 		proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
 		proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 
-	proc.Close();
-	menu->Close();
-	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS);
+	proc.Close(); // close handle to gta5
+	menu->Close(); // close UI
+	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 }
 
 void DebugInfo()
