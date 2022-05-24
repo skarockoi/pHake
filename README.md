@@ -24,7 +24,7 @@
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in Settings\cfg.txt<br/>
 
 # Download
-<a href="https://github.com/xhz8s/pHake/releases/download/5.4/pHake_5.4_1.60.zip">pHake 5.3 (1.60 All Platforms)</a>
+<a href="https://github.com/xhz8s/pHake/releases/download/5.4/pHake_5.4_1.60.zip">pHake 5.4 (1.60 All Platforms)</a>
 
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
