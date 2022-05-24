@@ -1,14 +1,12 @@
 #ifndef _ASSEMBLYBYTE_HPP_
 #define _ASSEMBLYBYTE_HPP_
 
-#include "vec3.hpp"
-
 #include <vector>
 
-class AssemblyByte
+class AssemblyByte // class to easily manage external detours with things like simplyfing manual JMP's or "uintptr_t to byte conversions"
 {
 private:
-	std::vector<uint8_t> base_{ };
+	std::vector<uint8_t> base_{ }; // assembly byte will be hold by an std::vector<uint8_t> mainly because of resizing
 
 public:
 	AssemblyByte() { }
@@ -23,14 +21,6 @@ public:
 
 	void operator = (const std::vector<uint8_t> ext) {
 		this->base_ = ext;
-	}
-
-	vec3 operator+(const AssemblyByte& ext) {
-		this->base_.insert(std::end(this->base_), std::begin(ext.base()), std::end(ext.base()));
-	}
-
-	vec3 operator+(const std::vector<uint8_t> ext){
-		this->base_.insert(std::end(this->base_), std::begin(ext), std::end(ext));
 	}
 
 	size_t size()
@@ -50,15 +40,15 @@ public:
 		this->base_.insert(std::end(this->base_), std::begin(value_in_byte), std::end(value_in_byte));
 	}
 
-	void addJump(uintptr_t start, uintptr_t destination, uintptr_t address_length_in_bytes)
+	void addJump(uintptr_t start, uintptr_t destination, uintptr_t address_length_in_bytes) // black magic
 	{
-		this->base_.push_back(0xE9);
+		this->base_.push_back(0xE9); // 0xE9 is jmp instruction
 
-		std::vector<uint8_t> value_in_byte(address_length_in_bytes);
+		std::vector<uint8_t> value_in_byte(address_length_in_bytes); // we need the lenghth of the address we jump to in byte
 
-		uintptr_t magic = destination - start - address_length_in_bytes;
+		uintptr_t magic = destination - start - address_length_in_bytes; // because jmp is always relative to the current memory instruction position
 
-		Uint64ToArray(magic, &value_in_byte.at(0));
+		Uint64ToArray(magic, &value_in_byte.at(0)); // converting uintptr_t to array so that we are able to write to memory
 
 		this->base_.insert(std::end(this->base_), std::begin(value_in_byte), std::end(value_in_byte));
 	}
