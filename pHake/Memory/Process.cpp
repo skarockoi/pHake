@@ -157,7 +157,6 @@ uintptr_t Process::FindSignature(ProcessModule target_module, std::vector<uint8_
 	return 0x0;
 }
 
-
 uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
 {
 	std::vector<uint8_t> cave_pattern = {};
@@ -167,24 +166,6 @@ uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
 	}
 
 	return FindSignature(cave_pattern);
-}
-
-void Process::Uint64ToArray(uint64_t number, uint8_t* result)
-{
-	result[0] = number & 0x00000000000000FF; number = number >> 8;
-	result[1] = number & 0x00000000000000FF; number = number >> 8;
-	result[2] = number & 0x00000000000000FF; number = number >> 8;
-	result[3] = number & 0x00000000000000FF; number = number >> 8;
-	result[4] = number & 0x00000000000000FF; number = number >> 8;
-	result[5] = number & 0x00000000000000FF; number = number >> 8;
-	result[6] = number & 0x00000000000000FF; number = number >> 8;
-	result[7] = number & 0x00000000000000FF;
-}
-
-DWORD Process::GetDwordFromBytes(byte* B, bool LittleEndian)
-{
-	if (!LittleEndian) { return (B[3]) | (B[2] << 8) | (B[1] << 16) | (B[0] << 24); }
-	else { return (B[0]) | (B[1] << 8) | (B[2] << 16) | (B[3] << 24); }
 }
 
 void Process::Close()

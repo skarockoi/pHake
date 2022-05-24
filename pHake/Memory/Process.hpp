@@ -47,8 +47,6 @@ public:
 		return pattern_address + offset_value + offset + sizeof(T);
 	}
 
-	void Uint64ToArray(uint64_t number, uint8_t* result);
-
 	template<class T>
 	void write(uintptr_t address, T value)
 	{
@@ -86,8 +84,5 @@ public:
 		}
 		return this->read<T>(buffer + offsets.back());
 	}
-
-private:
-	DWORD GetDwordFromBytes(byte* B, bool little_endian);
 };
 #endif

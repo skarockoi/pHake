@@ -119,7 +119,6 @@ void NoClip()
 		{
 			proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restore default assembly code if noclip is turned off
 			proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
-			std::cout << "re" << std::endl;
 		}
 		restore = false;
 		return;
@@ -139,22 +138,22 @@ void NoClip()
 		restore = true;
 	}
 
-	if (HIBYTE(GetAsyncKeyState(0x57))) // W-Key
-	{			
-		vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
-		vec3 old_pos = world.localplayer.position.xyz();
-		vec3 add_pos(
-			settings.noclip_speed * (old_pos.x - cam_pos.x),
-			settings.noclip_speed * (old_pos.y - cam_pos.y),
-			settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
-		);
-
-		float len = add_pos.len();
-		if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
-			return;
+	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
+		return;
 		
-		world.localplayer.position.xyz(old_pos + add_pos);
-	}
+	vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
+	vec3 old_pos = world.localplayer.position.xyz();
+	vec3 add_pos(
+		settings.noclip_speed * (old_pos.x - cam_pos.x),
+		settings.noclip_speed * (old_pos.y - cam_pos.y),
+		settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
+	);
+
+	float len = add_pos.len();
+	if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
+		return;
+		
+	world.localplayer.position.xyz(old_pos + add_pos);
 }
 
 void TeleportToWaypoint()
