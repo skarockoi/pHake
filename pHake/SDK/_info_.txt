@@ -1,369 +1,972 @@
-1.59 Steam
-
-struct offsets
-{
-	uintptr_t world = 0x0256BDE8; // "\x48\x8D\x3D\x00\x00\x00\x00\x75\x16" "xxx????xx"
-	uintptr_t waypoint = 0x1FFD190;
-	uintptr_t triggerbot = 0x1FEAAD0;
-	uintptr_t camera_pos = 0x1DA6F50;
-	uintptr_t function_xyz = 0x1484B27; // "\x0F\x29\x48\x50\x48\x83\xC4\x60" "xxxxxxxx"
-	uintptr_t function_speed_x = 0x780BC4; // "\xF3\x0F\x11\x83\x20\x03\x00\x00" "xxxxxxxx"
-	uintptr_t function_speed_y = 0x780BD1; // + 0xD
-	uintptr_t function_speed_z = 0x780BDE; // + 0x1A
-	uintptr_t kmh = 0x2623600;
-}offsets;
+SIGNATURES:
+pointers.world =  0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 
+pointers.waypoint 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 + 0x20
+pointers.camera_pos = 0xF3, 0x0F, 0x5C, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC6, 0xD9
+pointers.entity_aiming_at = 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC9, 0x74, 0x0C, 0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x48, 0x89, 0x1D
+pointers.function_xyz = 0x0F, 0x29, 0x48, 0x00, 0x48, 0x83, 0xC4, 0x00, 0x5B, 0xC3, 0xCC
+pointers.function_speed_x = 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x45, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x4D, 0x00, 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24
+pointers.kmh = 0xF3, 0x0F, 0x10, 0x05, 0x00 ,0x00, 0x00, 0x00, 0xC6, 0x85 
 
 
-------------------------SMOOTH FLY--------------------------------------------------------------------------
-Update Entity Position(GTA5.exe + 145648F): // This function is used by all nearby entities, so we have to check when it is our players turn
-1. push rbx
-2. sub rsp,60
-3. lea rdx,[rsp+20]
-4. mov rbx,rcx
-5. call GTA5.exe+1443518
-6. mov rax,[rbx+10]
-7. movaps xmm0,[rsp+20]
-8. movaps xmm2,[rsp+40]
-9. movaps xmm1,[rsp+30]
-10. movaps [rax+20],xmm0
-11. movaps xmm0,xmm2
-12. movaps [rax+30],xmm1
-13. shufps xmm0,[rax+40],-02
-14. shufps xmm2,xmm0,-7C
-15. movaps xmm1,[rsp+50]
-16. movaps xmm0,xmm1
-17. movaps [rax+40],xmm2
-18. shufps xmm0,[rax+50],-02
-19. shufps xmm1,xmm0,-7C
-20. movaps [rax+50],xmm1     |    jmp GTA5.exe + 0x1A // We jump to "GTA5.exe + 0x1A" because overwriting the code here would damage important code.
-21. add rsp, 60              |    ret                 // At "GTA5.exe + 0x1A" there is already executed code which the game doesn't need anymore
-22. pop rbx
-23. ret 
-
-Code(GTA5.exe + 0x1A):
-30. mov rcx, &localplayer_position_class              // first we move the local player position base to rcx
-31. cmp rcx, rax                                      // then we compare wether rcx and rax are the same
-32. je GTA5.exe + 13.                                 // if yes, we skip the next line
-33. movaps [rax+50],xmm1                              // which updates the position of the current entity(rax)
-34. add rsp, 60                                       // vanilla code
-35. pop rbx                                           // vanilla code
-36. ret                                               // vanilla code
-
-----------------------------CLASSES---------------------------------------------------------------------------
-
-class CPed // World + 0x8
+GAME CLASSES:
+class CWorld
 {
 public:
-    char pad_0000[32]; //0x0000
-    CPedModelInfo* m_PedModelInfo; //0x0020
-    char pad_0028[8]; //0x0028
-    CNavigation* m_Navigation; //0x0030
-    char pad_0038[88]; //0x0038
-    Vector3 m_VisualPos; //0x0090
-    char pad_009C[52]; //0x009C
-    rage::netObject* m_NetObject; //0x00D0
-    char pad_00D8[176]; //0x00D8
-    uint32_t m_DamageBits; //0x0188
-    char pad_018C[244]; //0x018C
-    float m_Health; //0x0280
-    char pad_0284[2724]; //0x0284
-    CVehicle* m_LastVehicle1; //0x0D30
-    CPlayerInfo* m_PlayerInfo; //0x10C8
-    CPedInventory* m_PedInventory; //0x10D0
-    CPedWeaponManager* m_WeaponManager; //0x10D8
-    char pad_10E0[1024]; //0x10E0
-    float m_Armor; //0x14E0
-    char pad_14E4[60]; //0x14E4
-    CVehicle* m_LastVehicle2; //0x1520
-}; //Size: 0x1528
-
-PlayerPos = Player + 0x30
-	float    x = 0x50;
-	float    y = 0x54;
-	float    z = 0x58;
-
-
-class CPlayerInfo // Player + 0x10C8
+	char pad_0x0000[0x8]; //0x0000
+	CPed* CPedLocalPlayer; //0x0008 
+ 
+}; //Size=0x0010
+ 
+class CPed
 {
 public:
-    char pad_0000[52]; //0x0000
-    uint32_t m_LanIP; //0x0034
-    char pad_0038[4]; //0x0038
-    uint32_t m_RelayIP; //0x003C
-    char pad_0040[4]; //0x0040
-    uint32_t m_OnlineIP; //0x0044
-    char pad_0048[24]; //0x0048
-    uint64_t m_HostKey; //0x0060
-    char pad_0068[8]; //0x0068
-    uint64_t m_RockstarID; //0x0070
-    char pad_0078[12]; //0x0078
-    char m_Name[20]; //0x0084
-    char pad_0098[184]; //0x0098
-    float m_SwimSpeed; //0x0170
-    char pad_0154[24]; //0x0154
-    float m_StealthWalkSpeed; //0x016C
-    char pad_0170[88]; //0x0170
-    class CPed* m_Entity; //0x01C8
-    char pad_01D0[40]; //0x01D0
-    uint32_t m_FrameFlags; //0x01F8
-    char pad_01FC[1640]; //0x01FC
-    uint32_t m_WantedLevelDisplay; //0x0864
-    uint32_t m_WantedLevel; //0x0888
-    char pad_086C[1124]; //0x086C
-    float m_RunSpeed; //0x0CF0
-    float m_Stamina; //0x0CF4
-    float m_MaxStaminaRegeneration; //0x0CD8
-}; //Size: 0x0CDC
-
-PlayerVehicle = Player + 0xD28
-	uint64_t position = 0x30;
-	uint8_t  godmode = 0x189;
-	float    engineHealth1 = 0x280;
-	float    engineHealth2 = 0x908;
-	uint64_t handling = 0x938;
-	uint8_t  invisibility = 0x2C;
-	float	 gravity = 0xC5C;
-
-PlayerVehiclePos = PlayerVehicle + 0x30
-	float    x = 0x50;
-	float    y = 0x54;
-	float    z = 0x58;
-
-PlayerVehicleHandling = PlayerVehicle + 0x938
-	float    gravity = 0xC;
-	float    suspensionHeight = 0xD0;
-	float    suspensionForce = 0xBC;
-	float    tractionMin = 0x88;
-	float    tractionMax = 0x90;
-	float    acceleration = 0x4C;
-	float    collisionDamage = 0xF0;
-	float    handbrakeForce = 0x7C;
-	float    thrust = 0x338;
-
-PlayerWeaponinfo = Player + [0x10D8, 0x20]
-	float    recoil = 0x2F4;
-	float	 range = 0x28C;
-	float    bulletMass = 0xE0;
-	float	 bulletDamage = 0xB0;
-	uint32_t bulletInBatch = 0x120;
-	float	 muzzleVelocity = 0x11C;
-	float    reloadMultiplier = 0x134;
-	float    batchSpread = 0x74;
-	float    penetration = 0x110;
-	float    forceOnPed = 0xD4;
-	float    forceOnVehicle = 0xD8;
-	float    forceOnHeli = 0xDC;
-
-PlayerWeaponinfoAmmoinfo = PlayerWeaponinfo + [0x60, 0x8, 0x0]
-	uint32_t ammo = 0x18
-
-
-
-
-
-
-//offset from WORLD
-#define OFFSET_PLAYER					0x08			//playerbase
-#define OFFSET_NET_PLAYER				0x1C8
+	char pad_0x0000[0x28]; //0x0000
+	BYTE btEntityType; //0x0028 
+	char pad_0x0029[0x3]; //0x0029
+	BYTE btInvisible; //0x002C 
+	char pad_0x002D[0x1]; //0x002D
+	BYTE btFreezeMomentum; //0x002E 
+	char pad_0x002F[0x1]; //0x002F
+	CNavigation* pCNavigation; //0x0030 
+	char pax_0x0038[0x10]; //0x0038
+	CPedStyle* pCPedStyle; //0x0048
+	char pad_0x0038[0x40]; //0x0050
+	v4 v3VisualPos; //0x0090 
+	char pad_0x009C[0xED]; //0x009C
+	BYTE btGodMode; //0x0189 
+	char pad_0x018A[0xF6]; //0x018A
+	float fHealth; //0x0280 
+	char pad_0x0284[0x1C]; //0x0284
+	float fHealthMax; //0x02A0 
+	char pad_0x02A4[0x4]; //0x02A4
+	CAttacker* pCAttacker; //0x02A8 
+	char pad_0x02B0[0x70]; //0x02B0
+	v4 v3Velocity; //0x0320 
+	char pad_0x032C[0x9FC]; //0x032C
+	CVehicle* pCVehicleLast; //0x0D28 
+	char pad_0x0D30[0x378]; //0x0D30
+	BYTE btNoRagdoll; //0x10A8 
+	char pad_0x10A9[0xF]; //0x10A9
+	CPlayerInfo* pCPlayerInfo; //0x10B8 
+	char pad_0x10C0[0x8]; //0x10C0
+	CWeaponManager* pCWeaponManager; //0x10C8 
+	char pad_0x10D0[0x31C]; //0x10D0
+	BYTE btSeatBelt; //0x13EC 
+	char pad_0x13ED[0xB]; //0x13ED
+	BYTE btSeatbeltWindshield; //0x13F8 
+	char pad_0x13F9[0x1]; //0x13F9
+	BYTE btCanSwitchWeapons;
+	char pad_0x13FB[0x5];
+	BYTE btForcedAim; //0x1400 
+	BYTE N00000936; //0x1401 
+	BYTE N00000939; //0x1402 
+	BYTE N00000937; //0x1403 
+	char pad_0x1404[0x67]; //0x1404
+	BYTE btIsInVehicle; //0x146B 
+	char pad_0x146C[0x44]; //0x146C
+	float fArmor; //0x14B0 
+	char pad_0x14B4[0x20]; //0x14B4
+	float fFatiguedHealthThreshold; //0x14D4 
+	float fInjuredHealthThreshold; //0x14D8 
+	float fDyingHealthThreshold; //0x14DC 
+	float fHurtHealthThreshold; //0x14E0 
+	char pad_0x14E4[0xC]; //0x14E4
+	CVehicle* pCVehicleLast2; //0x14F0 
+	char pad_0x14F8[0xDC]; //0x14F8
+	__int32 iCash; //0x15D4 
  
-//entity offsets
-#define OFFSET_ENTITY_POSBASE			0x30			//base of a structure that contains entity coords
-#define	OFFSET_ENTITY_POSBASE_COS		0x20
-#define	OFFSET_ENTITY_POSBASE_SIN		0x30
-#define OFFSET_ENTITY_POSBASE_POS		0x50			//vector3
-#define OFFSET_ENTITY_POS				0x90			//vector3
-#define OFFSET_ENTITY_GOD				0x189			//godmode; on = 1, off = 0; byte
-#define OFFSET_ENTITY_HEALTH			0x280			//entity health (except for vehicles); float cur, float max
-#define OFFSET_ENTITY_HEALTH_MAX		0x2A0			//they moved this away from curHealth in 1.36 :(
-#define OFFSET_ENTITY_ATTACKER			0x2A8			//base to a list of the last 3 entities that attacked the current entity
-#define OFFSET_ENTITY_MODEL_INFO		0x20			//CBaseModelInfo
+//entity type 3 = car, 4 = ped
+	bool isGod()
+	{
+		return((btGodMode & 0x01)
+			//||	fFatiguedHealthThreshold < 0.f
+			//||	fInjuredHealthThreshold < 0.f
+			//||	fDyingHealthThreshold < 0.f
+			|| fHurtHealthThreshold < 0.f);
+	}
  
-//player (entity) offsets
-#define OFFSET_PLAYER_VEHICLE					0xD30			//ptr to last used vehicle
-#define OFFSET_NET_PLAYER_INFO					0xB0
-#define OFFSET_PLAYER_INFO						0x10C8			//playerInfo struct
-#define OFFSET_PLAYER_INFO_NAME					0xA4
-#define OFFSET_PLAYER_INFO_SWIM_SPD				0x170			//swim speed; def 1; float
-#define	OFFSET_PLAYER_INFO_RUN_SPD				0xCF0			//run speed; def 1; float
-#define OFFSET_PLAYER_INFO_FRAMEFLAGS			0x219			//frame flags; DWORD
-#define OFFSET_PLAYER_INFO_WANTED_CAN_CHANGE	0x73C			//fWantedCanChange
-#define OFFSET_PLAYER_INFO_NPC_IGNORE			0x870			//npc ignore; DWORD; everyone = 0x450000;
-#define OFFSET_PLAYER_INFO_WANTED				0x888			//wanted level; DWORD
-#define OFFSET_PLAYER_INFO_STAMINA				0xCF4			//fStamina, fStaminaMax
-#define OFFSET_PLAYER_RAGDOLL					0x10B8			//byte; CPed.noRagdoll: 0x20 = off; 0x00/0x01 = on
-#define OFFSET_PLAYER_SEATBELT					0x140C			//byte; CPed.seatBelt: 0xC8 = off; 0xC9 = on
-#define OFFSET_PLAYER_INVEHICLE					0x1477
-#define OFFSET_PLAYER_ARMOR						0x14E0			//armour
-#define OFFSET_PLAYER_WATER_PROOF				0x188			//water proof; DWORD; +0x1000000 = on
-#define OFFSET_PLAYER_VEHICLE_DAMAGE_MP			0xD1C			//super punck/kick;float;
+	bool isInvisible()
+	{
+		return (btInvisible & 0x01) ? true : false;
+	}
  
-//vehicle offsets
-#define OFFSET_VEHICLE_HEALTH						0x908			//vehicle health; 0.f-1000.f
-#define	OFFSET_VEHICLE_HEALTH2						0x844			//vehicle health2; 0.f-1000.f
-#define OFFSET_VEHICLE_HANDLING						0x938
-#define OFFSET_VEHICLE_HANDLING_MASS				0xC				//fMass
-#define OFFSET_VEHICLE_HANDLING_BUOYANCY			0x40			//fBuoyancy
-#define OFFSET_VEHICLE_HANDLING_ACCELERATION		0x4C
-#define OFFSET_VEHICLE_HANDLING_UPSHIFT				0x58
-#define OFFSET_VEHICLE_HANDLING_DOWNSHIFT			0x5C
-#define OFFSET_VEHICLE_HANDLING_BRAKEFORCE			0x6C
-#define OFFSET_VEHICLE_HANDLING_HANDBRAKEFORCE		0x7C			//fHandbrakeForce
-#define OFFSET_VEHICLE_HANDLING_TRACTION_CURVE_MIN	0x90			//fTractionCurveMin
-#define OFFSET_VEHICLE_HANDLING_SUSPENSION_FORCE	0xBC			//fSuspensionForce
-#define OFFSET_VEHICLE_HANDLING_SUSPENSION_HEIGH	0xD0			//fSuspensionHeight
-#define OFFSET_VEHICLE_HANDLING_COLISION_DAMAGE_MP	0xF0			//fColisionDamageMult
-#define OFFSET_VEHICLE_HANDLING_WEAPON_DAMAGE_MP	0xF4			//fWeaponDamageMult
-#define OFFSET_VEHICLE_HANDLING_DEFORM_MULTIPLIER	0xF8			//fDeformationDamageMult
-#define OFFSET_VEHICLE_HANDLING_ENGINE_DAMAGE_MP	0xFC			//fEngineDamageMult
-#define OFFSET_VEHICLE_BULLETPROOF_TIRES			0x943			//btBulletproofTires;  (btBulletproofTires & 0x20) ? true : false
-#define OFFSET_VEHICLE_GRAVITY						0xC5C			//fGravity
-#define OFFSET_VEHICLE_BOOST						0x320			//fBoost
-#define OFFSET_VEHICLE_RECHARGE_SPEED				0x324			//fRocketRechargeSpeed
-#define OFFSET_VEHICLE_MISSLES						0x1280			//btVehicleMissles
-#define OFFSET_VEHICLE_BOMBS						0x1294			//btAircraftBombs
-#define OFFSET_VEHICLE_COUNTERMEASURES				0x1298			//btAircraftCountermeasures
-#define OFFSET_VEHICLE_MK2_MISSLES					0x1284			//btOppressorMK2Misseles
-#define OFFSET_VEHICLE_TAMPA_MISSLES				0x127C			//btTampaMissles
-#define	OFFSET_VEHICLE_CUSTOM						0x48
-#define	OFFSET_VEHICLE_CUSTOM_EMS					0x3D6			//btEngineManagementSystem; 0x3 = max
-#define	OFFSET_VEHICLE_CUSTOM_BRAKES				0x3D7			//btBrakes; 0x6 = max
-#define	OFFSET_VEHICLE_CUSTOM_TRANSMISSION			0x3D8			//btTransmission; 0x8 = max
-#define	OFFSET_VEHICLE_CUSTOM_SUSPENSION			0x3DA			//btSuspension; 0x1B = max
-#define	OFFSET_VEHICLE_CUSTOM_ARMOR					0x3DB			//btArmor; 0x1B = max
-#define	OFFSET_VEHICLE_CUSTOM_TURBO_TUNING			0x3DD			//btTurboTuning; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_R			0x3A2			//btNeonLightRed
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_G			0x3A1			//btNeonLightGreen
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHT_B			0x3A0			//btNeonLightBlue
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_L			0x402			//btNeonLightLeft; 0x0 = off; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_R			0x403			//btNeonLightRight; 0x0 = off; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_F			0x404			//btNeonLightFront; 0x0 = off; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_NEON_LIGHTS_B			0x405			//btNeonLightBack; 0x0 = off; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE			0x3DF			//btTyreSmoke; 0x1 = on
-#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_R			0x3FC			//btTyreSmokeRed
-#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_G			0x3FD			//btTyreSmokeGreen
-#define	OFFSET_VEHICLE_CUSTOM_TYRE_SMOKE_B			0x3FE			//btTyreSmokeBlue
-#define	OFFSET_VEHICLE_CUSTOM_LIMO_WINDOWS			0x3FF			//btLimoWindows; 0x1 = on
-#define OFFSET_VEHICLE_MODEL_INFO_JUMP_ROCK			0x58B			//btJumpOrRock; 0x0 = off; 0x20 = JumpingCar; 0x40 = RocketBoot;  0x42 = Oppressor;
+	bool hasFrozenMomentum()
+	{
+		return (btFreezeMomentum & 0x02) ? true : false;
+	}
  
-//weapon offsets
-#define OFFSET_WEAPON_MANAGER			0x10D8			//from playerbase
-#define OFFSET_WEAPON_CURRENT			0x20			//from weapon manager
-#define OFFSET_WEAPON_AMMOINFO			0x60			//from weaponbase
-#define OFFSET_WEAPON_AMMOINFO_MAX		0x28			//ammoinfo
-#define OFFSET_WEAPON_AMMOINFO_CUR_1	0x08			//ptr lvl 1, ptr 1
-#define OFFSET_WEAPON_AMMOINFO_CUR_2	0x00			//ptr tr lvl 2, ptr 1
-#define OFFSET_WEAPON_AMMOINFO_CURAMMO	0x18			//offset to cur ammo
-#define OFFSET_WEAPON_AMMOINFO_TYPE		0x0C			//offset to projectile type?
-#define OFFSET_WEAPON_SPREAD			0x74			//float set to 0
-#define OFFSET_WEAPON_BULLET_DMG		0xB0			//float times 10 (so when 0, it will stay 0)
-#define OFFSET_WEAPON_RELOAD_MULTIPLIER	0x134			//float times 10
-#define OFFSET_WEAPON_RECOIL			0x2F4			//float set to 0
-#define OFFSET_WEAPON_MODEL_HASH		0x14
-#define OFFSET_WEAPON_NAME_HASH			0x10
-#define OFFSET_WEAPON_RELOAD_VEHICLE	0x130
-#define OFFSET_WEAPON_RANGE				0x28C
-#define OFFSET_WEAPON_SPINUP			0x144
-#define OFFSET_WEAPON_SPIN				0x148
-#define OFFSET_WEAPON_BULLET_BATCH		0x124			//dwBulletInBatch
-#define OFFSET_WEAPON_MUZZLE_VELOCITY	0x11C			//fMuzzleVelocity
-#define OFFSET_WEAPON_IMPACT_TYPE		0x20			//dwImpactType; 1: Fists,3; Bullets,5: Explosives
-#define OFFSET_WEAPON_IMPACT_EXPLOSION	0x24			//dwImpactExplosion
-#define OFFSET_WEAPON_PENETRATION		0x110			//fPenetration
-#define OFFSET_WEAPON_FORCE_ON_PED		0xDC			//fForceOnPed
-#define OFFSET_WEAPON_FORCE_ON_VEHICLE	0xE0			//fForceOnVehicle(Bullet Mass)
-#define OFFSET_WEAPON_FORCE_ON_HELI		0xE4			//fForceOnHeli
+	bool canBeRagdolled()
+	{
+		return (btNoRagdoll & 0x20) ? false : true;
+	}
  
-#define OFFSET_ATTACKER_DISTANCE		0x18			//changed to 0x18, from 0x10
+	bool hasSeatbelt()
+	{
+		return (btSeatBelt & 0x01) ? true : false;
+	}
  
-//replay interface offsets
-#define OFFSET_REPLAY_VEHICLE_INTERFACE		0x10
-#define OFFSET_REPLAY_PED_INTERFACE			0x18
-#define OFFSET_REPLAY_PICKUP_INTERFACE		0x20
-#define OFFSET_INTERFACE_LIST				0x100
-#define OFFSET_INTERFACE_CUR_NUMS			0x110
-#define OFFSET_REPLAY_PICKUP_HASH			0x488
-#define OFFSET_REPLAY_PED_HOSTILITY			0x18C
+	bool hasSeatbeltWindshield()
+	{
+		return (btSeatbeltWindshield & 0x10) ? true : false;
+	}
  
-//unk model
-#define OFFSET_MODEL_HASH		0x2640
-   
-//Addresses from GTAV.exe module
-extern uintptr_t    ADDRESS_WORLD;				//48 8B 05 ? ? ? ? 45 ? ? ? ? 48 8B 48 08 48 85 C9 74 07
-extern uintptr_t	ADDRESS_BLIP;				//4C 8D 05 ? ? ? ? 0F B7 C1
-extern uintptr_t	ADDRESS_AMMO;				//Ammo dec code; 41 2B D1 E8; 90 90 90 E8
-extern uintptr_t	ADDRESS_MAGAZINE;			//Magazine dec code; 41 2B C9 3B C8 0F; 90 90 90 3B C8 0F
-extern uintptr_t	ADDRESS_AIMING_PED;			//48 8B 0D ? ? ? ? 48 85 C9 74 0C 48 8D 15 ? ? ? ? E8 ? ? ? ? 48 89 1D ? ? ? ?
-extern uintptr_t	ADDRESS_GLOBAL;				//4C 8D 05 ? ? ? ? 4D 8B 08 4D 85 C9 74 11
-extern uintptr_t	ADDRESS_PLAYER_LIST;		//48 8B 0D ? ? ? ? E8 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 8B CF
-extern uintptr_t	ADDRESS_REPLAY_INTERFACE;	//48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D ? ? ? ?
-extern uintptr_t	ADDRESS_UNK_MODEL;			//4C 8B 15 ? ? ? ? 49 8B 04 D2 44 39 40 08
-extern uintptr_t	ADDRESS_FRAME_FLAGS;		//Frame flags 0 writer call; (+0x7) 48 81 C1 ? ? ? ? E8 ? ? ? ? 48 8B 5C 24 ? 0F 28 74 24 ?; 90 90 90 90 90
-
-Alternative Teleport:
-
-//void TeleportToWaypoint()
-//{
-//	bool in_vehicle = world.localplayer.in_vehicle();
-//	vec3 waypoint = proc.read<vec3>(proc.base_module_.base + offsets.waypoint);
-//
-//	if (waypoint.x == 64000 && waypoint.y == 64000) {
-//		menu->notification->Add("No Waypoint set");
-//		return;
-//	}
-//
-//	if (settings.noclip)
-//	{
-//		waypoint.z = 300.f;
-//		world.localplayer.position.xyz(waypoint);
-//	}
-//	else
-//	{
-//		bool too_long = false;
-//		waypoint.z = -210.f;
-//
-//		world.localplayer.playerinfo.freeze(2);
-//
-//		std::thread([&]()
-//			{
-//				std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-//				too_long = true;
-//			}).detach();
-//
-//		if (in_vehicle)
-//		{
-//			while (world.localplayer.vehicle.speed_xyz().len() != 0.f && too_long == false)
-//				sleep(1);
-//
-//			if (too_long)
-//			{
-//				menu->notification->Add("Teleportation not possible");
-//				return;
-//			}
-//
-//			sleep(100);
-//			world.localplayer.vehicle.position.xyz(waypoint);
-//		}
-//		else
-//		{
-//			while (world.localplayer.speed_xyz().len() != 0.f && too_long == false)
-//				sleep(1);
-//
-//			if (too_long)
-//			{
-//				menu->notification->Add("Teleportation not possible");
-//				return;
-//			}
-//
-//			sleep(100);
-//			world.localplayer.position.xyz(waypoint);
-//		}
-//
-//		world.localplayer.playerinfo.freeze(0); 
-//	}
-//
-//
-//	Key::Down::W();
-//	sleep(50);
-//	Key::Up::W();
-//	menu->notification->Add("Teleported to Waypoint");
-//}
+	bool isInVehicle()
+	{
+		return (btIsInVehicle & 0x10) ? false : true;
+	}
+ 
+	void giveHealth()
+	{
+		if (fHealth < fHealthMax)
+			fHealth = fHealthMax;
+		if (fArmor < 50.f)
+			fArmor = 50.f;
+	}
+ 
+	void giveHealth(float value)
+	{
+		value += fHealth;
+		if (value <= fHealthMax)
+			fHealth = value;
+		else if (fHealth < fHealthMax)
+			fHealth = fHealthMax;
+	}
+ 
+	void setForcedAim(bool toggle)
+	{
+		btForcedAim ^= (btForcedAim ^ -(char)toggle) & 0x20;
+	}
+}; //Size=0x15D8
+ 
+class CPedStyle
+{
+public:
+	char _0x0000[48];
+	void* N4100AE4A; //0x0030 
+	void* pColors; //0x0038 
+	char _0x0040[168];
+	BYTE propIndex[12]; //0x00E8 
+	char _0x00F4[12];
+	BYTE textureIndex[12]; //0x0100 
+	BYTE paletteIndex[12]; //0x10C
+	char _0x010C[9];
+	BYTE N4100F70F; //0x0121 
+	BYTE N4134BE09; //0x0122 
+	BYTE N4134C676; //0x0123 
+	BYTE btEars; //0x0124 
+	char _0x0125[3];
+	BYTE btEarsTexture; //0x0128 
+	char _0x0129[72];
+	BYTE N4100F719; //0x0171 
+	BYTE N413811BF; //0x0172 
+	BYTE N41381E8E; //0x0173 
+	BYTE btHats; //0x0174 
+	char _0x0175[3];
+	BYTE btHatsTexture; //0x0178 
+	BYTE N4100F71A; //0x0179 
+	BYTE N4461C523; //0x017A 
+	BYTE N4461D118; //0x017B 
+	BYTE N4461C524; //0x017C 
+	BYTE N445D0F2B; //0x017D 
+	BYTE N445D279D; //0x017E 
+	BYTE N445D3102; //0x017F 
+	BYTE N445D279E; //0x0180 
+	BYTE N4100F71B; //0x0181 
+	BYTE N445D522D; //0x0182 
+	BYTE N445D5D09; //0x0183 
+	char _0x0184[61];
+	BYTE N4100F723; //0x01C1 
+	BYTE N4132EABE; //0x01C2 
+	BYTE N4132F80B; //0x01C3 
+	BYTE btGlasses; //0x01C4 
+	char _0x01C5[3];
+	BYTE btGlassesTexture; //0x01C8 
+};//Size=0x03A8
+ 
+/*class CNavigation
+{
+public:
+	char pad_0x0000[0x50]; //0x0000
+	v4 v3Pos; //0x0050
+ 
+}; //Size=0x005C*/
+ 
+class CNavigation
+{
+public:
+	char pad_0x0000[0x20]; //0x0000
+	float fHeading; //0x0020 
+	float fHeading2; //0x0024 
+	char pad_0x0028[0x8]; //0x0028
+	v4 v3Rotation; //0x0030 
+	char pad_0x003C[0x14]; //0x003C
+	v4 v3Pos; //0x0050 
+ 
+}; //Size=0x005C
+ 
+class CWorld_Wrap
+{
+public:
+	CWorld* CWorld; //0x0000 
+ 
+}; //Size=0x0008
+ 
+class CAttacker
+{
+public:
+	CPed* CPed0; //0x0000 
+	char pad_0x0008[0x10]; //0x0008
+	CPed* CPed1; //0x0018 
+	char pad_0x0020[0x10]; //0x0020
+	CPed* CPed2; //0x0030 
+ 
+}; //Size=0x0038
+ 
+class CVehicle
+{
+public:
+	char pad_0x0000[0x30]; //0x0000
+	CNavigation* pCNavigation; //0x0030 
+	char pad_0x0038[0x10]; //0x0038
+	CVehicleMods* pCVehicleMods; //0x0048 
+	char pad_0x0050[0x40]; //0x0050
+	v4 v3VisualPos; //0x0090 
+	char pad_0x009C[0x3C]; //0x009C
+	BYTE btState; //0x00D8 
+	char pad_0x00D9[0xB0]; //0x00D9
+	BYTE btGodMode; //0x0189 
+	char pad_0x018A[0xF6]; //0x018A
+	float fHealth; //0x0280 
+	char pad_0x0284[0x1C]; //0x0284
+	float fHealthMax; //0x02A0 
+	char pad_0x02A4[0x4]; //0x02A4
+	CAttacker* pCAttacker; //0x02A8 
+	char pad_0x02B0[0x6A]; //0x02B0
+	BYTE btVolticRocketState; //0x031A 
+	char pad_0x031B[0x1]; //0x031B
+	float fVolticRocketEnergy; //0x031C 
+	char pad_0x0320[0x430]; //0x0320
+	v4 v3Velocity; //0x0750 
+	char pad_0x075C[0xF0]; //0x075C
+	float fHealth2; //0x084C 
+	char pad_0x0850[0x28]; //0x0850
+	CVehicleHandling* pCVehicleHandling; //0x0878 
+	char pad_0x0880[0x3]; //0x0880
+	BYTE btBulletproofTires; //0x0883 
+	char pad_0x0884[0x4]; //0x0884
+	BYTE btStolen; //0x0888 
+	char pad_0x0889[0x11]; //0x0889
+	BYTE N00000954; //0x089A 
+	char pad_0x089B[0x41]; //0x089B
+	float N0000081E; //0x08DC 
+	char pad_0x08E0[0x58]; //0x08E0
+	float fDirtLevel; //0x0938			max = 15.f
+	char pad_0x093C[0xA8]; //0x093C
+	DWORD dwCarAlarmLength; //0x09E4 
+	char pad_0x09E8[0x148]; //0x09E8
+	BYTE btOpenableDoors; //0x0B30 
+	char pad_0x0B31[0x4B]; //0x0B31
+	float fGravity; //0x0B7C
+	BYTE btMaxPassengers; //0x0B80 
+	char pad_0x0B81[0x1]; //0x0B81
+	BYTE btNumOfPassengers; //0x0B82 
+	char pad_0x0B83[0x3D]; //0x0B83
+ 
+	bool isGod()
+	{
+		return (btGodMode & 0x01) ? true : false;
+	}
+ 
+	bool hasBulletproofTires()
+	{
+		return (btBulletproofTires & 0x20) ? true : false;
+	}
+ 
+	bool disabledDoors()
+	{
+		return (btOpenableDoors == 0) ? true : false;
+	}
+ 
+	void giveHealth()
+	{
+		if (fHealth < fHealthMax)
+			fHealth = fHealthMax;
+		if (fHealth2 < fHealthMax)
+			fHealth2 = fHealthMax;
+	}
+ 
+	//btState & 7    0 = inside of vehicle, 2 = outside of vehicle, 3 = vehicle blown up
+	bool isVehicleDestroyed()
+	{
+		return (btState & 7) == 3;
+	}
+ 
+	void set_stolen(bool toggle)
+	{
+		this->btStolen &= 0xFEu;
+		this->btStolen |= toggle & 1;
+	}
+}; //Size=0x0BC0
+ 
+class CWantedData
+{
+public:
+	char pad_0x0000[0x1C]; //0x0000
+	float fWantedCanChange; //0x001C 
+	char pad_0x0020[0x10]; //0x0020
+	v4 v3WantedCenterPos; //0x0030 
+	char pad_0x003C[0x4]; //0x003C
+	v4 v3WantedCenterPos2; //0x0040 
+	char pad_0x004C[0x38]; //0x004C
+	BYTE btFlag0; //0x0084 
+	BYTE btFlag1; //0x0085 
+	BYTE btFlag2; //0x0086 
+	BYTE btFlag3; //0x0087 
+	char pad_0x0088[0xC]; //0x0088
+	DWORD dwWantedLevelFake; //0x0094 
+	DWORD dwWantedLevel; //0x0098 
+ 
+}; //Size=0x00AC
+ 
+class CPlayerInfo
+{
+public:
+	char pad_0x0000[0x34]; //0x0000
+	__int32 iInternalIP; //0x0034 
+	__int16 iInternalPort; //0x0038 
+	char pad_0x003A[0x2]; //0x003A
+	__int32 iRelayIP; //0x003C 
+	__int16 iRelayPort; //0x0040 
+	char pad_0x0042[0x2]; //0x0042
+	__int32 iExternalIP; //0x0044 
+	__int16 iExternalPort; //0x0048 
+	char pad_0x004A[0x32]; //0x004A
+	char sName[20]; //0x007C 
+	char pad_0x0090[0x4]; //0x0090
+	__int32 iTeam; //0x0094 
+	char pad_0x0098[0x4C]; //0x0098
+	float fSwimSpeed; //0x00E4 
+	float fRunSpeed; //0x00E8 
+	char pad_0x00EC[0x74]; //0x00EC
+	CPed* pCPed; //0x0160 
+	char pad_0x0168[0x29]; //0x0168
+	BYTE btFrameFlags; //0x0191 
+	char pad_0x0192[0x56E]; //0x0192
+	CWantedData CWantedData; //0x0700 
+	char pad_0x079C[0x464]; //0x079C
+	float fStamina; //0x0C00 
+	float fStaminaMax; //0x0C04 
+ 
+	void removeWanted()
+	{
+		if (CWantedData.dwWantedLevel > 0)
+			CWantedData.dwWantedLevel = 0;
+	}
+}; //Size=0x0C08
+ 
+class CWeaponManager
+{
+public:
+	char pad_0x0000[0x20]; //0x0000
+	CWeapon* CWeaponCur; //0x0020 
+ 
+}; //Size=0x0028
+ 
+class CWeapon
+{
+public:
+	char pad_0x0000[0x10]; //0x0000
+	DWORD dwNameHash; //0x0010 
+	DWORD dwModelHash; //0x0014 
+	char pad_0x0018[0x24]; //0x0018
+	DWORD dwAmmoType; //0x003C 
+	DWORD dwWeaponWheelSlot; //0x0040 
+	char pad_0x0044[0x4]; //0x0044
+	CAmmoInfo* CAmmoInfo; //0x0048 
+	char pad_0x0050[0xC]; //0x0050
+	float fSpread; //0x005C 
+	char pad_0x0060[0x38]; //0x0060
+	float fBulletDamage; //0x0098 
+	char pad_0x009C[0x1C]; //0x009C
+	float fForce; //0x00B8 
+	float fForcePed; //0x00BC 
+	float fForceVehicle; //0x00C0 
+	float fForceFlying; //0x00C4 
+	char pad_0x00C8[0x34]; //0x00C8
+	float fMuzzleVelocity; //0x00FC 
+	DWORD dwBulletInBatch; //0x0100 
+	float fBatchSpread; //0x0104 
+	char pad_0x0108[0x8]; //0x0108
+	float fVehicleReloadTime; //0x0110 
+	float fAnimReloadRate; //0x0114 
+	char pad_0x0118[0xC]; //0x0118
+	float fSpinUpTime; //0x0124 
+	float fSpinTime; //0x0128 
+	char pad_0x012C[0x12C]; //0x012C
+	float fLockOnRange; //0x0258 
+	float fWeaponRange; //0x025C 
+	char pad_0x0260[0x44]; //0x0260
+	DWORD dwRecoil; //0x02A4 
+	DWORD dwRecoilFP; //0x02A8 
+ 
+}; //Size=0x02A8
+ 
+class CAmmo
+{
+public:
+	char pad_0x0000[0xC]; //0x0000
+	DWORD dwUnknown; //0x000C 
+	char pad_0x0010[0x8]; //0x0010
+	DWORD dwAmmo; //0x0018 
+ 
+}; //Size=0x001C
+ 
+class CAmmoWrap
+{
+public:
+	CAmmo* CAmmo; //0x0000 
+	CAmmoWrap* AmmoWrap; //0x0008 
+ 
+}; //Size=0x0010
+ 
+class CAmmoInfo
+{
+public:
+	char pad_0x0000[0x8]; //0x0000
+	CAmmoWrap* CAmmoWrap; //0x0008 
+	char pad_0x0010[0x18]; //0x0010
+	DWORD dwMaxAmmo; //0x0028 
+ 
+}; //Size=0x002C
+ 
+/*class CVehicleColors
+{
+public:
+	char pad_0x0000[0xA4]; //0x0000
+	BYTE btPrimaryBlue; //0x00A4
+	BYTE btPrimaryGreen; //0x00A5
+	BYTE btPrimaryRed; //0x00A6
+	BYTE btPrimaryAlpha; //0x00A7
+	BYTE btSecondaryBlue; //0x00A8
+	BYTE btSecondaryGreen; //0x00A9
+	BYTE btSecondaryRed; //0x00AA
+	BYTE btSecondaryAlpha; //0x00AB
+ 
+}; //Size=0x00AC
+ 
+class CVehicleColorOptions
+{
+public:
+	char pad_0x0000[0x20]; //0x0000
+	CVehicleColors* CVehicleColor; //0x0020
+ 
+}; //Size=0x0028*/
+ 
+class CVehicleMods
+{
+public:
+	void* N00002582; //0x0000 
+	void* N00002583; //0x0008 
+	char _0x0010[16];
+	CVehicleModsVisual* vehicleModsVisual; //0x0020 
+	char _0x0028[840];
+	CTireInfo* pTireInfo; //0x0370 
+	char _0x0378[40];
+	CColor NeonColor; //0x03A0 
+	char _0x03A4[12];
+	BYTE btTuningTires; //0x03B0 
+	BYTE N41D07714; //0x03B1 
+	BYTE btSpoiler; //0x03B2 
+	BYTE btFrontBumper; //0x03B3 
+	BYTE btRearBumber; //0x03B4 
+	BYTE btSideSkirt; //0x03B5 
+	BYTE btExhaust; //0x03B6 
+	BYTE btChassis; //0x03B7 
+	BYTE btGrille; //0x03B8 
+	BYTE btHood; //0x03B9 
+	BYTE btFender; //0x03BA 
+	BYTE btRightfender; //0x03BB 
+	BYTE btRoof; //0x03BC 
+	BYTE btPlateholder; //0x03BD 
+	BYTE btVanityPlates; //0x03BE 
+	BYTE btTrim; //0x03BF 
+	BYTE btOrnamentHead; //0x03C0 
+	BYTE btDashboard; //0x03C1 
+	BYTE btDial; //0x03C2 
+	BYTE btDoorSpeaker; //0x03C3 
+	BYTE btSteats; //0x03C4 
+	BYTE btSteeringwheel; //0x03C5 
+	BYTE btShifterLeavers; //0x03C6 
+	BYTE btPlaques; //0x03C7 
+	BYTE btSpeakers; //0x03C8 
+	BYTE btTrunk; //0x03C9 
+	BYTE btHydraulics; //0x03CA 
+	BYTE btEngineBlock; //0x03CB 
+	BYTE btAirFilter; //0x03CC 
+	BYTE btStruts; //0x03CD 
+	BYTE btArchCover; //0x03CE 
+	BYTE btAerials; //0x03CF 
+	BYTE btTrim2; //0x03D0 
+	BYTE btFuel; //0x03D1 
+	BYTE btWindow; //0x03D2 
+	BYTE btunk1; //0x03D3 
+	BYTE btLivery; //0x03D4 
+	BYTE N41D48824; //0x03D5 
+	BYTE btEngine; //0x03D6 
+	BYTE btBreaks; //0x03D7 
+	BYTE btTransmission; //0x03D8 
+	BYTE btHorns; //0x03D9 
+	BYTE btSuspension; //0x03DA 
+	BYTE btArmor; //0x03DB 
+	BYTE N41884B66; //0x03DC 
+	BYTE btTurbo; //0x03DD 
+	BYTE N41D63CF5; //0x03DE 
+	BYTE btTireSmoke; //0x03DF 
+	BYTE N41D63CF6; //0x03E0 
+	BYTE btXenonLight; //0x03E1 
+	BYTE btTireIndex; //0x03E2 
+	BYTE N41D631AD; //0x03E3 
+	BYTE N41884B65; //0x03E4 
+	BYTE btOrnamentBody; //0x03E5 
+	char _0x03E6[14];
+	BYTE N41D9A820; //0x03F4 
+	BYTE btPrimary; //0x03F5 
+	BYTE btSecondary; //0x03F6 
+	BYTE btPearlescent; //0x03F7 
+	BYTE btWheelColor; //0x03F8 
+	BYTE N41DA70FC; //0x03F9 
+	BYTE N41DA7E0A; //0x03FA 
+	BYTE btTireColorR; //0x03FB 
+	BYTE btTireColorG; //0x03FC 
+	BYTE btTireColorB; //0x03FD 
+	BYTE btWindowTint; //0x03FE 
+	BYTE btTireType; //0x03FF 
+	BYTE N41884B5A; //0x0400 
+	BYTE btNeonLeft; //0x0401 
+	BYTE btNeonRight; //0x0402 
+	BYTE btNeonFront; //0x0403 
+	BYTE btNeonBack; //0x0404 
+};
+class CTireInfo
+{
+public:
+	char _0x0000[8];
+	CColor tireColor; //0x0008 
+	char _0x000C[4];
+	BYTE btCustumTires; //0x0010 
+};//Size=0x0108
+ 
+ 
+class CLicencePlateInfo
+{
+public:
+	char _0x0000[40];
+	char* plateName; //0x0028 
+	char _0x0030[136];
+	char* tireName; //0x00B8 
+	char _0x00C0[136];
+	char* visualName; //0x0148 
+	char _0x0150[48];
+};
+ 
+class CVehicleModsVisual
+{
+public:
+	char _0x0000[164];
+	CColor PrimaryColor; //0x00A4 
+	CColor SecondaryColor; //0x00A8 
+	CColor unknownColor; //0x00AC 
+	CColor wheelColor; //0x00B0 
+	CColor modelColor; //0x00B4 
+	CColor seatColor; //0x00B8 
+	CColor speedometerColor; //0x00BC 
+	CColor perlColor; //0x00C0 
+	char _0x00C4[92];
+	CLicencePlateInfo* pLicencePlateInfo; //0x0120 
+	char licencePlate[8]; //0x0128 
+	char _0x0130[2956];
+ 
+};//Size=0x0CBC
+ 
+ 
+class CVehicleHandling
+{
+public:
+	char pad_0x0000[0xC]; //0x0000
+	float fMass; //0x000C 
+	char pad_0x0010[0x10]; //0x0010
+	v4 v3CentreOfMassOffset; //0x0020 
+	char pad_0x002C[0x4]; //0x002C
+	v4 v3InertiaMult; //0x0030 
+	char pad_0x003C[0x4]; //0x003C
+	float fPercentSubmerged; //0x0040 
+	char pad_0x0044[0x8]; //0x0044
+	float fAcceleration; //0x004C 
+	BYTE btInitialDriveGears; //0x0050 
+	char pad_0x0051[0x3]; //0x0051
+	float fDriveInertia; //0x0054 
+	float fClutchChangeRateScaleUpShift; //0x0058 
+	float fClutchChangeRateScaleDownShift; //0x005C 
+	float fInitialDriveForce; //0x0060 
+	char pad_0x0064[0x8]; //0x0064
+	float fBrakeForce; //0x006C 
+	char pad_0x0070[0x4]; //0x0070
+	float fBrakeBiasFront; //0x0074 
+	char pad_0x0078[0x4]; //0x0078
+	float fHandBrakeForce; //0x007C 
+	char pad_0x0080[0x8]; //0x0080
+	float fTractionCurveMax; //0x0088 
+	char pad_0x008C[0x4]; //0x008C
+	float fTractionCurveMin; //0x0090 
+	char pad_0x0094[0xC]; //0x0094
+	float fTractionSpringDeltaMax; //0x00A0 
+	char pad_0x00A4[0x4]; //0x00A4
+	float fLowSpeedTractionLossMult; //0x00A8 
+	float fCamberStiffnesss; //0x00AC 
+	float fTractionBiasFront; //0x00B0 
+	float fTwoMinus_fTractionBiasFront; //0x00B4 
+	float fTractionLossMult; //0x00B8 
+	float fSuspensionForce; //0x00BC 
+	float fSuspensionCompDamp; //0x00C0 
+	float fSuspensionReboundDamp; //0x00C4 
+	float fSuspensionUpperLimit; //0x00C8 
+	float fSuspensionLowerLimit; //0x00CC 
+	char pad_0x00D0[0xC]; //0x00D0
+	float fAntiRollBarForce; //0x00DC 
+	char pad_0x00E0[0x8]; //0x00E0
+	float fRollCentreHeightFront; //0x00E8 
+	float fRollCentreHeightRear; //0x00EC 
+	float fCollisionDamageMult; //0x00F0 
+	float fWeaponDamageMult; //0x00F4 
+	float fDeformationDamageMult; //0x00F8 
+	float fEngineDamageMult; //0x00FC 
+	float fPetrolTankVolume; //0x0100 
+	float fOilVolume; //0x0104 
+ 
+}; //Size=0x0108
+ 
+ 
+class CViewPort
+{
+public:
+	char _0x0000[0x24C];
+	float fViewMatrix[0x10];
+};//Size=0x028C
+ 
+ 
+ 
+ 
+ 
+class CObjectWrapper
+{
+public:
+	char _0x0000[168];
+	CPlayerInfo* playerInfo; //0x00A8 
+ 
+};//Size=0x00B0
+ 
+class CPlayers
+{
+public:
+	char _0x0000[376];
+	__int32 numPlayersOnline; //0x0178 
+	char _0x017C[4];
+	CObjectWrapper* ObjectWrapperList[256]; //0x0180 
+};
+ 
+ 
+ 
+ 
+ 
+ 
+/*
+class CReplayInterfacePed
+{
+private:
+	class CPedList
+	{
+	private:
+		struct Ped
+		{
+			CPed* ped;
+			__int32 handle;
+			char _pad0[0x4];
+		};
+ 
+	public:
+		Ped peds[0x100];
+	};
+ 
+public:
+	char _pad0[0x100];			// 0000 - 0100
+	CPedList* ped_list;			// 0100 - 0108
+	int max_peds;				// 0108 - 010C
+	char _pad1[0x4];			// 010C - 0110
+	int number_of_peds;			// 0110 - 0114
+ 
+	CPed* get_ped(const int& index)
+	{
+		if(index < max_peds)
+			return ped_list->peds[index].ped;
+		return nullptr;
+	}
+ 
+	/*int get_ped_handle(const int& index)
+	{
+		if(index < max_peds && ped_list->peds[index].ped != nullptr)
+			return ped_list->peds[index].handle;
+		return -1;
+	}
+};
+ 
+class CPickup
+{
+public:
+	char _0x0000[0x30];
+	CNavigation* Navigation; //0x0030
+	char _0x0038[0x58];
+	v4 VisualPosition; //0x0090
+	char _0x009C[0x3F4];
+	__int32 iMoney; //0x0490
+	char _0x0484[0x104];
+ 
+};//Size=0x0588
+ 
+class PickupHandle
+{
+public:
+	CPickup* pickup; //0x0000
+	__int32 handle; //0x0008
+	char _pad0[0x4];
+ 
+};//Size=0x0588
+ 
+class CPickupList
+{
+public:
+	PickupHandle pickups[0x49];//pickups[0x49]; //0x0000
+ 
+};//Size=0x0490
+ 
+class CReplayInterfacePickup
+{
+public:
+	char _0x0000[0x100];
+	CPickupList* pickup_list; //0x0100
+	__int32 max_pickups; //0x0108
+	char _0x010C[0x4];
+	__int32 number_of_pickups; //0x0110
+	char _0x0114[0x34];
+ 
+	CPickup* get_pickup(const int& index)
+	{
+		if(index < max_pickups)
+			return pickup_list->pickups[index].pickup;
+		return nullptr;
+	}
+ 
+};//Size=0x0148
+ 
+class VehicleHandle
+{
+public:
+	CVehicle* vehicle; //0x0000
+	__int32 handle; //0x0008
+	char _pad0[0x4];
+ 
+};//Size=0x0588
+ 
+class CVehicleList
+{
+public:
+	VehicleHandle vehicles[0x100];//0x0000
+ 
+};//Size=0x0490
+ 
+class CReplayInterfaceVehicle
+{
+public:
+	char _0x0000[0x180];
+	CVehicleList* vehicle_list; //0x0180
+	__int32 max_vehicles; //0x0188
+	char _0x010C[0x4];
+	__int32 number_of_vehicles; //0x0190
+	char _0x0114[0x34];
+ 
+	CVehicle* get_vehicle(const int& index)
+	{
+		if(index < max_vehicles)
+			return vehicle_list->vehicles[index].vehicle;
+		return nullptr;
+	}
+ 
+};*/
+ 
+class CPickupHandle
+{
+public:
+	CPickup* pCPickup; //0x0000 
+	__int32 iHandle; //0x0008 
+	char pad_0x000C[0x4]; //0x000C
+ 
+}; //Size=0x0010
+ 
+class CPickupList
+{
+public:
+	CPickupHandle pickups[73]; //0x0000 
+ 
+}; //Size=0x0490
+ 
+class CPickup
+{
+public:
+	char pad_0x0000[0x30]; //0x0000
+	CNavigation* pCNavigation; //0x0030 
+	char pad_0x0038[0x58]; //0x0038
+	v4 v3VisualPos; //0x0090 
+	char pad_0x009C[0x3F4]; //0x009C
+	__int32 iValue; //0x0490 
+	char pad_0x0494[0xC4]; //0x0494
+ 
+}; //Size=0x0558
+ 
+class CPedHandle
+{
+public:
+	CPed* pCPed; //0x0000 
+	__int32 iHandle;
+	char _pad0[0x4];
+ 
+}; //Size=0x0010
+ 
+class CPedList
+{
+public:
+	CPedHandle peds[256]; //0x0000 
+ 
+}; //Size=0x1000
+ 
+class CVehHandle
+{
+public:
+	CVehicle* pCVehicle; //0x0000 
+	__int32 iHandle;
+	char _pad0[0x4];
+ 
+}; //Size=0x0010
+ 
+class CVehList
+{
+public:
+	CVehHandle vehs[300]; //0x0000 
+ 
+}; //Size=0x1000
+ 
+class CObjectHandle
+{
+public:
+	CObject* pCObject; //0x0000 
+	__int32 iHandle; //0x0008 
+	char pad_0x000C[0x4]; //0x000C
+ 
+}; //Size=0x0010
+ 
+class CObjectList
+{
+public:
+	CObjectHandle ObjectList[2300]; //0x0000 
+ 
+}; //Size=0x8FC0
+ 
+class CObject
+{
+public:
+	char pad_0x0000[0x8]; //0x0000
+ 
+}; //Size=0x0008
+ 
+ 
+class CCameraInterface
+{
+public:
+	char pad_0x0000[0x248]; //0x0000
+ 
+}; //Size=0x0248
+ 
+class CObjectInterface
+{
+public:
+	char pad_0x0000[0x158]; //0x0000
+	CObjectList* pCObjectList; //0x0158 
+	__int32 iMaxObjects; //0x0160 
+	char pad_0x0164[0x4]; //0x0164
+	__int32 iCurObjects; //0x0168 
+	char pad_0x016C[0x5C]; //0x016C
+ 
+}; //Size=0x01C8
+ 
+class CVehicleInterface
+{
+public:
+	char pad_0x0000[0x180]; //0x0000
+	CVehList* VehList; //0x0180 
+	__int32 iMaxVehicles; //0x0188 
+	char pad_0x018C[0x4]; //0x018C
+	__int32 iCurVehicles; //0x0190 
+	char pad_0x0194[0x74]; //0x0194
+ 
+	CVehicle* get_vehicle(const int& index)
+	{
+		if (index < iMaxVehicles)
+			return VehList->vehs[index].pCVehicle;
+		return nullptr;
+	}
+}; //Size=0x0208
+ 
+class CPedInterface
+{
+public:
+	char pad_0x0000[0x100]; //0x0000
+	CPedList* PedLIst; //0x0100 
+	__int32 iMaxPeds; //0x0108 
+	char pad_0x010C[0x4]; //0x010C
+	__int32 iCurPeds; //0x0110 
+	char pad_0x0114[0x34]; //0x0114
+ 
+	CPed* get_ped(const int& index)
+	{
+		if (index < iMaxPeds)
+			return PedLIst->peds[index].pCPed;
+		return nullptr;
+	}
+}; //Size=0x0148
+ 
+class CPickupInterface
+{
+public:
+	char pad_0x0000[0x100]; //0x0000
+	CPickupList* pCPickupList; //0x0100 
+	__int32 iMaxPickups; //0x0108 
+	char pad_0x010C[0x4]; //0x010C
+	__int32 iCurPickups; //0x0110 
+ 
+	CPickup* get_pickup(const int& index)
+	{
+		if (index < iMaxPickups)
+			return pCPickupList->pickups[index].pCPickup;
+		return nullptr;
+	}
+}; //Size=0x0114
+ 
+class CReplayInterface
+{
+public:
+	void* N000006F5; //0x0000 
+	CCameraInterface* pCCameraInterface; //0x0008 
+	CVehicleInterface* pCVehicleInterface; //0x0010 
+	CPedInterface* pCPedInterface; //0x0018 
+	CPickupInterface* pCPickupInterface; //0x0020 
+	CObjectInterface* pCObjectInterface; //0x0028 
+ 
+}; //Size=0x0030
