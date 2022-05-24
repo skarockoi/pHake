@@ -30,9 +30,9 @@ bool GameInfo::IsActive()
 
 void pOverlay::Create(LPCSTR Name)
 {
-	this->list = std::make_unique<pList>();
-	this->notification = std::make_unique<pNotificationCenter>();
-	this->mouse_ = std::make_unique<pMouse>();
+	this->list = pList();
+	this->notification = pNotificationCenter();
+	this->mouse_ = pMouse();
 
 	this->game_info_ = GameInfo(Name); // Getting game Info
 	this->font_.loadFromFile("Settings/font.ttf");
@@ -41,23 +41,23 @@ void pOverlay::Create(LPCSTR Name)
 	this->window_.setFramerateLimit(60);
 	this->SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
 
-	this->notification->Create(&window_);
+	this->notification.Create(&window_);
 
-	this->mouse_->Create(&window_);
-	this->mouse_->Toggle();
+	this->mouse_.Create(&window_);
+	this->mouse_.Toggle();
 
-	this->list->Create(&window_);
-	this->list->position(window_.getSize().x / 2, window_.getSize().y / 4);
-	this->list->Toggle();
+	this->list.Create(&window_);
+	this->list.position(window_.getSize().x / 2, window_.getSize().y / 4);
+	this->list.Toggle();
 }
 
 void pOverlay::Toggle()
 {
-	this->list->Toggle();
-	this->mouse_->Toggle();
+	this->list.Toggle();
+	this->mouse_.Toggle();
 
-	if (this->list->active())
-		sf::Mouse::setPosition(sf::Vector2i(this->list->position().x + window_.getPosition().x, this->list->position().y + window_.getPosition().y));
+	if (this->list.active())
+		sf::Mouse::setPosition(sf::Vector2i(this->list.position().x + window_.getPosition().x, this->list.position().y + window_.getPosition().y));
 }
 
 void pOverlay::Loop()
@@ -79,15 +79,15 @@ void pOverlay::Loop()
 			}
 		}
 
-		this->list->Loop();
-		this->mouse_->Loop();
-		this->notification->Loop();
+		this->list.Loop();
+		this->mouse_.Loop();
+		this->notification.Loop();
 		
 		this->window_.clear(sf::Color::Color(0, 0, 0, 0));
 		
-		this->list->Draw();
-		this->mouse_->Draw();
-		this->notification->Draw();
+		this->list.Draw();
+		this->mouse_.Draw();
+		this->notification.Draw();
 		
 		this->window_.display();
 	}

@@ -40,11 +40,11 @@ private:
 	sf::Font		 font_;
 
 	GameInfo		 game_info_;
-	std::unique_ptr<pMouse> mouse_;
+	pMouse			 mouse_;
 
 public:
-	std::unique_ptr<pList> list;
-	std::unique_ptr<pNotificationCenter> notification;
+	pList list;
+	pNotificationCenter notification;
 	
 	void Create(LPCSTR Name);
 	void Toggle();
