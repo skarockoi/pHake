@@ -82,7 +82,6 @@ void pOverlay::Loop()
 		this->list.Loop();
 		this->mouse_.Loop();
 		this->notification.Loop();
-		
 		this->window_.clear(sf::Color::Color(0, 0, 0, 0));
 		
 		this->list.Draw();
