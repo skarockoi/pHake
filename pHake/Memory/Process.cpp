@@ -107,7 +107,7 @@ uintptr_t Process::FindSignature(std::vector<uint8_t> signature)
 	data = std::make_unique<uint8_t[]>(this->base_module_.size);
 
 	if (!ReadProcessMemory(this->handle_, (void*)(this->base_module_.base), data.get(), this->base_module_.size, NULL)) {
-		return NULL;
+		return 0x0;
 	}
 
 	for (uintptr_t i = 0; i < this->base_module_.size; i++)
