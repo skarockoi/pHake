@@ -55,7 +55,7 @@ struct pointers // initialized in ReadSignatures()
 	uintptr_t kmh;
 }pointers;
 
-void MaxWeapon(); // cheats, declared in main.cpp
+void MaxWeapon(); // cheats, defined in main.cpp
 void GodMode();
 void NoWanted();
 void Trigger();
