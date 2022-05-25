@@ -34,10 +34,10 @@ struct settings // stores important, globally accessed variables
 
 	struct keys
 	{
-		uint32_t menu = 0;
-		uint32_t teleport = 0;
-		uint32_t boost_player = 0;
-		uint32_t boost_vehicle = 0;
+		uint32_t menu = VK_MENU;
+		uint32_t teleport = VK_NUMPAD0;
+		uint32_t boost_player = VK_NUMPAD1;
+		uint32_t boost_vehicle = VK_NUMPAD2;
 	}keys;
 }settings;
 
