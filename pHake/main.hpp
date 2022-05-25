@@ -74,7 +74,7 @@ void DebugInfo();
 
 int main()
 {
-	//FreeConsole(); // console window only needed for debugging
+	FreeConsole(); // console window only needed for debugging
 
 	if (!proc.AttachProcess("GTA5.exe")) // trying to find gta process
 	{
@@ -87,7 +87,7 @@ int main()
 		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
 	}
-	DebugInfo();
+	//DebugInfo();
 
 	ReadConfig();
 
