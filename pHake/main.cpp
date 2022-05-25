@@ -351,10 +351,10 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	pointers.function_speed_y = pointers.function_speed_x + 0xD;
 	pointers.function_speed_z = pointers.function_speed_x + 0x1A;
 
-	std::array<uintptr_t*, 10> pointers_check = { &pointers.world };
+	std::array<uintptr_t*, sizeof(pointers) / sizeof(uintptr_t)> pointers_check = {reinterpret_cast<uintptr_t*>(&pointers)}; // check if any pointer returned 0
 	for (size_t i = 0; i < pointers_check.size(); i++)
 	{
-		if (*(*pointers_check.begin() + i) == 0)
+		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
 	}
 	return true;
