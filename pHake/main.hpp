@@ -15,8 +15,10 @@
 #include <iostream>
 
 std::array<std::unique_ptr<pThread>, 8> threads; // individual threads used for cheats, keyboard toggles...
+
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
-std::unique_ptr<pSettings> cfg;  // config file, reads out in ReadConfig(), saves settings values in ExitProgram();
+std::unique_ptr<pSettings> cfg; // config file, reads out in ReadConfig(), saves settings values in ExitProgram();
+
 Process    proc;  // access gta5 memory, read/write/...
 World      world; // primarily used to access localplayer object
 
