@@ -329,7 +329,7 @@ void Toggles()
 	}
 }
 
-void ReadSignatures() // signatures in std::vector<uint8_t> format // multithreading
+bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithreading
 {
 	std::thread t0([]() { pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); });
 	std::thread t1([]() { pointers.waypoint = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 }, 3) + 0x20; });
@@ -350,6 +350,14 @@ void ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	pointers.crosshair_value = pointers.entity_aiming_at + 0x10;
 	pointers.function_speed_y = pointers.function_speed_x + 0xD;
 	pointers.function_speed_z = pointers.function_speed_x + 0x1A;
+
+	std::array<uintptr_t*, 10> pointers_check = { &pointers.world };
+	for (size_t i = 0; i < pointers_check.size(); i++)
+	{
+		if (*(*pointers_check.begin() + i) == 0)
+			return false;
+	}
+	return true;
 }
 
 void ReadConfig()

@@ -67,14 +67,14 @@ void BoostPlayer();
 void Suicide();
 
 void Toggles(); // keyboard toggles for menu, cheats...
-void ReadSignatures(); // read out signatures
+bool ReadSignatures(); // read out signatures
 void ReadConfig(); // read config file
 void ExitProgram(); // clean up, exit
 void DebugInfo();
 
 int main()
 {
-	FreeConsole(); // console window only needed for debugging
+	//FreeConsole(); // console window only needed for debugging
 
 	if (!proc.AttachProcess("GTA5.exe")) // trying to find gta process
 	{
@@ -82,14 +82,12 @@ int main()
 		return false;
 	}
 
-	ReadSignatures();
-	//DebugInfo();
-
-	if (proc.read<uintptr_t>(pointers.world) == NULL) // check if world pointer was found, if not the game version has changed
+	if (!ReadSignatures()) // check if world pointer was found, if not the game version has changed
 	{
 		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
 	}
+	DebugInfo();
 
 	ReadConfig();
 
