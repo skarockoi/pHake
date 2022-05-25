@@ -24,10 +24,8 @@ struct vec3
 
 	friend std::ostream& operator<< (std::ostream& out, const vec3& vector)
 	{
-		// Since operator<< is a friend of the Point class, we can access Point's members directly.
 		out << vector.x << " " << vector.y << " " << vector.z;
-
-		return out; // return std::ostream so we can chain calls to operator<<
+		return out;
 	}
 
 	float len() {
