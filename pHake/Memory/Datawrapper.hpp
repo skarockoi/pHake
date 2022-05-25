@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include "Process.hpp"
 
-template <uintptr_t maxSize> class DataWrapper
+template <uintptr_t maxSize> class DataWrapper // class to download whole objects with one RPM call
 {
 public:
 	DataWrapper(){}
@@ -36,9 +36,9 @@ public:
 public:
 	uintptr_t base(){ return this->base_; }
 protected:
+	Process* process_ = 0;
 	std::unique_ptr<uint8_t[]> data_;
 	uintptr_t base_ = 0x0;
-	Process* process_ = 0;
 	uintptr_t max_offset_ = 0x0;
 };
 #endif
