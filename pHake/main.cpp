@@ -1,26 +1,60 @@
 #include "main.hpp"
+#include <algorithm>
+
+struct DefaultWeaponValues
+{
+	float reload_mp;
+	float bullet_damage;
+	float range;
+};
 
 void MaxWeapon()
 {
+	static std::vector<uintptr_t>			    player_weapons_addresses;
+	static std::vector<DefaultWeaponValues>     player_weapons_default;
+
+	if (std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()) != player_weapons_addresses.end())
+	{
+		// already exists
+	}
+	else 
+	{
+		player_weapons_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
+
+		DefaultWeaponValues to_push;
+		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
+		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo();
+		to_push.range = world.localplayer.weapon_manager.current_weapon.range();
+		player_weapons_default.push_back(to_push);
+	}
+
 	if (settings.maxweapon)
 	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
-			return;
-
-		world.localplayer.weapon_manager.current_weapon.type(5);
-		world.localplayer.weapon_manager.current_weapon.explosion_type(25);
-		world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
-		world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
-		world.localplayer.weapon_manager.current_weapon.range(99999.f);
-		world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
+		{
+			world.localplayer.weapon_manager.current_weapon.type(5);
+			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
+			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
+			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
+			world.localplayer.weapon_manager.current_weapon.range(99999.f);
+			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
+		}
 	}
 	else
 	{
 		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
 		{
-			world.localplayer.weapon_manager.current_weapon.type(3);
-			world.localplayer.weapon_manager.current_weapon.bullet_damage(100.f);
-			world.localplayer.weapon_manager.current_weapon.reload_mp(1.f);
+			auto found = std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base());
+			if (found != player_weapons_addresses.end())
+			{
+				uint32_t index = found - player_weapons_addresses.begin();
+
+				world.localplayer.weapon_manager.current_weapon.type(3);
+
+				world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage);
+				world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp);
+				world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range);
+			}
 		}
 	}
 }
