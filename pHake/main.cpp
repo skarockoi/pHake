@@ -1,7 +1,7 @@
 #include "main.hpp"
 #include <algorithm>
 
-struct DefaultWeaponValues
+struct DefaultWeaponValues // stores default weapon values
 {
 	float reload_mp;
 	float bullet_damage;
@@ -13,11 +13,11 @@ void MaxWeapon()
 	static std::vector<uintptr_t>			    player_weapons_addresses;
 	static std::vector<DefaultWeaponValues>     player_weapons_default;
 
-	if (std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()) != player_weapons_addresses.end())
+	if (std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()) != player_weapons_addresses.end()) // check if current weapons exists in player_weapon_addresses
 	{
 		// already exists
 	}
-	else 
+	else // save current weapon stats in player_weapon_default to restore after MaxWeapon is turned off
 	{
 		player_weapons_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
 
@@ -30,7 +30,7 @@ void MaxWeapon()
 
 	if (settings.maxweapon)
 	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f)
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f) // check if bullet damage is Max mode, if not do custommizations
 		{
 			world.localplayer.weapon_manager.current_weapon.type(5);
 			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
@@ -42,16 +42,16 @@ void MaxWeapon()
 	}
 	else
 	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
+		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f) // if maxweapon is turned off check for bullet damage == 99999
 		{
-			auto found = std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base());
+			auto found = std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()); // check every current weapon too see if it's still in max mode...
 			if (found != player_weapons_addresses.end())
 			{
 				uint32_t index = found - player_weapons_addresses.begin();
 
 				world.localplayer.weapon_manager.current_weapon.type(3);
 
-				world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage);
+				world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage); // ...and restore the default values
 				world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp);
 				world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range);
 			}
@@ -81,73 +81,56 @@ void GodMode()
 
 void NoWanted()
 {
-	if (settings.nowanted)
-	{
-		if (world.localplayer.playerinfo.wanted_level() != 0)
-			world.localplayer.playerinfo.wanted_level(0);
-	}
+	if (!settings.nowanted)
+		return;
+	
+	if (world.localplayer.playerinfo.wanted_level() != 0)
+		world.localplayer.playerinfo.wanted_level(0);
 }
 
 void Trigger()
 {
-	if (settings.trigger)
+	if (!settings.trigger)
+		return;
+	
+	static Entity entity(&proc);
+	static bool can_shoot = true;
+	static bool already_shooting = false;
+
+	int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
+	if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+		can_shoot = true;
+	else
+		can_shoot = false;
+
+
+	if (can_shoot && !already_shooting)
 	{
-		static Entity entity(&proc);
-		static bool can_shoot = true;
-		static bool already_shooting = false;
+		entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
+		entity.health(0.f);
 
-		int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
-		if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-			can_shoot = true;
-		else
-			can_shoot = false;
-
-
-		if (can_shoot && !already_shooting)
-		{
-			entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
-			entity.health(0.f);
-
-			Key::Down::LMouse();
-			already_shooting = true;
-		}
-		else if (!can_shoot && already_shooting)
-		{
-			Key::Up::LMouse();
-			already_shooting = false;
-		}
+		Key::Down::LMouse();
+		already_shooting = true;
+	}
+	else if (!can_shoot && already_shooting)
+	{
+		Key::Up::LMouse();
+		already_shooting = false;
 	}
 }
 
 void RPLoop()
 {
-	if (settings.rploop)
-	{
-		world.localplayer.playerinfo.wanted_level(5);
-		world.localplayer.playerinfo.wanted_level(0);
-	}
+	if (!settings.rploop)
+		return;
+
+	world.localplayer.playerinfo.wanted_level(5);
+	world.localplayer.playerinfo.wanted_level(0);
 }
 
 void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
 {
-	static bool      restore = false; // check to restore or patch game code
-	static uintptr_t position_base = 0;
-
-	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
-	{
-		position_base = world.localplayer.position.base();
-
-		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
-		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
-		patched_code.add({0x48, 0x39, 0xC1,								// cmp rcx, rax 
-						  0x74, 0x04,									// je GTA5.exe + 2D
-						  0x0F, 0x29, 0x48, 0x50,						// movaps [rax+50],xmm1 (update entity position)
-						  0x48, 0x83, 0xC4, 0x60,						// add rsp, 60 
-						  0x5B,											// pop rbx
-						  0xC3});										// ret
-
-		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
-	}
+	static bool restore = false; // check to restore or patch game code
 
 	if (!settings.noclip)
 	{
@@ -158,6 +141,23 @@ void NoClip() // the game updates every entity position in a shared function, so
 		}
 		restore = false;
 		return;
+	}
+
+	static uintptr_t position_base = 0;
+	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
+	{
+		position_base = world.localplayer.position.base();
+
+		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
+		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
+		patched_code.add({ 0x48, 0x39, 0xC1,								// cmp rcx, rax 
+						  0x74, 0x04,									// je GTA5.exe + 2D
+						  0x0F, 0x29, 0x48, 0x50,						// movaps [rax+50],xmm1 (update entity position)
+						  0x48, 0x83, 0xC4, 0x60,						// add rsp, 60 
+						  0x5B,											// pop rbx
+						  0xC3 });										// ret
+
+		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
 	}
 
 	if (world.localplayer.in_vehicle())
@@ -216,8 +216,7 @@ void TeleportToWaypoint()
 		sleep(50);
 		Key::Up::W();
 
-		menu->notification.Add("Teleported to Waypoint");
-		return;
+		goto success;
 	}
 
 	if (settings.noclip)
@@ -229,8 +228,7 @@ void TeleportToWaypoint()
 		sleep(50);
 		Key::Up::W();
 
-		menu->notification.Add("Teleported to Waypoint");
-		return;
+		goto success;
 	}
 
 	if (world.localplayer.speed_xyz().len() > 0.1)
@@ -246,6 +244,9 @@ void TeleportToWaypoint()
 	sleep(50);
 	Key::Up::W();
 
+	goto success;
+
+success:
 	menu->notification.Add("Teleported to Waypoint");
 	return;
 }
