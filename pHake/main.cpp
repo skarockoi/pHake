@@ -150,7 +150,7 @@ void NoClip() // the game updates every entity position in a shared function, so
 
 		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
 		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
-		patched_code.add({ 0x48, 0x39, 0xC1,								// cmp rcx, rax 
+		patched_code.add({ 0x48, 0x39, 0xC1,							// cmp rcx, rax 
 						  0x74, 0x04,									// je GTA5.exe + 2D
 						  0x0F, 0x29, 0x48, 0x50,						// movaps [rax+50],xmm1 (update entity position)
 						  0x48, 0x83, 0xC4, 0x60,						// add rsp, 60 
@@ -337,30 +337,32 @@ void Suicide()
 
 void Toggles()
 {
-	if (HIBYTE(GetAsyncKeyState(settings.keys.menu)))
+	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
 	{
 		menu->Toggle();
-		sleep(150);
-	}
-	if (settings.noclip && HIBYTE(GetAsyncKeyState(VK_SPACE)))
-	{
-		BoostPlayer();
-		sleep(150);
-	}
-	if (HIBYTE(GetAsyncKeyState(settings.keys.teleport)))
+	});
+
+	GetKeyExecuteWaitForRelease(settings.keys.teleport, []() 
 	{
 		TeleportToWaypoint();
-		sleep(150);
-	}
-	if (HIBYTE(GetAsyncKeyState(settings.keys.boost_player)))
+	});
+
+	GetKeyExecuteWaitForRelease(settings.keys.boost_player, []()
 	{
 		BoostPlayer();
-		sleep(150);
-	}
-	if (HIBYTE(GetAsyncKeyState(settings.keys.boost_vehicle)))
+	});
+
+	GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []() 
 	{
 		BoostVehicle();
-		sleep(150);
+	});
+
+	if (settings.noclip)
+	{
+		GetKeyExecuteWaitForRelease(VK_SPACE, []()
+		{
+			BoostPlayer();
+		});
 	}
 }
 

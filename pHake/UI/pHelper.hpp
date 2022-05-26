@@ -15,6 +15,17 @@ void sleep(uint32_t ms)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
+ 
+template <typename T>
+void GetKeyExecuteWaitForRelease(int key, T function)
+{
+	if (HIBYTE(GetAsyncKeyState(key)))
+	{
+		function();
+		while (HIBYTE(GetAsyncKeyState(key)))
+			sleep(100);
+	}
+}
 
 void Uint64ToArray(uint64_t number, uint8_t* result) {
 

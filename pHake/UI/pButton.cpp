@@ -50,19 +50,13 @@ void pButton::Loop()
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		if (this->function_ != NULL) {
-			std::thread([=]() {
-
-				this->busy_ = true;
-				((void(*)(void))function_)();
-
-				while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && this->IsOnBox())
-					std::this_thread::sleep_for(std::chrono::milliseconds(10));
-						
-				this->busy_ = false; }).detach();
+		if (this->function_ != NULL) 
+		{
+			((void(*)(void))function_)();
+			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && this->IsOnBox())
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
-
 }
 
 void pButton::Draw()
