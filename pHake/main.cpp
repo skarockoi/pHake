@@ -143,6 +143,9 @@ void NoClip() // the game updates every entity position in a shared function, so
 		return;
 	}
 
+	if (world.localplayer.in_vehicle())
+		return;
+
 	static uintptr_t position_base = 0;
 	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
 	{
@@ -159,9 +162,6 @@ void NoClip() // the game updates every entity position in a shared function, so
 
 		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
 	}
-
-	if (world.localplayer.in_vehicle())
-		return;
 	
 	if (!restore)
 	{
