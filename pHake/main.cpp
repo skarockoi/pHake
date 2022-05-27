@@ -23,7 +23,7 @@ void MaxWeapon()
 
 		DefaultWeaponValues to_push;
 		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
-		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo();
+		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.bullet_damage();
 		to_push.range = world.localplayer.weapon_manager.current_weapon.range();
 		player_weapons_default.push_back(to_push);
 	}
@@ -47,7 +47,7 @@ void MaxWeapon()
 			auto found = std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()); // check every current weapon too see if it's still in max mode...
 			if (found != player_weapons_addresses.end())
 			{
-				uint32_t index = found - player_weapons_addresses.begin();
+				uint64_t index = found - player_weapons_addresses.begin();
 
 				world.localplayer.weapon_manager.current_weapon.type(3);
 
@@ -136,8 +136,8 @@ void NoClip() // the game updates every entity position in a shared function, so
 	{
 		if (restore)
 		{
-			proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restore default assembly code if noclip is turned off
-			proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			proc.write_bytes(pointers.asm_update_position, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restore default assembly code if noclip is turned off
+			proc.write_bytes(pointers.asm_update_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 		}
 		restore = false;
 		return;
@@ -166,10 +166,10 @@ void NoClip() // the game updates every entity position in a shared function, so
 	if (!restore)
 	{
 		AssemblyByte detour{};
-		detour.addJump(pointers.function_xyz + 1, proc.base_module_.base + 0x1A, 4); // jmp'ing to proc.base_module_.base + 0x1A because there is a code cave
+		detour.addJump(pointers.asm_update_position + 1, proc.base_module_.base + 0x1A, 4); // jmp'ing to proc.base_module_.base + 0x1A because there is a code cave
 
-		proc.write_bytes(pointers.function_xyz, detour.base()); // apply detour to jmp to our patched code
-		proc.write_bytes(pointers.function_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop function_speed_z function to prevent the game from knowing we are flying
+		proc.write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
+		proc.write_bytes(pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
 
 		restore = true;
 	}
@@ -372,8 +372,8 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	std::thread t1([]() { pointers.waypoint = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 }, 3) + 0x20; });
 	std::thread t2([]() { pointers.camera_pos = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x5C, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC6, 0xD9 }, 4); });
 	std::thread t3([]() { pointers.entity_aiming_at = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC9, 0x74, 0x0C, 0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x48, 0x89, 0x1D }, 3); });
-	std::thread t4([]() { pointers.function_xyz = proc.FindSignature({ 0x0F, 0x29, 0x48, 0x00, 0x48, 0x83, 0xC4, 0x00, 0x5B, 0xC3, 0xCC }); });
-	std::thread t5([]() { pointers.function_speed_x = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x45, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x4D, 0x00, 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24 }); });
+	std::thread t4([]() { pointers.asm_update_position = proc.FindSignature({ 0x0F, 0x29, 0x48, 0x00, 0x48, 0x83, 0xC4, 0x00, 0x5B, 0xC3, 0xCC }); });
+	std::thread t5([]() { pointers.asm_update_speed_x = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x45, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x4D, 0x00, 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24 }); });
 	std::thread t6([]() { pointers.kmh = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x10, 0x05, 0x00 ,0x00, 0x00, 0x00, 0xC6, 0x85 }, 4); });
 
 	t0.join();
@@ -385,8 +385,8 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	t6.join();
 
 	pointers.crosshair_value = pointers.entity_aiming_at + 0x10;
-	pointers.function_speed_y = pointers.function_speed_x + 0xD;
-	pointers.function_speed_z = pointers.function_speed_x + 0x1A;
+	pointers.asm_update_speed_y = pointers.asm_update_speed_x + 0xD;
+	pointers.asm_update_speed_z = pointers.asm_update_speed_x + 0x1A;
 
 	std::array<uintptr_t*, sizeof(pointers) / sizeof(uintptr_t)> pointers_check = {reinterpret_cast<uintptr_t*>(&pointers)}; // check if any pointer returned 0
 	for (size_t i = 0; i < pointers_check.size(); i++)
@@ -429,8 +429,8 @@ void ExitProgram()
 
 	if (settings.noclip) // restore original opcode
 	{
-		proc.write_bytes(pointers.function_xyz, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
-		proc.write_bytes(pointers.function_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+		proc.write_bytes(pointers.asm_update_position, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
+		proc.write_bytes(pointers.asm_update_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
 	}
 
 	proc.Close(); // close handle to gta5
@@ -446,10 +446,10 @@ void DebugInfo()
 	std::cout << " camera_pos = " << std::hex << pointers.camera_pos << std::endl;
 	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
 	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
-	std::cout << " function_xyz = " << std::hex << pointers.function_xyz << std::endl;
-	std::cout << " function_speed_x = " << std::hex << pointers.function_speed_x << std::endl;
-	std::cout << " function_speed_y = " << std::hex << pointers.function_speed_y << std::endl;
-	std::cout << " function_speed_z = " << std::hex << pointers.function_speed_z << std::endl;
+	std::cout << " function_xyz = " << std::hex << pointers.asm_update_position << std::endl;
+	std::cout << " function_speed_x = " << std::hex << pointers.asm_update_speed_x << std::endl;
+	std::cout << " asm_update_speed_y = " << std::hex << pointers.asm_update_speed_y << std::endl;
+	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
 	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
 	std::cout << std::endl;
 }

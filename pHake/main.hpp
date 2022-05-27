@@ -50,10 +50,10 @@ struct pointers // initialized in ReadSignatures()
 	uintptr_t camera_pos;
 	uintptr_t crosshair_value;
 	uintptr_t entity_aiming_at;
-	uintptr_t function_xyz;
-	uintptr_t function_speed_x;
-	uintptr_t function_speed_y;
-	uintptr_t function_speed_z;
+	uintptr_t asm_update_position;
+	uintptr_t asm_update_speed_x;
+	uintptr_t asm_update_speed_y;
+	uintptr_t asm_update_speed_z;
 	uintptr_t kmh;
 }pointers;
 
@@ -84,7 +84,7 @@ int main()
 		return false;
 	}
 
-	if (!ReadSignatures()) // check if world pointer was found, if not the game version has changed
+	if (!ReadSignatures()) // check if pointers were found, if not the game version has changed
 	{
 		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
