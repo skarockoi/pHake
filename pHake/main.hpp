@@ -51,8 +51,6 @@ struct pointers // initialized in ReadSignatures()
 	uintptr_t crosshair_value;
 	uintptr_t entity_aiming_at;
 	uintptr_t asm_update_position;
-	uintptr_t asm_update_speed_x;
-	uintptr_t asm_update_speed_y;
 	uintptr_t asm_update_speed_z;
 	uintptr_t kmh;
 }pointers;

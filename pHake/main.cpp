@@ -128,6 +128,12 @@ void RPLoop()
 	world.localplayer.playerinfo.wanted_level(0);
 }
 
+constexpr auto size_asm_update_position_original = 10;
+constexpr auto size_asm_update_speed_z_original = 8;
+
+std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
+std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
+
 void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
 {
 	static bool restore = false; // check to restore or patch game code
@@ -136,8 +142,8 @@ void NoClip() // the game updates every entity position in a shared function, so
 	{
 		if (restore)
 		{
-			proc.write_bytes(pointers.asm_update_position, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 }); // restore default assembly code if noclip is turned off
-			proc.write_bytes(pointers.asm_update_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+			proc.write_bytes(pointers.asm_update_position, asm_update_position_original); // restore default assembly code if noclip is turned off
+			proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
 		}
 		restore = false;
 		return;
@@ -373,7 +379,7 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	std::thread t2([]() { pointers.camera_pos = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x5C, 0x05, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC6, 0xD9 }, 4); });
 	std::thread t3([]() { pointers.entity_aiming_at = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x48, 0x85, 0xC9, 0x74, 0x0C, 0x48, 0x8D, 0x15, 0x00, 0x00, 0x00, 0x00, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x48, 0x89, 0x1D }, 3); });
 	std::thread t4([]() { pointers.asm_update_position = proc.FindSignature({ 0x0F, 0x29, 0x48, 0x00, 0x48, 0x83, 0xC4, 0x00, 0x5B, 0xC3, 0xCC }); });
-	std::thread t5([]() { pointers.asm_update_speed_x = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x45, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x10, 0x4D, 0x00, 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24 }); });
+	std::thread t5([]() { pointers.asm_update_speed_z = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24, 0x00, 0x00, 0x00, 0x00, 0x49, 0x8B, 0x5B, 0x00, 0x49, 0x8B, 0x73, 0x00, 0x49, 0x8B, 0x7B, 0x00, 0x41, 0x0F, 0x28, 0x73, 0x00, 0x41, 0x0F, 0x28, 0x7B, 0x00, 0x45, 0x0F, 0x28, 0x43, 0x00, 0x45, 0x0F, 0x28, 0x4B }); });
 	std::thread t6([]() { pointers.kmh = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x10, 0x05, 0x00 ,0x00, 0x00, 0x00, 0xC6, 0x85 }, 4); });
 
 	t0.join();
@@ -385,8 +391,6 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	t6.join();
 
 	pointers.crosshair_value = pointers.entity_aiming_at + 0x10;
-	pointers.asm_update_speed_y = pointers.asm_update_speed_x + 0xD;
-	pointers.asm_update_speed_z = pointers.asm_update_speed_x + 0x1A;
 
 	std::array<uintptr_t*, sizeof(pointers) / sizeof(uintptr_t)> pointers_check = {reinterpret_cast<uintptr_t*>(&pointers)}; // check if any pointer returned 0
 	for (size_t i = 0; i < pointers_check.size(); i++)
@@ -394,6 +398,10 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
 	}
+
+	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original);
+	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
+	
 	return true;
 }
 
@@ -429,8 +437,8 @@ void ExitProgram()
 
 	if (settings.noclip) // restore original opcode
 	{
-		proc.write_bytes(pointers.asm_update_position, { 0x0F, 0x29, 0x48, 0x50, 0x48, 0x83, 0xC4, 0x60, 0x5B, 0xC3 });
-		proc.write_bytes(pointers.asm_update_speed_z, { 0xF3, 0x0F, 0x11, 0x83, 0x28, 0x03, 0x00, 0x00 });
+		proc.write_bytes(pointers.asm_update_position, asm_update_position_original); 
+		proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
 	}
 
 	proc.Close(); // close handle to gta5
@@ -447,9 +455,7 @@ void DebugInfo()
 	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
 	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
 	std::cout << " function_xyz = " << std::hex << pointers.asm_update_position << std::endl;
-	std::cout << " function_speed_x = " << std::hex << pointers.asm_update_speed_x << std::endl;
-	std::cout << " asm_update_speed_y = " << std::hex << pointers.asm_update_speed_y << std::endl;
-	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
+	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_speed_z << std::endl;
 	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
 	std::cout << std::endl;
 }

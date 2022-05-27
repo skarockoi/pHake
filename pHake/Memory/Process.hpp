@@ -47,6 +47,16 @@ public:
 		return pattern_address + offset_value + offset + sizeof(T);
 	}
 
+	bool read_raw(uintptr_t address, void* buffer, size_t size)
+	{
+		SIZE_T bytesRead;
+		if (ReadProcessMemory(this->handle_, reinterpret_cast<LPCVOID>(address), buffer, size, &bytesRead))
+		{
+			return bytesRead == size;
+		}
+		return false;
+	}
+
 	template<class T>
 	void write(uintptr_t address, T value)
 	{

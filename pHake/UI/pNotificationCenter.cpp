@@ -100,7 +100,7 @@ bool pNotificationCenter::IsEverythingFinished()
 uint32_t pNotificationCenter::DecideSleep()
 {
 	if (this->notifications_.size() < 7) // check if there are more than 7 notifications
-		return 10; // if no, then sleep sleep for 10 seconds
+		return 15; // if no, then sleep sleep for 10 seconds
 	else
 		return 5; // if yes, then sleep sleep for 5 seconds
 }
