@@ -463,8 +463,8 @@ void DebugInfo()
 	std::cout << " camera_pos = " << std::hex << pointers.camera_pos << std::endl;
 	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
 	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
-	std::cout << " function_xyz = " << std::hex << pointers.asm_update_position << std::endl;
-	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_speed_z << std::endl;
+	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_position << std::endl;
+	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
 	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
 	std::cout << std::endl;
 }
