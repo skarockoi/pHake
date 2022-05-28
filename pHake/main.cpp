@@ -3,8 +3,10 @@
 
 struct DefaultWeaponValues // stores default weapon values
 {
-	float reload_mp;
 	float bullet_damage;
+	float batch_spread;
+	float reload_mp;
+	float recoil;
 	float range;
 };
 
@@ -21,10 +23,13 @@ void MaxWeapon()
 	{
 		player_weapons_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
 
-		DefaultWeaponValues to_push;
-		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
+		DefaultWeaponValues to_push{};
 		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.bullet_damage();
+		to_push.batch_spread = world.localplayer.weapon_manager.current_weapon.batch_spread();
+		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
+		to_push.recoil = world.localplayer.weapon_manager.current_weapon.recoil();
 		to_push.range = world.localplayer.weapon_manager.current_weapon.range();
+
 		player_weapons_default.push_back(to_push);
 	}
 
@@ -36,6 +41,8 @@ void MaxWeapon()
 			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
 			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
 			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
+			world.localplayer.weapon_manager.current_weapon.recoil(0.f);
+			world.localplayer.weapon_manager.current_weapon.batch_spread(0.f);
 			world.localplayer.weapon_manager.current_weapon.range(99999.f);
 			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
 		}
@@ -52,7 +59,9 @@ void MaxWeapon()
 				world.localplayer.weapon_manager.current_weapon.type(3);
 
 				world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage); // ...and restore the default values
+				world.localplayer.weapon_manager.current_weapon.batch_spread(player_weapons_default.at(index).batch_spread); // ...and restore the default values
 				world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp);
+				world.localplayer.weapon_manager.current_weapon.recoil(player_weapons_default.at(index).recoil);
 				world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range);
 			}
 		}
