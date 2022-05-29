@@ -143,6 +143,12 @@ constexpr auto size_asm_update_speed_z_original = 8;
 std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
 std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
 
+void RestoreOpcode()
+{
+	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original);
+	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
+}
+
 void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
 {
 	static bool restore = false; // check to restore or patch game code
@@ -150,10 +156,8 @@ void NoClip() // the game updates every entity position in a shared function, so
 	if (!settings.noclip)
 	{
 		if (restore)
-		{
-			proc.write_bytes(pointers.asm_update_position, asm_update_position_original); // restore default assembly code if noclip is turned off
-			proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
-		}
+			RestoreOpcode();
+		
 		restore = false;
 		return;
 	}
@@ -445,10 +449,7 @@ void ExitProgram()
 	cfg->Save();
 
 	if (settings.noclip) // restore original opcode
-	{
-		proc.write_bytes(pointers.asm_update_position, asm_update_position_original); 
-		proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
-	}
+		RestoreOpcode();
 
 	proc.Close(); // close handle to gta5
 	menu->Close(); // close UI
