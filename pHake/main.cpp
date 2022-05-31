@@ -145,8 +145,8 @@ std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_origina
 
 void RestoreOpcode()
 {
-	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original);
-	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
+	proc.write_bytes(pointers.asm_update_position, asm_update_position_original);
+	proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
 }
 
 void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
@@ -412,7 +412,7 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 			return false;
 	}
 
-	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original);
+	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
 	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 	
 	return true;
