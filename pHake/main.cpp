@@ -1,5 +1,4 @@
 #include "main.hpp"
-#include <algorithm>
 
 struct DefaultWeaponValues // stores default weapon values
 {

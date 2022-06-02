@@ -137,7 +137,7 @@ public:
 
 	bool ragdoll()
 	{
-		if (!this->read<unsigned char>(0x10A8) == 1)
+		if (!this->read<unsigned char>(0x10B8) == 1)
 			return false;
 		else
 			return true;
