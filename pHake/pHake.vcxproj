@@ -152,6 +152,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Cheats\MaxWeapon.hpp" />
+    <ClInclude Include="Cheats\Misc.hpp" />
+    <ClInclude Include="Cheats\NoClip.hpp" />
+    <ClInclude Include="Globals.hpp" />
     <ClInclude Include="main.hpp" />
     <ClInclude Include="Memory\AssemblyByte.hpp" />
     <ClInclude Include="Memory\Datawrapper.hpp" />
@@ -180,6 +184,9 @@
     <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cheats\MaxWeapon.cpp" />
+    <ClCompile Include="Cheats\Misc.cpp" />
+    <ClCompile Include="Cheats\NoClip.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>

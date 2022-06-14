@@ -1,13 +1,13 @@
 #ifndef _POVERLAY_HPP_
 #define _POVERLAY_HPP_
 
+#include <SFML/Graphics.hpp>
 #include "pButton.hpp"
 #include "pItem.hpp"
 #include "pList.hpp"
 #include "pMouse.hpp"
 #include "pNotificationCenter.hpp"
 
-#include <SFML/Graphics.hpp>
 #include <memory>
 #include <Windows.h>
 #include <Dwmapi.h>

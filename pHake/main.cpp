@@ -1,358 +1,5 @@
 #include "main.hpp"
 
-struct DefaultWeaponValues // stores default weapon values
-{
-	float bullet_damage;
-	float batch_spread;
-	float reload_mp;
-	float recoil;
-	float range;
-};
-
-void MaxWeapon()
-{
-	static std::vector<uintptr_t>			    player_weapons_addresses;
-	static std::vector<DefaultWeaponValues>     player_weapons_default;
-
-	if (std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()) != player_weapons_addresses.end()) // check if current weapons exists in player_weapon_addresses
-	{
-		// already exists
-	}
-	else // save current weapon stats in player_weapon_default to restore after MaxWeapon is turned off
-	{
-		player_weapons_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
-
-		DefaultWeaponValues to_push{};
-		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.bullet_damage();
-		to_push.batch_spread = world.localplayer.weapon_manager.current_weapon.batch_spread();
-		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
-		to_push.recoil = world.localplayer.weapon_manager.current_weapon.recoil();
-		to_push.range = world.localplayer.weapon_manager.current_weapon.range();
-
-		player_weapons_default.push_back(to_push);
-	}
-
-	if (settings.maxweapon)
-	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() != 99999.f) // check if bullet damage is Max mode, if not do custommizations
-		{
-			world.localplayer.weapon_manager.current_weapon.type(5);
-			world.localplayer.weapon_manager.current_weapon.explosion_type(25);
-			world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
-			world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
-			world.localplayer.weapon_manager.current_weapon.recoil(0.f);
-			world.localplayer.weapon_manager.current_weapon.batch_spread(0.f);
-			world.localplayer.weapon_manager.current_weapon.range(99999.f);
-			world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
-		}
-	}
-	else
-	{
-		if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f) // if maxweapon is turned off check for bullet damage == 99999
-		{
-			auto found = std::find(player_weapons_addresses.begin(), player_weapons_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()); // check every current weapon too see if it's still in max mode...
-			if (found != player_weapons_addresses.end())
-			{
-				uint64_t index = found - player_weapons_addresses.begin();
-
-				world.localplayer.weapon_manager.current_weapon.type(3);
-
-				world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage); // ...and restore the default values
-				world.localplayer.weapon_manager.current_weapon.batch_spread(player_weapons_default.at(index).batch_spread); // ...and restore the default values
-				world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp);
-				world.localplayer.weapon_manager.current_weapon.recoil(player_weapons_default.at(index).recoil);
-				world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range);
-			}
-		}
-	}
-}
-
-void GodMode()
-{
-	if (settings.godmode)
-	{
-		if (!world.localplayer.god())
-			world.localplayer.god(1);
-
-		if (!world.localplayer.vehicle.god())
-			world.localplayer.vehicle.god(1);
-	}
-	else
-	{
-		if (world.localplayer.god())
-			world.localplayer.god(0);
-
-		if (world.localplayer.vehicle.god())
-			world.localplayer.vehicle.god(0);
-	}
-}
-
-void NoWanted()
-{
-	if (!settings.nowanted)
-		return;
-	
-	if (world.localplayer.playerinfo.wanted_level() != 0)
-		world.localplayer.playerinfo.wanted_level(0);
-}
-
-void Trigger()
-{
-	if (!settings.trigger)
-		return;
-	
-	static Entity entity(&proc);
-	static bool can_shoot = true;
-	static bool already_shooting = false;
-
-	int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
-	if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-		can_shoot = true;
-	else
-		can_shoot = false;
-
-
-	if (can_shoot && !already_shooting)
-	{
-		entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
-		entity.health(0.f);
-
-		Key::Down::LMouse();
-		already_shooting = true;
-	}
-	else if (!can_shoot && already_shooting)
-	{
-		Key::Up::LMouse();
-		already_shooting = false;
-	}
-}
-
-void RPLoop()
-{
-	if (!settings.rploop)
-		return;
-
-	world.localplayer.playerinfo.wanted_level(5);
-	world.localplayer.playerinfo.wanted_level(0);
-}
-
-constexpr auto size_asm_update_position_original = 10;
-constexpr auto size_asm_update_speed_z_original = 8;
-
-std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
-std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
-
-void RestoreOpcode()
-{
-	proc.write_bytes(pointers.asm_update_position, asm_update_position_original);
-	proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
-}
-
-void NoClip() // the game updates every entity position in a shared function, so we can just check if it's our players turn (player.position.base()) and skip
-{
-	static bool restore = false; // check to restore or patch game code
-
-	if (!settings.noclip)
-	{
-		if (restore)
-			RestoreOpcode();
-		
-		restore = false;
-		return;
-	}
-
-	if (world.localplayer.in_vehicle())
-		return;
-
-	static uintptr_t position_base = 0;
-	if (position_base != world.localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
-	{
-		position_base = world.localplayer.position.base();
-
-		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
-		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
-		patched_code.add({ 0x48, 0x39, 0xC1,							// cmp rcx, rax 
-						  0x74, 0x04,									// je GTA5.exe + 2D
-						  0x0F, 0x29, 0x48, 0x50,						// movaps [rax+50],xmm1 (update entity position)
-						  0x48, 0x83, 0xC4, 0x60,						// add rsp, 60 
-						  0x5B,											// pop rbx
-						  0xC3 });										// ret
-
-		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
-	}
-	
-	if (!restore)
-	{
-		AssemblyByte detour{};
-		detour.addJump(pointers.asm_update_position + 1, proc.base_module_.base + 0x1A, 4); // jmp'ing to proc.base_module_.base + 0x1A because there is a code cave
-
-		proc.write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
-		proc.write_bytes(pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
-
-		restore = true;
-	}
-
-	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
-		return;
-		
-	vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
-	vec3 old_pos = world.localplayer.position.xyz();
-	vec3 add_pos(
-		settings.noclip_speed * (old_pos.x - cam_pos.x),
-		settings.noclip_speed * (old_pos.y - cam_pos.y),
-		settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
-	);
-
-	float len = add_pos.len();
-	if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
-		return;
-		
-	world.localplayer.position.xyz(old_pos + add_pos);
-}
-
-void TeleportToWaypoint()
-{
-	vec3 waypoint = proc.read<vec3>(pointers.waypoint);
-
-	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		menu->notification.Add("No Waypoint set");
-		return;
-	}
-
-	if (world.localplayer.in_vehicle())
-	{
-		if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
-		{
-			menu->notification.Add("Don't move");
-			return;
-		}
-
-		waypoint.z = -210.f;
-		world.localplayer.vehicle.position.xyz(waypoint);
-
-		Key::Down::W();
-		sleep(50);
-		Key::Up::W();
-
-		goto success;
-	}
-
-	if (settings.noclip)
-	{
-		waypoint.z = 300.f;
-		world.localplayer.position.xyz(waypoint);
-
-		Key::Down::W();
-		sleep(50);
-		Key::Up::W();
-
-		goto success;
-	}
-
-	if (world.localplayer.speed_xyz().len() > 0.1)
-	{
-		menu->notification.Add("Don't move");
-		return;
-	}
-
-	waypoint.z = -210.f;
-	world.localplayer.position.xyz(waypoint);
-
-	Key::Down::W();
-	sleep(50);
-	Key::Up::W();
-
-	goto success;
-
-success:
-	menu->notification.Add("Teleported to Waypoint");
-	return;
-}
-
-void BoostVehicle()
-{
-	static std::array<std::string, 4> modes = { "default", "race", "max", "fly" };
-	static uint8_t curr_mode = 0;
-
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-
-	switch (curr_mode)
-	{
-	case 0:
-		world.localplayer.vehicle.gravity(9.8f);
-		world.localplayer.vehicle.handling.traction_max(2.f);
-		world.localplayer.vehicle.handling.traction_min(2.f);
-		world.localplayer.vehicle.handling.acceleration(1.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		break;
-	case 1:
-		world.localplayer.vehicle.gravity(20.f);
-		world.localplayer.vehicle.handling.traction_max(3.f);
-		world.localplayer.vehicle.handling.traction_min(3.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(3.f);
-		break;
-	case 2:
-		world.localplayer.vehicle.gravity(25.f);
-		world.localplayer.vehicle.handling.traction_max(5.f);
-		world.localplayer.vehicle.handling.traction_min(5.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(20.f);
-		break;
-	case 3:
-		world.localplayer.vehicle.gravity(-10.f);
-		world.localplayer.vehicle.handling.traction_max(2.f);
-		world.localplayer.vehicle.handling.traction_min(2.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
-		world.localplayer.vehicle.handling.acceleration(2.f);
-		break;
-	}
-	menu->notification.Add("Vehicle set to " + modes[curr_mode]);
-}
-
-void BoostPlayer()
-{
-	static std::array<std::string, 3> modes = { "default", "fast", "max" };
-	static uint8_t curr_mode = 0;
-
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-
-	switch (curr_mode)
-	{
-	case 0:
-		world.localplayer.playerinfo.walk_mp(1);
-		world.localplayer.playerinfo.swim_mp(1);
-		settings.noclip_speed = 0.05f;
-
-		if (!settings.noclip)
-			world.localplayer.ragdoll(0);
-		break;
-	case 1:
-		world.localplayer.playerinfo.walk_mp(2.5);
-		world.localplayer.playerinfo.swim_mp(2.5);
-		world.localplayer.ragdoll(1);
-		settings.noclip_speed = 0.2f;
-		break;
-	case 2:
-		world.localplayer.playerinfo.walk_mp(2500);
-		world.localplayer.playerinfo.swim_mp(5);
-		world.localplayer.ragdoll(1);
-		settings.noclip_speed = 0.5f;
-		break;
-	}
-	menu->notification.Add("Player set to " + modes[curr_mode]);
-}
-
-void Suicide()
-{
-	world.localplayer.health(0.f);
-	menu->notification.Add("Player health set to 0");
-}
-
 void Toggles()
 {
 	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
@@ -360,7 +7,7 @@ void Toggles()
 		menu->Toggle();
 	});
 
-	GetKeyExecuteWaitForRelease(settings.keys.teleport, []() 
+	GetKeyExecuteWaitForRelease(settings.keys.teleport, []()
 	{
 		TeleportToWaypoint();
 	});
@@ -370,7 +17,7 @@ void Toggles()
 		BoostPlayer();
 	});
 
-	GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []() 
+	GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []()
 	{
 		BoostVehicle();
 	});
@@ -410,17 +57,14 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
 	}
-
-	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
-	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
-	
 	return true;
 }
 
-void ReadConfig()
+bool ReadConfig()
 {
 	cfg = std::make_unique<pSettings>();
-	cfg->Open("Settings//cfg.txt");
+
+	bool success = cfg->Open("Settings//cfg.txt");
 	settings.maxweapon =		  cfg->AddGet<bool>("MaxWeapon", 0); // restore to default values if config file is broken
 	settings.nowanted =			  cfg->AddGet<bool>("NoWanted", 0);
 	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
@@ -432,6 +76,8 @@ void ReadConfig()
 	settings.keys.teleport =	  cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
 	settings.keys.boost_player =  cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
 	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+
+	return success;
 }
 
 void ExitProgram()
@@ -448,7 +94,7 @@ void ExitProgram()
 	cfg->Save();
 
 	if (settings.noclip) // restore original opcode
-		RestoreOpcode();
+		//noclip.RestoreOpcode();
 
 	proc.Close(); // close handle to gta5
 	menu->Close(); // close UI

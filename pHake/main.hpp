@@ -1,20 +1,21 @@
 #ifndef _MAIN_HPP_
 #define _MAIN_HPP_
 
-#include "UI/pOverlay.hpp"
-#include "UI/pSettings.hpp"
+#include "Globals.hpp"
+
 #include "UI/pThread.hpp"
-#include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
 #include "Memory/AssemblyByte.hpp"
 #include "SDK/World.hpp"
 #include "SDK/Entity.hpp"
+#include "Cheats/MaxWeapon.hpp"
+#include "Cheats/NoClip.hpp"
+#include "Cheats/Misc.hpp"
+#include "Globals.hpp"
 
 #include <Windows.h>
-#include <array>
 #include <iostream>
-
-std::array<std::unique_ptr<pThread>, 8> threads; // individual threads used for cheats, keyboard toggles...
+#include <array>
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
 std::unique_ptr<pSettings> cfg; // config file, reads out in ReadConfig(), saves settings values in ExitProgram();
@@ -22,53 +23,17 @@ std::unique_ptr<pSettings> cfg; // config file, reads out in ReadConfig(), saves
 Process    proc;  // access gta5 memory, read/write/...
 World      world; // primarily used to access localplayer object
 
-struct settings // stores important, globally accessed variables
-{
-	bool maxweapon = false;
-	bool nowanted = false;
-	bool godmode = false;
-	bool trigger = false;
-	bool rploop = false;
-	bool noclip = false;
+Settings settings;
+Pointers pointers;
 
-	float noclip_speed = 0.05f;
-	float kmh = 0.f;
+MaxWeapon maxweapon;
+NoClip    noclip;
 
-	struct keys
-	{
-		uint32_t menu = VK_MENU;
-		uint32_t teleport = VK_NUMPAD0;
-		uint32_t boost_player = VK_NUMPAD1;
-		uint32_t boost_vehicle = VK_NUMPAD2;
-	}keys;
-}settings;
-
-struct pointers // initialized in ReadSignatures()
-{
-	uintptr_t world;
-	uintptr_t waypoint;
-	uintptr_t camera_pos;
-	uintptr_t crosshair_value;
-	uintptr_t entity_aiming_at;
-	uintptr_t asm_update_position;
-	uintptr_t asm_update_speed_z;
-	uintptr_t kmh;
-}pointers;
-
-void MaxWeapon(); // cheats, defined in main.cpp
-void GodMode();
-void NoWanted();
-void Trigger();
-void RPLoop();
-void NoClip();
-void TeleportToWaypoint();
-void BoostVehicle();
-void BoostPlayer();
-void Suicide();
+std::array<std::unique_ptr<pThread>, 8> threads; // individual threads used for cheats, keyboard toggles...
 
 void Toggles(); // keyboard toggles for menu, cheats...
 bool ReadSignatures(); // read out signatures
-void ReadConfig(); // read config file
+bool ReadConfig(); // read config file
 void ExitProgram(); // clean up, exit
 void DebugInfo();
 
@@ -87,19 +52,24 @@ int main()
 		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
 	}
-	//DebugInfo();
 
-	ReadConfig();
+	if (!ReadConfig())
+	{
+		MessageBox(NULL, "config file could not be read, restoring...", "Error", NULL);
+	}
 
 	world = World(&proc); // World needs access to gta5 through Process
 
+	maxweapon = MaxWeapon();
+	noclip = NoClip();
+
 	threads = {
-		std::make_unique<pThread>(GodMode, 100), // start cheat threads
+		std::make_unique<pThread>([&]() { maxweapon.Loop(); }, 250),
+		std::make_unique<pThread>(GodMode, 100),
 		std::make_unique<pThread>(NoWanted, 10),
-		std::make_unique<pThread>(MaxWeapon, 250),
 		std::make_unique<pThread>(RPLoop, 1),
 		std::make_unique<pThread>(Trigger, 1),
-		std::make_unique<pThread>(NoClip, 10),
+		std::make_unique<pThread>([&]() { noclip.Loop(); }, 10),
 		std::make_unique<pThread>(Toggles, 10),
 		std::make_unique<pThread>([=]() {
 			world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
@@ -115,7 +85,7 @@ int main()
 	menu->list.AddBool("RpLoop", settings.rploop);
 	menu->list.AddBool("NoClip", settings.noclip);
 	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
-	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint); // fix this
 	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
 	menu->list.AddFunction("Boost Player", BoostPlayer);
 	menu->list.AddFunction("Suicide", Suicide);

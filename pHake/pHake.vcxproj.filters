@@ -22,6 +22,9 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{43e4359f-852c-4817-b7c3-61c0c802b8d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Cheats">
+      <UniqueIdentifier>{f616b6aa-aaff-4c13-a09b-b660859319d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDK\AmmoInfo.hpp">
@@ -102,6 +105,18 @@
     <ClInclude Include="Memory\vec3.hpp">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Cheats\Misc.hpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheats\MaxWeapon.hpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheats\NoClip.hpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -133,6 +148,15 @@
     </ClCompile>
     <ClCompile Include="UI\pItem.cpp">
       <Filter>Header Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheats\MaxWeapon.cpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheats\Misc.cpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheats\NoClip.cpp">
+      <Filter>Source Files\Cheats</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
