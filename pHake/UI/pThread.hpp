@@ -14,6 +14,7 @@ private:
 
 public:
 	pThread() {};
+
 	template <typename T>
 	pThread(T func)
 	{

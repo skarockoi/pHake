@@ -4,17 +4,13 @@
 #include "Globals.hpp"
 
 #include "UI/pThread.hpp"
+#include "UI/pHelper.hpp"
 #include "Memory/Process.hpp"
-#include "Memory/AssemblyByte.hpp"
-#include "SDK/World.hpp"
-#include "SDK/Entity.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoClip.hpp"
 #include "Cheats/Misc.hpp"
-#include "Globals.hpp"
+#include "Cheats/Teleport.hpp"
 
-#include <Windows.h>
-#include <iostream>
 #include <array>
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
@@ -28,8 +24,6 @@ Pointers pointers;
 
 MaxWeapon maxweapon;
 NoClip    noclip;
-
-std::array<std::unique_ptr<pThread>, 8> threads; // individual threads used for cheats, keyboard toggles...
 
 void Toggles(); // keyboard toggles for menu, cheats...
 bool ReadSignatures(); // read out signatures
@@ -63,18 +57,17 @@ int main()
 	maxweapon = MaxWeapon();
 	noclip = NoClip();
 
-	threads = {
-		std::make_unique<pThread>([&]() { maxweapon.Loop(); }, 250),
-		std::make_unique<pThread>(GodMode, 100),
-		std::make_unique<pThread>(NoWanted, 10),
-		std::make_unique<pThread>(RPLoop, 1),
-		std::make_unique<pThread>(Trigger, 1),
-		std::make_unique<pThread>([&]() { noclip.Loop(); }, 10),
-		std::make_unique<pThread>(Toggles, 10),
-		std::make_unique<pThread>([=]() {
-			world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
-			settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1) // read meters per second * 3.6
-	};
+	pThread([=]() { maxweapon.Loop(); }, 250);
+	pThread(GodMode, 100);
+	pThread(NoWanted, 10);
+	pThread(RPLoop, 1);
+	pThread(Trigger, 1);
+	pThread([&]() { noclip.Loop(); }, 10);
+	pThread(Toggles, 10);
+	pThread([=]() {
+		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1); // read meters per second * 3.6
+	
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window

@@ -117,6 +117,9 @@
     <ClInclude Include="Cheats\NoClip.hpp">
       <Filter>Source Files\Cheats</Filter>
     </ClInclude>
+    <ClInclude Include="Cheats\Teleport.hpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

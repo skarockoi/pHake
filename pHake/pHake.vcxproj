@@ -155,6 +155,7 @@
     <ClInclude Include="Cheats\MaxWeapon.hpp" />
     <ClInclude Include="Cheats\Misc.hpp" />
     <ClInclude Include="Cheats\NoClip.hpp" />
+    <ClInclude Include="Cheats\Teleport.hpp" />
     <ClInclude Include="Globals.hpp" />
     <ClInclude Include="main.hpp" />
     <ClInclude Include="Memory\AssemblyByte.hpp" />

@@ -82,9 +82,6 @@ bool ReadConfig()
 
 void ExitProgram()
 {
-	for (size_t i = 0; i < threads.size() - 1; i++) // destroy threads
-		threads[i]->Destroy();
-
 	cfg->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
@@ -94,7 +91,7 @@ void ExitProgram()
 	cfg->Save();
 
 	if (settings.noclip) // restore original opcode
-		//noclip.RestoreOpcode();
+		noclip.RestoreOpcode();
 
 	proc.Close(); // close handle to gta5
 	menu->Close(); // close UI

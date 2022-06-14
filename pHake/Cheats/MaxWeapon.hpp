@@ -5,7 +5,17 @@
 
 class MaxWeapon
 {
+public:
+	MaxWeapon();
+
+	void Loop();
+
 private:
+	void CheckCurrentWeaponAndSave();
+	bool IsWeaponUpgraded();
+	void UpgradeWeapon();
+	void RestoreWeapon();
+
 	struct DefaultWeaponValues // stores default weapon values
 	{
 		float bullet_damage;
@@ -17,15 +27,5 @@ private:
 
 	std::vector<uintptr_t>			    player_weapons_addresses;
 	std::vector<DefaultWeaponValues>    player_weapons_default;
-public:
-	MaxWeapon();
-
-	void Loop();
-
-private:
-	void CheckCurrentWeaponAndSave();
-	bool IsWeaponUpgraded();
-	void UpgradeWeapon();
-	void RestoreWeapon();
 };
 #endif
