@@ -6,7 +6,6 @@
 bool ReadSignatures(); // read out signatures
 bool ReadConfig(); // read config file
 void ExitProgram(); // clean up, exit
-void DebugInfo();
 
 void StartCheats();
 void StartUI();

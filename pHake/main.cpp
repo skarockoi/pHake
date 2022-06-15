@@ -126,20 +126,6 @@ void ExitProgram()
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 }
 
-void DebugInfo()
-{
-	std::cout << " Signatures:" << std::endl;
-	std::cout << " world = " << std::hex << pointers.world << std::endl;
-	std::cout << " waypoint = " << std::hex << pointers.waypoint << std::endl;
-	std::cout << " camera_pos = " << std::hex << pointers.camera_pos << std::endl;
-	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
-	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
-	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_position << std::endl;
-	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
-	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
-	std::cout << std::endl;
-}
-
 void StartCheats()
 {
 	world = World(&proc); // World needs access to gta5 through Process
@@ -176,3 +162,17 @@ void StartUI()
 	menu->list.AddFunction("Exit", ExitProgram);
 	menu->Loop();
 }
+
+//void DebugInfo()
+//{
+//	std::cout << " Signatures:" << std::endl;
+//	std::cout << " world = " << std::hex << pointers.world << std::endl;
+//	std::cout << " waypoint = " << std::hex << pointers.waypoint << std::endl;
+//	std::cout << " camera_pos = " << std::hex << pointers.camera_pos << std::endl;
+//	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
+//	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
+//	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_position << std::endl;
+//	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
+//	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
+//	std::cout << std::endl;
+//}
