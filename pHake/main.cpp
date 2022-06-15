@@ -2,7 +2,6 @@
 
 #include "UI/pThread.hpp"
 #include "UI/pHelper.hpp"
-#include "Memory/Process.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoClip.hpp"
 #include "Cheats/Misc.hpp"
