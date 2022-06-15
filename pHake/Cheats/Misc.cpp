@@ -139,8 +139,8 @@ void BoostPlayer()
 			world.localplayer.ragdoll(0);
 		break;
 	case 1:
-		world.localplayer.playerinfo.walk_mp(2.5);
-		world.localplayer.playerinfo.swim_mp(2.5);
+		world.localplayer.playerinfo.walk_mp(1.5);
+		world.localplayer.playerinfo.swim_mp(1.5);
 		world.localplayer.ragdoll(1);
 		settings.noclip_speed = 0.2f;
 		break;

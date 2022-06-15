@@ -17,8 +17,8 @@ struct ProcessModule
 class Process
 {
 public:
-	DWORD		  pid_;
-	HANDLE		  handle_;
+	DWORD		  pid_; // process id
+	HANDLE		  handle_; // handle to process
 	ProcessModule base_module_;
 
 private:
