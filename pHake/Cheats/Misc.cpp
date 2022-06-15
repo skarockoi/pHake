@@ -9,7 +9,7 @@
 
 void NoWanted()
 {
-	if (settings.nowanted)
+	if (!settings.nowanted)
 		return;
 
 	if (world.localplayer.playerinfo.wanted_level() != 0)

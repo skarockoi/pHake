@@ -44,5 +44,6 @@ struct Pointers // initialized in ReadSignatures()
 	uintptr_t asm_update_position;
 	uintptr_t asm_update_speed_z;
 	uintptr_t kmh;
+
 }; extern Pointers pointers;
 #endif

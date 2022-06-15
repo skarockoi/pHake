@@ -1,5 +1,29 @@
 #include "main.hpp"
 
+#include "UI/pThread.hpp"
+#include "UI/pHelper.hpp"
+#include "Memory/Process.hpp"
+#include "Cheats/MaxWeapon.hpp"
+#include "Cheats/NoClip.hpp"
+#include "Cheats/Misc.hpp"
+#include "Cheats/Teleport.hpp"
+
+#include <array>
+
+std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
+std::unique_ptr<pSettings> cfg; // config file, reads out in ReadConfig(), saves settings values in ExitProgram();
+
+Process    proc;  // access gta5 memory, read/write/...
+World      world; // primarily used to access localplayer object
+
+Settings settings;
+Pointers pointers;
+
+MaxWeapon maxweapon;
+NoClip    noclip;
+
+std::vector<std::unique_ptr<pThread>> threads; // individual threads used for cheats, keyboard toggles...
+
 void Toggles()
 {
 	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
@@ -82,6 +106,10 @@ bool ReadConfig()
 
 void ExitProgram()
 {
+	for (auto& i : threads) {
+		i.get()->Destroy(); // stop cheat threads
+	}
+
 	cfg->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
@@ -110,4 +138,41 @@ void DebugInfo()
 	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
 	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
 	std::cout << std::endl;
+}
+
+void StartCheats()
+{
+	world = World(&proc); // World needs access to gta5 through Process
+
+	maxweapon = MaxWeapon();
+	threads.push_back(std::make_unique<pThread>([=]() {maxweapon.Loop(); }, 100));
+	threads.push_back(std::make_unique<pThread>(GodMode, 100));
+	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
+	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
+	threads.push_back(std::make_unique<pThread>(Trigger, 1));
+	noclip = NoClip();
+	threads.push_back(std::make_unique<pThread>([=]() {noclip.Loop(); }, 10));
+	threads.push_back(std::make_unique<pThread>(Toggles, 10));
+	threads.push_back(std::make_unique<pThread>([=]() {
+		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1)); // read meters per second * 3.6
+}
+
+void StartUI()
+{
+	menu = std::make_unique<pOverlay>(); // initialize game UI
+	menu->Create("Grand Theft Auto V");  // overlay gta window
+	menu->list.AddBool("MaxWeapon", settings.maxweapon);
+	menu->list.AddBool("NoWanted", settings.nowanted);
+	menu->list.AddBool("Godmode", settings.godmode);
+	menu->list.AddBool("Trigger", settings.trigger);
+	menu->list.AddBool("RpLoop", settings.rploop);
+	menu->list.AddBool("NoClip", settings.noclip);
+	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
+	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint); // fix this
+	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
+	menu->list.AddFunction("Boost Player", BoostPlayer);
+	menu->list.AddFunction("Suicide", Suicide);
+	menu->list.AddFunction("Exit", ExitProgram);
+	menu->Loop();
 }
