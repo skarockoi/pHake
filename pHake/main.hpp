@@ -10,13 +10,13 @@ void StartUI();
 
 int main()
 {
-	if (!AlreadyRunning()) // trying to find gta process
+	if (!AlreadyRunning())
 	{
 		MessageBox(NULL, "pHake is already running", "Error", NULL);
 		return false;
 	}
 
-	if (!proc.AttachProcess("GTA5.exe")) // trying to find gta process
+	if (!proc.AttachProcess("GTA5.exe"))
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
