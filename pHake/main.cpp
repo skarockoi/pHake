@@ -154,7 +154,7 @@ void StartUI()
 	menu->list.AddBool("RpLoop", settings.rploop);
 	menu->list.AddBool("NoClip", settings.noclip);
 	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
-	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint); // fix this
+	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint);
 	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
 	menu->list.AddFunction("Boost Player", BoostPlayer);
 	menu->list.AddFunction("Suicide", Suicide);
