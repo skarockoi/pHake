@@ -106,10 +106,9 @@ bool ReadConfig()
 
 void ExitProgram()
 {
-	for (auto& i : threads) {
+	for (auto& i : threads) 
 		i.get()->Destroy(); // stop cheat threads
-	}
-
+	
 	cfg->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
