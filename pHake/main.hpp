@@ -30,7 +30,7 @@ int main()
 
 	if (!ReadConfig())
 	{
-		MessageBox(NULL, "config file could not be read, restoring...", "Error", NULL);
+		MessageBox(NULL, "config file could not be read, restoring...", "Note", NULL);
 	}
 
 	StartCheats();
