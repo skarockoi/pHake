@@ -1,6 +1,3 @@
-#ifndef _MAIN_HPP_
-#define _MAIN_HPP_
-
 #include "Globals.hpp"
 
 bool ReadSignatures(); // read out signatures
@@ -33,4 +30,3 @@ int main()
 	StartUI(); 
 	ExitProgram();
 }
-#endif
