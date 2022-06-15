@@ -105,7 +105,7 @@ void pOverlay::SetWindowTransparentAndNotClickableEx(HWND handle)
 
 	DwmExtendFrameIntoClientArea(handle, &margins);
 	SetWindowPos(handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-	SetWindowLong(handle, GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+	SetWindowLong(handle, GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
 }
 
 void pOverlay::FixPosition()

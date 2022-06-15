@@ -1,5 +1,6 @@
 #include "Globals.hpp"
 
+bool AlreadyRunning(); // check if cheat is already running
 bool ReadSignatures(); // read out signatures
 bool ReadConfig(); // read config file
 void ExitProgram(); // clean up, exit
@@ -9,6 +10,12 @@ void StartUI();
 
 int main()
 {
+	if (!AlreadyRunning()) // trying to find gta process
+	{
+		MessageBox(NULL, "pHake is already running", "Error", NULL);
+		return false;
+	}
+
 	if (!proc.AttachProcess("GTA5.exe")) // trying to find gta process
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);

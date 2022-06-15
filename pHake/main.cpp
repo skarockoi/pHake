@@ -55,6 +55,27 @@ void Toggles()
 	}
 }
 
+bool AlreadyRunning()
+{
+	auto m_hMutex = CreateMutex(NULL, FALSE, "pHake.exe");
+
+	// Check if mutex is created succesfully
+	switch (GetLastError())
+	{
+	case ERROR_SUCCESS:
+		break;
+
+	case ERROR_ALREADY_EXISTS:
+		return false;
+
+	default:
+		// Failed to create mutex by unknown reason
+		return false;
+	}
+
+	return true;
+}
+
 bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithreading
 {
 	std::thread t0([]() { pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); });
