@@ -9,11 +9,7 @@
 class Vehicle : public DataWrapper<0x938 + 0x8>
 {
 public:
-	Vehicle() {}
-	Vehicle(Process* const& proc) :DataWrapper(proc) {
-		position = Position(proc);
-		handling = VehicleHandling(proc);
-	}
+	Vehicle(){}
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

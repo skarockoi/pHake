@@ -161,5 +161,8 @@
     <ClCompile Include="Cheats\NoClip.cpp">
       <Filter>Source Files\Cheats</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\Datawrapper.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

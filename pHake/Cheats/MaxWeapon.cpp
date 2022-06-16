@@ -27,15 +27,7 @@ void MaxWeapon::CheckCurrentWeaponAndSave()
 	else // save current weapon stats in player_weapon_default to restore after MaxWeapon is turned off
 	{
 		player_weapons_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
-
-		DefaultWeaponValues to_push{};
-		to_push.bullet_damage = world.localplayer.weapon_manager.current_weapon.bullet_damage();
-		to_push.batch_spread = world.localplayer.weapon_manager.current_weapon.batch_spread();
-		to_push.reload_mp = world.localplayer.weapon_manager.current_weapon.reload_mp();
-		to_push.recoil = world.localplayer.weapon_manager.current_weapon.recoil();
-		to_push.range = world.localplayer.weapon_manager.current_weapon.range();
-
-		player_weapons_default.push_back(to_push);
+		player_weapons_default.push_back(world.localplayer.weapon_manager.current_weapon);
 	}
 }
 
@@ -66,11 +58,10 @@ void MaxWeapon::RestoreWeapon()
 		uint64_t index = found - player_weapons_addresses.begin();
 
 		world.localplayer.weapon_manager.current_weapon.type(3);
-		world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage); // ...and restore the default values
-		world.localplayer.weapon_manager.current_weapon.batch_spread(player_weapons_default.at(index).batch_spread); // ...and restore the default values
-		world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp);
-		world.localplayer.weapon_manager.current_weapon.recoil(player_weapons_default.at(index).recoil);
-		world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range);
+		world.localplayer.weapon_manager.current_weapon.bullet_damage(player_weapons_default.at(index).bullet_damage()); // ...and restore the default values
+		world.localplayer.weapon_manager.current_weapon.batch_spread(player_weapons_default.at(index).batch_spread()); // ...and restore the default values
+		world.localplayer.weapon_manager.current_weapon.reload_mp(player_weapons_default.at(index).reload_mp());
+		world.localplayer.weapon_manager.current_weapon.recoil(player_weapons_default.at(index).recoil());
+		world.localplayer.weapon_manager.current_weapon.range(player_weapons_default.at(index).range());
 	}
 }
- 

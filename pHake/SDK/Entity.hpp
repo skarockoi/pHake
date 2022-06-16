@@ -13,10 +13,6 @@ class Entity : public DataWrapper<0x14E0 + 0x4>
 {
 public:
 	Entity() {}
-	Entity(Process* const& proc) :DataWrapper(proc) {
-		position = Position(proc);
-		vehicle = Vehicle(proc);
-	}
 
 	void UpdateAll(uint64_t baseAddress)
 	{

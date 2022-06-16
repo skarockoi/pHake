@@ -7,10 +7,7 @@
 class WeaponManager : public DataWrapper<0x20 + 0x8>
 {
 public:
-	WeaponManager() {}
-	WeaponManager(Process* const& proc) :DataWrapper(proc) {
-		current_weapon = Weapon(proc);
-	}
+	WeaponManager(){}
 
 	void UpdateAll(uintptr_t baseAddress)
 	{
@@ -18,6 +15,5 @@ public:
 		current_weapon.UpdateAll(this->read<uintptr_t>(0x20));
 	}
 	Weapon current_weapon;
-
 };
 #endif

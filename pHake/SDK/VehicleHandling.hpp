@@ -7,8 +7,7 @@
 class VehicleHandling : public DataWrapper<0x338 + 0x4>
 {
 public:
-	VehicleHandling() {}
-	VehicleHandling(Process* const& proc) :DataWrapper(proc) {}
+	VehicleHandling(){}
 
 	float acceleration()
 	{

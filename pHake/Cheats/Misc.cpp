@@ -41,7 +41,7 @@ void Trigger()
 	if (!settings.trigger)
 		return;
 
-	static Entity entity(&proc);
+	Entity entity;
 	static bool can_shoot = true;
 	static bool already_shooting = false;
 

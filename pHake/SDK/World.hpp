@@ -8,10 +8,7 @@
 class World : public DataWrapper<0x8 + 0x8>
 {
 public:
-	World() {}
-	World(Process* const& proc) :DataWrapper(proc) {
-		localplayer = Player(proc);
-	}
+	World(){}
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

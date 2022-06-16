@@ -147,8 +147,6 @@ void ExitProgram()
 
 void StartCheats()
 {
-	world = World(&proc); // World needs access to gta5 through Process
-
 	maxweapon = MaxWeapon();
 	threads.push_back(std::make_unique<pThread>([=]() {maxweapon.Loop(); }, 100));
 	threads.push_back(std::make_unique<pThread>(GodMode, 100));
@@ -159,6 +157,7 @@ void StartCheats()
 	threads.push_back(std::make_unique<pThread>([=]() {noclip.Loop(); }, 10));
 	threads.push_back(std::make_unique<pThread>(Toggles, 10));
 	threads.push_back(std::make_unique<pThread>([=]() {
+		//std::cout << std::hex << &ReadWriteFactory::process << std::endl; std::cin.get();
 		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1)); // read meters per second * 3.6
 }

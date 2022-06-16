@@ -9,14 +9,11 @@ class Weapon : public DataWrapper<0x2F4 + 0x4>
 {
 public:
 	Weapon() {}
-	Weapon(Process* const& proc) :DataWrapper(proc) {
-		ammoinfo = AmmoInfo(proc);
-	}
 
 	void UpdateAll(uintptr_t baseAddress)
 	{
 		this->Update(baseAddress);
-		ammoinfo.Update(process_->read_multi_address(this->base_, { 0x60, 0x8, 0x0 }));
+		ammoinfo.Update(process->read_multi_address(this->base_, { 0x60, 0x8, 0x0 }));
 	}
 
 	int32_t type()

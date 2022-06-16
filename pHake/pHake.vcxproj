@@ -194,6 +194,7 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="Memory\Datawrapper.cpp" />
     <ClCompile Include="Memory\Process.cpp" />
     <ClCompile Include="UI\pButton.cpp" />
     <ClCompile Include="UI\pItem.cpp" />

@@ -7,8 +7,7 @@
 class PlayerInfo : public DataWrapper<0xC80 + 0x4>
 {
 public:
-	PlayerInfo() {}
-	PlayerInfo(Process* const& proc) :DataWrapper(proc) {}
+	PlayerInfo(){}
 
 	float walk_mp()
 	{

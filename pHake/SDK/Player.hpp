@@ -12,13 +12,7 @@
 class Player : public DataWrapper<0x14E0 + 0x4>
 {
 public:
-	Player() {}
-	Player(Process* const& proc) :DataWrapper(proc) {
-		position = Position(proc);
-		vehicle = Vehicle(proc);
-		playerinfo = PlayerInfo(proc);
-		weapon_manager = WeaponManager(proc);
-	}
+	Player(){}
 
 	void UpdateAll(uint64_t baseAddress)
 	{
