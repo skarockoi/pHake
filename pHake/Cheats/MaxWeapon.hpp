@@ -16,7 +16,7 @@ private:
 	void UpgradeWeapon();
 	void RestoreWeapon();
 
-	std::vector<uintptr_t> player_weapons_addresses;
-	std::vector<Weapon>    player_weapons_default;
+	std::vector<uintptr_t> weapon_addresses;
+	std::vector<Weapon>    weapon_defaults;
 };
 #endif
