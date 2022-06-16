@@ -96,7 +96,7 @@
     <ClInclude Include="main.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\Entity.hpp">
+    <ClInclude Include="SDK\NPC.hpp">
       <Filter>Header Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="Memory\AssemblyByte.hpp">

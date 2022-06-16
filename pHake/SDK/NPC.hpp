@@ -1,5 +1,5 @@
-#ifndef _ENTITY_HPP_
-#define _ENTITY_HPP_
+#ifndef _NPC_HPP_
+#define _NPC_HPP_
 
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
@@ -9,10 +9,10 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class Entity : public DataWrapper<0x14E0 + 0x4>
+class NPC : public DataWrapper<0x14E0 + 0x4>
 {
 public:
-	Entity() {}
+	NPC() {}
 
 	void UpdateAll(uint64_t baseAddress)
 	{

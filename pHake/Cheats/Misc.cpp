@@ -3,7 +3,7 @@
 #include "../Globals.hpp"
 
 #include "../UI/pHelper.hpp"
-#include "../SDK/Entity.hpp"
+#include "../SDK/NPC.hpp"
 
 #include <array>
 
@@ -41,7 +41,7 @@ void Trigger()
 	if (!settings.trigger)
 		return;
 
-	static Entity entity;
+	static NPC entity;
 	static bool can_shoot = true;
 	static bool already_shooting = false;
 
