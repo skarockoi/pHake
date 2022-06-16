@@ -9,27 +9,24 @@ public:
 	static Process* process;
 };
 
-template <uintptr_t maxSize> class DataWrapper : public ReadWriteFactory  // class to download whole objects with one RPM call
+template <uintptr_t MaxOffset> class DataWrapper : public ReadWriteFactory  // class to download whole objects with one RPM call
 {
 public:
 	DataWrapper()
 	{
-		this->data_ = std::make_unique<uint8_t[]>(maxSize);
-		this->max_offset_ = maxSize;
+		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
 	};
 
 	DataWrapper(const DataWrapper& ext) {
-		this->data_ = std::make_unique<uint8_t[]>(maxSize);
-		this->max_offset_ = maxSize;		
-		memcpy(this->data_.get(), ext.data_.get(), this->max_offset_);
+		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
+		memcpy(this->data_.get(), ext.data_.get(), MaxOffset);
 
 		this->base_ = ext.base_;
 	}
 
 	DataWrapper operator = (const DataWrapper& ext) {
-		this->data_ = std::make_unique<uint8_t[]>(maxSize);
-		this->max_offset_ = maxSize;
-		memcpy(this->data_.get(), ext.data_.get(), this->max_offset_);
+		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
+		memcpy(this->data_.get(), ext.data_.get(), MaxOffset);
 
 		this->base_ = ext.base_;
 	}
@@ -37,7 +34,7 @@ public:
 	void Update(uintptr_t baseAddress)
 	{
 		this->base_ = baseAddress;
-		ReadProcessMemory(this->process->handle_, (void*)(baseAddress), this->data_.get(), this->max_offset_, NULL);
+		ReadProcessMemory(this->process->handle_, (void*)(baseAddress), this->data_.get(), MaxOffset, NULL);
 	}
 
 	template <typename T>
@@ -57,6 +54,5 @@ public:
 protected:
 	std::unique_ptr<uint8_t[]> data_;
 	uintptr_t base_ = 0x0;
-	uintptr_t max_offset_ = 0x0;
 };
 #endif
