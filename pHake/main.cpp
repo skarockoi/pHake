@@ -68,7 +68,6 @@ bool AlreadyRunning()
 		return false;
 
 	default:
-		// Failed to create mutex by unknown reason
 		return false;
 	}
 
