@@ -1,5 +1,5 @@
 # pHake GTA:O Mod Menu 
-![pHake4](https://user-images.githubusercontent.com/52607377/166122940-60770068-410b-413c-b21d-622af5a7e95d.png)
+![pHake4](https://user-images.githubusercontent.com/52607377/174328485-6f41f12a-e79a-457d-a565-b2bf6687166a.png)
 # Features<br/>
 - MaxWeapon<br/>
 - NoWanted<br/>
@@ -26,11 +26,11 @@
 # Download
 <a href="https://github.com/xhz8s/pHake/releases/download/5.4/pHake_5.4_1.60.zip">pHake 5.4 (1.60 All Platforms)</a>
 
-# Code Structure
-![Structure](https://user-images.githubusercontent.com/52607377/173834870-a3e36182-bc2f-47c9-aef4-00e13a7d0e0f.png)
-
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
 2. Compile it as x64 Release/Debug
 3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">dependencies</a> to the executable folder <br/>
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.4/pHake_5.4_1.60.zip">release</a> as an example
+
+# Code Structure
+![Structure](https://user-images.githubusercontent.com/52607377/173834870-a3e36182-bc2f-47c9-aef4-00e13a7d0e0f.png)
