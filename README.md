@@ -31,3 +31,6 @@
 2. Compile it as x64 Release/Debug
 3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">dependencies</a> to the executable folder <br/>
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.4/pHake_5.4_1.60.zip">release</a> as an example
+
+# Code Structure
+![Structure](https://user-images.githubusercontent.com/52607377/173834870-a3e36182-bc2f-47c9-aef4-00e13a7d0e0f.png)
