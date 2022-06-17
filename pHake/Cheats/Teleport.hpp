@@ -21,7 +21,7 @@ namespace {
 
 	}
 
-	static void MovePlayer()
+	static void Move()
 	{
 		Key::Down::W();
 		sleep(50);
@@ -47,7 +47,7 @@ void TeleportToWaypoint()
 
 		waypoint.z = -210.f;
 		world.localplayer.vehicle.position.xyz(waypoint);
-		MovePlayer();
+		Move();
 
 		goto success;
 	}
@@ -56,7 +56,7 @@ void TeleportToWaypoint()
 	{
 		waypoint.z = 300.f;
 		world.localplayer.position.xyz(waypoint);
-		MovePlayer();
+		Move();
 
 		goto success;
 	}
@@ -69,7 +69,7 @@ void TeleportToWaypoint()
 
 	waypoint.z = -210.f;
 	world.localplayer.position.xyz(waypoint);
-	MovePlayer();
+	Move();
 
 	goto success;
 

@@ -25,6 +25,9 @@ std::vector<std::unique_ptr<pThread>> threads; // individual threads used for ch
 
 void Toggles()
 {
+	if (menu == nullptr)
+		return;
+	
 	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
 	{
 		menu->Toggle();
@@ -158,12 +161,12 @@ void StartCheats()
 	maxweapon = MaxWeapon();
 	noclip = NoClip();
 
-	threads.push_back(std::make_unique<pThread>([=]() {maxweapon.Loop(); }, 100));
+	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
 	threads.push_back(std::make_unique<pThread>(GodMode, 100));
 	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
 	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
 	threads.push_back(std::make_unique<pThread>(Trigger, 1));
-	threads.push_back(std::make_unique<pThread>([=]() {noclip.Loop(); }, 10));
+	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
 	threads.push_back(std::make_unique<pThread>(Toggles, 10));
 }
 
