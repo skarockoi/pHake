@@ -78,7 +78,7 @@ std::string pSettings::GetKeyByName(const std::string& Key)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos)
+		if ((*file_content_)[i].find(Key + " ") != std::string::npos)
 			return (*file_content_)[i].substr((*file_content_)[i].find("=") + 1);
 	}
 	return "";
@@ -88,7 +88,7 @@ bool pSettings::CheckExistanceOfKey(const std::string& Key)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos) {
+		if ((*file_content_)[i].find(Key + " ") != std::string::npos) {
 			return true;
 		}
 	}
@@ -99,7 +99,7 @@ void pSettings::ChangeKeyValue(const std::string& Key, const std::string& Value)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos)
+		if ((*file_content_)[i].find(Key + " ") != std::string::npos)
 		{
 			(*file_content_)[i].clear();
 			(*file_content_)[i] = Key + " = " + Value;

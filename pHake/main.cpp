@@ -115,6 +115,7 @@ bool ReadConfig()
 	settings.nowanted =			  cfg->AddGet<bool>("NoWanted", 0);
 	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
 	settings.trigger =			  cfg->AddGet<bool>("Trigger", 0);
+	settings.trigger_npc =		  cfg->AddGet<bool>("TriggerNPC", 1);
 	settings.rploop =			  cfg->AddGet<bool>("RpLoop", 0);
 	settings.noclip =			  cfg->AddGet<bool>("NoClip", 0);
 	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
@@ -135,6 +136,7 @@ void ExitProgram()
 	cfg->Edit<bool>("NoWanted", settings.nowanted);
 	cfg->Edit<bool>("Godmode", settings.godmode);
 	cfg->Edit<bool>("Trigger", settings.trigger);
+	cfg->Edit<bool>("TriggerNPC", settings.trigger_npc);
 	cfg->Edit<bool>("RpLoop", settings.rploop);
 	cfg->Edit<bool>("NoClip", settings.noclip);
 	cfg->Save();
@@ -149,7 +151,7 @@ void ExitProgram()
 
 void StartCheats()
 {
-	ReadWriteFactory::process = &proc;
+	ReadWriteFactory::process = &proc; // connect ReadWriteFactory to use Datawrapper
 
 	threads.push_back(std::make_unique<pThread>([=]() {
 
@@ -159,13 +161,12 @@ void StartCheats()
 	}, 1));
 
 	maxweapon = MaxWeapon();
-	noclip = NoClip();
-
 	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
 	threads.push_back(std::make_unique<pThread>(GodMode, 100));
 	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
 	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
 	threads.push_back(std::make_unique<pThread>(Trigger, 1));
+	noclip = NoClip();
 	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
 	threads.push_back(std::make_unique<pThread>(Toggles, 10));
 }

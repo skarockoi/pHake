@@ -21,7 +21,9 @@ struct Settings // stores important, globally accessed variables
 	bool rploop = false;
 	bool noclip = false;
 
+	bool  trigger_npc = true;
 	float noclip_speed = 0.05f;
+
 	float kmh = 0.f;
 
 	struct Keys

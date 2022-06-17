@@ -46,7 +46,9 @@ void Trigger()
 	static bool already_shooting = false;
 
 	int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
-	if (id_value > 0 && id_value < 3) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
+
+
+	if (id_value > 0 && id_value < 2 + settings.trigger_npc) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
 		can_shoot = true;
 	else
 		can_shoot = false;
