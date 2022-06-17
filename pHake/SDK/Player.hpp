@@ -12,7 +12,7 @@
 class Player : public DataWrapper<0x14E0 + 0x4>
 {
 public:
-	Player(){}
+	using DataWrapper::DataWrapper;
 
 	void UpdateAll(uint64_t baseAddress)
 	{

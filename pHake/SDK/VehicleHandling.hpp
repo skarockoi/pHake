@@ -7,7 +7,7 @@
 class VehicleHandling : public DataWrapper<0x338 + 0x4>
 {
 public:
-	VehicleHandling(){}
+	using DataWrapper::DataWrapper;
 
 	float acceleration()
 	{

@@ -8,7 +8,7 @@
 class World : public DataWrapper<0x8 + 0x8>
 {
 public:
-	World(){}
+	using DataWrapper::DataWrapper;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

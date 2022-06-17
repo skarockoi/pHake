@@ -5,28 +5,29 @@
 
 #include "../UI/pHelper.hpp"
 
-bool IsPlayerMoving()
-{
-	if (world.localplayer.speed_xyz().len() > 0.1)
-		return true;
-	return false;
-}
+namespace {
+	bool IsPlayerMoving()
+	{
+		if (world.localplayer.speed_xyz().len() > 0.1)
+			return true;
+		return false;
+	}
 
-bool IsVehicleMoving()
-{
-	if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
-		return true;
-	return false;
-	
-}
+	bool IsVehicleMoving()
+	{
+		if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
+			return true;
+		return false;
 
-void MovePlayer()
-{
-	Key::Down::W();
-	sleep(50);
-	Key::Up::W();
-}
+	}
 
+	static void MovePlayer()
+	{
+		Key::Down::W();
+		sleep(50);
+		Key::Up::W();
+	}
+}
 void TeleportToWaypoint()
 {
 	vec3 waypoint = proc.read<vec3>(pointers.waypoint);

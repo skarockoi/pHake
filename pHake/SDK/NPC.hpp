@@ -12,7 +12,7 @@
 class NPC : public DataWrapper<0x14E0 + 0x4>
 {
 public:
-	NPC() {}
+	using DataWrapper::DataWrapper;
 
 	void UpdateAll(uint64_t baseAddress)
 	{

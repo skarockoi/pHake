@@ -6,10 +6,10 @@
 #include "Position.hpp"
 #include "VehicleHandling.hpp"
 
-class Vehicle : public DataWrapper<0x938 + 0x8>
+class Vehicle : public DataWrapper<0xC5C + 0x8>
 {
 public:
-	Vehicle(){}
+	using DataWrapper::DataWrapper;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{
@@ -105,16 +105,6 @@ public:
 		this->write<float>(0x7F8, value);
 	}
 
-	float gravity()
-	{
-		return this->read<float>(0xC5C);
-	}
-
-	void gravity(float value)
-	{
-		this->write<float>(0xC5C, value);
-	}
-
 	float engine_health2()
 	{
 		return this->read<float>(0x908);
@@ -126,5 +116,15 @@ public:
 	}
 
 	VehicleHandling handling;
+
+	float gravity()
+	{
+		return this->read<float>(0xC5C);
+	}
+
+	void gravity(float value)
+	{
+		this->write<float>(0xC5C, value);
+	}
 };
 #endif

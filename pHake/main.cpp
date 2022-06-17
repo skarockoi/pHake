@@ -146,19 +146,25 @@ void ExitProgram()
 
 void StartCheats()
 {
+	ReadWriteFactory::process = &proc;
+
+	threads.push_back(std::make_unique<pThread>([=]() {
+
+		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // read meters per second * 3.6
+
+	}, 1));
+
 	maxweapon = MaxWeapon();
+	noclip = NoClip();
+
 	threads.push_back(std::make_unique<pThread>([=]() {maxweapon.Loop(); }, 100));
 	threads.push_back(std::make_unique<pThread>(GodMode, 100));
 	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
 	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
 	threads.push_back(std::make_unique<pThread>(Trigger, 1));
-	noclip = NoClip();
 	threads.push_back(std::make_unique<pThread>([=]() {noclip.Loop(); }, 10));
 	threads.push_back(std::make_unique<pThread>(Toggles, 10));
-	threads.push_back(std::make_unique<pThread>([=]() {
-		//std::cout << std::hex << &ReadWriteFactory::process << std::endl; std::cin.get();
-		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); }, 1)); // read meters per second * 3.6
 }
 
 void StartUI()

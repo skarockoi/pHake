@@ -32,7 +32,6 @@ int main()
 	{
 		MessageBox(NULL, "config file could not be read, restoring...", "Note", NULL);
 	}
-	ReadWriteFactory::process = &proc;
 
 	StartCheats();
 	StartUI(); 

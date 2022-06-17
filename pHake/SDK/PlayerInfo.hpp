@@ -7,7 +7,7 @@
 class PlayerInfo : public DataWrapper<0xC80 + 0x4>
 {
 public:
-	PlayerInfo(){}
+	using DataWrapper::DataWrapper;
 
 	float walk_mp()
 	{

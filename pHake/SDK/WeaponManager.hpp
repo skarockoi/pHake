@@ -7,7 +7,7 @@
 class WeaponManager : public DataWrapper<0x20 + 0x8>
 {
 public:
-	WeaponManager(){}
+	using DataWrapper::DataWrapper;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

@@ -76,6 +76,8 @@ void RPLoop()
 	world.localplayer.playerinfo.wanted_level(0);
 }
 
+
+
 void BoostVehicle()
 {
 	static std::array<std::string, 4> modes = { "default", "race", "max", "fly" };
@@ -85,14 +87,24 @@ void BoostVehicle()
 	if (curr_mode > modes.size() - 1)
 		curr_mode = 0;
 
+
+	static Vehicle vehicle_defaults;
+
+	if (vehicle_defaults.base() ^ world.localplayer.vehicle.base())
+	{
+		vehicle_defaults = world.localplayer.vehicle;
+		curr_mode = 1;
+	}
+	
+	
 	switch (curr_mode)
 	{
 	case 0:
-		world.localplayer.vehicle.gravity(9.8f);
-		world.localplayer.vehicle.handling.traction_max(2.f);
-		world.localplayer.vehicle.handling.traction_min(2.f);
-		world.localplayer.vehicle.handling.acceleration(1.f);
-		world.localplayer.vehicle.handling.collisiondamage(0.f);
+		world.localplayer.vehicle.gravity(vehicle_defaults.gravity());
+		world.localplayer.vehicle.handling.traction_max(vehicle_defaults.handling.traction_max());
+		world.localplayer.vehicle.handling.traction_min(vehicle_defaults.handling.traction_min());
+		world.localplayer.vehicle.handling.acceleration(vehicle_defaults.handling.acceleration());
+		world.localplayer.vehicle.handling.collisiondamage(vehicle_defaults.handling.collisiondamage());
 		break;
 	case 1:
 		world.localplayer.vehicle.gravity(20.f);

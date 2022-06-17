@@ -7,7 +7,7 @@
 class AmmoInfo : public DataWrapper<0x18 + 0x4>
 {
 public:
-	AmmoInfo(){}
+	using DataWrapper::DataWrapper;
 
 	uint32_t ammo()
 	{

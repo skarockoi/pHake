@@ -15,20 +15,19 @@ public:
 	DataWrapper()
 	{
 		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
-	};
+	}
 
 	DataWrapper(const DataWrapper& ext) {
 		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
 		memcpy(this->data_.get(), ext.data_.get(), MaxOffset);
-
 		this->base_ = ext.base_;
 	}
 
-	DataWrapper operator = (const DataWrapper& ext) {
-		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
+	DataWrapper& operator=(const DataWrapper& ext) {
+		if (this == &ext) return *this;
 		memcpy(this->data_.get(), ext.data_.get(), MaxOffset);
-
 		this->base_ = ext.base_;
+		return *this;
 	}
 
 	void Update(uintptr_t baseAddress)
@@ -40,7 +39,13 @@ public:
 	template <typename T>
 	T read(uintptr_t offset)
 	{
+		//static_assert(offset > MaxOffset, "Exceeded maximum offset");
 		return *reinterpret_cast<T*>(reinterpret_cast<uintptr_t>(&this->data_[offset]));
+	}
+
+	void write(const DataWrapper& ext)
+	{
+		WriteProcessMemory(this->process->handle_, (void*)(this->base_), ext.data_.get(), sizeof(MaxOffset), 0);
 	}
 
 	template<class T>
