@@ -119,10 +119,10 @@ bool ReadConfig()
 	settings.rploop =			  ini->Get<bool>("RpLoop", 0);
 	settings.noclip =			  ini->Get<bool>("NoClip", 0);
 	ini->Comment("# Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
-	settings.keys.menu =		  ini->Get<uint32_t>("Menu Key", VK_MENU);
-	settings.keys.teleport =	  ini->Get<uint32_t>("Teleport Key", VK_NUMPAD0);
-	settings.keys.boost_player =  ini->Get<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
-	settings.keys.boost_vehicle = ini->Get<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+	settings.keys.menu =		  ini->Get<uint32_t>("Toggle Menu", VK_MENU);
+	settings.keys.teleport =	  ini->Get<uint32_t>("Teleport To Waypoint", VK_NUMPAD0);
+	settings.keys.boost_player =  ini->Get<uint32_t>("Boost Vehicle", VK_NUMPAD1);
+	settings.keys.boost_vehicle = ini->Get<uint32_t>("Boost Player", VK_NUMPAD2);
 
 	return success;
 }
