@@ -38,13 +38,12 @@ void GodMode()
 
 void Trigger()
 {
-	static NPC  entity;
-	static bool can_shoot = true;
-	static bool already_shooting = false;
-
 	if (!settings.trigger)
 		return;
 
+	static bool can_shoot = true;
+	static bool already_shooting = false;
+	static NPC  entity;
 
 	entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
 	if (entity.base() == 0x0)
@@ -56,18 +55,15 @@ void Trigger()
 		can_shoot = false;
 
 
-	if (can_shoot && !already_shooting)
+	if (can_shoot && !already_shooting && entity.health() > 100)
 	{
-		if (entity.is_player() && entity.health() > 100)
+		if (entity.is_player())
 		{
 			Key::Down::LMouse();
 			already_shooting = true;
 		}
 		else
-		{
-			if (entity.health() > 100.f)
-				entity.health(0.f);
-		}
+			entity.health(0.f);
 	}
 	else if (!can_shoot && already_shooting)
 	{
