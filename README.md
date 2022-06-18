@@ -1,6 +1,6 @@
 # pHake GTA:O Mod Menu 
 # Features
-<img align="right" src="https://user-images.githubusercontent.com/52607377/174328485-6f41f12a-e79a-457d-a565-b2bf6687166a.png" width=75% height=75%>
+<img align="right" src="https://user-images.githubusercontent.com/52607377/174328485-6f41f12a-e79a-457d-a565-b2bf6687166a.png">
 - MaxWeapon<br/>
 - NoWanted<br/>
 - GodMode<br/>
