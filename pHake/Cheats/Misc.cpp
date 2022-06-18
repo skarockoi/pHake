@@ -38,29 +38,36 @@ void GodMode()
 
 void Trigger()
 {
-	if (!settings.trigger)
-		return;
-
-	static NPC entity;
+	static NPC  entity;
 	static bool can_shoot = true;
 	static bool already_shooting = false;
 
-	int32_t id_value = proc.read<int32_t>(pointers.crosshair_value);
+	if (!settings.trigger)
+		return;
 
 
-	if (id_value > 0 && id_value < 2 + settings.trigger_npc) // 0 = Nothing, 1 = Hostile, 2 = Friendly, 3 = Dead/Invincible
-		can_shoot = true;
+	entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
+	if (entity.base() == 0x0)
+		can_shoot = false;
 	else
+		can_shoot = true;
+
+	if (!proc.read<uint32_t>(pointers.is_player_aiming))
 		can_shoot = false;
 
 
 	if (can_shoot && !already_shooting)
 	{
-		entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
-		entity.health(0.f);
-
-		Key::Down::LMouse();
-		already_shooting = true;
+		if (entity.is_player() && entity.health() > 100)
+		{
+			Key::Down::LMouse();
+			already_shooting = true;
+		}
+		else
+		{
+			if (entity.health() > 100.f)
+				entity.health(0.f);
+		}
 	}
 	else if (!can_shoot && already_shooting)
 	{
@@ -77,8 +84,6 @@ void RPLoop()
 	world.localplayer.playerinfo.wanted_level(5);
 	world.localplayer.playerinfo.wanted_level(0);
 }
-
-
 
 void BoostVehicle()
 {
@@ -97,7 +102,6 @@ void BoostVehicle()
 		vehicle_defaults = world.localplayer.vehicle;
 		curr_mode = 1;
 	}
-	
 	
 	switch (curr_mode)
 	{

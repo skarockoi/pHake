@@ -113,10 +113,15 @@ public:
 	{
 		return this->read<float>(0x328);
 	}
-
+	
 	void speed_z(float value)
 	{
 		this->write<float>(0x328, value);
+	}
+
+	uint32_t is_aiming()
+	{
+		return this->read<uint32_t>(0xC54);
 	}
 
 	Vehicle vehicle;
