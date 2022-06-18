@@ -11,15 +11,31 @@
 
 #define DISTANCE_FROM_EDGE 2
 
+pList::pList() :
+	window_(0),
+	font_(),
+	rect_back_({0,0}),
+	items_name_(0),
+	items_bool_(0),
+	items_float_(0),
+	items_int_(0),
+	items_string_(0),
+	items_button_(0),
+	item_count_(0),
+	gap_count_(0),
+	active_(false),
+	used_(false)
+{ }
+
 void pList::Create(sf::RenderWindow* const& Window)
 {
-	this->window_ = Window;
-	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
+	window_ = Window;
+	font_.loadFromMemory(&Pixellari, Pixellari.size());
 
-	this->rect_back.setSize(sf::Vector2f(BACK_WIDTH, 0));
-	this->rect_back.setFillColor(sf::Color::Color(0, 0, 0, 150));
-	this->rect_back.setOutlineColor(sf::Color::Color(0, 0, 0));
-	this->rect_back.setOutlineThickness(1);
+	rect_back_.setSize(sf::Vector2f(BACK_WIDTH, 0));
+	rect_back_.setFillColor(sf::Color::Color(0, 0, 0, 150));
+	rect_back_.setOutlineColor(sf::Color::Color(0, 0, 0));
+	rect_back_.setOutlineThickness(1);
 }
 
 void pList::Toggle()
@@ -32,13 +48,13 @@ void pList::AddFloat(const std::string& name, float& value, float inc, float dec
 	pItemFloat buffer;
 	buffer.Create(window_, &font_);
 	buffer.AddValue(value, inc, dec);
-	buffer.size(ITEM_WIDTH, ITEM_HEIGHT);
-	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x - DISTANCE_FROM_EDGE, rect_back.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT));
+	buffer.size(sf::Vector2f(ITEM_WIDTH, ITEM_HEIGHT));
+	buffer.position(sf::Vector2f(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT)));
 
 	items_float_.push_back(buffer);
 
-	this->AddWord(name);
-	this->resize();
+	AddWord(name);
+	resize();
 }
 
 void pList::AddInt(const std::string& name, uint32_t& value, int inc, int dec)
@@ -46,13 +62,13 @@ void pList::AddInt(const std::string& name, uint32_t& value, int inc, int dec)
 	pItemInt buffer;
 	buffer.Create(window_, &font_);
 	buffer.AddValue(value, inc, dec);
-	buffer.size(ITEM_WIDTH, ITEM_HEIGHT);
-	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x - DISTANCE_FROM_EDGE, rect_back.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT));
+	buffer.size(sf::Vector2f(ITEM_WIDTH, ITEM_HEIGHT));
+	buffer.position(sf::Vector2f(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT)));
 
 	items_int_.push_back(buffer);
 
-	this->AddWord(name);
-	this->resize();
+	AddWord(name);
+	resize();
 }
 
 void pList::AddBool(const std::string& name, bool& value)
@@ -60,13 +76,13 @@ void pList::AddBool(const std::string& name, bool& value)
 	pItemBool buffer;
 	buffer.Create(window_, &font_);
 	buffer.AddValue(value);
-	buffer.size(ITEM_WIDTH, ITEM_HEIGHT);
-	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x - DISTANCE_FROM_EDGE, rect_back.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT));
+	buffer.size(sf::Vector2f(ITEM_WIDTH, ITEM_HEIGHT));
+	buffer.position(sf::Vector2f(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT)));
 
 	items_bool_.push_back(buffer);
 
-	this->AddWord(name);
-	this->resize();
+	AddWord(name);
+	resize();
 }
 
 void pList::AddFunction(const std::string& name, void(&functionP)())
@@ -75,12 +91,12 @@ void pList::AddFunction(const std::string& name, void(&functionP)())
 	buffer.Create(window_, &font_);
 	buffer.Connect(functionP);
 	buffer.size(ITEM_WIDTH, ITEM_HEIGHT - 2);
-	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x - DISTANCE_FROM_EDGE, rect_back.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT + 2));
+	buffer.position(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT + 2));
 
 	items_button_.push_back(buffer);
 
-	this->AddWord(name);
-	this->resize();
+	AddWord(name);
+	resize();
 }
 
 void pList::AddString(const std::string& name, std::string& value)
@@ -89,21 +105,21 @@ void pList::AddString(const std::string& name, std::string& value)
 	buffer.Create(window_, &font_);
 
 	buffer.AddValue(value);
-	buffer.size(ITEM_WIDTH, ITEM_HEIGHT);
-	buffer.position(rect_back.getSize().x - buffer.size().x + rect_back.getPosition().x - DISTANCE_FROM_EDGE, rect_back.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT));
+	buffer.size(sf::Vector2f(ITEM_WIDTH, ITEM_HEIGHT));
+	buffer.position(sf::Vector2f(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT)));
 
 	items_string_.push_back(buffer);
 
-	this->AddWord(name);
-	this->resize();
+	AddWord(name);
+	resize();
 }
 
 void pList::Loop()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 	
-	if (!this->used_)
+	if (!used_)
 		return;
 	
 	for (int i = 0; i < items_bool_.size(); i++)
@@ -124,13 +140,13 @@ void pList::Loop()
 
 void pList::Draw()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 
-	if (!this->used_)
+	if (!used_)
 		return;
 
-	window_->draw(rect_back);
+	window_->draw(rect_back_);
 
 	for (int i = 0; i < items_name_.size(); i++)
 		window_->draw(items_name_[i]);
@@ -157,36 +173,36 @@ void pList::AddGap()
 	gap_count_++;
 }
 
-void pList::position(float x, float y)
+void pList::position(sf::Vector2f xy)
 {
-	rect_back.setPosition(x, y);
+	rect_back_.setPosition(xy.x, xy.y);
 }
 
-void pList::size(float x, float y)
+void pList::size(sf::Vector2f xy)
 {
-	rect_back.setSize(sf::Vector2f(x, y));
+	rect_back_.setSize(sf::Vector2f(xy.x, xy.y));
 }
 
 sf::Vector2f pList::size()
 {
-	return rect_back.getSize();
+	return rect_back_.getSize();
 }
 
 sf::Vector2f pList::position()
 {
-	return rect_back.getPosition();
+	return rect_back_.getPosition();
 }
 
 void pList::AddWord(const std::string& name)
 {
-	if (!this->used())
-		used(true);
+	if (!used_)
+		used_ = true;
 
 	sf::Text buffer;
 	buffer.setFont(font_);
 	buffer.setCharacterSize(TEXT_SIZE);
 	buffer.setFillColor(TEXT_COLOR);
-	buffer.setPosition(this->rect_back.getPosition().x + DISTANCE_FROM_EDGE, this->rect_back.getPosition().y + ((this->gap_count_ * 5) + DISTANCE_FROM_EDGE + this->item_count_ * ITEM_HEIGHT));
+	buffer.setPosition(rect_back_.getPosition().x + DISTANCE_FROM_EDGE, rect_back_.getPosition().y + ((gap_count_ * 5) + DISTANCE_FROM_EDGE + item_count_ * ITEM_HEIGHT));
 	buffer.setString(name);
 
 	items_name_.push_back(buffer);
@@ -196,25 +212,15 @@ void pList::AddWord(const std::string& name)
 
 bool pList::used()
 {
-	return this->used_;
+	return used_;
 }
 
 bool pList::active()
 {
-	return this->active_;
-}
-
-void pList::active(bool act)
-{
-	this->active_ = act;
+	return active_;
 }
 
 void pList::resize()
 {
-	this->rect_back.setSize(sf::Vector2f(this->rect_back.getSize().x, ((this->items_name_.size() * ITEM_HEIGHT) + (this->gap_count_ * 5) + DISTANCE_FROM_EDGE + 1)));
-}
-
-void pList::used(bool act)
-{
-	this->used_ = act;
+	rect_back_.setSize(sf::Vector2f(rect_back_.getSize().x, ((items_name_.size() * ITEM_HEIGHT) + (gap_count_ * 5) + DISTANCE_FROM_EDGE + 1)));
 }

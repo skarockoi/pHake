@@ -6,13 +6,14 @@
 class pItemBone
 {
 public:
+	pItemBone();
 	void Create(sf::RenderWindow* const& Window, sf::Font* Font);
 	void Draw();
 	virtual void Loop() = 0;
 
 public:
-	void		 position(uint32_t x, uint32_t y);
-	void		 size(uint32_t x, uint32_t y);
+	void		 position(sf::Vector2f xy);
+	void		 size(sf::Vector2f xy);
 	bool		 IsOnBox();
 	sf::Vector2f size();
 
@@ -20,16 +21,16 @@ protected:
 	void	 Hightlight(bool value);
 
 protected:
-	uint16_t sleep_duration_ = 0;
-	bool	 resizeable_ = false;
-	bool	 active_ = false;
-	bool     busy_ = false;
-
 	sf::RenderWindow*  window_;
 	sf::Font*		   font_;
 
 	sf::Text		   text_;
 	sf::RectangleShape rect_back_;
+
+	uint16_t sleep_duration_;
+	bool	 resizeable_;
+	bool	 active_;
+	bool     busy_;
 };
 #endif
 
@@ -39,19 +40,22 @@ protected:
 
 class pItemInt : public pItemBone
 {
+public:
+	pItemInt() : value_(0), inc_(0), dec_(0) { }
+	void AddValue(uint32_t& Value, uint32_t Inc, uint32_t Dec);
+	void Loop();
+
 private:
 	uint32_t* value_;
 	uint32_t inc_;
 	uint32_t dec_;
-public:
-	void AddValue(uint32_t& Value, uint32_t Inc, uint32_t Dec);
-	void Loop();
 };
 
 
 class pItemFloat : public pItemBone
 {
 public:
+	pItemFloat() : value_(0), inc_(0.f), dec_(0.f) { }
 	void AddValue(float& Value, float Inc, float Dec);
 	void Loop();
 
@@ -65,6 +69,7 @@ private:
 class pItemBool : public pItemBone
 {
 public:
+	pItemBool() : value_(0) { }
 	void AddValue(bool& Value);
 	void Loop();
 

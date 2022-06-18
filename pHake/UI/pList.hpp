@@ -9,25 +9,8 @@
 
 class pList
 {
-private:
-	bool active_ = false;
-	bool used_ = false;
-
-	sf::RenderWindow*  window_;
-	sf::Font		   font_;
-	sf::RectangleShape rect_back;
-
-	std::vector<sf::Text>    items_name_;
-	std::vector<pItemBool>   items_bool_;
-	std::vector<pItemFloat>	 items_float_;
-	std::vector<pItemInt>	 items_int_;
-	std::vector<pItemString> items_string_;
-	std::vector<pButton>	 items_button_;
-
-	uint8_t item_count_ = 0;
-	uint8_t gap_count_ = 0;
-
 public:
+	pList();
 	void Create(sf::RenderWindow* const& window);
 	void Draw();
 	void Loop();
@@ -41,18 +24,32 @@ public:
 	void AddGap();
 private:
 	void AddWord(const std::string& name);
+	void resize();
 
 public:
 	bool used();
 	bool active();
-	void position(float x, float y);
-	void size(float x, float y);
+	void position(sf::Vector2f xy);
+	void size(sf::Vector2f xy);
 	sf::Vector2f size();
 	sf::Vector2f position();
 
 private:
-	void used(bool act);
-	void active(bool act);
-	void resize();
+	sf::RenderWindow*  window_;
+	sf::Font		   font_;
+	sf::RectangleShape rect_back_;
+
+	std::vector<sf::Text>    items_name_;
+	std::vector<pItemBool>   items_bool_;
+	std::vector<pItemFloat>	 items_float_;
+	std::vector<pItemInt>	 items_int_;
+	std::vector<pItemString> items_string_;
+	std::vector<pButton>	 items_button_;
+
+	uint8_t item_count_;
+	uint8_t gap_count_;
+
+	bool active_ = false;
+	bool used_ = false;
 };
 #endif

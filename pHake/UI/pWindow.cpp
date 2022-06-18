@@ -3,16 +3,16 @@
 
 void pWindow::Create()
 {
-	this->list = pList();
-	this->mouse_ = pMouse();
+	list = pList();
+	mouse_ = pMouse();
 
-	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
+	font_.loadFromMemory(&Pixellari, Pixellari.size());
 
 	window_.create(sf::VideoMode(208, 148), "pWindow");
 	window_.setFramerateLimit(60);
 
 	list.Create(&window_);
-	list.position(0, 0);
+	list.position(sf::Vector2f(0.f, 0.f));
 	list.Toggle();
 }
 
@@ -20,7 +20,7 @@ void pWindow::Loop()
 {
 	while (window_.isOpen())
 	{
-		this->FixSize();
+		FixSize();
 		sf::Event event;
 		while (window_.pollEvent(event))
 		{
@@ -45,7 +45,7 @@ void pWindow::Loop()
 
 void pWindow::Close()
 {
-	this->window_.close();
+	window_.close();
 }
 
 void pWindow::FixSize()

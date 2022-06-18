@@ -25,25 +25,25 @@ pButton::pButton() :
 void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 {
 	window_ = Window;
-	this->font_ = Font;
+	font_ = Font;
 
-	this->button_back_.setSize(sf::Vector2f(BACK_WIDTH - 1, BACK_HEIGHT - 1));
-	this->button_back_.setFillColor(BACK_COLOR);
-	this->button_back_.setOutlineColor(BACK_COLOR_OUTLINE);
-	this->button_back_.setOutlineThickness(1);
-	this->button_back_.setPosition(0, 0);
+	button_back_.setSize(sf::Vector2f(BACK_WIDTH - 1, BACK_HEIGHT - 1));
+	button_back_.setFillColor(BACK_COLOR);
+	button_back_.setOutlineColor(BACK_COLOR_OUTLINE);
+	button_back_.setOutlineThickness(1);
+	button_back_.setPosition(0, 0);
 
-	this->button_text_.setFont(*font_);
-	this->button_text_.setCharacterSize(TEXT_SIZE);
-	this->button_text_.setFillColor(TEXT_COLOR);
-	this->button_text_.setPosition(0, 0);
+	button_text_.setFont(*font_);
+	button_text_.setCharacterSize(TEXT_SIZE);
+	button_text_.setFillColor(TEXT_COLOR);
+	button_text_.setPosition(0, 0);
 
-	this->active_ = true;
+	active_ = true;
 }
 
 void pButton::Draw()
 {
-	if (this->active_)
+	if (active_)
 	{
 		window_->draw(button_back_);
 		window_->draw(button_text_);
@@ -52,26 +52,26 @@ void pButton::Draw()
 
 void pButton::Loop()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 	
-	if (this->busy_)
+	if (busy_)
 		return;
 	
-	if (!this->IsOnBox())
+	if (!IsOnBox())
 	{
-		this->Hightlight(false);
+		Hightlight(false);
 		return;
 	}
 
-	this->Hightlight(true);
+	Hightlight(true);
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		if (this->function_ != NULL) 
+		if (function_ != NULL) 
 		{
 			((void(*)(void))function_)();
-			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && this->IsOnBox())
+			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && IsOnBox())
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
@@ -79,7 +79,7 @@ void pButton::Loop()
 
 void pButton::Connect(void(&functionP)())
 {
-	this->function_ = &functionP;
+	function_ = &functionP;
 }
 
 sf::Vector2f pButton::size()
@@ -89,9 +89,9 @@ sf::Vector2f pButton::size()
 
 void pButton::Hightlight(bool value)
 {
-	if (value && this->button_back_.getOutlineColor() != HIGHLIGHT_COLOR)
-		this->button_back_.setOutlineColor(HIGHLIGHT_COLOR);
-	else if (!value && this->button_back_.getOutlineColor() == HIGHLIGHT_COLOR)
+	if (value && button_back_.getOutlineColor() != HIGHLIGHT_COLOR)
+		button_back_.setOutlineColor(HIGHLIGHT_COLOR);
+	else if (!value && button_back_.getOutlineColor() == HIGHLIGHT_COLOR)
 		button_back_.setOutlineColor(BACK_COLOR_OUTLINE);
 }
 

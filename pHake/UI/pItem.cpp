@@ -17,55 +17,66 @@
 #define SLEEP_DURATION 100
 #define FLOAT_PRECISION 1
 
+pItemBone::pItemBone() : 
+	window_(0),
+	font_(),
+	text_(),
+	rect_back_({0,0}),
+	sleep_duration_(0),
+	resizeable_(false),
+	active_(false),
+	busy_(false)
+{ }
+
 void pItemBone::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 {
-	this->window_ = Window;
-	this->font_ = Font;
+	window_ = Window;
+	font_ = Font;
 
-	this->rect_back_.setSize(sf::Vector2f(BACK_WIDTH - 1, BACK_HEIGHT - 1));
-	this->rect_back_.setPosition(0, 0);
-	this->rect_back_.setFillColor(BACK_COLOR);
-	this->rect_back_.setOutlineColor(BACK_COLOR_OUTLINE);
-	this->rect_back_.setOutlineThickness(1);
+	rect_back_.setSize(sf::Vector2f(BACK_WIDTH - 1, BACK_HEIGHT - 1));
+	rect_back_.setPosition(0, 0);
+	rect_back_.setFillColor(BACK_COLOR);
+	rect_back_.setOutlineColor(BACK_COLOR_OUTLINE);
+	rect_back_.setOutlineThickness(1);
 
-	this->text_.setFont(*font_);
-	this->text_.setCharacterSize(TEXT_SIZE);
-	this->text_.setFillColor(TEXT_COLOR);
-	this->text_.setPosition(0, 0);
+	text_.setFont(*font_);
+	text_.setCharacterSize(TEXT_SIZE);
+	text_.setFillColor(TEXT_COLOR);
+	text_.setPosition(0, 0);
 
-	this->sleep_duration_ = SLEEP_DURATION;
-	this->active_ = true;
+	sleep_duration_ = SLEEP_DURATION;
+	active_ = true;
 }
 
 void pItemBone::Draw()
 {
-	if (this->active_)
+	if (active_)
 	{
-		this->window_->draw(rect_back_);
-		this->window_->draw(text_);
+		window_->draw(rect_back_);
+		window_->draw(text_);
 	}
 }
 
 void pItemBone::Hightlight(bool value)
 {
-	if (value && this->rect_back_.getOutlineColor() != HIGHLIGHT_COLOR)
+	if (value && rect_back_.getOutlineColor() != HIGHLIGHT_COLOR)
 		rect_back_.setOutlineColor(HIGHLIGHT_COLOR);
-	else if (!value && this->rect_back_.getOutlineColor() == HIGHLIGHT_COLOR)
+	else if (!value && rect_back_.getOutlineColor() == HIGHLIGHT_COLOR)
 		rect_back_.setOutlineColor(BACK_COLOR_OUTLINE);
 }
 
-void pItemBone::position(uint32_t x, uint32_t y)
+void pItemBone::position(sf::Vector2f xy)
 {
-	this->rect_back_.setPosition(x, y);
-	this->text_.setPosition(x, y + (this->rect_back_.getSize().y / 4) - 5);
+	rect_back_.setPosition(xy.x, xy.y);
+	text_.setPosition(xy.x, xy.y + (rect_back_.getSize().y / 4) - 5);
 }
 
-void pItemBone::size(uint32_t x, uint32_t y)
+void pItemBone::size(sf::Vector2f xy)
 {
 	if (!resizeable_)
 		resizeable_ = false;
 
-	rect_back_.setSize(sf::Vector2f(x, y));
+	rect_back_.setSize(sf::Vector2f(xy.x, xy.y));
 }
 
 bool pItemBone::IsOnBox()
@@ -87,151 +98,151 @@ sf::Vector2f pItemBone::size()
 
 void pItemInt::AddValue(uint32_t& Value, uint32_t Inc, uint32_t Dec)
 {
-	this->value_ = &Value;
-	this->inc_ = Inc;
-	this->dec_ = Dec;
+	value_ = &Value;
+	inc_ = Inc;
+	dec_ = Dec;
 }
 
 void pItemInt::Loop()
 {
-	if (!this->active_) 
+	if (!active_) 
 		return;
 	
-	this->text_.setString(std::to_string(*this->value_));
+	text_.setString(std::to_string(*value_));
 
-	if (this->busy_) 
+	if (busy_) 
 		return;
 	
-	if (!this->IsOnBox())
+	if (!IsOnBox())
 	{
-		this->Hightlight(false);
+		Hightlight(false);
 		return;
 	}
 
-	this->Hightlight(true);
+	Hightlight(true);
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 		std::thread([this] {
 
-			this->busy_ = true;
+			busy_ = true;
 
 			*value_ -= dec_;
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+			std::this_thread::sleep_for(std::chrono::milliseconds(sleep_duration_));
 
-			this->busy_ = false; }).detach();
+			busy_ = false; }).detach();
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
 		std::thread([this] {
 
-			this->busy_ = true;
+			busy_ = true;
 
-			*this->value_ += this->inc_;
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+			*value_ += inc_;
+			std::this_thread::sleep_for(std::chrono::milliseconds(sleep_duration_));
 
-			this->busy_ = false; }).detach();
+			busy_ = false; }).detach();
 	}
 }
 
 void pItemFloat::AddValue(float& Value, float Inc, float Dec)
 {
-	this->value_ = &Value;
-	this->inc_ = Inc;
-	this->dec_ = Dec;
+	value_ = &Value;
+	inc_ = Inc;
+	dec_ = Dec;
 }
 
 void pItemFloat::Loop()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(FLOAT_PRECISION) << std::stof(std::to_string(*value_));  // Convert string to std and remove obsolete zero's
-	this->text_.setString(stream.str());
+	text_.setString(stream.str());
 
-	if (this->busy_)
+	if (busy_)
 		return;
 
-	if (!this->IsOnBox())
+	if (!IsOnBox())
 	{
-		this->Hightlight(false);
+		Hightlight(false);
 		return;
 	}
 
-	this->Hightlight(true);
+	Hightlight(true);
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 		std::thread([=]() {
-			this->busy_ = true;
+			busy_ = true;
 
-			*this->value_ -= this->dec_;
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+			*value_ -= dec_;
+			std::this_thread::sleep_for(std::chrono::milliseconds(sleep_duration_));
 
-			this->busy_ = false; }).detach();
+			busy_ = false; }).detach();
 
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
 		std::thread([=]() {
-			this->busy_ = true;
+			busy_ = true;
 
-			*this->value_ += this->inc_;
-			std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+			*value_ += inc_;
+			std::this_thread::sleep_for(std::chrono::milliseconds(sleep_duration_));
 
-			this->busy_ = false; }).detach();
+			busy_ = false; }).detach();
 	}
 }
 
 void pItemBool::AddValue(bool& Value)
 {
-	this->value_ = &Value;
-	this->sleep_duration_ = 250;
+	value_ = &Value;
+	sleep_duration_ = 250;
 }
 
 void pItemBool::Loop()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 
 	if (*value_)
-		this->text_.setString("ON");
+		text_.setString("ON");
 	else
-		this->text_.setString("OFF");
+		text_.setString("OFF");
 
-	if (this->busy_)
+	if (busy_)
 		return;
 
-	if (!this->IsOnBox())
+	if (!IsOnBox())
 	{
-		this->Hightlight(false);
+		Hightlight(false);
 		return;
 	}
 
-	this->Hightlight(true);
+	Hightlight(true);
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) || sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 		std::thread([this] {
 
-		this->busy_ = true;
+		busy_ = true;
 
 		*value_ = not *value_;
-		std::this_thread::sleep_for(std::chrono::milliseconds(this->sleep_duration_));
+		std::this_thread::sleep_for(std::chrono::milliseconds(sleep_duration_));
 
-		this->busy_ = false; }).detach();
+		busy_ = false; }).detach();
 }
 
 void pItemString::AddValue(const std::string Value)
 {
-	this->value_ = Value;
+	value_ = Value;
 }
 
 void pItemString::Loop()
 {
-	if (!this->active_)
+	if (!active_)
 		return;
 
-	this->text_.setString(this->value_);
+	text_.setString(value_);
 
 	if (IsOnBox())
-		this->Hightlight(true);
+		Hightlight(true);
 	else
-		this->Hightlight(false);
+		Hightlight(false);
 }

@@ -16,19 +16,19 @@
 struct GameInfo
 {
 public:
-	HWND   hwnd_;
-
-public:
 	GameInfo() : hwnd_(0), rect_({0,0}), game_(0) {}
 	GameInfo(LPCSTR Game);
 
 	void Update();
 	bool IsActive();
+	bool IsMinimized();
 
-	sf::Vector2i position(){ return sf::Vector2i(rect_.left, rect_.top); }
-	sf::Vector2u size() { return sf::Vector2u(rect_.right - rect_.left, rect_.bottom - rect_.top); }
+	HWND		 hwnd();
+	sf::Vector2i position();
+	sf::Vector2u size();
 
 private:
+	HWND   hwnd_;
 	RECT   rect_;
 	LPCSTR game_;
 	sf::Vector2i pos_;
@@ -37,14 +37,8 @@ private:
 
 class pOverlay
 {
-private:
-	sf::RenderWindow window_;
-	sf::Font		 font_;
-
-	GameInfo		 game_info_;
-	pMouse			 mouse_;
-
 public:
+	pOverlay();
 	pList list;
 	pNotificationCenter notification;
 	
@@ -55,6 +49,14 @@ public:
 
 private:
 	void SetWindowTransparentAndNotClickableEx(HWND handle);
+	void GetGameAttention();
 	void FixPosition();
+
+private:
+	sf::RenderWindow window_;
+	sf::Font		 font_;
+
+	GameInfo		 game_info_;
+	pMouse			 mouse_;
 };
 #endif

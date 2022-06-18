@@ -9,67 +9,91 @@ GameInfo::GameInfo(LPCSTR Game)
 	hwnd_ = FindWindowA(0, Game);
 	GetWindowRect(hwnd_, &rect_);
 
-	pos_ = this->position();
-	size_ = this->size();
+	pos_ = position();
+	size_ = size();
 }
 
 void GameInfo::Update()
 {
 	hwnd_ = FindWindowA(0, game_);
 	GetWindowRect(hwnd_, &rect_);
-	pos_ = this->position();
-	size_ = this->size();
+	pos_ = position();
+	size_ = size();
 }
 
 bool GameInfo::IsActive()
 {
-	if (this->hwnd_ != 0)
+	if (hwnd_ != 0)
 		return true;
 	else
 		return false;
 }
 
+bool GameInfo::IsMinimized()
+{
+	return IsIconic(hwnd_);
+}
+
+HWND GameInfo::hwnd()
+{
+	return hwnd_;
+}
+
+sf::Vector2i GameInfo::position()
+{
+	return sf::Vector2i(rect_.left, rect_.top);
+}
+
+sf::Vector2u GameInfo::size()
+{
+	return sf::Vector2u(rect_.right - rect_.left, rect_.bottom - rect_.top);
+}
+
+pOverlay::pOverlay(){} //: window_(0), font_(), game_info_(), mouse_() { }
+
 void pOverlay::Create(LPCSTR Name)
 {
-	this->list = pList();
-	this->notification = pNotificationCenter();
-	this->mouse_ = pMouse();
+	list = pList();
+	notification = pNotificationCenter();
+	mouse_ = pMouse();
 
-	this->game_info_ = GameInfo(Name); // Getting game Info
+	game_info_ = GameInfo(Name); // Getting game Info
 
-	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
+	font_.loadFromMemory(&Pixellari, Pixellari.size());
 
-	ShowWindow(game_info_.hwnd_, SW_SHOW);
+	GetGameAttention();
 	game_info_.Update();
+	window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
+	window_.setFramerateLimit(60);
+	SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
 
-	this->window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
-	this->window_.setFramerateLimit(60);
-	this->SetWindowTransparentAndNotClickableEx(window_.getSystemHandle()); // making the window transparent & not clickable
+	notification.Create(&window_);
 
-	this->notification.Create(&window_);
+	mouse_.Create(&window_);
+	mouse_.Toggle();
 
-	this->mouse_.Create(&window_);
-	this->mouse_.Toggle();
-
-	this->list.Create(&window_);
-	this->list.position(window_.getSize().x / 2, window_.getSize().y / 4);
-	this->list.Toggle();
+	list.Create(&window_);
+	list.position(sf::Vector2f(window_.getSize().x / 2, window_.getSize().y / 4));
+	list.Toggle();
 }
 
 void pOverlay::Toggle()
 {
-	this->list.Toggle();
-	this->mouse_.Toggle();
+	if (GetForegroundWindow() != game_info_.hwnd())
+		return;
+	
+	list.Toggle();
+	mouse_.Toggle();
 
-	if (this->list.active())
-		sf::Mouse::setPosition(sf::Vector2i(this->list.position().x + window_.getPosition().x, this->list.position().y + window_.getPosition().y));
+	if (list.active())
+		sf::Mouse::setPosition(sf::Vector2i(list.position().x + window_.getPosition().x, list.position().y + window_.getPosition().y));
 }
 
 void pOverlay::Loop()
 {
-	while (this->window_.isOpen() && this->game_info_.IsActive())
+	while (window_.isOpen() && game_info_.IsActive())
 	{
-		this->FixPosition();
+		FixPosition();
 
 		sf::Event event;
 		while (window_.pollEvent(event))
@@ -84,22 +108,22 @@ void pOverlay::Loop()
 			}
 		}
 
-		this->list.Loop();
-		this->mouse_.Loop();
-		this->notification.Loop();
-		this->window_.clear(sf::Color::Color(0, 0, 0, 0));
+		list.Loop();
+		mouse_.Loop();
+		notification.Loop();
+		window_.clear(sf::Color::Color(0, 0, 0, 0));
 		
-		this->list.Draw();
-		this->mouse_.Draw();
-		this->notification.Draw();
+		list.Draw();
+		mouse_.Draw();
+		notification.Draw();
 		
-		this->window_.display();
+		window_.display();
 	}
 }
 
 void pOverlay::Close()
 {
-	this->window_.close();
+	window_.close();
 }
 
 void pOverlay::SetWindowTransparentAndNotClickableEx(HWND handle)
@@ -113,14 +137,22 @@ void pOverlay::SetWindowTransparentAndNotClickableEx(HWND handle)
 	SetWindowLong(handle, GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED | WS_EX_TOOLWINDOW);
 }
 
+void pOverlay::GetGameAttention()
+{
+	if (game_info_.IsMinimized())
+		ShowWindow(game_info_.hwnd(), SW_SHOW);
+	
+	SetForegroundWindow(game_info_.hwnd());
+}
+
 void pOverlay::FixPosition()
 {
-	this->game_info_.Update();
+	game_info_.Update();
 	sf::Vector2i game_pos = game_info_.position();
 	sf::Vector2i window_pos = window_.getPosition();
 
 	if (game_pos.x != window_pos.x + 1 || game_pos.y != window_pos.y - 1)
 	{
-		this->window_.setPosition(sf::Vector2i(game_pos.x - 1, game_pos.y + 1));
+		window_.setPosition(sf::Vector2i(game_pos.x - 1, game_pos.y + 1));
 	}
 }

@@ -11,43 +11,43 @@ void pMouse::Create(sf::RenderWindow* const& Window)
 {
 	if (window_ == 0)
 	{
-		this->window_ = Window;
+		window_ = Window;
 
-		this->mouse_rect_.setSize(sf::Vector2f(MOUSE_SIZE, MOUSE_SIZE));
-		this->mouse_rect_.setFillColor(MOUSE_COLOR);
-		this->mouse_rect_.setOutlineColor(MOUSE_COLOR_OUTLINE);
-		this->mouse_rect_.setOutlineThickness(1);
+		mouse_rect_.setSize(sf::Vector2f(MOUSE_SIZE, MOUSE_SIZE));
+		mouse_rect_.setFillColor(MOUSE_COLOR);
+		mouse_rect_.setOutlineColor(MOUSE_COLOR_OUTLINE);
+		mouse_rect_.setOutlineThickness(1);
 	}
 }
 
 void pMouse::Loop()
 {
-	if (this->active_)
-		this->mouse_rect_.setPosition(sf::Mouse::getPosition().x - window_->getPosition().x, sf::Mouse::getPosition().y - window_->getPosition().y);
+	if (active_)
+		mouse_rect_.setPosition(sf::Mouse::getPosition().x - window_->getPosition().x, sf::Mouse::getPosition().y - window_->getPosition().y);
 }
 
 void pMouse::Draw()
 {
-	if (this->active_)
-		this->window_->draw(mouse_rect_);
+	if (active_)
+		window_->draw(mouse_rect_);
 }
 
 void pMouse::Toggle()
 {
-	this->active_ = not this->active_;
+	active_ = not active_;
 }
 
 void pMouse::size(int size)
 {
-	this->mouse_rect_.setSize(sf::Vector2f(size, size));
+	mouse_rect_.setSize(sf::Vector2f(size, size));
 }
 
 void pMouse::active(bool Active)
 {
-	this->active_ = Active;
+	active_ = Active;
 }
 
 bool pMouse::active()
 {
-	return this->active_;
+	return active_;
 }
