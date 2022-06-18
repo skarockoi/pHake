@@ -81,25 +81,25 @@ void RPLoop()
 	world.localplayer.playerinfo.wanted_level(0);
 }
 
+
+static std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };
+static uint8_t curr_vehicle_mode = 0;
+
+static Vehicle vehicle_defaults;
+
 void BoostVehicle()
 {
-	static std::array<std::string, 4> modes = { "default", "race", "max", "fly" };
-	static uint8_t curr_mode = 0;
-
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-
-
-	static Vehicle vehicle_defaults;
-
 	if (vehicle_defaults.base() ^ world.localplayer.vehicle.base())
 	{
 		vehicle_defaults = world.localplayer.vehicle;
-		curr_mode = 1;
+		curr_vehicle_mode = 0;
 	}
-	
-	switch (curr_mode)
+
+	curr_vehicle_mode++;
+	if (curr_vehicle_mode > vehicle_modes.size() - 1)
+		curr_vehicle_mode = 0;
+
+	switch (curr_vehicle_mode)
 	{
 	case 0:
 		world.localplayer.vehicle.gravity(vehicle_defaults.gravity());
@@ -130,19 +130,32 @@ void BoostVehicle()
 		world.localplayer.vehicle.handling.acceleration(2.f);
 		break;
 	}
-	menu->notification.Add("Vehicle set to " + modes[curr_mode]);
+	menu->notification.Add("Vehicle set to " + vehicle_modes[curr_vehicle_mode]);
 }
+
+void RestoreVehicles()
+{
+	if (curr_vehicle_mode != 0)
+	{
+		world.localplayer.vehicle.gravity(vehicle_defaults.gravity());
+		world.localplayer.vehicle.handling.traction_max(vehicle_defaults.handling.traction_max());
+		world.localplayer.vehicle.handling.traction_min(vehicle_defaults.handling.traction_min());
+		world.localplayer.vehicle.handling.acceleration(vehicle_defaults.handling.acceleration());
+		world.localplayer.vehicle.handling.collisiondamage(vehicle_defaults.handling.collisiondamage());
+	}
+}
+
+
+static std::array<std::string, 3> player_modes = { "default", "fast", "max" };
+static uint8_t curr_player_mode = 0;
 
 void BoostPlayer()
 {
-	static std::array<std::string, 3> modes = { "default", "fast", "max" };
-	static uint8_t curr_mode = 0;
+	curr_player_mode++;
+	if (curr_player_mode > player_modes.size() - 1)
+		curr_player_mode = 0;
 
-	curr_mode++;
-	if (curr_mode > modes.size() - 1)
-		curr_mode = 0;
-
-	switch (curr_mode)
+	switch (curr_player_mode)
 	{
 	case 0:
 		world.localplayer.playerinfo.walk_mp(1);
@@ -165,7 +178,20 @@ void BoostPlayer()
 		settings.noclip_speed = 0.5f;
 		break;
 	}
-	menu->notification.Add("Player set to " + modes[curr_mode]);
+	menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
+}
+
+void RestorePlayer()
+{
+	if (curr_player_mode != 0)
+	{
+		world.localplayer.playerinfo.walk_mp(1);
+		world.localplayer.playerinfo.swim_mp(1);
+		settings.noclip_speed = 0.05f;
+
+		if (!settings.noclip)
+			world.localplayer.ragdoll(0);
+	}
 }
 
 void Suicide()

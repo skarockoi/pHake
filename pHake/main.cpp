@@ -61,7 +61,6 @@ bool AlreadyRunning()
 {
 	auto m_hMutex = CreateMutex(NULL, FALSE, "pHake.exe");
 
-	// Check if mutex is created succesfully
 	switch (GetLastError())
 	{
 	case ERROR_SUCCESS:
@@ -141,8 +140,17 @@ void ExitProgram()
 	cfg->Edit<bool>("NoClip", settings.noclip);
 	cfg->Save();
 
+	if (settings.maxweapon)
+		maxweapon.RestoreWeapons();
+	
+	if (settings.godmode)
+		world.localplayer.god(false);
+
 	if (settings.noclip) // restore original opcode
 		noclip.RestoreOpcode();
+
+	RestoreVehicles();
+	RestorePlayer();
 
 	proc.Close(); // close handle to gta5
 	menu->Close(); // close UI
@@ -152,6 +160,8 @@ void ExitProgram()
 void StartCheats()
 {
 	ReadWriteFactory::process = &proc;
+	maxweapon = MaxWeapon();
+	noclip = NoClip();
 
 	threads.push_back(std::make_unique<pThread>([=]() {
 
@@ -160,13 +170,11 @@ void StartCheats()
 
 	}, 1));
 
-	maxweapon = MaxWeapon();
 	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
 	threads.push_back(std::make_unique<pThread>(GodMode, 100));
 	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
 	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
 	threads.push_back(std::make_unique<pThread>(Trigger, 1));
-	noclip = NoClip();
 	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
 	threads.push_back(std::make_unique<pThread>(Toggles, 10));
 }

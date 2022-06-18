@@ -14,7 +14,7 @@ void MaxWeapon::Loop()
 	else
 	{
 		if (IsWeaponUpgraded())
-			RestoreWeapon();
+			RestoreWeapons();
 	}
 }
 
@@ -50,18 +50,17 @@ void MaxWeapon::UpgradeWeapon()
 	world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
 }
 
-void MaxWeapon::RestoreWeapon()
+void MaxWeapon::RestoreWeapons()
 {
-	auto found = std::find(weapon_addresses.begin(), weapon_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()); // check every current weapon too see if it's still in max mode...
-	if (found != weapon_addresses.end())
+	for (size_t i = 0; i < weapon_addresses.size(); i++)
 	{
-		uint64_t index = found - weapon_addresses.begin();
-
-		world.localplayer.weapon_manager.current_weapon.type(3);
-		world.localplayer.weapon_manager.current_weapon.bullet_damage(weapon_defaults.at(index).bullet_damage()); // ...and restore the default values
-		world.localplayer.weapon_manager.current_weapon.batch_spread(weapon_defaults.at(index).batch_spread()); // ...and restore the default values
-		world.localplayer.weapon_manager.current_weapon.reload_mp(weapon_defaults.at(index).reload_mp());
-		world.localplayer.weapon_manager.current_weapon.recoil(weapon_defaults.at(index).recoil());
-		world.localplayer.weapon_manager.current_weapon.range(weapon_defaults.at(index).range());
+		Weapon temp;
+		temp.base(weapon_addresses[i]);
+		temp.type(3);
+		temp.bullet_damage(weapon_defaults.at(i).bullet_damage()); // ...and restore the default values
+		temp.batch_spread(weapon_defaults.at(i).batch_spread()); // ...and restore the default values
+		temp.reload_mp(weapon_defaults.at(i).reload_mp());
+		temp.recoil(weapon_defaults.at(i).recoil());
+		temp.range(weapon_defaults.at(i).range());
 	}
 }

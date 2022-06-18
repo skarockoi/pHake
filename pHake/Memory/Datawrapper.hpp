@@ -56,6 +56,8 @@ public:
 
 public:
 	uintptr_t base(){ return this->base_; }
+	void      base(uintptr_t base) {  this->base_ = base; }
+
 protected:
 	std::unique_ptr<uint8_t[]> data_;
 	uintptr_t base_ = 0x0;

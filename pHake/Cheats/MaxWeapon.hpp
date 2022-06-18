@@ -9,12 +9,12 @@ public:
 	MaxWeapon();
 
 	void Loop();
+	void RestoreWeapons();
 
 private:
 	void CheckCurrentWeaponAndSave();
 	bool IsWeaponUpgraded();
 	void UpgradeWeapon();
-	void RestoreWeapon();
 
 	std::vector<uintptr_t> weapon_addresses;
 	std::vector<Weapon>    weapon_defaults;
