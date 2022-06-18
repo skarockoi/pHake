@@ -1,4 +1,5 @@
 #include "pOverlay.hpp"
+#include "pFont.hpp"
 
 #include <vector>
 
@@ -35,7 +36,11 @@ void pOverlay::Create(LPCSTR Name)
 	this->mouse_ = pMouse();
 
 	this->game_info_ = GameInfo(Name); // Getting game Info
-	this->font_.loadFromFile("Settings/font.ttf");
+
+	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
+
+	ShowWindow(game_info_.hwnd_, SW_SHOW);
+	game_info_.Update();
 
 	this->window_.create(sf::VideoMode(game_info_.size().x, game_info_.size().y), "pOverlay", sf::Style::None); // creating a window in the game's size 
 	this->window_.setFramerateLimit(60);

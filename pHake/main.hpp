@@ -2,7 +2,7 @@
 
 bool AlreadyRunning(); // check if cheat is already running
 bool ReadSignatures(); // read out signatures
-bool ReadConfig(); // read config file
+bool ReadConfig(); // read ini file
 void ExitProgram(); // clean up, exit
 
 void StartCheats();
@@ -30,7 +30,7 @@ int main()
 
 	if (!ReadConfig())
 	{
-		MessageBox(NULL, "config file could not be read, restoring...", "Note", NULL);
+		MessageBox(NULL, "settings file could not be read, restoring...", "Note", NULL);
 	}
 
 	StartCheats();

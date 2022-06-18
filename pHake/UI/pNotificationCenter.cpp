@@ -1,4 +1,5 @@
 #include "pNotificationCenter.hpp"
+#include "pFont.hpp"
 
 #include <thread>
 
@@ -19,7 +20,7 @@ void pNotificationCenter::Create(sf::RenderWindow* const& Window)
 	this->position_.y = DISTANCE_FROM_EDGE;
 
 	this->window_ = Window;
-	this->font_.loadFromFile("Settings/font.ttf");
+	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
 }
 
 void pNotificationCenter::Add(const std::string& name)

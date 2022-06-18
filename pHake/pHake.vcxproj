@@ -110,6 +110,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Libraries\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,6 +153,8 @@
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrtd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -176,13 +180,14 @@
     <ClInclude Include="SDK\WeaponManager.hpp" />
     <ClInclude Include="SDK\World.hpp" />
     <ClInclude Include="UI\pButton.hpp" />
+    <ClInclude Include="UI\pFont.hpp" />
     <ClInclude Include="UI\pHelper.hpp" />
     <ClInclude Include="UI\pItem.hpp" />
     <ClInclude Include="UI\pList.hpp" />
     <ClInclude Include="UI\pMouse.hpp" />
     <ClInclude Include="UI\pNotificationCenter.hpp" />
     <ClInclude Include="UI\pOverlay.hpp" />
-    <ClInclude Include="UI\pSettings.hpp" />
+    <ClInclude Include="UI\pINI.hpp" />
     <ClInclude Include="UI\pThread.hpp" />
     <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
@@ -202,7 +207,7 @@
     <ClCompile Include="UI\pMouse.cpp" />
     <ClCompile Include="UI\pNotificationCenter.cpp" />
     <ClCompile Include="UI\pOverlay.cpp" />
-    <ClCompile Include="UI\pSettings.cpp" />
+    <ClCompile Include="UI\pINI.cpp" />
     <ClCompile Include="UI\pWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

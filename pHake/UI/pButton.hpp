@@ -5,23 +5,17 @@
 
 class pButton
 {
-private:
-	sf::RenderWindow   *window_;
-	sf::Font		   *font_;
-
-	sf::Text		   button_text_;
-	sf::RectangleShape button_back_;
-
 public:
+	pButton();
 	void Create(sf::RenderWindow* const& Window, sf::Font* font);
 	void Connect(void(&function)());
-	void Loop();
 	void Draw();
+	void Loop();
 
 public:
 	void text(const std::string& text);
-	void position(int x, int y);
-	void size(int x, int y);
+	void position(float x, float y);
+	void size(float x, float y);
 	sf::Vector2f size();
 
 private:
@@ -29,10 +23,16 @@ private:
 	void Hightlight(bool value);
 
 private:
-	uint16_t  sleep_duration_ = 150;
-	bool	  active_ = false;
-	bool	  busy_ = false;
+	sf::RenderWindow* window_;
+	sf::Font*		  font_;
 
-	void* function_;
+	sf::Text		   button_text_;
+	sf::RectangleShape button_back_;
+
+private:
+	void*     function_;
+	bool	  active_;
+	bool	  busy_;
+	uint16_t  sleep_duration_;
 };
 #endif

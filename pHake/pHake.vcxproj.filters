@@ -84,7 +84,7 @@
     <ClInclude Include="UI\pHelper.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="UI\pSettings.hpp">
+    <ClInclude Include="UI\pINI.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\pItem.hpp">
@@ -120,6 +120,9 @@
     <ClInclude Include="Cheats\Teleport.hpp">
       <Filter>Source Files\Cheats</Filter>
     </ClInclude>
+    <ClInclude Include="UI\pFont.hpp">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,7 +149,7 @@
     <ClCompile Include="UI\pNotificationCenter.cpp">
       <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="UI\pSettings.cpp">
+    <ClCompile Include="UI\pINI.cpp">
       <Filter>Header Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="UI\pItem.cpp">

@@ -72,7 +72,7 @@ static std::vector<std::string> SplitSpringByCharacterAndSaveAsVector(const std:
 
 static bool ReadFileByLineAndSaveToVector(std::vector<std::string>* Vector, const std::string& Filepath)
 {
-	if (std::filesystem::exists(Filepath)) // check if the cfg file exists, otherwise create a new file (does not work if the path is behind a directory that does not exist
+	if (std::filesystem::exists(Filepath)) // check if the ini file exists, otherwise create a new file (does not work if the path is behind a directory that does not exist
 	{
 		std::ifstream file(Filepath);
 
@@ -80,7 +80,7 @@ static bool ReadFileByLineAndSaveToVector(std::vector<std::string>* Vector, cons
 		while (std::getline(file, tempStr))
 		{
 			if (tempStr.size() > 0)
-				Vector->push_back(tempStr); // read cfg file into vector full of strings
+				Vector->push_back(tempStr); // read ini file into vector full of strings
 		}
 		return true;
 	}

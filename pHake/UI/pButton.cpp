@@ -13,6 +13,15 @@
 
 #define HIGHLIGHT_COLOR sf::Color::Color(255, 255, 255, 255)
 
+pButton::pButton() :
+	sleep_duration_(150),
+	active_(0),
+	busy_(0),
+	function_(0),
+	window_(0),
+	font_(0)
+{ }
+
 void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 {
 	window_ = Window;
@@ -30,6 +39,15 @@ void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 	this->button_text_.setPosition(0, 0);
 
 	this->active_ = true;
+}
+
+void pButton::Draw()
+{
+	if (this->active_)
+	{
+		window_->draw(button_back_);
+		window_->draw(button_text_);
+	}
 }
 
 void pButton::Loop()
@@ -56,15 +74,6 @@ void pButton::Loop()
 			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && this->IsOnBox())
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
-	}
-}
-
-void pButton::Draw()
-{
-	if (this->active_)
-	{
-		window_->draw(button_back_);
-		window_->draw(button_text_);
 	}
 }
 
@@ -98,7 +107,7 @@ bool pButton::IsOnBox()
 		return false;
 }
 
-void pButton::position(int x, int y)
+void pButton::position(float x, float y)
 {
 	button_back_.setPosition(x, y);
 	button_text_.setPosition(x, y + (button_back_.getSize().y / 4) - 5);
@@ -109,7 +118,7 @@ void pButton::text(const std::string& text)
 	button_text_.setString(" " + text);
 }
 
-void pButton::size(int x, int y)
+void pButton::size(float x, float y)
 {
 	button_back_.setSize(sf::Vector2f(x - 1, y - 1));
 }

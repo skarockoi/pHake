@@ -15,12 +15,8 @@
 
 struct GameInfo
 {
-private:
+public:
 	HWND   hwnd_;
-	RECT   rect_;
-	LPCSTR game_;
-	sf::Vector2i pos_;
-	sf::Vector2u size_;
 
 public:
 	GameInfo() : hwnd_(0), rect_({0,0}), game_(0) {}
@@ -31,6 +27,12 @@ public:
 
 	sf::Vector2i position(){ return sf::Vector2i(rect_.left, rect_.top); }
 	sf::Vector2u size() { return sf::Vector2u(rect_.right - rect_.left, rect_.bottom - rect_.top); }
+
+private:
+	RECT   rect_;
+	LPCSTR game_;
+	sf::Vector2i pos_;
+	sf::Vector2u size_;
 };
 
 class pOverlay

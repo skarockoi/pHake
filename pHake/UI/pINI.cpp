@@ -1,27 +1,27 @@
-#include "pSettings.hpp"
+#include "pINI.hpp"
 
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
 
-pSettings::pSettings()
+pINI::pINI()
 {
 	this->file_content_ = new std::vector<std::string>;
 }
 
-pSettings::~pSettings()
+pINI::~pINI()
 {
 	delete[] this->file_content_;
 }
 
-bool pSettings::Open(const std::string& Filepath)
+bool pINI::Open(const std::string& filepath)
 {
-	this->file_path_ = Filepath;
+	this->file_path_ = filepath;
 
-	if (std::filesystem::exists(Filepath))
+	if (std::filesystem::exists(filepath))
 	{
-		std::ifstream file(Filepath);
+		std::ifstream file(filepath);
 
 		std::string   temp_string;
 		while (std::getline(file, temp_string))
@@ -33,21 +33,21 @@ bool pSettings::Open(const std::string& Filepath)
 	}
 	else
 	{
-		std::ofstream file{ Filepath };
+		std::ofstream file{ filepath };
 		file.close();
 		return 0;
 	}
 }
 
-void pSettings::AddComment(const std::string& Key)
+void pINI::Comment(const std::string& key)
 {
-	if (!this->CheckExistanceOfKey(Key))
+	if (!this->CheckExistanceOfKey(key))
 	{
-		this->file_content_->push_back(Key);
+		this->file_content_->push_back(key);
 	}
 }
 
-void pSettings::Save()
+void pINI::Save()
 {
 	std::ofstream del;
 	del.open(this->file_path_, std::ofstream::out | std::ofstream::trunc);
@@ -62,47 +62,47 @@ void pSettings::Save()
 	file.close();
 }
 
-void pSettings::Clear()
+void pINI::Clear()
 {
 	std::ofstream del;
 	del.open(this->file_path_, std::ofstream::out | std::ofstream::trunc);
 	del.close();
 }
 
-void pSettings::AddKeyAndValue(const std::string& Key, const std::string& Value)
+void pINI::AddKeyAndValue(const std::string& key, const std::string& value)
 {
-	this->file_content_->push_back(Key + " = " + Value);
+	this->file_content_->push_back(key + "=" + value);
 }
 
-std::string pSettings::GetKeyByName(const std::string& Key)
+std::string pINI::GetKeyByName(const std::string& key)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos)
+		if ((*file_content_)[i].find(key) != std::string::npos)
 			return (*file_content_)[i].substr((*file_content_)[i].find("=") + 1);
 	}
 	return "";
 }
 
-bool pSettings::CheckExistanceOfKey(const std::string& Key)
+bool pINI::CheckExistanceOfKey(const std::string& key)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos) {
+		if ((*file_content_)[i].find(key+"=") != std::string::npos) {
 			return true;
 		}
 	}
 	return false;
 }
 
-void pSettings::ChangeKeyValue(const std::string& Key, const std::string& Value)
+void pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 {
 	for (size_t i = 0; i < this->file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(Key) != std::string::npos)
+		if ((*file_content_)[i].find(key+"=") != std::string::npos)
 		{
 			(*file_content_)[i].clear();
-			(*file_content_)[i] = Key + " = " + Value;
+			(*file_content_)[i] = key+ "=" + value;
 		}
 	}
 }

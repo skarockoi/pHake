@@ -4,22 +4,19 @@
 #include <string>
 #include <vector>
 
-class pSettings
+class pINI // Bad INI Parser
 {
-private:
-	std::vector<std::string>* file_content_;
-	std::string file_path_;
 public:
-	pSettings();
-	~pSettings();
+	pINI();
+	~pINI();
 	
 	bool			Open(const std::string& filepath);
 	template <typename T>
-	T				AddGet(const std::string& key, T value);
-	void			AddComment(const std::string& key);
-
+	T				Get(const std::string& key, T default_value);
 	template <typename T>
 	bool			Edit(const std::string& key, T value);
+
+	void			Comment(const std::string& key);
 	void			Save();
 	void			Clear();
 
@@ -31,15 +28,17 @@ private:
 
 	template <typename T>
 	T LexicalCast(const std::string& str);
+
+private:
+	std::vector<std::string>* file_content_;
+	std::string file_path_;
 };
 
 template<typename T>
-inline T pSettings::AddGet(const std::string& key, T value)
+inline T pINI::Get(const std::string& key, T value)
 {
 	if (this->CheckExistanceOfKey(key))
-	{
 		return this->LexicalCast<T>(this->GetKeyByName(key));
-	}
 	else
 	{
 		this->AddKeyAndValue(key, std::to_string(value));
@@ -50,7 +49,7 @@ inline T pSettings::AddGet(const std::string& key, T value)
 }
 
 template<typename T>
-inline bool pSettings::Edit(const std::string& key, T value)
+inline bool pINI::Edit(const std::string& key, T value)
 {
 	if (this->CheckExistanceOfKey(key))
 	{
@@ -61,7 +60,7 @@ inline bool pSettings::Edit(const std::string& key, T value)
 }
 
 template<typename T>
-inline T pSettings::LexicalCast(const std::string& str)
+inline T pINI::LexicalCast(const std::string& str)
 {
 	T var{};
 	std::istringstream iss;

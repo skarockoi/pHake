@@ -1,11 +1,12 @@
 #include "pWindow.hpp"
+#include "pFont.hpp"
 
 void pWindow::Create()
 {
 	this->list = pList();
 	this->mouse_ = pMouse();
 
-	font_.loadFromFile("Settings/font.ttf");
+	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
 
 	window_.create(sf::VideoMode(208, 148), "pWindow");
 	window_.setFramerateLimit(60);

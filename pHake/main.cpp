@@ -10,7 +10,7 @@
 #include <array>
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
-std::unique_ptr<pSettings> cfg; // config file, reads out in ReadConfig(), saves settings values in ExitProgram();
+std::unique_ptr<pINI> ini; // ini file, reads out in ReadConfig(), saves settings values in ExitProgram();
 
 Process    proc;  // access gta5 memory, read/write/...
 World      world; // primarily used to access localplayer object
@@ -109,20 +109,20 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 
 bool ReadConfig()
 {
-	cfg = std::make_unique<pSettings>();
+	ini = std::make_unique<pINI>();
 
-	bool success = cfg->Open("Settings//cfg.txt");
-	settings.maxweapon =		  cfg->AddGet<bool>("MaxWeapon", 0); // restore to default values if config file is broken
-	settings.nowanted =			  cfg->AddGet<bool>("NoWanted", 0);
-	settings.godmode =			  cfg->AddGet<bool>("Godmode", 0);
-	settings.trigger =			  cfg->AddGet<bool>("Trigger", 0);
-	settings.rploop =			  cfg->AddGet<bool>("RpLoop", 0);
-	settings.noclip =			  cfg->AddGet<bool>("NoClip", 0);
-	cfg->AddComment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
-	settings.keys.menu =		  cfg->AddGet<uint32_t>("Menu Key", VK_MENU);
-	settings.keys.teleport =	  cfg->AddGet<uint32_t>("Teleport Key", VK_NUMPAD0);
-	settings.keys.boost_player =  cfg->AddGet<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
-	settings.keys.boost_vehicle = cfg->AddGet<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
+	bool success = ini->Open("settings.ini");
+	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0); // restore to default values if ini file is broken
+	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
+	settings.godmode =			  ini->Get<bool>("Godmode", 0);
+	settings.trigger =			  ini->Get<bool>("Trigger", 0);
+	settings.rploop =			  ini->Get<bool>("RpLoop", 0);
+	settings.noclip =			  ini->Get<bool>("NoClip", 0);
+	ini->Comment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
+	settings.keys.menu =		  ini->Get<uint32_t>("Menu Key", VK_MENU);
+	settings.keys.teleport =	  ini->Get<uint32_t>("Teleport Key", VK_NUMPAD0);
+	settings.keys.boost_player =  ini->Get<uint32_t>("BoostPlayer Key", VK_NUMPAD1);
+	settings.keys.boost_vehicle = ini->Get<uint32_t>("BoostVehicle Key", VK_NUMPAD2);
 
 	return success;
 }
@@ -132,13 +132,13 @@ void ExitProgram()
 	for (auto& i : threads) 
 		i.get()->Destroy(); // stop cheat threads
 	
-	cfg->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
-	cfg->Edit<bool>("NoWanted", settings.nowanted);
-	cfg->Edit<bool>("Godmode", settings.godmode);
-	cfg->Edit<bool>("Trigger", settings.trigger);
-	cfg->Edit<bool>("RpLoop", settings.rploop);
-	cfg->Edit<bool>("NoClip", settings.noclip);
-	cfg->Save();
+	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
+	ini->Edit<bool>("NoWanted", settings.nowanted);
+	ini->Edit<bool>("Godmode", settings.godmode);
+	ini->Edit<bool>("Trigger", settings.trigger);
+	ini->Edit<bool>("RpLoop", settings.rploop);
+	ini->Edit<bool>("NoClip", settings.noclip);
+	ini->Save();
 
 	if (settings.maxweapon)
 		maxweapon.RestoreWeapons();
@@ -160,6 +160,7 @@ void ExitProgram()
 void StartCheats()
 {
 	ReadWriteFactory::process = &proc;
+
 	maxweapon = MaxWeapon();
 	noclip = NoClip();
 

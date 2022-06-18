@@ -1,4 +1,5 @@
 #include "pList.hpp"
+#include "pFont.hpp"
 
 #define TEXT_SIZE 16
 #define TEXT_COLOR sf::Color::Color(255, 255, 255, 255)
@@ -13,7 +14,7 @@
 void pList::Create(sf::RenderWindow* const& Window)
 {
 	this->window_ = Window;
-	this->font_.loadFromFile("Settings/font.ttf");
+	this->font_.loadFromMemory(&Pixellari, Pixellari.size());
 
 	this->rect_back.setSize(sf::Vector2f(BACK_WIDTH, 0));
 	this->rect_back.setFillColor(sf::Color::Color(0, 0, 0, 150));
