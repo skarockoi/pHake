@@ -10,7 +10,7 @@
 #include <array>
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
-std::unique_ptr<pINI> ini; // ini file, reads out in ReadConfig(), saves settings values in ExitProgram();
+std::unique_ptr<pINI> ini; // settings file
 
 Process    proc;  // access gta5 memory, read/write/...
 World      world; // primarily used to access localplayer object
@@ -72,7 +72,6 @@ bool AlreadyRunning()
 	default:
 		return false;
 	}
-
 	return true;
 }
 
