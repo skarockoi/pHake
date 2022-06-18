@@ -11,6 +11,7 @@
 - Boost Vehicle<br/>
 - Boost Player<br/>
 - Suicide<br/>
+⠀
 
 # Usage
 - Start in game<br/>
