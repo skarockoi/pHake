@@ -111,13 +111,14 @@ bool ReadConfig()
 	ini = std::make_unique<pINI>();
 
 	bool success = ini->Open("settings.ini");
+	ini->Comment("# Start Up Toggles:");
 	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0); // restore to default values if ini file is broken
 	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
 	settings.godmode =			  ini->Get<bool>("Godmode", 0);
 	settings.trigger =			  ini->Get<bool>("Trigger", 0);
 	settings.rploop =			  ini->Get<bool>("RpLoop", 0);
 	settings.noclip =			  ini->Get<bool>("NoClip", 0);
-	ini->Comment("Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
+	ini->Comment("# Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
 	settings.keys.menu =		  ini->Get<uint32_t>("Menu Key", VK_MENU);
 	settings.keys.teleport =	  ini->Get<uint32_t>("Teleport Key", VK_NUMPAD0);
 	settings.keys.boost_player =  ini->Get<uint32_t>("BoostPlayer Key", VK_NUMPAD1);

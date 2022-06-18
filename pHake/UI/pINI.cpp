@@ -41,7 +41,7 @@ bool pINI::Open(const std::string& filepath)
 
 void pINI::Comment(const std::string& key)
 {
-	if (!CheckExistanceOfKey(key))
+	if (!CheckExistanceOfComment(key))
 	{
 		file_content_->push_back(key);
 	}
@@ -78,7 +78,7 @@ std::string pINI::GetKeyByName(const std::string& key)
 {
 	for (size_t i = 0; i < file_content_->size(); i++)
 	{
-		if ((*file_content_)[i].find(key) != std::string::npos)
+		if ((*file_content_)[i].find(key+"=") != std::string::npos)
 			return (*file_content_)[i].substr((*file_content_)[i].find("=") + 1);
 	}
 	return "";
@@ -95,6 +95,17 @@ bool pINI::CheckExistanceOfKey(const std::string& key)
 	return false;
 }
 
+bool pINI::CheckExistanceOfComment(const std::string& comment)
+{
+	for (size_t i = 0; i < file_content_->size(); i++)
+	{
+		if ((*file_content_)[i].find(comment) != std::string::npos) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 {
 	for (size_t i = 0; i < file_content_->size(); i++)
@@ -102,7 +113,7 @@ void pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 		if ((*file_content_)[i].find(key+"=") != std::string::npos)
 		{
 			(*file_content_)[i].clear();
-			(*file_content_)[i] = key+ "=" + value;
+			(*file_content_)[i] = key + "=" + value;
 		}
 	}
 }

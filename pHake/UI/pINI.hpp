@@ -24,6 +24,7 @@ private:
 	void			AddKeyAndValue(const std::string& key, const std::string& value);
 	std::string		GetKeyByName(const std::string& key);
 	bool			CheckExistanceOfKey(const std::string& key);
+	bool			CheckExistanceOfComment(const std::string& comment);
 	void			ChangeKeyValue(const std::string& key, const std::string& value);
 
 	template <typename T>
