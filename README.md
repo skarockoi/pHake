@@ -28,9 +28,9 @@
 - <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">pHake 5.6 (1.60)</a><br/>
 
 # Compilation with Visual Studio
-1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
-2. Compile it as x64 Release/Debug
-3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dependencies.zip">dependencies</a> to the executable folder <br/>
+**1.** Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
+**2.** Compile it as x64 Release/Debug
+**3.** Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dependencies.zip">dependencies</a> to the executable folder <br/>
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">release</a> as an example
 
 # Code Structure
