@@ -25,13 +25,14 @@
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in Settings\cfg.txt<br/>
 
 # Download
-<a href="https://github.com/xhz8s/pHake/releases/download/5.5/pHake_5.5_1.60.zip">pHake 5.5 (1.60 All Platforms)</a>
+<a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake.5.6.1.60.zip">pHake 5.6 (1.60)</a>
+<a href="https://github.com/xhz8s/pHake/releases/download/1/pHake.Steam.Legay.zip">pHake Steam Legacy</a>
 
 # Compilation with Visual Studio
 1. Download this <a href="https://www.sfml-dev.org/files/SFML-2.5.1-windows-vc15-64-bit.zip">SFML</a> version and extract it to  "C:\\Libraries\\" as "C:\\Libraries\\SFML-2.5.1\\"
 2. Compile it as x64 Release/Debug
-3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dp.zip">dependencies</a> to the executable folder <br/>
-- You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.5/pHake_5.5_1.60.zip">release</a> as an example
+3. Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dependencies.zip">dependencies</a> to the executable folder <br/>
+- You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake.5.6.1.60.zip">release</a> as an example
 
 # Code Structure
 ![Structure](https://user-images.githubusercontent.com/52607377/173834870-a3e36182-bc2f-47c9-aef4-00e13a7d0e0f.png)
