@@ -106,7 +106,7 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	return true;
 }
 
-bool ReadConfig()
+bool ReadSettings()
 {
 	ini = std::make_unique<pINI>();
 

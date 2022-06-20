@@ -7,7 +7,7 @@
 #include "SDK/World.hpp"
 
 extern std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
-extern std::unique_ptr<pINI> ini; // ini file, reads out in ReadConfig(), saves settings values in ExitProgram();
+extern std::unique_ptr<pINI> ini; // ini file, reads out in ReadSettings(), saves settings values in ExitProgram();
 
 extern Process proc;  // access gta5 memory, read/write/...
 extern World   world; // primarily used to access localplayer object
