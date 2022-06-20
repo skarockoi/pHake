@@ -124,7 +124,6 @@ bool ReadConfig()
 	settings.keys.boost_player =  ini->Get<uint32_t>("Boost Player", VK_NUMPAD1);
 	settings.keys.boost_vehicle = ini->Get<uint32_t>("Boost Vehicle", VK_NUMPAD2);
 
-
 	return success;
 }
 
