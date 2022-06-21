@@ -9,7 +9,7 @@
 
 #pragma comment (lib, "Dwmapi.lib")
 
-class pWindow
+class pWindow // same as pOverlay, but as an independet window
 {
 private:
 	sf::RenderWindow window_;

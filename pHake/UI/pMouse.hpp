@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class pMouse
+class pMouse // rectanuglar mouse you see when toggling the menu
 {
 public:
 	pMouse() : window_(0), mouse_rect_({0,0}), active_(false) { }

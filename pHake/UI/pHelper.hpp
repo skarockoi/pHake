@@ -11,13 +11,15 @@
 #include <sstream>  
 #include <iomanip>
 
+// helpful functions that I created/found
+
 inline void sleep(uint32_t ms)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
 template <typename T>
-void GetKeyExecuteWaitForRelease(int key, T function)
+void GetKeyExecuteWaitForRelease(int key, T function) // waits for key to be pressed, executes the function and then waits until you release the key again
 {
 	if (HIBYTE(GetAsyncKeyState(key)))
 	{
@@ -27,12 +29,24 @@ void GetKeyExecuteWaitForRelease(int key, T function)
 	}
 }
 
-static uint32_t SpawnRandomNumber(uint32_t min, uint32_t max)
+static uint32_t GenerateRandomNumber(uint32_t min, uint32_t max) // generates random number between min and max
 {
 	std::random_device dev;
 	std::mt19937 rng(dev());
 	std::uniform_int_distribution<std::mt19937::result_type> num(min, max);
 	return num(rng);
+}
+
+static std::string GenerateRandomString(size_t Size)
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> dist('a', 'z');
+
+	std::string result;
+	std::generate_n(std::back_inserter(result), Size, [&] {return dist(mt); });
+
+	return result;
 }
 
 static std::string CutStringBetweenTwoCharacters(std::string& origin, const std::string& left, const std::string& right)
@@ -89,27 +103,15 @@ static bool ReadFileByLineAndSaveToVector(std::vector<std::string>* Vector, cons
 
 }
 
-static std::string RandomString(size_t Size)
-{
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist('a', 'z');
-
-	std::string result;
-	std::generate_n(std::back_inserter(result), Size, [&] {return dist(mt); });
-
-	return result;
-}
-
 namespace Key
 {
 	namespace Down
 	{
-		inline void W() { keybd_event(0x57, 0x11, 0, 0); }
-		inline void A() { keybd_event(0x41, 0x1E, 0, 0); }
-		inline void S() { keybd_event(0x53, 0x1F, 0, 0); }
-		inline void D() { keybd_event(0x44, 0x20, 0, 0); }
-		inline void Space() { keybd_event(MapVirtualKey(0x20, 0), 0x39, 0, 0); }
+		static void W() { keybd_event(0x57, 0x11, 0, 0); }
+		static void A() { keybd_event(0x41, 0x1E, 0, 0); }
+		static void S() { keybd_event(0x53, 0x1F, 0, 0); }
+		static void D() { keybd_event(0x44, 0x20, 0, 0); }
+		static void Space() { keybd_event(MapVirtualKey(0x20, 0), 0x39, 0, 0); }
 
 		static void LMouse(){
 			INPUT    Input = { 0 };
@@ -121,11 +123,11 @@ namespace Key
 
 	namespace Up
 	{
-		inline void W() { keybd_event(0x57, 0x11, KEYEVENTF_KEYUP, 0); }
-		inline void A() { keybd_event(0x41, 0x1E, KEYEVENTF_KEYUP, 0); }
-		inline void S() { keybd_event(0x53, 0x1F, KEYEVENTF_KEYUP, 0); }
-		inline void D() { keybd_event(0x44, 0x20, KEYEVENTF_KEYUP, 0); }
-		inline void Space() { keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_KEYUP, 0); }
+		static void W() { keybd_event(0x57, 0x11, KEYEVENTF_KEYUP, 0); }
+		static void A() { keybd_event(0x41, 0x1E, KEYEVENTF_KEYUP, 0); }
+		static void S() { keybd_event(0x53, 0x1F, KEYEVENTF_KEYUP, 0); }
+		static void D() { keybd_event(0x44, 0x20, KEYEVENTF_KEYUP, 0); }
+		static void Space() { keybd_event(MapVirtualKey(0x20, 0), 0x39, KEYEVENTF_KEYUP, 0); }
 
 		static void LMouse(){
 			INPUT    Input = { 0 };

@@ -6,10 +6,10 @@
 #include "Memory/Process.hpp"
 #include "SDK/World.hpp"
 
-extern std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
-extern std::unique_ptr<pINI> ini; // ini file, reads out in ReadSettings(), saves settings values in ExitProgram();
+extern std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
+extern std::unique_ptr<pINI> ini; // settings file
 
-extern Process proc;  // access gta5 memory, read/write/...
+extern Process proc;  // access gta memory, read/write/...
 extern World   world; // primarily used to access localplayer object
 
 struct Settings // stores important, globally accessed variables
@@ -34,7 +34,7 @@ struct Settings // stores important, globally accessed variables
 
 }; extern Settings settings;
 
-struct Pointers // initialized in ReadSignatures()
+struct Pointers // signatures
 {
 	uintptr_t world;
 	uintptr_t waypoint;

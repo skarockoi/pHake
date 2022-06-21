@@ -7,7 +7,7 @@
 
 #include <vector>
 
-class pList
+class pList // stores and draws pItems, that is basically the menu
 {
 public:
 	pList();

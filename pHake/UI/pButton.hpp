@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class pButton
+class pButton // rectangle button that executes a function when pressed
 {
 public:
 	pButton();

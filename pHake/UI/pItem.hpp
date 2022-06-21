@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-class pItemBone
+class pItemBone // items that changes the value when clicked
 {
 public:
 	pItemBone();

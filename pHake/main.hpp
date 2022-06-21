@@ -1,12 +1,13 @@
-#include "Globals.hpp"
+#include "Globals.hpp" // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
-bool ReadSignatures(); // read out signatures
-bool ReadSettings(); // read ini file
-void ExitProgram(); // clean up, exit
+bool ReadSignatures(); // finds all needed signatures
+bool ReadSettings(); // reads settings file and stores it in settings
+bool InitializeCheats(); // attaches to the game and calls cheat constructors
 
-void StartCheats();
-void StartUI();
+void StartThreads(); // every program function that needs a constant loop has its own thread
+void ExitProgram(); // closes threads, restores changed made to the game
+
 
 int main()
 {
@@ -16,13 +17,13 @@ int main()
 		return false;
 	}
 
-	if (!proc.AttachProcess("GTA5.exe"))
+	if (!InitializeCheats())
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
 	}
 
-	if (!ReadSignatures()) // check if pointers were found, if not the game version has changed
+	if (!ReadSignatures())
 	{
 		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
 		return false;
@@ -33,7 +34,6 @@ int main()
 		MessageBox(NULL, "settings file could not be read, restoring...", "Note", NULL);
 	}
 
-	StartCheats();
-	StartUI(); 
+	StartThreads();
 	ExitProgram();
 }

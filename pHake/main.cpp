@@ -9,14 +9,14 @@
 
 #include <array>
 
-std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by other functions for notifications
+std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
 std::unique_ptr<pINI> ini; // settings file
 
-Process    proc;  // access gta5 memory, read/write/...
+Process    proc;  // access gta memory, read/write/...
 World      world; // primarily used to access localplayer object
 
-Settings settings;
-Pointers pointers;
+Settings settings; // defined in Global, reads data in ReadSettings() and writes data in ExitProgram()
+Pointers pointers; // defined in Global, initialized in ReadSignatures()
 
 MaxWeapon maxweapon;
 NoClip    noclip;
@@ -25,7 +25,7 @@ std::vector<std::unique_ptr<pThread>> threads; // individual threads used for ch
 
 void Toggles()
 {
-	if (menu == nullptr)
+	if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
 		return;
 	
 	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
@@ -75,7 +75,7 @@ bool AlreadyRunning()
 	return true;
 }
 
-bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithreading
+bool ReadSignatures()
 {
 	std::thread t0([]() { pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); });
 	std::thread t1([]() { pointers.waypoint = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8D, 0x05, 0x00, 0x00, 0x00, 0x00, 0x48, 0x69, 0xC9, 0x00, 0x00, 0x00, 0x00, 0x48, 0x03, 0xC8, 0x83, 0x79 }, 3) + 0x20; });
@@ -86,14 +86,7 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 	std::thread t6([]() { pointers.asm_update_speed_z = proc.FindSignature({ 0xF3, 0x0F, 0x11, 0x83, 0x00, 0x00, 0x00, 0x00, 0xF3, 0x0F, 0x11, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x8D, 0x9C, 0x24, 0x00, 0x00, 0x00, 0x00, 0x49, 0x8B, 0x5B, 0x00, 0x49, 0x8B, 0x73, 0x00, 0x49, 0x8B, 0x7B, 0x00, 0x41, 0x0F, 0x28, 0x73, 0x00, 0x41, 0x0F, 0x28, 0x7B, 0x00, 0x45, 0x0F, 0x28, 0x43, 0x00, 0x45, 0x0F, 0x28, 0x4B }); });
 	std::thread t7([]() { pointers.kmh = proc.ReadOffsetFromSignature<uint32_t>({ 0xF3, 0x0F, 0x10, 0x05, 0x00 ,0x00, 0x00, 0x00, 0xC6, 0x85 }, 4); });
 
-	t0.join();
-	t1.join();
-	t2.join();
-	t3.join();
-	t4.join();
-	t5.join();
-	t6.join();
-	t7.join();
+	t0.join(); t1.join(); t2.join(); t3.join(); t4.join(); t5.join(); t6.join(); t7.join(); // wait for all signatures to be found, causes really high cpu usage for a second
 
 	pointers.crosshair_value = pointers.entity_aiming_at + 0x10;
 
@@ -109,10 +102,10 @@ bool ReadSignatures() // signatures in std::vector<uint8_t> format // multithrea
 bool ReadSettings()
 {
 	ini = std::make_unique<pINI>();
-
 	bool success = ini->Open("settings.ini");
+
 	ini->Comment("# Start Up Toggles:");
-	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0); // restore to default values if ini file is broken
+	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0);
 	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
 	settings.godmode =			  ini->Get<bool>("Godmode", 0);
 	settings.trigger =			  ini->Get<bool>("Trigger", 0);
@@ -127,11 +120,55 @@ bool ReadSettings()
 	return success;
 }
 
+bool InitializeCheats()
+{
+	if (!proc.AttachProcess("GTA5.exe"))
+		return false;
+	
+	ReadWriteFactory::process = &proc;
+	maxweapon = MaxWeapon();
+	noclip = NoClip();
+
+	return true;
+}
+
+void StartThreads()
+{
+	threads.push_back(std::make_unique<pThread>([=]() {
+		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // read meters per second * 3.6
+		}, 1));
+
+	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
+	threads.push_back(std::make_unique<pThread>(GodMode, 100));
+	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
+	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
+	threads.push_back(std::make_unique<pThread>(Trigger, 1));
+	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
+	threads.push_back(std::make_unique<pThread>(Toggles, 10));
+
+	menu = std::make_unique<pOverlay>(); // initialize game UI
+	menu->Create("Grand Theft Auto V");  // overlay gta window
+	menu->list.AddBool("MaxWeapon", settings.maxweapon); // cheats to list
+	menu->list.AddBool("NoWanted", settings.nowanted);
+	menu->list.AddBool("Godmode", settings.godmode);
+	menu->list.AddBool("Trigger", settings.trigger);
+	menu->list.AddBool("RpLoop", settings.rploop);
+	menu->list.AddBool("NoClip", settings.noclip);
+	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
+	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint);
+	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
+	menu->list.AddFunction("Boost Player", BoostPlayer);
+	menu->list.AddFunction("Suicide", Suicide);
+	menu->list.AddFunction("Exit", ExitProgram);
+	menu->Loop(); // main loop
+}
+
 void ExitProgram()
 {
-	for (auto& i : threads) 
+	for (auto& i : threads)
 		i.get()->Destroy(); // stop cheat threads
-	
+
 	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	ini->Edit<bool>("NoWanted", settings.nowanted);
 	ini->Edit<bool>("Godmode", settings.godmode);
@@ -142,7 +179,7 @@ void ExitProgram()
 
 	if (settings.maxweapon)
 		maxweapon.RestoreWeapons();
-	
+
 	if (settings.godmode)
 		world.localplayer.god(false);
 
@@ -157,47 +194,6 @@ void ExitProgram()
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 }
 
-void StartCheats()
-{
-	ReadWriteFactory::process = &proc;
-
-	maxweapon = MaxWeapon();
-	noclip = NoClip();
-
-	threads.push_back(std::make_unique<pThread>([=]() {
-
-		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // read meters per second * 3.6
-
-	}, 1));
-
-	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
-	threads.push_back(std::make_unique<pThread>(GodMode, 100));
-	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
-	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
-	threads.push_back(std::make_unique<pThread>(Trigger, 1));
-	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
-	threads.push_back(std::make_unique<pThread>(Toggles, 10));
-}
-
-void StartUI()
-{
-	menu = std::make_unique<pOverlay>(); // initialize game UI
-	menu->Create("Grand Theft Auto V");  // overlay gta window
-	menu->list.AddBool("MaxWeapon", settings.maxweapon);
-	menu->list.AddBool("NoWanted", settings.nowanted);
-	menu->list.AddBool("Godmode", settings.godmode);
-	menu->list.AddBool("Trigger", settings.trigger);
-	menu->list.AddBool("RpLoop", settings.rploop);
-	menu->list.AddBool("NoClip", settings.noclip);
-	menu->list.AddFloat("Km/h", settings.kmh, 0, 0);
-	menu->list.AddFunction("Tp to Waypoint", TeleportToWaypoint);
-	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
-	menu->list.AddFunction("Boost Player", BoostPlayer);
-	menu->list.AddFunction("Suicide", Suicide);
-	menu->list.AddFunction("Exit", ExitProgram);
-	menu->Loop();
-}
 
 //void DebugInfo()
 //{

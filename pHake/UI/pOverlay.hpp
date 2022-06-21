@@ -35,7 +35,7 @@ private:
 	sf::Vector2u size_;
 };
 
-class pOverlay
+class pOverlay // creates an transparent overlay over selected process
 {
 public:
 	pOverlay();
