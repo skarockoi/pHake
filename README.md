@@ -34,4 +34,4 @@
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">release</a> as an example<br/>
 
 # Code Structure
-![Structure](https://user-images.githubusercontent.com/52607377/173834870-a3e36182-bc2f-47c9-aef4-00e13a7d0e0f.png)
+![Structure](https://user-images.githubusercontent.com/52607377/174817940-a76c8e1a-4253-4bd3-8385-5b69a4abe680.png)
