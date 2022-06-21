@@ -8,7 +8,6 @@ bool InitializeCheats(); // attaches to the game and calls cheat constructors
 void StartThreads(); // every program function that needs a constant loop has its own thread
 void ExitProgram(); // closes threads, restores changed made to the game
 
-
 int main()
 {
 	if (!AlreadyRunning())
