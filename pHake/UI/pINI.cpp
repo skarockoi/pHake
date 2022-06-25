@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 pINI::pINI()
 {
@@ -33,6 +34,16 @@ bool pINI::Open(const std::string& filepath)
 	}
 	else
 	{
+		std::vector<std::string> directories = split(filepath, '/');
+		directories.pop_back();
+
+		std::string directory = "";
+		for (auto i : directories) {
+			directory += i;
+		}
+
+		CreateDirectyRecursive(directory);
+
 		std::ofstream file{ filepath };
 		file.close();
 		return 0;
@@ -106,7 +117,7 @@ bool pINI::CheckExistanceOfComment(const std::string& comment)
 	return false;
 }
 
-void pINI::ChangeKeyValue(const std::string& key, const std::string& value)
+bool pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 {
 	for (size_t i = 0; i < file_content_->size(); i++)
 	{
@@ -114,6 +125,34 @@ void pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 		{
 			(*file_content_)[i].clear();
 			(*file_content_)[i] = key + "=" + value;
+			return true;
 		}
 	}
+	return false;
+}
+
+bool pINI::CreateDirectyRecursive(const std::string& dirName)
+{
+	std::error_code err;
+	if (!std::filesystem::create_directories(dirName, err))
+	{
+		if (std::filesystem::exists(dirName))
+			return true;    // the folder probably already existed
+		
+		return false;
+	}
+	return true;
+}
+
+std::vector<std::string> pINI::split(const std::string& str, const char sep)
+{
+	std::string token;
+	std::stringstream ss(str);
+	std::vector<std::string> tokens;
+
+	while (std::getline(ss, token, sep)) {
+		tokens.push_back(token);
+	}
+
+	return tokens;
 }

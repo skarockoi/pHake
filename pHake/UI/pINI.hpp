@@ -25,7 +25,10 @@ private:
 	std::string		GetKeyByName(const std::string& key);
 	bool			CheckExistanceOfKey(const std::string& key);
 	bool			CheckExistanceOfComment(const std::string& comment);
-	void			ChangeKeyValue(const std::string& key, const std::string& value);
+	bool			ChangeKeyValue(const std::string& key, const std::string& value);
+	bool			CreateDirectyRecursive(const std::string& dirName);
+	std::vector<std::string> split(const std::string& str, const char sep); // split a string separated by sep into a vector
+
 
 	template <typename T>
 	T LexicalCast(const std::string& str);
