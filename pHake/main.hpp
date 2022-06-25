@@ -3,9 +3,9 @@
 bool AlreadyRunning(); // check if cheat is already running
 bool ReadSignatures(); // finds all needed signatures
 bool ReadSettings(); // reads settings file and stores it in settings
-bool InitializeCheats(); // attaches to the game and calls cheat constructors
+bool AttachToGTA(); // attaches to the game and calls cheat constructors
 
-void StartThreads(); // every program function that needs a constant loop has its own thread
+void StartCheat(); // every program function that needs a constant loop has its own thread
 void ExitProgram(); // closes threads, restores changes made to the game
 
 int main()
@@ -16,7 +16,7 @@ int main()
 		return false;
 	}
 
-	if (!InitializeCheats())
+	if (!AttachToGTA())
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
@@ -33,6 +33,6 @@ int main()
 		MessageBox(NULL, "settings file could not be read, restoring...", "Note", NULL);
 	}
 
-	StartThreads();
+	StartCheat();
 	ExitProgram();
 }

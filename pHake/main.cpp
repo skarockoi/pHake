@@ -122,7 +122,7 @@ bool ReadSettings()
 	return success;
 }
 
-bool InitializeCheats()
+bool AttachToGTA()
 {
 	if (!proc.AttachProcess("GTA5.exe"))
 		return false;
@@ -132,12 +132,11 @@ bool InitializeCheats()
 	return true;
 }
 
-void StartThreads()
+void StartCheat()
 {
-	maxweapon = MaxWeapon();
+	maxweapon = MaxWeapon(); // calling cheat constructors
 	noclip = NoClip();
 
-	threads = std::vector<pThread>(0);
 	threads.push_back(pThread([=]() {
 		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h
