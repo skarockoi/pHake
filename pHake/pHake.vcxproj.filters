@@ -167,5 +167,8 @@
     <ClCompile Include="Memory\Datawrapper.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="UI\pThread.cpp">
+      <Filter>Header Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

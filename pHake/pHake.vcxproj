@@ -209,6 +209,7 @@
     <ClCompile Include="UI\pNotificationCenter.cpp" />
     <ClCompile Include="UI\pOverlay.cpp" />
     <ClCompile Include="UI\pINI.cpp" />
+    <ClCompile Include="UI\pThread.cpp" />
     <ClCompile Include="UI\pWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
