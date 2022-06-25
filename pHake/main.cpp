@@ -22,7 +22,7 @@ Pointers pointers; // defined in Global, initialized in ReadSignatures()
 MaxWeapon maxweapon;
 NoClip    noclip;
 
-std::vector<std::unique_ptr<pThread>> threads; // individual threads used for cheats, keyboard toggles...
+std::vector<pThread> threads; // individual threads used for cheats, keyboard toggles...
 
 void Toggles()
 {
@@ -97,6 +97,7 @@ bool ReadSignatures()
 		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
 	}
+
 	return true;
 }
 
@@ -127,26 +128,28 @@ bool InitializeCheats()
 		return false;
 	
 	ReadWriteFactory::process = &proc;
-	maxweapon = MaxWeapon();
-	noclip = NoClip();
 
 	return true;
 }
 
 void StartThreads()
 {
-	threads.push_back(std::make_unique<pThread>([=]() {
+	maxweapon = MaxWeapon();
+	noclip = NoClip();
+
+	threads = std::vector<pThread>(0);
+	threads.push_back(pThread([=]() {
 		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h
 		}, 1));
 
-	threads.push_back(std::make_unique<pThread>([=]() { maxweapon.Loop(); }, 100));
-	threads.push_back(std::make_unique<pThread>(GodMode, 100));
-	threads.push_back(std::make_unique<pThread>(NoWanted, 10));
-	threads.push_back(std::make_unique<pThread>(RPLoop, 1));
-	threads.push_back(std::make_unique<pThread>(Trigger, 1));
-	threads.push_back(std::make_unique<pThread>([=]() { noclip.Loop(); }, 10));
-	threads.push_back(std::make_unique<pThread>(Toggles, 10));
+	threads.push_back(pThread([]() { maxweapon.Loop(); }, 100));
+	threads.push_back(pThread(GodMode, 100));
+	threads.push_back(pThread(NoWanted, 10));
+	threads.push_back(pThread(RPLoop, 1));
+	threads.push_back(pThread(Trigger, 1));
+	threads.push_back(pThread([]() { noclip.Loop(); }, 10));
+	threads.push_back(pThread(Toggles, 10));
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window
@@ -168,7 +171,7 @@ void StartThreads()
 void ExitProgram()
 {
 	for (auto& i : threads)
-		i.get()->Destroy(); // stop cheat threads
+		i.Destroy(); // stop cheat threads
 
 	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	ini->Edit<bool>("NoWanted", settings.nowanted);
@@ -195,7 +198,6 @@ void ExitProgram()
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 }
 
-
 //void DebugInfo()
 //{
 //	std::cout << " Signatures:" << std::endl;
@@ -204,6 +206,7 @@ void ExitProgram()
 //	std::cout << " camera_pos = " << std::hex << pointers.camera_pos << std::endl;
 //	std::cout << " crosshair_value = " << std::hex << pointers.crosshair_value << std::endl;
 //	std::cout << " entity_aiming_at = " << std::hex << pointers.entity_aiming_at << std::endl;
+//	std::cout << " is_player_aiming = " << std::hex << pointers.is_player_aiming << std::endl;
 //	std::cout << " asm_update_position = " << std::hex << pointers.asm_update_position << std::endl;
 //	std::cout << " asm_update_speed_z = " << std::hex << pointers.asm_update_speed_z << std::endl;
 //	std::cout << " kmh = " << std::hex << pointers.kmh << std::endl;
