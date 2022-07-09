@@ -93,11 +93,9 @@ bool ReadSignatures()
 
 	std::array<uintptr_t*, sizeof(pointers) / sizeof(uintptr_t)> pointers_check = {reinterpret_cast<uintptr_t*>(&pointers)}; // check if any pointer returned 0
 	for (size_t i = 0; i < pointers_check.size(); i++)
-	{
 		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
-	}
-
+	
 	return true;
 }
 
