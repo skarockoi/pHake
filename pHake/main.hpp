@@ -1,9 +1,9 @@
 #include "Globals.hpp" // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
+bool AttachToGTA(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
 bool ReadSettings(); // reads settings file and stores it in settings
-bool AttachToGTA(); // attaches to the game
 
 void StartCheat(); // every program function that needs a constant loop has its own thread
 void ExitProgram(); // closes threads, restores changes made to the game

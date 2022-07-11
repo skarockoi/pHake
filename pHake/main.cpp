@@ -76,6 +76,16 @@ bool AlreadyRunning()
 	return true;
 }
 
+bool AttachToGTA()
+{
+	if (!proc.AttachProcess("GTA5.exe"))
+		return false;
+
+	ReadWriteFactory::process = &proc;
+
+	return true;
+}
+
 bool ReadSignatures()
 {
 	auto t0 = std::async(std::launch::async, ([]() { pointers.world = proc.ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); }));
@@ -95,7 +105,7 @@ bool ReadSignatures()
 	for (size_t i = 0; i < pointers_check.size(); i++)
 		if (*(*pointers_check.begin() + i) == 0x0)
 			return false;
-	
+
 	return true;
 }
 
@@ -118,16 +128,6 @@ bool ReadSettings()
 	settings.keys.boost_vehicle = ini->Get<uint32_t>("Boost Vehicle", VK_NUMPAD2);
 
 	return success;
-}
-
-bool AttachToGTA()
-{
-	if (!proc.AttachProcess("GTA5.exe"))
-		return false;
-	
-	ReadWriteFactory::process = &proc;
-
-	return true;
 }
 
 void StartCheat()
