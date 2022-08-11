@@ -69,12 +69,12 @@ public:
 		this->write<float>(0x280, value);
 	}
 
-	float healthMax()
+	float health_max()
 	{
 		return this->read<float>(0x2A0);
 	}
 
-	void healthMax(float value)
+	void health_max(float value)
 	{
 		this->write<float>(0x2A0, value);
 	}
