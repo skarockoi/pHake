@@ -4,6 +4,7 @@
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
 #include "Weapon.hpp"
+
 class WeaponManager : public DataWrapper<0x20 + 0x8>
 {
 public:
