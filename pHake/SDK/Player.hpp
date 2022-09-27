@@ -14,6 +14,11 @@ class Player : public DataWrapper<0x14E0 + 0x4>
 public:
 	using DataWrapper::DataWrapper;
 
+	Position position;
+	Vehicle vehicle;
+	WeaponManager weapon_manager;
+	PlayerInfo playerinfo;
+
 	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
@@ -38,8 +43,6 @@ public:
 		else	
 			this->write<uint8_t>(0x2E, 1);
 	}
-
-	Position position;
 
 	bool god()
 	{
@@ -124,8 +127,6 @@ public:
 		return this->read<uint32_t>(0xC54);
 	}
 
-	Vehicle vehicle;
-
 	int32_t in_vehicle()
 	{
 		if (this->read<int32_t>(0xE50) != 0)
@@ -149,10 +150,6 @@ public:
 		else
 			this->write<unsigned char>(0x10B8, 32);
 	}
-
-	WeaponManager weapon_manager;
-
-	PlayerInfo playerinfo;
 
 	float armor()
 	{

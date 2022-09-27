@@ -123,6 +123,9 @@
     <ClInclude Include="UI\pFont.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Cheats\CheatsManager.hpp">
+      <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -169,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="UI\pThread.cpp">
       <Filter>Header Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheats\CheatsManager.cpp">
+      <Filter>Source Files\Cheats</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

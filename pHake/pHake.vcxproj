@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Cheats\MaxWeapon.hpp" />
+    <ClInclude Include="Cheats\CheatsManager.hpp" />
     <ClInclude Include="Cheats\Misc.hpp" />
     <ClInclude Include="Cheats\NoClip.hpp" />
     <ClInclude Include="Cheats\Teleport.hpp" />
@@ -194,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cheats\MaxWeapon.cpp" />
+    <ClCompile Include="Cheats\CheatsManager.cpp" />
     <ClCompile Include="Cheats\Misc.cpp" />
     <ClCompile Include="Cheats\NoClip.cpp" />
     <ClCompile Include="main.cpp">
