@@ -33,8 +33,7 @@
 **3.** Extract the <a href="https://github.com/xhz8s/pHake/releases/download/0/dependencies.zip">dependencies</a> to the executable folder <br/>
 - You can use the latest <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">release</a> as an example<br/>
 
-# Examples on how to add cheats
-- <a href="https://github.com/xhz8s/pHake/compare/master...Nort721:pHake:master">MaxWanted by @Nort721</a><br/>
-
-# Code Structure
-![Structure](https://user-images.githubusercontent.com/52607377/174817940-a76c8e1a-4253-4bd3-8385-5b69a4abe680.png)
+# Wiki for Developers
+- <a href="https://github.com/xhz8s/pHake/wiki/Compilation-with-Visual-Studio">Compilation</a><br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/How-to-add-cheats">How to add cheats</a><br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/Code-Structure">Code Structure</a><br/>
