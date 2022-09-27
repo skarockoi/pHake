@@ -3,6 +3,7 @@
 
 # Features<br/>
 - MaxWeapon<br/>
+- MaxWanted<br/>
 - NoWanted<br/>
 - GodMode<br/>
 - Trigger<br/>
