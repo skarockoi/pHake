@@ -29,5 +29,5 @@
 
 # Wiki for Developers
 - <a href="https://github.com/xhz8s/pHake/wiki/Compilation-with-Visual-Studio">Compilation</a><br/>
-- <a href="https://github.com/xhz8s/pHake/wiki/How-to-add-cheats">How to add cheats</a><br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Code-Structure">Code Structure</a><br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/How-to-add-cheats">How to add cheats</a><br/>
