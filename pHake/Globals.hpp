@@ -14,6 +14,7 @@ extern World   world; // primarily used to access localplayer object
 
 struct Settings // stores important, globally accessed variables
 {
+	bool maxwanted = false;
 	bool maxweapon = false;
 	bool nowanted = false;
 	bool godmode = false;

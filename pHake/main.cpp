@@ -115,6 +115,7 @@ bool ReadSettings()
 	bool success = ini->Open("settings.ini");
 
 	ini->Comment("# Start Up Toggles:");
+	settings.maxweapon =          ini->Get<bool>("MaxWanted", 0);
 	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0);
 	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
 	settings.godmode =			  ini->Get<bool>("Godmode", 0);
@@ -142,6 +143,7 @@ void StartCheat()
 
 	threads.push_back(pThread([]() { maxweapon.Loop(); }, 100));
 	threads.push_back(pThread(GodMode, 100));
+	threads.push_back(pThread(MaxWanted, 10));
 	threads.push_back(pThread(NoWanted, 10));
 	threads.push_back(pThread(RPLoop, 1));
 	threads.push_back(pThread(Trigger, 1));
@@ -150,6 +152,7 @@ void StartCheat()
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window
+	menu->list.AddBool("MaxWanted", settings.maxwanted);
 	menu->list.AddBool("MaxWeapon", settings.maxweapon); // cheats to list
 	menu->list.AddBool("NoWanted", settings.nowanted);
 	menu->list.AddBool("Godmode", settings.godmode);
@@ -170,6 +173,7 @@ void ExitProgram()
 	for (auto& i : threads)
 		i.Destroy(); // stop cheat threads
 
+	ini->Edit<bool>("MaxWanted", settings.maxwanted);
 	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
 	ini->Edit<bool>("NoWanted", settings.nowanted);
 	ini->Edit<bool>("Godmode", settings.godmode);

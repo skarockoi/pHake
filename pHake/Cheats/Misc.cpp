@@ -7,6 +7,13 @@
 
 #include <array>
 
+void MaxWanted() {
+	if (!settings.maxwanted)
+		return;
+
+	world.localplayer.playerinfo.wanted_level(5);
+}
+
 void NoWanted()
 {
 	if (!settings.nowanted)

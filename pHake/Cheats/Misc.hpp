@@ -1,6 +1,7 @@
 #ifndef _MISC_HPP_
 #define _MISC_HPP_
 
+void MaxWanted();
 void NoWanted();
 void GodMode();
 void Trigger();
