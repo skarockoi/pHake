@@ -59,7 +59,7 @@ public:
 	CheatsManager()
 	{
 		cheats.insert(std::make_pair("MaxWanted", new MaxWantedCheat()));
-		cheats.insert(std::make_pair("SuicideCheat", new NoWantedCheat()));
+		cheats.insert(std::make_pair("NoWanted", new NoWantedCheat()));
 	}
 };
 
