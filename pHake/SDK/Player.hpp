@@ -9,6 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
+//                    address of player pointer
 class Player : public DataWrapper<0x14E0 + 0x4>
 {
 public:
@@ -38,18 +39,13 @@ public:
 
 	void freeze(bool value)
 	{
-		if (value)
-			this->write<uint8_t>(0x2E, 2);	
-		else	
-			this->write<uint8_t>(0x2E, 1);
+		this->write<uint8_t>(0x2E, value ? 2 : 1);
 	}
 
 	bool god()
 	{
-		if (this->read<uint8_t>(0x189) == 1)
-			return true;
-		else
-			return false;
+		// 0x189 = offset of godmod property inside of player object
+		return this->read<uint8_t>(0x189) == 1;
 	}
 
 	void god(uint8_t value)
@@ -129,10 +125,7 @@ public:
 
 	int32_t in_vehicle()
 	{
-		if (this->read<int32_t>(0xE50) != 0)
-			return true;
-		else
-			return false;
+		return this->read<int32_t>(0xE50) != 0;
 	}
 
 	bool ragdoll()

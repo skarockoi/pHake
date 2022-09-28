@@ -7,14 +7,14 @@
 
 #include <array>
 
-//extern std::map<std::string, Cheat*> cheats;
-
 class Cheat {
 public:
 	bool toggled;
+	int64_t thread_intervals;
 	Cheat() 
 	{
 		toggled = false;
+		thread_intervals = -1; // -1 flag that it doesn't use a thread
 	}
 	virtual void execute() {}
 	virtual void restore() {}
@@ -28,6 +28,8 @@ public:
 	{
 		toggled = settings.maxwanted;
 		last_wanted = 0;
+		thread_intervals = 10;
+		menu->list.AddBool("MaxWanted", settings.maxwanted);
 	}
 	void execute() override {
 		last_wanted = world.localplayer.playerinfo.wanted_level();
@@ -38,14 +40,27 @@ public:
 	}
 };
 
-class SuicideCheat : public Cheat {
+class NoWantedCheat : public Cheat {
 public:
-	SuicideCheat()
+	NoWantedCheat()
 	{
 		toggled = false;
+		menu->list.AddBool("MaxWanted", settings.nowanted);
 	}
 	void execute() override {
-		world.localplayer.health(0.f);
+		if (world.localplayer.playerinfo.wanted_level() != 0)
+			world.localplayer.playerinfo.wanted_level(0);
 	}
 };
+
+class CheatsManager {
+public:
+	std::map<std::string, Cheat*> cheats;
+	CheatsManager()
+	{
+		cheats.insert(std::make_pair("MaxWanted", new MaxWantedCheat()));
+		cheats.insert(std::make_pair("SuicideCheat", new NoWantedCheat()));
+	}
+};
+
 

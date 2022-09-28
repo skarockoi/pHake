@@ -6,6 +6,7 @@
 #include "Cheats/NoClip.hpp"
 #include "Cheats/Misc.hpp"
 #include "Cheats/Teleport.hpp"
+#include "Cheats/CheatsManager.hpp"
 
 #include <array>
 #include <future>
@@ -164,6 +165,32 @@ void StartCheat()
 	menu->list.AddFunction("Boost Vehicle", BoostVehicle);
 	menu->list.AddFunction("Boost Player", BoostPlayer);
 	menu->list.AddFunction("Suicide", Suicide);
+	menu->list.AddFunction("Exit", ExitProgram);
+	menu->Loop(); // main loop
+}
+
+void StartCheat2()
+{
+	maxweapon = MaxWeapon(); // calling cheat constructors
+	noclip = NoClip();
+
+	threads.push_back(pThread([=]() {
+		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h
+		}, 1));
+
+	threads.push_back(pThread([]() { maxweapon.Loop(); }, 100));
+	threads.push_back(pThread([]() { noclip.Loop(); }, 10));
+
+	menu = std::make_unique<pOverlay>(); // initialize game UI
+	menu->Create("Grand Theft Auto V");  // overlay gta window
+
+	CheatsManager cheatsmanager;
+	for (std::pair<std::string, Cheat*> element : cheatsmanager.cheats) {
+		Cheat* cheat = element.second;
+		threads.push_back(pThread(Cheat::execute, cheat->thread_intervals));
+	}
+
 	menu->list.AddFunction("Exit", ExitProgram);
 	menu->Loop(); // main loop
 }
