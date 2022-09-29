@@ -45,7 +45,7 @@ public:
 	NoWantedCheat()
 	{
 		toggled = false;
-		menu->list.AddBool("MaxWanted", settings.nowanted);
+		menu->list.AddBool("NoWanted", settings.nowanted);
 	}
 	void execute() override {
 		if (world.localplayer.playerinfo.wanted_level() != 0)
