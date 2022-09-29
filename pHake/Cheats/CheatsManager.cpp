@@ -7,60 +7,44 @@
 
 #include <array>
 
-class Cheat {
-public:
-	bool toggled;
-	int64_t thread_intervals;
-	Cheat() 
-	{
-		toggled = false;
-		thread_intervals = -1; // -1 flag that it doesn't use a thread
-	}
-	virtual void execute() {}
-	virtual void restore() {}
-};
+using namespace std;
 
-class MaxWantedCheat : public Cheat {
-private:
-	uint32_t last_wanted;
-public:
-	MaxWantedCheat()
-	{
-		toggled = settings.maxwanted;
-		last_wanted = 0;
-		thread_intervals = 10;
-		menu->list.AddBool("MaxWanted", settings.maxwanted);
-	}
-	void execute() override {
-		last_wanted = world.localplayer.playerinfo.wanted_level();
-		world.localplayer.playerinfo.wanted_level(5);
-	}
-	void restore() override {
-		world.localplayer.playerinfo.wanted_level(last_wanted);
-	}
-};
+MaxWantedCheat::MaxWantedCheat()
+{
+	toggled = settings.maxwanted;
+	last_wanted = 0;
+	thread_intervals = 10;
+	menu->list.AddBool("MaxWanted", settings.maxwanted);
+}
+void MaxWantedCheat::execute() {
+	last_wanted = world.localplayer.playerinfo.wanted_level();
+	world.localplayer.playerinfo.wanted_level(5);
+}
+void MaxWantedCheat::restore() {
+	world.localplayer.playerinfo.wanted_level(last_wanted);
+}
 
-class NoWantedCheat : public Cheat {
-public:
-	NoWantedCheat()
-	{
-		toggled = false;
-		menu->list.AddBool("NoWanted", settings.nowanted);
-	}
-	void execute() override {
-		if (world.localplayer.playerinfo.wanted_level() != 0)
-			world.localplayer.playerinfo.wanted_level(0);
-	}
-};
+NoWantedCheat::NoWantedCheat()
+{
+	toggled = false;
+	thread_intervals = 10;
+	menu->list.AddBool("NoWanted", settings.nowanted);
+}
+void NoWantedCheat::execute() {
+	if (world.localplayer.playerinfo.wanted_level() != 0)
+		world.localplayer.playerinfo.wanted_level(0);
+}
 
-class CheatsManager {
-public:
-	std::map<std::string, Cheat*> cheats;
-	CheatsManager()
-	{
-		cheats.insert(std::make_pair("MaxWanted", new MaxWantedCheat()));
-		cheats.insert(std::make_pair("NoWanted", new NoWantedCheat()));
-	}
-};
+Cheat::Cheat()
+{
+	toggled = false;
+	thread_intervals = 0;
+}
+void Cheat::execute() {}
+void Cheat::restore() {}
 
-
+CheatsManager::CheatsManager()
+{
+	cheats.insert(make_pair("MaxWanted", new MaxWantedCheat()));
+	cheats.insert(make_pair("NoWanted", new NoWantedCheat()));
+}
