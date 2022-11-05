@@ -18,7 +18,6 @@ namespace {
 		if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
 			return true;
 		return false;
-
 	}
 
 	static void Move()
