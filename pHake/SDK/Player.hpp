@@ -9,24 +9,18 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-//                    address of player pointer
-class Player : public DataWrapper<0x14E0 + 0x4>
+class Player : public DataWrapper<0x150C + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
-
-	Position position;
-	Vehicle vehicle;
-	WeaponManager weapon_manager;
-	PlayerInfo playerinfo;
 
 	void UpdateAll(uint64_t baseAddress)
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uintptr_t>(0x30));
-		vehicle.UpdateAll(this->read<uintptr_t>(0xD30));
-		playerinfo.Update(this->read<uintptr_t>(0x10C8));
-		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10D8));
+		vehicle.UpdateAll(this->read<uintptr_t>(0xD10));
+		playerinfo.Update(this->read<uintptr_t>(0x10A8));
+		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10B8));
 	}
 
 	bool freeze()
@@ -39,13 +33,20 @@ public:
 
 	void freeze(bool value)
 	{
-		this->write<uint8_t>(0x2E, value ? 2 : 1);
+		if (value)
+			this->write<uint8_t>(0x2E, 2);	
+		else	
+			this->write<uint8_t>(0x2E, 1);
 	}
+
+	Position position;
 
 	bool god()
 	{
-		// 0x189 = offset of godmod property inside of player object
-		return this->read<uint8_t>(0x189) == 1;
+		if (this->read<uint8_t>(0x189) == 1)
+			return true;
+		else
+			return false;
 	}
 
 	void god(uint8_t value)
@@ -123,14 +124,19 @@ public:
 		return this->read<uint32_t>(0xC54);
 	}
 
+	Vehicle vehicle;
+
 	int32_t in_vehicle()
 	{
-		return this->read<int32_t>(0xE50) != 0;
+		if (this->read<int32_t>(0xE50) != 0)
+			return true;
+		else
+			return false;
 	}
 
 	bool ragdoll()
 	{
-		if (!this->read<unsigned char>(0x10B8) == 1)
+		if (!this->read<unsigned char>(0x1098) == 1)
 			return false;
 		else
 			return true;
@@ -139,19 +145,23 @@ public:
 	void ragdoll(bool value)
 	{
 		if (value)
-			this->write<unsigned char>(0x10B8, 1);
+			this->write<unsigned char>(0x1098, 1);
 		else
-			this->write<unsigned char>(0x10B8, 32);
+			this->write<unsigned char>(0x1098, 32);
 	}
+
+	WeaponManager weapon_manager;
+
+	PlayerInfo playerinfo;
 
 	float armor()
 	{
-		return this->read<float>(0x14E0);
+		return this->read<float>(0x150C);
 	}
 
 	void armor(float value)
 	{
-		this->write<float>(0x14E0, value);
+		this->write<float>(0x150C, value);
 	}
 };
 #endif
