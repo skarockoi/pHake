@@ -29,22 +29,22 @@ public:
 		this->write<float>(0x7C, value);
 	}
 
-	float traction_min()
+	float traction_max()
 	{
 		return this->read<float>(0x88);
 	}
 
-	void traction_min(float value)
+	void traction_max(float value)
 	{
 		this->write<float>(0x88, value);
 	}
 
-	float traction_max()
+	float traction_min()
 	{
 		return this->read<float>(0x90);
 	}
 
-	void traction_max(float value)
+	void traction_min(float value)
 	{
 		this->write<float>(0x90, value);
 	}
@@ -71,12 +71,12 @@ public:
 
 	float collisiondamage()
 	{
-		return this->read<float>(0xF8);
+		return this->read<float>(0xF0);
 	}
 
 	void collisiondamage(float value)
 	{
-		this->write<float>(0xF8, value);
+		this->write<float>(0xF0, value);
 	}
 
 	float thrust()

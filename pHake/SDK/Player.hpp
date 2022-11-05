@@ -9,7 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class Player : public DataWrapper<0x14E0 + 0x4>
+class Player : public DataWrapper<0x150C + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
@@ -18,9 +18,9 @@ public:
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uintptr_t>(0x30));
-		vehicle.UpdateAll(this->read<uintptr_t>(0xD30));
-		playerinfo.Update(this->read<uintptr_t>(0x10C8));
-		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10D8));
+		vehicle.UpdateAll(this->read<uintptr_t>(0xD10));
+		playerinfo.Update(this->read<uintptr_t>(0x10A8));
+		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10B8));
 	}
 
 	bool freeze()
@@ -136,7 +136,7 @@ public:
 
 	bool ragdoll()
 	{
-		if (!this->read<unsigned char>(0x10B8) == 1)
+		if (!this->read<unsigned char>(0x1098) == 1)
 			return false;
 		else
 			return true;
@@ -145,9 +145,9 @@ public:
 	void ragdoll(bool value)
 	{
 		if (value)
-			this->write<unsigned char>(0x10B8, 1);
+			this->write<unsigned char>(0x1098, 1);
 		else
-			this->write<unsigned char>(0x10B8, 32);
+			this->write<unsigned char>(0x1098, 32);
 	}
 
 	WeaponManager weapon_manager;
@@ -156,12 +156,12 @@ public:
 
 	float armor()
 	{
-		return this->read<float>(0x14E0);
+		return this->read<float>(0x150C);
 	}
 
 	void armor(float value)
 	{
-		this->write<float>(0x14E0, value);
+		this->write<float>(0x150C, value);
 	}
 };
 #endif

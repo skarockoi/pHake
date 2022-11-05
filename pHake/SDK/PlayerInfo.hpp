@@ -4,20 +4,10 @@
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
 
-class PlayerInfo : public DataWrapper<0xC80 + 0x4>
+class PlayerInfo : public DataWrapper<0xD30 + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
-
-	float walk_mp()
-	{
-		return this->read<float>(0xCF0);
-	}
-
-	void walk_mp(float value)
-	{
-		this->write<float>(0xCF0, value);
-	}
 
 	float swim_mp()
 	{
@@ -47,6 +37,16 @@ public:
 	void wanted_level(uint32_t value)
 	{
 		this->write<uint32_t>(0x888, value);
+	}
+
+	float walk_mp()
+	{
+		return this->read<float>(0xCF0);
+	}
+
+	void walk_mp(float value)
+	{
+		this->write<float>(0xCF0, value);
 	}
 
 	float stamina()
