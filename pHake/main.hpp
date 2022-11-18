@@ -24,7 +24,7 @@ int main()
 
 	if (!ReadSignatures())
 	{
-		MessageBox(NULL, "game version does not match cheat version (1.60) ", "Error", NULL);
+		MessageBox(NULL, "game version does not match cheat version", "Error", NULL);
 		return false;
 	}
 
