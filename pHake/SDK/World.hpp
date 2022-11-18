@@ -5,6 +5,8 @@
 #include "../Memory/Datawrapper.hpp"
 #include "Player.hpp"
 
+//https://github.com/Yimura/GTAV-Classes
+
 class World : public DataWrapper<0x8 + 0x8>
 {
 public:
