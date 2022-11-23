@@ -3,6 +3,7 @@
 
 #include <thread>
 #include <chrono>
+#include <functional>
 
 class pThread // creates thread for functions that need to be run in a seperate loop
 {
@@ -25,7 +26,6 @@ private:
 	bool    die_ = false;
 	int64_t interval_ = 0;
 };
-#endif
 
 template<typename T>
 inline pThread::pThread(T func)
@@ -39,7 +39,7 @@ inline pThread::pThread(T func)
 				if (is_on_)
 					func();
 
-				std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+				std::this_thread::sleep_for(std::chrono::milliseconds(interval_));
 			}
 		});
 	t.detach();
@@ -58,8 +58,9 @@ inline pThread::pThread(T func, int64_t interval)
 				if (is_on_)
 					func();
 
-				std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+				std::this_thread::sleep_for(std::chrono::milliseconds(interval_));
 			}
 		});
 	t.detach();
 }
+#endif

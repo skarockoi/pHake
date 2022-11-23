@@ -1,29 +1,33 @@
 #ifndef CHEATSMANAGER_HPP
 #define CHEATSMANAGER_HPP
 
-#include <map>
+#include "../UI/pThread.hpp"
+
 #include <string>
+#include <vector>
 
 class Cheat
 {
-protected:
-	uint64_t thread_intervals;
+public:
+	uint64_t thread_intervals_;
 
 public:
 	Cheat();
-	virtual void execute();
-	virtual void restore();
+	virtual void Execute();
+	virtual void Restore();
 };
 
 class CheatsManager {
 private:
-	std::map<std::string, Cheat*> cheats;
+	std::vector<Cheat*> cheats;
+	std::vector<pThread> threads;
 	bool active;
 
 public:
 	CheatsManager();
 
-	void Add(std::string&  name, Cheat* cheat);
-	void Loop();
+	void Add(Cheat* cheat);
+	void Start();
+	void Stop();
 };
 #endif

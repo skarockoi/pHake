@@ -6,7 +6,7 @@
 class Suicide : public Cheat
 {
 	Suicide();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

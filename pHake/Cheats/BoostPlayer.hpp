@@ -6,7 +6,7 @@
 class BoostPlayer : public Cheat
 {
 	BoostPlayer();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

@@ -15,19 +15,19 @@ NoClip::NoClip()
 	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
 	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
-	thread_intervals = 10;
+	thread_intervals_ = 10;
 	menu->list.AddBool("NoClip", settings.noclip);
 
 }
 
-void NoClip::execute()
+void NoClip::Execute()
 {
 	static bool restore = false; // check to restore or patch game code
 
 	if (!settings.noclip)
 	{
 		if (restore)
-			this->restore();
+			this->Restore();
 
 		restore = false;
 		return;
@@ -82,7 +82,7 @@ void NoClip::execute()
 	world.localplayer.position.xyz(old_pos + add_pos);
 }
 
-void NoClip::restore()
+void NoClip::Restore()
 {
 	proc.write_bytes(pointers.asm_update_position, asm_update_position_original);
 	proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);

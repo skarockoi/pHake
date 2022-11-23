@@ -4,16 +4,16 @@
 
 NoWanted::NoWanted()
 {
-	thread_intervals = 10;
+	thread_intervals_ = 10;
 	menu->list.AddBool("NoWanted", settings.nowanted);
 }
 
-void NoWanted::execute() {
+void NoWanted::Execute() {
 	if (world.localplayer.playerinfo.wanted_level() != 0)
 		world.localplayer.playerinfo.wanted_level(0);
 }
 
-void NoWanted::restore()
+void NoWanted::Restore()
 {
 	if (settings.rploop)
 		world.localplayer.playerinfo.wanted_level(0);

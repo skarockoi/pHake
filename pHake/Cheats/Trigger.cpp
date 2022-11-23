@@ -8,11 +8,11 @@
 
 Trigger::Trigger()
 {
-	thread_intervals = 1;
+	thread_intervals_ = 1;
 	menu->list.AddBool("Trigger", settings.trigger);
 }
 
-void Trigger::execute()
+void Trigger::Execute()
 {
 	if (!settings.trigger)
 		return;
@@ -48,6 +48,6 @@ void Trigger::execute()
 	}
 }
 
-void Trigger::restore()
+void Trigger::Restore()
 {
 }

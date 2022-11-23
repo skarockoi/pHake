@@ -4,15 +4,15 @@
 
 Suicide::Suicide()
 {
-	this->thread_intervals = 0;
+	this->thread_intervals_ = 0;
 }
 
-void Suicide::execute()
+void Suicide::Execute()
 {
 	world.localplayer.health(0.f);
 	menu->notification.Add("Player health set to 0");
 }
 
-void Suicide::restore()
+void Suicide::Restore()
 {
 }

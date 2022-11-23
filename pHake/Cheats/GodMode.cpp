@@ -4,12 +4,14 @@
 
 GodMode::GodMode()
 {
-	thread_intervals = 100;
+	thread_intervals_ = 100;
 	menu->list.AddBool("GodMode", settings.godmode);
 }
 
-void GodMode::execute()
+void GodMode::Execute()
 {
+	std::cout << "yo" << std::endl;
+
 	if (settings.godmode)
 	{
 		if (!world.localplayer.god())
@@ -28,7 +30,7 @@ void GodMode::execute()
 	}
 }
 
-void GodMode::restore()
+void GodMode::Restore()
 {
 	if (settings.godmode)
 		world.localplayer.god(false);
