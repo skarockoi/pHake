@@ -20,7 +20,7 @@ public:
 class CheatsManager {
 private:
 	std::vector<Cheat*> cheats;
-	std::vector<pThread> threads;
+	std::vector<pThread*> threads;
 	bool active;
 
 public:

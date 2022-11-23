@@ -9,12 +9,10 @@ Cheat::Cheat()
 
 void Cheat::Execute()
 {
-	std::cout << "nope" << std::endl;
 }
 
 void Cheat::Restore()
 {
-	std::cout << "nope" << std::endl;
 }
 
 
@@ -35,8 +33,7 @@ void CheatsManager::Start()
 		if (i->thread_intervals_ == 0)
 			continue;
 
-		this->threads.push_back(pThread([&] { i->Execute(); }, i->thread_intervals_));
-
+		this->threads.push_back(new pThread([&] { i->Execute(); }, i->thread_intervals_));
 	}
 }
 
@@ -49,6 +46,7 @@ void CheatsManager::Stop()
 
 	for (auto& i : this->threads)
 	{
-		i.Destroy();
+		i->Destroy();
+		delete i;
 	}
 }

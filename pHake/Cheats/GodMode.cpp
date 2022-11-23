@@ -10,8 +10,6 @@ GodMode::GodMode()
 
 void GodMode::Execute()
 {
-	std::cout << "yo" << std::endl;
-
 	if (settings.godmode)
 	{
 		if (!world.localplayer.god())
