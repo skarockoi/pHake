@@ -7,7 +7,7 @@ class GodMode : public Cheat
 {
 public:
 	GodMode();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

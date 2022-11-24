@@ -10,8 +10,8 @@ class MaxWeapon : public Cheat
 {
 public:
 	MaxWeapon();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 
 
 private:

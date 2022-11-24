@@ -7,8 +7,8 @@ class Teleport : public Cheat
 {
 public:
 	Teleport();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 
 private:
 	bool IsPlayerMoving();

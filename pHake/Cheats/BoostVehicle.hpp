@@ -6,7 +6,7 @@
 class BoostVehicle : public Cheat
 {
 	BoostVehicle();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

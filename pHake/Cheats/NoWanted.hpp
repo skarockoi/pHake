@@ -7,7 +7,7 @@ class NoWanted : public Cheat
 {
 public:
 	NoWanted();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

@@ -5,8 +5,9 @@
 
 class NoClip : public Cheat
 {
+public:
 	NoClip();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

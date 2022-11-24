@@ -5,6 +5,13 @@
 
 #include <array>
 #include <future>
+#include "Cheats/CheatsManager.hpp"
+#include "Cheats/GodMode.hpp"
+#include "Cheats/MaxWeapon.hpp"
+#include "Cheats/NoWanted.hpp"
+#include "Cheats/Trigger.hpp"
+#include "Cheats/RPLoop.hpp"
+#include "Cheats/NoClip.hpp"
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
 std::unique_ptr<pINI> ini; // settings file
@@ -16,6 +23,7 @@ Settings settings; // defined in Global, reads data in ReadSettings() and writes
 Pointers pointers; // defined in Global, initialized in ReadSignatures()
 
 std::vector<pThread> threads; // individual threads used for cheats, keyboard toggles...
+CheatsManager cheats;
 
 void Toggles()
 {
@@ -108,7 +116,6 @@ bool ReadSettings()
 	bool success = ini->Open("settings.ini");
 
 	ini->Comment("# Start Up Toggles:");
-	settings.maxweapon =          ini->Get<bool>("MaxWanted", 0);
 	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0);
 	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
 	settings.godmode =			  ini->Get<bool>("Godmode", 0);
@@ -136,7 +143,24 @@ void Start()
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window
 
+	auto maxweapon = MaxWeapon();
+	auto nowanted = NoWanted();
+	auto godmode = GodMode();
+	auto trigger = Trigger();
+	auto rploop = RPLoop();
+	auto noclip = NoClip();
 
+	cheats = CheatsManager();
+	cheats.Add(&godmode);
+	cheats.Add(&maxweapon);
+	cheats.Add(&nowanted);
+	cheats.Add(&godmode);
+	cheats.Add(&trigger);
+	cheats.Add(&rploop);
+	cheats.Add(&noclip);
+	cheats.Start();
+
+	menu->list.AddFunction("Exit", Exit);
 
 	menu->Loop(); // main loop
 }
@@ -155,6 +179,7 @@ void Exit()
 	ini->Edit<bool>("NoClip", settings.noclip);
 	ini->Save();
 
+	cheats.Stop();
 
 	proc.Close(); // close handle to gta5
 	menu->Close(); // close UI
