@@ -178,7 +178,6 @@
     <ClInclude Include="Memory\vec3.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\NPC.hpp" />
-    <ClInclude Include="SDK\_info_.txt" />
     <ClInclude Include="SDK\Player.hpp" />
     <ClInclude Include="SDK\PlayerInfo.hpp" />
     <ClInclude Include="SDK\Position.hpp" />
