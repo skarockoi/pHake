@@ -28,5 +28,6 @@
 - <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">pHake 5.6 (1.60/1.61) Outdated</a><br/>
 
 # Wiki for Developers
+- <a href="https://github.com/xhz8s/pHake/discussions/29">Development Talk</a><br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Compilation-with-Visual-Studio">Compilation</a><br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Code-Structure">Code Structure</a><br/>

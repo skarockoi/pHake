@@ -4,11 +4,11 @@
 
 RPLoop::RPLoop()
 {
-	thread_intervals = 1;
+	thread_intervals_ = 1;
 	menu->list.AddBool("RPloop", settings.rploop);
 }
 
-void RPLoop::execute()
+void RPLoop::Execute()
 {
 	if (!settings.rploop)
 		return;
@@ -17,6 +17,6 @@ void RPLoop::execute()
 	world.localplayer.playerinfo.wanted_level(0);
 }
 
-void RPLoop::restore()
+void RPLoop::Restore()
 {
 }

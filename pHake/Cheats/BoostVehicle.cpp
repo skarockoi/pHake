@@ -6,7 +6,7 @@
 
 BoostVehicle::BoostVehicle()
 {
-	this->thread_intervals = 0;
+	this->thread_intervals_ = 0;
 }
 
 static const std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };
@@ -14,7 +14,7 @@ static uint8_t curr_vehicle_mode = 0;
 
 static Vehicle vehicle_defaults;
 
-void BoostVehicle::execute()
+void BoostVehicle::Execute()
 {
 	if (vehicle_defaults.base() ^ world.localplayer.vehicle.base())
 	{
@@ -60,7 +60,7 @@ void BoostVehicle::execute()
 	menu->notification.Add("Vehicle set to " + vehicle_modes[curr_vehicle_mode]);
 }
 
-void BoostVehicle::restore()
+void BoostVehicle::Restore()
 {
 	if (curr_vehicle_mode != 0)
 	{

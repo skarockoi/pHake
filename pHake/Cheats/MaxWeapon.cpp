@@ -6,11 +6,11 @@
 
 MaxWeapon::MaxWeapon() 
 {
-	this->thread_intervals = 100;
+	this->thread_intervals_ = 100;
 	menu->list.AddBool("MaxWeapon", settings.maxweapon);
 }
 
-void MaxWeapon::execute()
+void MaxWeapon::Execute()
 {
 	CheckCurrentWeaponAndSave();
 
@@ -22,11 +22,11 @@ void MaxWeapon::execute()
 	else
 	{
 		if (IsWeaponUpgraded())
-			restore();
+			Restore();
 	}
 }
 
-void MaxWeapon::restore()
+void MaxWeapon::Restore()
 {
 	for (size_t i = 0; i < weapon_addresses.size(); i++)
 	{

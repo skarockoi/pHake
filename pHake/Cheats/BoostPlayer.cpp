@@ -9,10 +9,10 @@ static uint8_t curr_player_mode = 0;
 
 BoostPlayer::BoostPlayer()
 {
-	this->thread_intervals = 0;
+	this->thread_intervals_ = 0;
 }
 
-void BoostPlayer::execute()
+void BoostPlayer::Execute()
 {
 	curr_player_mode++;
 	if (curr_player_mode > player_modes.size() - 1)
@@ -44,7 +44,7 @@ void BoostPlayer::execute()
 	menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
 }
 
-void BoostPlayer::restore()
+void BoostPlayer::Restore()
 {
 	if (curr_player_mode != 0)
 	{

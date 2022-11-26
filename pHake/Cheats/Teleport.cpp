@@ -6,10 +6,10 @@
 
 Teleport::Teleport()
 {
-	this->thread_intervals = 0;
+	this->thread_intervals_ = 0;
 }
 
-void Teleport::execute()
+void Teleport::Execute()
 {
 	vec3 waypoint = proc.read<vec3>(pointers.waypoint);
 
@@ -59,7 +59,7 @@ success:
 	return;
 }
 
-void Teleport::restore()
+void Teleport::Restore()
 {
 }
 

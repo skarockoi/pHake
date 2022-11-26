@@ -7,7 +7,7 @@ class Trigger : public Cheat
 {
 public:
 	Trigger();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif

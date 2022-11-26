@@ -4,7 +4,7 @@
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
 
-class AmmoInfo : public DataWrapper<0x18 + 0x4>
+class AmmoInfo : public DataWrapper<0x20 + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;

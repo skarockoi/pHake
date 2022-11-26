@@ -7,7 +7,7 @@ class RPLoop : public Cheat
 {
 public:
 	RPLoop();
-	void execute();
-	void restore();
+	void Execute();
+	void Restore();
 };
 #endif
