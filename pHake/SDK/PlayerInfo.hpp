@@ -21,12 +21,12 @@ public:
 
 	uint32_t freeze()
 	{
-		return this->read<uint32_t>(0x238);
+		return this->read<uint32_t>(0x250);
 	}
 
 	void freeze(uint32_t value) // 2 = freeze player, 1 = freeze player and cam , 0 unfreeze
 	{
-		this->write<uint32_t>(0x238, value);
+		this->write<uint32_t>(0x250, value);
 	}
 
 	int32_t wanted_level()

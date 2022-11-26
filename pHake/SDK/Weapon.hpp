@@ -40,12 +40,12 @@ public:
 
 	float batch_spread()
 	{
-		return this->read<float>(0x74);
+		return this->read<float>(0x124);
 	}
 
 	void batch_spread(float value)
 	{
-		this->write<float>(0x74, value);
+		this->write<float>(0x124, value);
 	}
 
 	float bullet_damage()
@@ -70,12 +70,12 @@ public:
 
 	float reload_mp()
 	{
-		return this->read<float>(0x134);
+		return this->read<float>(0x128);
 	}
 
 	void reload_mp(float value)
 	{
-		this->write<float>(0x134, value);
+		this->write<float>(0x128, value);
 	}
 
 	float penetration()
@@ -88,15 +88,6 @@ public:
 		this->write(0x110, value);
 	}
 
-	float muzzle_velocity()
-	{
-		return this->read<float>(0x11C);
-	}
-
-	void muzzle_velocity(float value)
-	{
-		this->write(0x11C, value);
-	}
 
 	uint32_t bullets_in_batch()
 	{

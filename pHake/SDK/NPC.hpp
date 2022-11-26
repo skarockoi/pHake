@@ -9,7 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class NPC : public DataWrapper<0x14E0 + 0x4>
+class NPC : public DataWrapper<0x150C + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
@@ -18,31 +18,16 @@ public:
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uintptr_t>(0x30));
-		vehicle.UpdateAll(this->read<uintptr_t>(0xD30));
+		vehicle.UpdateAll(this->read<uintptr_t>(0xD10));
 	}
 
 	bool is_player()
 	{
-		if (this->read<uintptr_t>(0x10C8) == 0)
+		if (this->read<uintptr_t>(0x10A8) == 0)
 			return false;
 		return true;
 	}
 
-	bool freeze()
-	{
-		if (this->read<uint8_t>(0x2E) == 2)
-			return true;
-		else
-			return true;
-	}
-
-	void freeze(bool value)
-	{
-		if (value)
-			this->write<uint8_t>(0x2E, 2);	
-		else	
-			this->write<uint8_t>(0x2E, 1);
-	}
 
 	Position position;
 
@@ -71,57 +56,57 @@ public:
 
 	float health_max()
 	{
-		return this->read<float>(0x2A0);
+		return this->read<float>(0x284);
 	}
 
 	void health_max(float value)
 	{
-		this->write<float>(0x2A0, value);
+		this->write<float>(0x284, value);
 	}
 
 	vec3 speed_xyz()
 	{
-		return this->read<vec3>(0x320);
+		return this->read<vec3>(0x300);
 	}
 
 	void speed_xyz(vec3 value)
 	{
-		this->write<vec3>(0x320, value);
+		this->write<vec3>(0x300, value);
 	}
 
 	void speed_xyz(float x, float y, float z)
 	{
-		this->write<vec3>(0x320, vec3(x, y, z));
+		this->write<vec3>(0x300, vec3(x, y, z));
 	}
 
 	float speed_x()
 	{
-		return this->read<float>(0x320);
+		return this->read<float>(0x300);
 	}
 
 	void speed_x(float value)
 	{
-		this->write<float>(0x320, value);
+		this->write<float>(0x300, value);
 	}
 
 	float speed_y()
 	{
-		return this->read<float>(0x324);
+		return this->read<float>(0x304);
 	}
 
 	void speed_y(float value)
 	{
-		this->write<float>(0x324, value);
+		this->write<float>(0x304, value);
 	}
 
 	float speed_z()
 	{
-		return this->read<float>(0x328);
+		return this->read<float>(0x308);
 	}
 
 	void speed_z(float value)
 	{
-		this->write<float>(0x328, value);
+		this->write<float>(0x308, value);
 	}
 
 	Vehicle vehicle;
@@ -136,7 +121,7 @@ public:
 
 	bool ragdoll()
 	{
-		if (!this->read<unsigned char>(0x10A8) == 1)
+		if (!this->read<unsigned char>(0x1098) == 1)
 			return false;
 		else
 			return true;
@@ -145,9 +130,9 @@ public:
 	void ragdoll(bool value)
 	{
 		if (value)
-			this->write<unsigned char>(0x10B8, 1);
+			this->write<unsigned char>(0x1098, 1);
 		else
-			this->write<unsigned char>(0x10B8, 32);
+			this->write<unsigned char>(0x1098, 32);
 	}
 
 	WeaponManager weapon_manager;
@@ -156,12 +141,12 @@ public:
 
 	float armor()
 	{
-		return this->read<float>(0x14E0);
+		return this->read<float>(0x150C);
 	}
 
 	void armor(float value)
 	{
-		this->write<float>(0x14E0, value);
+		this->write<float>(0x150C, value);
 	}
 };
 #endif

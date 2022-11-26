@@ -4,7 +4,7 @@
 #include "../Memory/Process.hpp"
 #include "../Memory/Datawrapper.hpp"
 
-class VehicleHandling : public DataWrapper<0x338 + 0x4>
+class VehicleHandling : public DataWrapper<0xF0 + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
@@ -77,16 +77,6 @@ public:
 	void collisiondamage(float value)
 	{
 		this->write<float>(0xF0, value);
-	}
-
-	float thrust()
-	{
-		return this->read<float>(0x338);
-	}
-
-	void thrust(float value)
-	{
-		this->write<float>(0x338, value);
 	}
 };
 #endif

@@ -15,27 +15,11 @@ public:
 	{
 		this->Update(baseAddress);
 		position.Update(this->read<uintptr_t>(0x30));
-		handling.Update(this->read<uintptr_t>(0x938));
+		handling.Update(this->read<uintptr_t>(0x918));
 	}
 
 	Position position;
 
-	bool freeze()
-	{
-		if (this->read<uint8_t>(0x2E) == 2)
-			return true;
-		else
-			return true;
-	}
-
-	void freeze(bool value)
-	{
-		if (value)
-			this->write<uint8_t>(0x2E, 2);
-
-		else
-			this->write<uint8_t>(0x2E, 1);
-	}
 
 	bool god()
 	{
@@ -50,81 +34,81 @@ public:
 		this->write<uint8_t>(0x189, value);
 	}
 
-	float engine_health1()
+	float health()
 	{
 		return this->read<float>(0x280);
 	}
 
-	void engine_health1(float value)
+	void health(float value)
 	{
 		this->write<float>(0x280, value);
 	}
 
 	vec3 speed_xyz()
 	{
-		return this->read<vec3>(0x7F0);
+		return this->read<vec3>(0x7D0);
 	}
 
 	void speed_xyz(vec3 value)
 	{
-		this->write<vec3>(0x7F0, value);
+		this->write<vec3>(0x7D0, value);
 	}
 
 	void speed_xyz(float x, float y, float z)
 	{
-		this->write<vec3>(0x7F0, vec3(x, y, z));
+		this->write<vec3>(0x7D0, vec3(x, y, z));
 	}
 
 	float speed_x()
 	{
-		return this->read<float>(0x7F0);
+		return this->read<float>(0x7D0);
 	}
 
 	void speed_x(float value)
 	{
-		this->write<float>(0x7F0, value);
+		this->write<float>(0x7D0, value);
 	}
 
 	float speed_y()
 	{
-		return this->read<float>(0x7F4);
+		return this->read<float>(0x7D4);
 	}
 
 	void speed_y(float value)
 	{
-		this->write<float>(0x7F4, value);
+		this->write<float>(0x7D4, value);
 	}
 
 	float speed_z()
 	{
-		return this->read<float>(0x7F8);
+		return this->read<float>(0x7D8);
 	}
 
 	void speed_z(float value)
 	{
-		this->write<float>(0x7F8, value);
+		this->write<float>(0x7D8, value);
 	}
 
-	float engine_health2()
+	float engine_health()
 	{
-		return this->read<float>(0x908);
+		return this->read<float>(0x8E8);
 	}
 
-	void engine_health2(float value)
+	void engine_health(float value)
 	{
-		this->write<float>(0x908, value);
+		this->write<float>(0x8E8, value);
 	}
 
 	VehicleHandling handling;
 
 	float gravity()
 	{
-		return this->read<float>(0xC5C);
+		return this->read<float>(0x0C3C);
 	}
 
 	void gravity(float value)
 	{
-		this->write<float>(0xC5C, value);
+		this->write<float>(0x0C3C, value);
 	}
 };
 #endif

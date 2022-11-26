@@ -9,7 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class Player : public DataWrapper<0x150C + 0x4>
+class Player : public DataWrapper<0x10B8 + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;
@@ -23,21 +23,6 @@ public:
 		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10B8));
 	}
 
-	bool freeze()
-	{
-		if (this->read<uint8_t>(0x2E) == 2)
-			return true;
-		else
-			return true;
-	}
-
-	void freeze(bool value)
-	{
-		if (value)
-			this->write<uint8_t>(0x2E, 2);	
-		else	
-			this->write<uint8_t>(0x2E, 1);
-	}
 
 	Position position;
 
@@ -76,59 +61,55 @@ public:
 
 	vec3 speed_xyz()
 	{
-		return this->read<vec3>(0x320);
+		return this->read<vec3>(0x300);
 	}
 
 	void speed_xyz(vec3 value)
 	{
-		this->write<vec3>(0x320, value);
+		this->write<vec3>(0x300, value);
 	}
 
 	void speed_xyz(float x, float y, float z)
 	{
-		this->write<vec3>(0x320, vec3(x, y, z));
+		this->write<vec3>(0x300, vec3(x, y, z));
 	}
 
 	float speed_x()
 	{
-		return this->read<float>(0x320);
+		return this->read<float>(0x300);
 	}
 
 	void speed_x(float value)
 	{
-		this->write<float>(0x320, value);
+		this->write<float>(0x300, value);
 	}
 
 	float speed_y()
 	{
-		return this->read<float>(0x324);
+		return this->read<float>(0x304);
 	}
 
 	void speed_y(float value)
 	{
-		this->write<float>(0x324, value);
+		this->write<float>(0x304, value);
 	}
 
 	float speed_z()
 	{
-		return this->read<float>(0x328);
+		return this->read<float>(0x308);
 	}
 	
 	void speed_z(float value)
 	{
-		this->write<float>(0x328, value);
+		this->write<float>(0x308, value);
 	}
 
-	uint32_t is_aiming()
-	{
-		return this->read<uint32_t>(0xC54);
-	}
 
 	Vehicle vehicle;
 
 	int32_t in_vehicle()
 	{
-		if (this->read<int32_t>(0xE50) != 0)
+		if (this->read<int32_t>(0xE52) != 0)
 			return true;
 		else
 			return false;
