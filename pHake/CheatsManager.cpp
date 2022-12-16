@@ -20,9 +20,9 @@ CheatsManager::CheatsManager() {
 	this->active = true;
 }
 
-void CheatsManager::Add(Cheat* cheat)
+void CheatsManager::Add(std::string name, Cheat* cheat)
 {
-	cheats.push_back(cheat);
+	this->cheats = std::make_pair(name, cheat);
 }
 
 

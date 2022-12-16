@@ -1,7 +1,7 @@
 #ifndef _TELEPORT_HPP_
 #define _TELEPORT_HPP_
 
-#include "CheatsManager.hpp"
+#include "../CheatsManager.hpp"
 
 class Teleport : public Cheat
 {

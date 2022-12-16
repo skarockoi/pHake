@@ -1,7 +1,7 @@
 #ifndef _BOOSTVEHICLE_HPP_
 #define _BOOSTVEHICLE_HPP_
 
-#include "CheatsManager.hpp"
+#include "../CheatsManager.hpp"
 
 class BoostVehicle : public Cheat
 {

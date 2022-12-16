@@ -1,7 +1,7 @@
 #ifndef _TRIGGER_HPP_
 #define _TRIGGER_HPP_
 
-#include "CheatsManager.hpp"
+#include "../CheatsManager.hpp"
 
 class Trigger : public Cheat
 {

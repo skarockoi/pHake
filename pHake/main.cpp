@@ -5,7 +5,7 @@
 
 #include <array>
 #include <future>
-#include "Cheats/CheatsManager.hpp"
+#include "CheatsManager.hpp"
 #include "Cheats/GodMode.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoWanted.hpp"
@@ -25,7 +25,7 @@ Pointers pointers; // defined in Global, initialized in ReadSignatures()
 std::vector<pThread> threads; // individual threads used for cheats, keyboard toggles...
 CheatsManager cheats;
 
-void Toggles()
+void KeyboardToggles()
 {
 	if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
 		return;
@@ -138,7 +138,7 @@ void Start()
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h
 		}, 1));
 
-	threads.push_back(pThread(Toggles, 10));
+	threads.push_back(pThread(KeyboardToggles, 10));
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window

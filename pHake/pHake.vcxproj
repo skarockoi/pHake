@@ -159,11 +159,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CheatsManager.hpp" />
     <ClInclude Include="Cheats\BoostPlayer.hpp" />
     <ClInclude Include="Cheats\BoostVehicle.hpp" />
     <ClInclude Include="Cheats\GodMode.hpp" />
     <ClInclude Include="Cheats\MaxWeapon.hpp" />
-    <ClInclude Include="Cheats\CheatsManager.hpp" />
     <ClInclude Include="Cheats\NoClip.hpp" />
     <ClInclude Include="Cheats\NoWanted.hpp" />
     <ClInclude Include="Cheats\RPLoop.hpp" />
@@ -199,11 +199,11 @@
     <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CheatsManager.cpp" />
     <ClCompile Include="Cheats\BoostPlayer.cpp" />
     <ClCompile Include="Cheats\BoostVehicle.cpp" />
     <ClCompile Include="Cheats\GodMode.cpp" />
     <ClCompile Include="Cheats\MaxWeapon.cpp" />
-    <ClCompile Include="Cheats\CheatsManager.cpp" />
     <ClCompile Include="Cheats\NoClip.cpp" />
     <ClCompile Include="Cheats\NoWanted.cpp" />
     <ClCompile Include="Cheats\RPLoop.cpp" />

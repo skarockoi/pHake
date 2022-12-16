@@ -117,9 +117,6 @@
     <ClInclude Include="UI\pFont.hpp">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Cheats\CheatsManager.hpp">
-      <Filter>Source Files\Cheats</Filter>
-    </ClInclude>
     <ClInclude Include="Cheats\NoWanted.hpp">
       <Filter>Source Files\Cheats</Filter>
     </ClInclude>
@@ -140,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="Cheats\Suicide.hpp">
       <Filter>Source Files\Cheats</Filter>
+    </ClInclude>
+    <ClInclude Include="CheatsManager.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +185,6 @@
     <ClCompile Include="UI\pThread.cpp">
       <Filter>Header Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Cheats\CheatsManager.cpp">
-      <Filter>Source Files\Cheats</Filter>
-    </ClCompile>
     <ClCompile Include="Cheats\NoWanted.cpp">
       <Filter>Source Files\Cheats</Filter>
     </ClCompile>
@@ -211,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="Cheats\Teleport.cpp">
       <Filter>Source Files\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="CheatsManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

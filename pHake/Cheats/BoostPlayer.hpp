@@ -1,7 +1,7 @@
 #ifndef _BOOSTPLAYER_HPP_
 #define _BOOSTPLAYER_HPP_
 
-#include "CheatsManager.hpp"
+#include "../CheatsManager.hpp"
 
 class BoostPlayer : public Cheat
 {

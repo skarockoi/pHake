@@ -6,7 +6,7 @@
 #include "Memory/Process.hpp"
 #include "SDK/World.hpp"
 
-extern std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
+extern std::unique_ptr<pOverlay> menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
 extern std::unique_ptr<pINI> ini; // settings file
 
 extern Process proc;  // access gta memory, read/write/...

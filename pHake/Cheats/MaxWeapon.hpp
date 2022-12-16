@@ -1,7 +1,7 @@
 #ifndef _MAXWEAPON_HPP_
 #define _MAXWEAPON_HPP_
 
-#include "CheatsManager.hpp"
+#include "../CheatsManager.hpp"
 
 #include <vector>
 #include <stdint.h>
