@@ -5,11 +5,11 @@
 GodMode::GodMode()
 {
 	thread_intervals_ = 100;
-	menu->list.AddBool("GodMode", settings.godmode);
 }
 
 void GodMode::Execute()
 {
+
 	if (settings.godmode)
 	{
 		if (!world.localplayer.god())
@@ -22,6 +22,7 @@ void GodMode::Execute()
 	{
 		if (world.localplayer.god())
 			world.localplayer.god(0);
+		
 
 		if (world.localplayer.vehicle.god())
 			world.localplayer.vehicle.god(0);
@@ -30,6 +31,5 @@ void GodMode::Execute()
 
 void GodMode::Restore()
 {
-	if (settings.godmode)
-		world.localplayer.god(false);
+	world.localplayer.god(false);
 }

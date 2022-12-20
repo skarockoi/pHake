@@ -19,7 +19,7 @@ public:
 	void AddFloat(const std::string& name, float& value, float inc, float dec);
 	void AddInt(const std::string& name, uint32_t& value, int inc, int dec);
 	void AddBool(const std::string& name, bool& value);
-	void AddFunction(const std::string& name, void(&functionP)());
+	void AddFunction(const std::string& name, std::function<void()> function);
 	void AddString(const std::string& name, std::string& value);
 	void AddGap();
 private:

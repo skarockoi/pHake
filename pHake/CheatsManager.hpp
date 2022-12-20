@@ -20,11 +20,8 @@ public:
 class CheatsManager {
 
 private:
-	std::pair <std::string, Cheat*> cheats;
-
+	std::vector<std::pair <std::string, Cheat*>> cheats;
 	std::vector<pThread*> threads;
-
-	bool active;
 
 public:
 	CheatsManager();

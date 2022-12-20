@@ -85,11 +85,11 @@ void pList::AddBool(const std::string& name, bool& value)
 	resize();
 }
 
-void pList::AddFunction(const std::string& name, void(&functionP)())
+void pList::AddFunction(const std::string& name, std::function<void()> function)
 {
 	pButton buffer;
 	buffer.Create(window_, &font_);
-	buffer.Connect(functionP);
+	buffer.Connect(function);
 	buffer.size(ITEM_WIDTH, ITEM_HEIGHT - 2);
 	buffer.position(rect_back_.getSize().x - buffer.size().x + rect_back_.getPosition().x - DISTANCE_FROM_EDGE, rect_back_.getPosition().y + DISTANCE_FROM_EDGE + ((gap_count_ * 5) + item_count_ * ITEM_HEIGHT + 2));
 

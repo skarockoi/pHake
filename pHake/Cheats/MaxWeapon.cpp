@@ -7,7 +7,6 @@
 MaxWeapon::MaxWeapon() 
 {
 	this->thread_intervals_ = 100;
-	menu->list.AddBool("MaxWeapon", settings.maxweapon);
 }
 
 void MaxWeapon::Execute()
