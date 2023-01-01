@@ -17,23 +17,22 @@ void Cheat::Restore()
 
 
 CheatsManager::CheatsManager() { 
-	this->active = true;
 }
 
-void CheatsManager::Add(std::string name, Cheat* cheat)
+void CheatsManager::Add(std::string name, std::unique_ptr<Cheat> cheat)
 {
-	this->cheats = std::make_pair(name, cheat);
+	this->cheats.push_back(std::make_pair(name, cheat));
 }
 
 
 void CheatsManager::Start()
 {
-	for (auto& i : this->cheats)
+	for (auto const& i : this->cheats)
 	{
-		if (i->thread_intervals_ == 0)
+		if (i.second->thread_intervals_ == 0)
 			continue;
 
-		this->threads.push_back(new pThread([&] { i->Execute(); }, i->thread_intervals_));
+		this->threads.push_back(std::make_unique<pThread>([=]() { i.second->Execute(); }, i.second->thread_intervals_));
 	}
 }
 
@@ -47,6 +46,5 @@ void CheatsManager::Stop()
 	for (auto& i : this->threads)
 	{
 		i->Destroy();
-		delete i;
 	}
 }

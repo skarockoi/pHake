@@ -13,7 +13,6 @@ public:
 	void Execute();
 	void Restore();
 
-
 private:
 	std::vector<uintptr_t> weapon_addresses;
 	std::vector<Weapon>    weapon_defaults;
@@ -22,7 +21,5 @@ private:
 	void CheckCurrentWeaponAndSave();
 	bool IsWeaponUpgraded();
 	void UpgradeWeapon();
-
-
 };
 #endif

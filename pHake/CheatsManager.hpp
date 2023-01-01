@@ -20,16 +20,13 @@ public:
 class CheatsManager {
 
 private:
-	std::pair <std::string, Cheat*> cheats;
-
-	std::vector<pThread*> threads;
-
-	bool active;
+	std::vector<std::pair<std::string, std::unique_ptr<Cheat>>> cheats;
+	std::vector<std::unique_ptr<pThread>> threads;
 
 public:
 	CheatsManager();
 
-	void Add(std::string name, Cheat* cheat);
+	void Add(std::string name, std::unique_ptr<Cheat> cheat);
 	void Start();
 	void Stop();
 };

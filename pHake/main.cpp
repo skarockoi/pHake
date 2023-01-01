@@ -135,33 +135,14 @@ void Start()
 {
 	threads.push_back(pThread([=]() {
 		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h
-		}, 1));
+		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
+	}, 1));
 
 	threads.push_back(pThread(KeyboardToggles, 10));
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window
-
-	auto maxweapon = MaxWeapon();
-	auto nowanted = NoWanted();
-	auto godmode = GodMode();
-	auto trigger = Trigger();
-	auto rploop = RPLoop();
-	auto noclip = NoClip();
-
-	cheats = CheatsManager();
-	cheats.Add(&godmode);
-	cheats.Add(&maxweapon);
-	cheats.Add(&nowanted);
-	cheats.Add(&godmode);
-	cheats.Add(&trigger);
-	cheats.Add(&rploop);
-	cheats.Add(&noclip);
-	cheats.Start();
-
 	menu->list.AddFunction("Exit", Exit);
-
 	menu->Loop(); // main loop
 }
 
