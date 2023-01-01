@@ -1,3 +1,5 @@
+#include "Globals.hpp"
+
 #include "CheatsManager.hpp"
 #include <iostream>
 
@@ -33,6 +35,8 @@ void CheatsManager::Start()
 			continue;
 
 		this->threads.push_back(std::make_unique<pThread>([=]() { i.second->Execute(); }, i.second->thread_intervals_));
+		pThread* to_push = new pThread([&] { i.second->Execute(); }, i.second->thread_intervals_);
+		this->threads.push_back(to_push);
 	}
 }
 
@@ -40,7 +44,8 @@ void CheatsManager::Stop()
 {
 	for (auto& i : this->cheats)
 	{
-		i->Restore();
+		i.second->Restore();
+		delete i.second;
 	}
 
 	for (auto& i : this->threads)

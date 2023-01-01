@@ -5,7 +5,9 @@
 
 class BoostVehicle : public Cheat
 {
+public:
 	BoostVehicle();
+
 	void Execute();
 	void Restore();
 };

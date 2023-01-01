@@ -16,8 +16,6 @@ NoClip::NoClip()
 	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
 	thread_intervals_ = 10;
-	menu->list.AddBool("NoClip", settings.noclip);
-
 }
 
 void NoClip::Execute()

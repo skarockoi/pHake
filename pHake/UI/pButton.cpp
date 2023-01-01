@@ -41,6 +41,11 @@ void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 	active_ = true;
 }
 
+void pButton::Connect(std::function<void()> function)
+{
+	this->function_ = function;
+}
+
 void pButton::Draw()
 {
 	if (active_)
@@ -70,17 +75,14 @@ void pButton::Loop()
 	{
 		if (function_ != NULL) 
 		{
-			((void(*)(void))function_)();
+			function_();
 			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && IsOnBox())
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 }
 
-void pButton::Connect(void(&functionP)())
-{
-	function_ = &functionP;
-}
+
 
 sf::Vector2f pButton::size()
 {

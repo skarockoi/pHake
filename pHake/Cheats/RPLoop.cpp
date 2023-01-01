@@ -5,7 +5,6 @@
 RPLoop::RPLoop()
 {
 	thread_intervals_ = 1;
-	menu->list.AddBool("RPloop", settings.rploop);
 }
 
 void RPLoop::Execute()

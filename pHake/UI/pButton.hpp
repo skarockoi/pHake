@@ -2,13 +2,16 @@
 #define _PBUTTON_HPP_
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 class pButton // rectangle button that executes a function when pressed
 {
 public:
 	pButton();
 	void Create(sf::RenderWindow* const& Window, sf::Font* font);
-	void Connect(void(&function)());
+
+	void Connect(std::function<void()> function);
+
 	void Draw();
 	void Loop();
 
@@ -30,7 +33,7 @@ private:
 	sf::RectangleShape button_back_;
 
 private:
-	void*     function_;
+	std::function<void()> function_;
 	bool	  active_;
 	bool	  busy_;
 	uint16_t  sleep_duration_;

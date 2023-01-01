@@ -9,7 +9,6 @@
 Trigger::Trigger()
 {
 	thread_intervals_ = 1;
-	menu->list.AddBool("Trigger", settings.trigger);
 }
 
 void Trigger::Execute()

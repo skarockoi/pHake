@@ -5,7 +5,10 @@
 
 class BoostPlayer : public Cheat
 {
+public:
+
 	BoostPlayer();
+
 	void Execute();
 	void Restore();
 };

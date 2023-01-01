@@ -12,6 +12,7 @@
 #include "Cheats/Trigger.hpp"
 #include "Cheats/RPLoop.hpp"
 #include "Cheats/NoClip.hpp"
+#include "Cheats/BoostVehicle.hpp"
 
 std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
 std::unique_ptr<pINI> ini; // settings file
@@ -22,7 +23,7 @@ World      world; // primarily used to access localplayer object
 Settings settings; // defined in Global, reads data in ReadSettings() and writes data in ExitProgram()
 Pointers pointers; // defined in Global, initialized in ReadSignatures()
 
-std::vector<pThread> threads; // individual threads used for cheats, keyboard toggles...
+std::vector<pThread*> threads; // individual threads used for cheats, keyboard toggles...
 CheatsManager cheats;
 
 void KeyboardToggles()
@@ -54,7 +55,7 @@ void KeyboardToggles()
 	{
 		GetKeyExecuteWaitForRelease(VK_SPACE, []()
 		{
-				// BoostPlayer
+			// BoostPlayer
 		});
 	}
 }
@@ -133,7 +134,7 @@ bool ReadSettings()
 
 void Start()
 {
-	threads.push_back(pThread([=]() {
+	threads.push_back(new pThread([=]() {
 		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 	}, 1));
@@ -148,8 +149,15 @@ void Start()
 
 void Exit()
 {
+	cheats.Stop(); // stop cheats
+
 	for (auto& i : threads)
-		i.Destroy(); // stop cheat threads
+	{
+		i->Destroy(); // stop helper threads
+		delete i;
+	}
+	threads.clear();
+
 
 	ini->Edit<bool>("MaxWanted", settings.maxwanted);
 	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
