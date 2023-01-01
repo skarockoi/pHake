@@ -3,7 +3,7 @@
 
 #include "../CheatsManager.hpp"
 
-class NoClip : public Cheat
+class NoClip : public CheatLoop
 {
 public:
 	NoClip();

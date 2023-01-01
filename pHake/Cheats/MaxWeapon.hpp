@@ -2,11 +2,12 @@
 #define _MAXWEAPON_HPP_
 
 #include "../CheatsManager.hpp"
+#include "../SDK/Weapon.hpp"
 
 #include <vector>
 #include <stdint.h>
 
-class MaxWeapon : public Cheat
+class MaxWeapon : public CheatLoop
 {
 public:
 	MaxWeapon();

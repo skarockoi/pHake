@@ -9,7 +9,7 @@
 class Cheat
 {
 public:
-	uint64_t thread_intervals_;
+	std::string name_;
 
 public:
 	Cheat();
@@ -17,16 +17,29 @@ public:
 	virtual void Restore();
 };
 
-class CheatsManager {
+class CheatLoop
+{
+public:
+	bool* active;
+	std::string name_;
+	uint64_t thread_intervals_;
 
+public:
+	CheatLoop();
+	virtual void Execute();
+	virtual void Restore();
+};
+
+class CheatsManager
+{
 private:
-	std::vector<std::pair<std::string, std::unique_ptr<Cheat>>> cheats;
-	std::vector<std::unique_ptr<pThread>> threads;
+	std::vector<Cheat> cheats_;
+	std::vector<CheatLoop> cheats_loop_;
+
+	std::vector<pThread> threads_;
 
 public:
 	CheatsManager();
-
-	void Add(std::string name, std::unique_ptr<Cheat> cheat);
 	void Start();
 	void Stop();
 };

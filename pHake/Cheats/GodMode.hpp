@@ -3,7 +3,7 @@
 
 #include "../CheatsManager.hpp"
 
-class GodMode : public Cheat
+class GodMode : public CheatLoop
 {
 public:
 	GodMode();

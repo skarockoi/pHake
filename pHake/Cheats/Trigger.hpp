@@ -3,7 +3,7 @@
 
 #include "../CheatsManager.hpp"
 
-class Trigger : public Cheat
+class Trigger : public CheatLoop
 {
 public:
 	Trigger();

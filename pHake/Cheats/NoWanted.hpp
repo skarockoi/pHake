@@ -3,7 +3,7 @@
 
 #include "../CheatsManager.hpp"
 
-class NoWanted : public Cheat
+class NoWanted : public CheatLoop
 {
 public:
 	NoWanted();

@@ -3,7 +3,7 @@
 
 #include "../CheatsManager.hpp"
 
-class RPLoop : public Cheat
+class RPLoop : public CheatLoop
 {
 public:
 	RPLoop();
