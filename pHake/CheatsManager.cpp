@@ -27,24 +27,26 @@ CheatsManager::CheatsManager()
 	settings.keys.teleport = ini->Get<uint32_t>("Teleport To Waypoint", VK_NUMPAD0);
 	settings.keys.boost_player = ini->Get<uint32_t>("Boost Player", VK_NUMPAD1);
 	settings.keys.boost_vehicle = ini->Get<uint32_t>("Boost Vehicle", VK_NUMPAD2);
-
 	ini->Comment("# Start Up Toggles:");
 
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create("Grand Theft Auto V");  // overlay gta window
 
-	GodMode godmode = GodMode(); // create extra function
-	this->cheats_loop_.push_back(godmode);
+	// add cheats
+
+	menu->list.AddFunction("Exit", this->Stop);
+
 }
 
 void CheatsManager::Start()
 {
-
-
 	for (auto& i : this->cheats_loop_)
 	{
 		this->threads_.push_back(pThread([&]() { i.Execute(); }, i.thread_intervals_));
 	}
+
+	menu->Loop(); // main loop
+
 }
 
 void CheatsManager::Stop()
@@ -57,7 +59,11 @@ void CheatsManager::Stop()
 	{
 		i.Destroy();
 	}
+
 	ini->Save();
+	proc.Close(); // close handle to gta5
+	menu->Close(); // close UI
+	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 
 }
 
