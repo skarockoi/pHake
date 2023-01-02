@@ -30,6 +30,9 @@ CheatsManager::CheatsManager()
 
 	ini->Comment("# Start Up Toggles:");
 
+	menu = std::make_unique<pOverlay>(); // initialize game UI
+	menu->Create("Grand Theft Auto V");  // overlay gta window
+
 	GodMode godmode = GodMode(); // create extra function
 	this->cheats_loop_.push_back(godmode);
 }
@@ -52,7 +55,7 @@ void CheatsManager::Stop()
 
 	for (auto& i : this->threads_)
 	{
-		i->Destroy();
+		i.Destroy();
 	}
 	ini->Save();
 

@@ -4,13 +4,17 @@
 
 GodMode::GodMode()
 {
+	name_ = "GodMode";
 	thread_intervals_ = 100;
+	active = &settings.godmode;
+
+	settings.godmode = ini->Get<bool>("Godmode", 0);
+
 }
 
 void GodMode::Execute()
 {
-
-	if (settings.godmode)
+	if (*active)
 	{
 		if (!world.localplayer.god())
 			world.localplayer.god(1);
@@ -31,5 +35,6 @@ void GodMode::Execute()
 
 void GodMode::Restore()
 {
+	ini->Edit<bool>("Godmode", settings.godmode);
 	world.localplayer.god(false);
 }

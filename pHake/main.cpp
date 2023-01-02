@@ -114,7 +114,7 @@ bool ReadSignatures()
 bool ReadSettings()
 {
 
-	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0);
+	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0); // put in cheats singular
 	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
 	settings.trigger =			  ini->Get<bool>("Trigger", 0);
 	settings.rploop =			  ini->Get<bool>("RpLoop", 0);
@@ -131,42 +131,13 @@ void Start()
 		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 	}, 1));
 
-	threads.push_back(pThread(KeyboardToggles, 10));
-
-	menu = std::make_unique<pOverlay>(); // initialize game UI
-	menu->Create("Grand Theft Auto V");  // overlay gta window
-
-
-	cheats.Start();
-
-	menu = std::make_unique<pOverlay>(); // initialize game UI
-	menu->Create("Grand Theft Auto V");  // overlay gta window
-	menu->list.AddBool("MaxWeapon", settings.maxweapon);
-	menu->list.AddBool("NoWanted", settings.nowanted);
-	menu->list.AddBool("GodMode", settings.godmode);
-	menu->list.AddBool("Trigger", settings.trigger);
-	menu->list.AddBool("RPLoop", settings.rploop);
-	menu->list.AddBool("NoClip", settings.noclip);
-
-
-	menu->list.AddFunction("Exit", Exit);
-	menu->Loop(); // main loop
 }
 
 void Exit()
 {
-	cheats.Stop(); // stop cheats
 
-	for (auto& i : threads)
-	{
-		i->Destroy(); // stop helper threads
-		delete i;
-	}
-
-	threads.clear();
-
-	ini->Edit<bool>("MaxWanted", settings.maxwanted);
-	ini->Edit<bool>("MaxWeapon", settings.maxweapon); // save to file
+	ini->Edit<bool>("MaxWanted", settings.maxwanted); // put in cheats singular
+	ini->Edit<bool>("MaxWeapon", settings.maxweapon);
 	ini->Edit<bool>("NoWanted", settings.nowanted);
 	ini->Edit<bool>("Trigger", settings.trigger);
 	ini->Edit<bool>("RpLoop", settings.rploop);
@@ -175,9 +146,7 @@ void Exit()
 
 	cheats.Stop();
 
-	proc.Close(); // close handle to gta5
-	menu->Close(); // close UI
-	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
+
 }
 
 //void DebugInfo()
