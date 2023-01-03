@@ -9,6 +9,8 @@
 Trigger::Trigger()
 {
 	thread_intervals_ = 1;
+
+	settings.trigger = ini->Get<bool>("Trigger", 0);
 }
 
 void Trigger::Execute()
@@ -49,4 +51,5 @@ void Trigger::Execute()
 
 void Trigger::Restore()
 {
+	ini->Edit<bool>("Trigger", settings.trigger);
 }

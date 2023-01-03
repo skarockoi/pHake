@@ -36,5 +36,7 @@ void GodMode::Execute()
 void GodMode::Restore()
 {
 	ini->Edit<bool>("Godmode", settings.godmode);
-	world.localplayer.god(false);
+
+	if (world.localplayer.god())
+		world.localplayer.god(false);
 }

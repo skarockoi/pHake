@@ -16,6 +16,8 @@ NoClip::NoClip()
 	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
 	thread_intervals_ = 10;
+
+	settings.noclip = ini->Get<bool>("NoClip", 0);
 }
 
 void NoClip::Execute()
@@ -82,6 +84,8 @@ void NoClip::Execute()
 
 void NoClip::Restore()
 {
+	ini->Edit<bool>("NoClip", settings.noclip);
+
 	proc.write_bytes(pointers.asm_update_position, asm_update_position_original);
 	proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
 }

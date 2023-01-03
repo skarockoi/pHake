@@ -4,7 +4,6 @@
 
 Suicide::Suicide()
 {
-	this->thread_intervals_ = 0;
 }
 
 void Suicide::Execute()

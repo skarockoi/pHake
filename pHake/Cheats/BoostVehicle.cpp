@@ -6,7 +6,6 @@
 
 BoostVehicle::BoostVehicle()
 {
-	this->thread_intervals_ = 0;
 }
 
 static const std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };

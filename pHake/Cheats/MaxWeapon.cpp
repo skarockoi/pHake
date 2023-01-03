@@ -7,6 +7,8 @@
 MaxWeapon::MaxWeapon() 
 {
 	this->thread_intervals_ = 100;
+
+	settings.maxweapon = ini->Get<bool>("MaxWeapon", 0); // put in cheats singular
 }
 
 void MaxWeapon::Execute()
@@ -21,11 +23,20 @@ void MaxWeapon::Execute()
 	else
 	{
 		if (IsWeaponUpgraded())
-			Restore();
+			RestoreWeapons();
 	}
 }
 
 void MaxWeapon::Restore()
+{
+	ini->Edit<bool>("MaxWeapon", settings.maxweapon);
+	
+	if (*active)
+		RestoreWeapons();
+	
+}
+
+void MaxWeapon::RestoreWeapons()
 {
 	for (size_t i = 0; i < weapon_addresses.size(); i++)
 	{

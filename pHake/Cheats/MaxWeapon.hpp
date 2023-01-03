@@ -22,5 +22,7 @@ private:
 	void CheckCurrentWeaponAndSave();
 	bool IsWeaponUpgraded();
 	void UpgradeWeapon();
+	void RestoreWeapons();
+
 };
 #endif

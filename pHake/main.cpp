@@ -14,51 +14,46 @@
 #include "Cheats/NoClip.hpp"
 #include "Cheats/BoostVehicle.hpp"
 
-std::unique_ptr<pOverlay>  menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
-std::unique_ptr<pINI> ini; // settings file
-
 Process    proc;  // access gta memory, read/write/...
 World      world; // primarily used to access localplayer object
 
 Settings settings; // defined in Global, reads data in ReadSettings() and writes data in ExitProgram()
 Pointers pointers; // defined in Global, initialized in ReadSignatures()
 
-std::vector<pThread*> threads; // individual threads used for cheats, keyboard toggles...
-CheatsManager cheats;
 
-void KeyboardToggles()
-{
-	if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
-		return;
-	
-	GetKeyExecuteWaitForRelease(settings.keys.menu, []()
-	{
-		menu->Toggle();
-	});
-
-	GetKeyExecuteWaitForRelease(settings.keys.teleport, []()
-	{
-
-	});
-
-	GetKeyExecuteWaitForRelease(settings.keys.boost_player, []()
-	{
-
-	});
-
-	GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []()
-	{
-
-	});
-
-	if (settings.noclip)
-	{
-		GetKeyExecuteWaitForRelease(VK_SPACE, []()
-		{
-			// BoostPlayer
-		});
-	}
-}
+//	void KeyboardToggles() // find a way to put this in CheatsManager()
+//	{
+//		if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
+//			return;
+//		
+//		GetKeyExecuteWaitForRelease(settings.keys.menu, []()
+//		{
+//			menu->Toggle();
+//		});
+//	
+//		GetKeyExecuteWaitForRelease(settings.keys.teleport, []()
+//		{
+//	
+//		});
+//	
+//		GetKeyExecuteWaitForRelease(settings.keys.boost_player, []()
+//		{
+//	
+//		});
+//	
+//		GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []()
+//		{
+//	
+//		});
+//	
+//		if (settings.noclip)
+//		{
+//			GetKeyExecuteWaitForRelease(VK_SPACE, []()
+//			{
+//				// BoostPlayer
+//			});
+//		}
+//	}
 
 bool AlreadyRunning()
 {
@@ -111,43 +106,13 @@ bool ReadSignatures()
 	return true;
 }
 
-bool ReadSettings()
-{
-
-	settings.maxweapon =		  ini->Get<bool>("MaxWeapon", 0); // put in cheats singular
-	settings.nowanted =			  ini->Get<bool>("NoWanted", 0);
-	settings.trigger =			  ini->Get<bool>("Trigger", 0);
-	settings.rploop =			  ini->Get<bool>("RpLoop", 0);
-	settings.noclip =			  ini->Get<bool>("NoClip", 0);
-
-
-	return true;
-}
 
 void Start()
 {
-	threads.push_back(new pThread([=]() {
-		world.UpdateAll(proc.read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * proc.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
-	}, 1));
-
+	auto pHake = CheatsManager();
+	pHake.Start();
 }
 
-void Exit()
-{
-
-	ini->Edit<bool>("MaxWanted", settings.maxwanted); // put in cheats singular
-	ini->Edit<bool>("MaxWeapon", settings.maxweapon);
-	ini->Edit<bool>("NoWanted", settings.nowanted);
-	ini->Edit<bool>("Trigger", settings.trigger);
-	ini->Edit<bool>("RpLoop", settings.rploop);
-	ini->Edit<bool>("NoClip", settings.noclip);
-	ini->Save();
-
-	cheats.Stop();
-
-
-}
 
 //void DebugInfo()
 //{

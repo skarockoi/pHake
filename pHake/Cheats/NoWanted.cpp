@@ -5,6 +5,8 @@
 NoWanted::NoWanted()
 {
 	thread_intervals_ = 10;
+
+	settings.nowanted = ini->Get<bool>("NoWanted", 0);
 }
 
 void NoWanted::Execute() {
@@ -14,5 +16,8 @@ void NoWanted::Execute() {
 
 void NoWanted::Restore()
 {
-	world.localplayer.playerinfo.wanted_level(0);
+	ini->Edit<bool>("NoWanted", settings.nowanted);
+
+	if (*active)
+		world.localplayer.playerinfo.wanted_level(0);
 }

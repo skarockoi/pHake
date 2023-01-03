@@ -9,7 +9,6 @@ static uint8_t curr_player_mode = 0;
 
 BoostPlayer::BoostPlayer()
 {
-	this->thread_intervals_ = 0;
 }
 
 void BoostPlayer::Execute()

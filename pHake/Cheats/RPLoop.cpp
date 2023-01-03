@@ -5,6 +5,8 @@
 RPLoop::RPLoop()
 {
 	thread_intervals_ = 1;
+
+	settings.rploop = ini->Get<bool>("RpLoop", 0);
 }
 
 void RPLoop::Execute()
@@ -18,4 +20,5 @@ void RPLoop::Execute()
 
 void RPLoop::Restore()
 {
+	ini->Edit<bool>("RpLoop", settings.rploop);
 }

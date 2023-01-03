@@ -6,7 +6,6 @@
 
 Teleport::Teleport()
 {
-	this->thread_intervals_ = 0;
 }
 
 void Teleport::Execute()

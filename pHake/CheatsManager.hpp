@@ -20,8 +20,9 @@ public:
 class CheatLoop
 {
 public:
-	bool* active;
 	std::string name_;
+
+	bool* active;
 	uint64_t thread_intervals_;
 
 public:
