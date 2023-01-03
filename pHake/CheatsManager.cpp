@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Cheats/GodMode.hpp"
 
+using namespace globals;
+
 Cheat::Cheat()
 {
 	name_ = "Default";
@@ -48,6 +50,11 @@ CheatsManager::CheatsManager()
 	menu->Create("Grand Theft Auto V");  // overlay gta window
 }
 
+void CheatsManager::AddCheat(Cheat cheat)
+{
+	// push them to the cheat vectors
+}
+
 void CheatsManager::Start()
 {
 	//menu->list.AddFunction("Exit", this->Stop);
@@ -79,4 +86,3 @@ void CheatsManager::Stop()
 	menu->Close(); // close UI
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 }
-

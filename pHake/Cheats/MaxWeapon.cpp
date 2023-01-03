@@ -1,8 +1,10 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "MaxWeapon.hpp"
 
 #include "../SDK/Weapon.hpp"
+
+using namespace globals;
 
 MaxWeapon::MaxWeapon() 
 {

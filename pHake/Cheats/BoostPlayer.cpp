@@ -1,8 +1,11 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "BoostPlayer.hpp"
 
 #include <array>
+
+using namespace globals;
+
 
 static const std::array<std::string, 3> player_modes = { "default", "fast", "max" };
 static uint8_t curr_player_mode = 0;

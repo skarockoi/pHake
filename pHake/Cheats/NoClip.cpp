@@ -1,8 +1,11 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "NoClip.hpp"
 
 #include "../Memory/AssemblyByte.hpp"
+
+using namespace globals;
+
 
 constexpr auto size_asm_update_position_original = 10;
 constexpr auto size_asm_update_speed_z_original = 8;

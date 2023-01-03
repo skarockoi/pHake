@@ -14,11 +14,10 @@
 #include "Cheats/NoClip.hpp"
 #include "Cheats/BoostVehicle.hpp"
 
+using namespace globals;
+
 Process    proc;  // access gta memory, read/write/...
 World      world; // primarily used to access localplayer object
-
-Settings settings; // defined in Global, reads data in ReadSettings() and writes data in ExitProgram()
-Pointers pointers; // defined in Global, initialized in ReadSignatures()
 
 
 //	void KeyboardToggles() // find a way to put this in CheatsManager()
@@ -107,11 +106,7 @@ bool ReadSignatures()
 }
 
 
-void Start()
-{
-	auto pHake = CheatsManager();
-	pHake.Start();
-}
+
 
 
 //void DebugInfo()

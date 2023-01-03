@@ -1,8 +1,10 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "BoostVehicle.hpp"
 
 #include <array>
+
+using namespace globals;
 
 BoostVehicle::BoostVehicle()
 {

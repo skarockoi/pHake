@@ -41,6 +41,7 @@ private:
 
 public:
 	CheatsManager();
+	void AddCheat(Cheat cheat);
 	void Start();
 	void Stop();
 };

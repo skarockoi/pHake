@@ -170,7 +170,7 @@
     <ClInclude Include="Cheats\Suicide.hpp" />
     <ClInclude Include="Cheats\Teleport.hpp" />
     <ClInclude Include="Cheats\Trigger.hpp" />
-    <ClInclude Include="Globals.hpp" />
+    <ClInclude Include="globals.hpp" />
     <ClInclude Include="main.hpp" />
     <ClInclude Include="Memory\AssemblyByte.hpp" />
     <ClInclude Include="Memory\Datawrapper.hpp" />

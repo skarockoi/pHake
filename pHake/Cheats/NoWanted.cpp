@@ -1,6 +1,8 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "NoWanted.hpp"
+
+using namespace globals;
 
 NoWanted::NoWanted()
 {

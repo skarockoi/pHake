@@ -4,7 +4,6 @@ bool AlreadyRunning(); // check if cheat is already running
 bool AttachToGTA(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
 
-void Start(); // Start Cheat Manager
 
 int main()
 {
@@ -26,5 +25,6 @@ int main()
 		return false;
 	}
 
-	Start();
+	auto pHake = CheatsManager();
+	pHake.Start();
 }

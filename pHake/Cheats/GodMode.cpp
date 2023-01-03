@@ -1,6 +1,8 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "GodMode.hpp"
+
+using namespace globals;
 
 GodMode::GodMode()
 {
@@ -9,7 +11,6 @@ GodMode::GodMode()
 	active = &settings.godmode;
 
 	settings.godmode = ini->Get<bool>("Godmode", 0);
-
 }
 
 void GodMode::Execute()

@@ -1,6 +1,8 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "Suicide.hpp"
+
+using namespace globals;
 
 Suicide::Suicide()
 {

@@ -1,10 +1,11 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "Trigger.hpp"
 
 #include "../SDK/NPC.hpp"
 #include "../UI/pHelper.hpp"
 
+using namespace globals;
 
 Trigger::Trigger()
 {

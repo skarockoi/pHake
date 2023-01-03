@@ -1,6 +1,8 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "RPLoop.hpp"
+
+using namespace globals;
 
 RPLoop::RPLoop()
 {

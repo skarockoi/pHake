@@ -1,8 +1,10 @@
-#include "../Globals.hpp"
+#include "../globals.hpp"
 
 #include "Teleport.hpp"
 
 #include "../UI/pHelper.hpp"
+
+using namespace globals;
 
 Teleport::Teleport()
 {
