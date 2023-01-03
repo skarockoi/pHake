@@ -1,12 +1,13 @@
 #ifndef _NOWANTED_HPP_
 #define _NOWANTED_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class NoWanted : public CheatLoop
 {
 public:
-	NoWanted();
+	NoWanted(pHake& phake);
+
 	void Execute();
 	void Restore();
 };

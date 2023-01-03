@@ -6,16 +6,16 @@
 
 using namespace globals;
 
-Teleport::Teleport()
+Teleport::Teleport(pHake& phake) : Cheat(phake)
 {
 }
 
 void Teleport::Execute()
 {
-	vec3 waypoint = proc.read<vec3>(pointers.waypoint);
+	vec3 waypoint = phake->process.read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		menu->notification.Add("No Waypoint set");
+		phake->menu->notification.Add("No Waypoint set");
 		return;
 	}
 
@@ -23,7 +23,7 @@ void Teleport::Execute()
 	{
 		if (IsVehicleMoving())
 		{
-			menu->notification.Add("Don't move");
+			phake->menu->notification.Add("Don't move");
 			return;
 		}
 
@@ -45,7 +45,7 @@ void Teleport::Execute()
 
 	if (IsPlayerMoving())
 	{
-		menu->notification.Add("Don't move");
+		phake->menu->notification.Add("Don't move");
 		return;
 	}
 
@@ -56,7 +56,7 @@ void Teleport::Execute()
 	goto success;
 
 success:
-	menu->notification.Add("Teleported to Waypoint");
+	phake->menu->notification.Add("Teleported to Waypoint");
 	return;
 }
 

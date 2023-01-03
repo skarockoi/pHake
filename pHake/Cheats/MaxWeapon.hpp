@@ -1,7 +1,7 @@
 #ifndef _MAXWEAPON_HPP_
 #define _MAXWEAPON_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 #include "../SDK/Weapon.hpp"
 
 #include <vector>
@@ -10,7 +10,7 @@
 class MaxWeapon : public CheatLoop
 {
 public:
-	MaxWeapon();
+	MaxWeapon(pHake& phake);
 	void Execute();
 	void Restore();
 

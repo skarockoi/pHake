@@ -1,12 +1,13 @@
 #ifndef _TRIGGER_HPP_
 #define _TRIGGER_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class Trigger : public CheatLoop
 {
 public:
-	Trigger();
+	Trigger(pHake& phake);
+
 	void Execute();
 	void Restore();
 };

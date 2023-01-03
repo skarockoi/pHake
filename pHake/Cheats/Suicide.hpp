@@ -1,11 +1,12 @@
 #ifndef _SUICIDE_HPP_
 #define _SUICIDE_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class Suicide : public Cheat
 {
-	Suicide();
+	Suicide(pHake& phake);
+
 	void Execute();
 	void Restore();
 };

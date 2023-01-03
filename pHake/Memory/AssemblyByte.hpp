@@ -9,7 +9,7 @@ private:
 	std::vector<uint8_t> base_{ }; // assembly byte will be hold by an std::vector<uint8_t> mainly because of resizing
 
 public:
-	AssemblyByte() { }
+	AssemblyByte() {}
 
 	AssemblyByte(std::vector<uint8_t> ext) {
 		this->add(ext);
@@ -44,7 +44,7 @@ public:
 	{
 		this->base_.push_back(0xE9); // 0xE9 is jmp instruction
 
-		std::vector<uint8_t> value_in_byte(address_length_in_bytes); // we need the lenghth of the address we jump to in byte
+		std::vector<uint8_t> value_in_byte(address_length_in_bytes); // we need the length of the address we jump to in byte
 
 		uintptr_t magic = destination - start - address_length_in_bytes; // because jmp is always relative to the current memory instruction position
 

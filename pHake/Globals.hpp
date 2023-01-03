@@ -8,11 +8,7 @@
 
 namespace globals {
 
-	extern std::unique_ptr<pOverlay> menu; // mainly used in main() to initialize the UI, "menu->notification" used by cheats for notifications
-	extern std::unique_ptr<pINI> ini; // settings file
-
-	extern Process proc;  // access gta memory, read/write/...
-	extern World   world; // primarily used to access localplayer object
+	extern World world; // primarily used to access localplayer object
 
 	struct Settings // stores important, globally accessed variables
 	{

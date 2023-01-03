@@ -6,14 +6,15 @@
 
 using namespace globals;
 
-BoostVehicle::BoostVehicle()
-{
-}
 
 static const std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };
 static uint8_t curr_vehicle_mode = 0;
 
 static Vehicle vehicle_defaults;
+
+BoostVehicle::BoostVehicle(pHake& phake) : Cheat(phake)
+{
+}
 
 void BoostVehicle::Execute()
 {
@@ -58,7 +59,7 @@ void BoostVehicle::Execute()
 		world.localplayer.vehicle.handling.acceleration(2.f);
 		break;
 	}
-	menu->notification.Add("Vehicle set to " + vehicle_modes[curr_vehicle_mode]);
+	phake->menu->notification.Add("Vehicle set to " + vehicle_modes[curr_vehicle_mode]);
 }
 
 void BoostVehicle::Restore()

@@ -1,12 +1,13 @@
 #ifndef _TELEPORT_HPP_
 #define _TELEPORT_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class Teleport : public Cheat
 {
 public:
-	Teleport();
+	Teleport(pHake& phake);
+
 	void Execute();
 	void Restore();
 

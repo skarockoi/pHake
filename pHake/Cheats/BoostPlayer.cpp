@@ -10,7 +10,8 @@ using namespace globals;
 static const std::array<std::string, 3> player_modes = { "default", "fast", "max" };
 static uint8_t curr_player_mode = 0;
 
-BoostPlayer::BoostPlayer()
+
+BoostPlayer::BoostPlayer(pHake& phake) : Cheat(phake)
 {
 }
 
@@ -43,7 +44,7 @@ void BoostPlayer::Execute()
 		settings.noclip_speed = 0.5f;
 		break;
 	}
-	menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
+	phake->phake->menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
 }
 
 void BoostPlayer::Restore()

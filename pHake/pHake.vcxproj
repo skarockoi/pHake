@@ -159,7 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CheatsManager.hpp" />
+    <ClInclude Include="pHake.hpp" />
     <ClInclude Include="Cheats\BoostPlayer.hpp" />
     <ClInclude Include="Cheats\BoostVehicle.hpp" />
     <ClInclude Include="Cheats\GodMode.hpp" />
@@ -199,7 +199,7 @@
     <ClInclude Include="UI\pWindow.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CheatsManager.cpp" />
+    <ClCompile Include="pHake.cpp" />
     <ClCompile Include="Cheats\BoostPlayer.cpp" />
     <ClCompile Include="Cheats\BoostVehicle.cpp" />
     <ClCompile Include="Cheats\GodMode.cpp" />

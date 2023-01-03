@@ -6,11 +6,13 @@
 
 using namespace globals;
 
-MaxWeapon::MaxWeapon() 
-{
-	this->thread_intervals_ = 100;
 
-	settings.maxweapon = ini->Get<bool>("MaxWeapon", 0); // put in cheats singular
+
+MaxWeapon::MaxWeapon(pHake& phake) : CheatLoop(phake)
+{
+	this->phake = std::make_shared<pHake>(phake);
+
+	this->thread_intervals_ = 100;
 }
 
 void MaxWeapon::Execute()
@@ -31,7 +33,6 @@ void MaxWeapon::Execute()
 
 void MaxWeapon::Restore()
 {
-	ini->Edit<bool>("MaxWeapon", settings.maxweapon);
 	
 	if (*active)
 		RestoreWeapons();

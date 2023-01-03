@@ -6,26 +6,26 @@
 
 using namespace globals;
 
-
 constexpr auto size_asm_update_position_original = 10;
 constexpr auto size_asm_update_speed_z_original = 8;
 
 std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
 std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
 
-NoClip::NoClip()
+
+
+NoClip::NoClip(pHake& phake) : CheatLoop(phake)
 {
-	proc.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
-	proc.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
+	this->phake->process.read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
+	this->phake->process.read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
 	thread_intervals_ = 10;
 
-	settings.noclip = ini->Get<bool>("NoClip", 0);
 }
 
 void NoClip::Execute()
 {
-	static bool restore = false; // check to restore or patch game code
+	static bool restore = false; // check to restore or patch game coDE
 
 	if (!settings.noclip)
 	{
@@ -53,16 +53,16 @@ void NoClip::Execute()
 						  0x5B,											// pop rbx
 						  0xC3 });										// ret
 
-		proc.write_bytes(proc.base_module_.base + 0x1A, patched_code.base()); // writing to proc.base_module_.base + 0x1A because there is unused code
+		phake->process.write_bytes(phake->process.base_module_.base + 0x1A, patched_code.base()); // writing to phake->process.base_module_.base + 0x1A because there is unused code
 	}
 
 	if (!restore)
 	{
 		AssemblyByte detour{};
-		detour.addJump(pointers.asm_update_position + 1, proc.base_module_.base + 0x1A, 4); // jmp'ing to proc.base_module_.base + 0x1A because there is a code cave
+		detour.addJump(pointers.asm_update_position + 1, phake->process.base_module_.base + 0x1A, 4); // jmp'ing to phake->process.base_module_.base + 0x1A because there is a code cave
 
-		proc.write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
-		proc.write_bytes(pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
+		phake->process.write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
+		phake->process.write_bytes(pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
 
 		restore = true;
 	}
@@ -70,7 +70,7 @@ void NoClip::Execute()
 	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
 		return;
 
-	vec3 cam_pos = proc.read<vec3>(pointers.camera_pos);
+	vec3 cam_pos = phake->process.read<vec3>(pointers.camera_pos);
 	vec3 old_pos = world.localplayer.position.xyz();
 	vec3 add_pos(
 		settings.noclip_speed * (old_pos.x - cam_pos.x),
@@ -87,8 +87,7 @@ void NoClip::Execute()
 
 void NoClip::Restore()
 {
-	ini->Edit<bool>("NoClip", settings.noclip);
 
-	proc.write_bytes(pointers.asm_update_position, asm_update_position_original);
-	proc.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
+	phake->process.write_bytes(pointers.asm_update_position, asm_update_position_original);
+	phake->process.write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
 }

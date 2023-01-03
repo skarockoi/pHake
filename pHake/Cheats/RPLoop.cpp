@@ -4,11 +4,10 @@
 
 using namespace globals;
 
-RPLoop::RPLoop()
+RPLoop::RPLoop(pHake& phake) : CheatLoop(phake)
 {
-	thread_intervals_ = 1;
 
-	settings.rploop = ini->Get<bool>("RpLoop", 0);
+	thread_intervals_ = 1;
 }
 
 void RPLoop::Execute()
@@ -22,5 +21,4 @@ void RPLoop::Execute()
 
 void RPLoop::Restore()
 {
-	ini->Edit<bool>("RpLoop", settings.rploop);
 }

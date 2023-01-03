@@ -4,13 +4,12 @@
 
 using namespace globals;
 
-GodMode::GodMode()
+
+GodMode::GodMode(pHake& phake) : CheatLoop(phake)
 {
 	name_ = "GodMode";
 	thread_intervals_ = 100;
 	active = &settings.godmode;
-
-	settings.godmode = ini->Get<bool>("Godmode", 0);
 }
 
 void GodMode::Execute()
@@ -36,8 +35,6 @@ void GodMode::Execute()
 
 void GodMode::Restore()
 {
-	ini->Edit<bool>("Godmode", settings.godmode);
-
 	if (world.localplayer.god())
 		world.localplayer.god(false);
 }

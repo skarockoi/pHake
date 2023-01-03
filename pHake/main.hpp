@@ -25,6 +25,18 @@ int main()
 		return false;
 	}
 
-	auto pHake = CheatsManager();
-	pHake.Start();
+//	threads_.push_back(new pThread([=]() {
+//		world.UpdateAll(phake->process.read<uintptr_t>(pointers.world)); // updates world info in loop
+//	settings.kmh = 3.6f * phake->process.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
+//		}, 1));
+
+
+	pHake phake = pHake();
+
+	GodMode godmode = GodMode();
+	phake.Add(godmode);
+	phake.Start();
+
+	// TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
+
 }

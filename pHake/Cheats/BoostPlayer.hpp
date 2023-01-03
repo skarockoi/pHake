@@ -1,13 +1,13 @@
 #ifndef _BOOSTPLAYER_HPP_
 #define _BOOSTPLAYER_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class BoostPlayer : public Cheat
 {
 public:
 
-	BoostPlayer();
+	BoostPlayer(pHake& phake);
 
 	void Execute();
 	void Restore();

@@ -7,11 +7,9 @@
 
 using namespace globals;
 
-Trigger::Trigger()
+Trigger::Trigger(pHake& phake) : CheatLoop(phake)
 {
 	thread_intervals_ = 1;
-
-	settings.trigger = ini->Get<bool>("Trigger", 0);
 }
 
 void Trigger::Execute()
@@ -23,13 +21,13 @@ void Trigger::Execute()
 	static bool already_shooting = false;
 	static NPC  entity;
 
-	entity.Update(proc.read<uintptr_t>(pointers.entity_aiming_at));
+	entity.Update(phake->process.read<uintptr_t>(pointers.entity_aiming_at));
 	if (entity.base() == 0x0)
 		can_shoot = false;
 	else
 		can_shoot = true;
 
-	if (!proc.read<uint32_t>(pointers.is_player_aiming))
+	if (!phake->process.read<uint32_t>(pointers.is_player_aiming))
 		can_shoot = false;
 
 
@@ -52,5 +50,4 @@ void Trigger::Execute()
 
 void Trigger::Restore()
 {
-	ini->Edit<bool>("Trigger", settings.trigger);
 }

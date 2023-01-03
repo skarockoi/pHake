@@ -1,12 +1,12 @@
 #ifndef _GODMODE_HPP_
 #define _GODMODE_HPP_
 
-#include "../CheatsManager.hpp"
+#include "../pHake.hpp"
 
 class GodMode : public CheatLoop
 {
 public:
-	GodMode();
+	GodMode(pHake& phake);
 	void Execute();
 	void Restore();
 };

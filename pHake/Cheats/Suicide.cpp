@@ -4,14 +4,14 @@
 
 using namespace globals;
 
-Suicide::Suicide()
+Suicide::Suicide(pHake& phake) : Cheat(phake)
 {
 }
 
 void Suicide::Execute()
 {
 	world.localplayer.health(0.f);
-	menu->notification.Add("Player health set to 0");
+	phake->menu->notification.Add("Player health set to 0");
 }
 
 void Suicide::Restore()

@@ -4,11 +4,11 @@
 
 using namespace globals;
 
-NoWanted::NoWanted()
+
+
+NoWanted::NoWanted(pHake& phake) : CheatLoop(phake)
 {
 	thread_intervals_ = 10;
-
-	settings.nowanted = ini->Get<bool>("NoWanted", 0);
 }
 
 void NoWanted::Execute() {
@@ -18,7 +18,6 @@ void NoWanted::Execute() {
 
 void NoWanted::Restore()
 {
-	ini->Edit<bool>("NoWanted", settings.nowanted);
 
 	if (*active)
 		world.localplayer.playerinfo.wanted_level(0);
