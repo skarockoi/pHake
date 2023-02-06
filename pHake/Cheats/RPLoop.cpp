@@ -5,7 +5,7 @@
 
 using namespace globals;
 
-RPLoop::RPLoop(pHake& phake) : CheatLoop(phake)
+RPLoop::RPLoop(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 
 	thread_intervals_ = 1;

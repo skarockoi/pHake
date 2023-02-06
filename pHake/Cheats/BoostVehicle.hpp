@@ -6,7 +6,7 @@
 class BoostVehicle : public Cheat
 {
 public:
-	BoostVehicle(pHake& phake);
+	BoostVehicle(std::shared_ptr<pHake> phake);
 
 	void Execute();
 	void Restore();

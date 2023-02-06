@@ -6,7 +6,7 @@
 class BoostPlayer : public Cheat
 {
 public:
-	BoostPlayer(pHake& phake);
+	BoostPlayer(std::shared_ptr<pHake> phake);
 
 	void Execute();
 	void Restore();

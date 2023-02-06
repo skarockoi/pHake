@@ -10,7 +10,7 @@
 class MaxWeapon : public CheatLoop
 {
 public:
-	MaxWeapon(pHake& phake);
+	MaxWeapon(std::shared_ptr<pHake> phake);
 	void Execute();
 	void Restore();
 

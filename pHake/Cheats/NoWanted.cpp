@@ -7,7 +7,7 @@ using namespace globals;
 
 
 
-NoWanted::NoWanted(pHake& phake) : CheatLoop(phake)
+NoWanted::NoWanted(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	thread_intervals_ = 10;
 }

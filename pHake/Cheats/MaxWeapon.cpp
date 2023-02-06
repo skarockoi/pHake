@@ -9,7 +9,7 @@ using namespace globals;
 
 
 
-MaxWeapon::MaxWeapon(pHake& phake) : CheatLoop(phake)
+MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	this->phake = std::make_shared<pHake>(phake);
 

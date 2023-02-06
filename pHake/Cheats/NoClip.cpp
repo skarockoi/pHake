@@ -15,7 +15,7 @@ std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_origina
 
 
 
-NoClip::NoClip(pHake& phake) : CheatLoop(phake)
+NoClip::NoClip(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	this->phake->process->read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
 	this->phake->process->read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);

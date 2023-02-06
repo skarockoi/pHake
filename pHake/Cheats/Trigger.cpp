@@ -8,7 +8,7 @@
 
 using namespace globals;
 
-Trigger::Trigger(pHake& phake) : CheatLoop(phake)
+Trigger::Trigger(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	thread_intervals_ = 1;
 }

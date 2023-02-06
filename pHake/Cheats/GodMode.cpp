@@ -6,7 +6,7 @@
 using namespace globals;
 
 
-GodMode::GodMode(pHake& phake) : CheatLoop(phake)
+GodMode::GodMode(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	name_ = "GodMode";
 	thread_intervals_ = 100;

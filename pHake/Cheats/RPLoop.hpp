@@ -6,7 +6,7 @@
 class RPLoop : public CheatLoop
 {
 public:
-	RPLoop(pHake& phake);
+	RPLoop(std::shared_ptr<pHake> phake);
 
 	void Execute();
 	void Restore();

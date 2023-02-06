@@ -13,7 +13,7 @@ static uint8_t curr_vehicle_mode = 0;
 
 static Vehicle vehicle_defaults;
 
-BoostVehicle::BoostVehicle(pHake& phake) : Cheat(phake)
+BoostVehicle::BoostVehicle(std::shared_ptr<pHake>phake) : Cheat(phake)
 {
 }
 

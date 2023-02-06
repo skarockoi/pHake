@@ -106,17 +106,17 @@ bool ReadSignatures()
 
 bool Start()
 {
-	pHake phake = pHake();
-	phake.Attach("Grand Theft Auto V", process);
+	std::shared_ptr<pHake> phake = std::make_shared<pHake>();
+	phake->Attach("Grand Theft Auto V", process);
 
 	thread = std::make_unique<pThread>([&]() {
-		world.UpdateAll(phake.process->read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * phake.process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
+		world.UpdateAll(phake->process->read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * phake->process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 		}, 1);
 
 	GodMode godmode = GodMode(phake);
-	phake.Add(godmode);
-	phake.Start();
+	phake->Add(godmode);
+	phake->Start();
 
 	// TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 

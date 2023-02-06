@@ -6,13 +6,11 @@
 
 using namespace globals;
 
-
-
 pHake::pHake() {  }
 
 void pHake::Attach(LPCSTR Name, std::shared_ptr<Process> process)
 {
-	this->process = std::make_shared<Process>(process);
+	this->process = process;
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create(Name);  // overlay gta window
 }

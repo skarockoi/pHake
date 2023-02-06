@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "Memory/Process.hpp"
+
 class Cheat;
 class CheatLoop;
 

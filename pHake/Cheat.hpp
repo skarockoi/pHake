@@ -13,7 +13,7 @@ public:
 	std::string name_;
 
 public:
-	Cheat(pHake& phake);
+	Cheat(std::shared_ptr<pHake> phake);
 	virtual void Execute();
 	virtual void Restore();
 };
@@ -28,7 +28,7 @@ public:
 	uint64_t    thread_intervals_;
 
 public:
-	CheatLoop(pHake& phake);
+	CheatLoop(std::shared_ptr<pHake> phake);
 	virtual void Execute();
 	virtual void Restore();
 };

@@ -6,7 +6,7 @@
 class GodMode : public CheatLoop
 {
 public:
-	GodMode(pHake& phake);
+	GodMode(std::shared_ptr<pHake> phake);
 	void Execute();
 	void Restore();
 };

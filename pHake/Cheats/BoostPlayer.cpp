@@ -12,7 +12,7 @@ static const std::array<std::string, 3> player_modes = { "default", "fast", "max
 static uint8_t curr_player_mode = 0;
 
 
-BoostPlayer::BoostPlayer(pHake& phake) : Cheat(phake)
+BoostPlayer::BoostPlayer(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
 }
 

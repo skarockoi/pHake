@@ -6,7 +6,7 @@
 class NoClip : public CheatLoop
 {
 public:
-	NoClip(pHake& phake);
+	NoClip(std::shared_ptr<pHake> phake);
 
 	void Execute();
 	void Restore();

@@ -7,7 +7,7 @@
 
 using namespace globals;
 
-Teleport::Teleport(pHake& phake) : Cheat(phake)
+Teleport::Teleport(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
 }
 

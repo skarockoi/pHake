@@ -5,7 +5,7 @@
 
 using namespace globals;
 
-Suicide::Suicide(pHake& phake) : Cheat(phake)
+Suicide::Suicide(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
 }
 

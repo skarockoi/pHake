@@ -6,7 +6,7 @@
 class NoWanted : public CheatLoop
 {
 public:
-	NoWanted(pHake& phake);
+	NoWanted(std::shared_ptr<pHake> phake);
 
 	void Execute();
 	void Restore();
