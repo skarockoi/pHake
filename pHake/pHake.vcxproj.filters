@@ -138,7 +138,10 @@
     <ClInclude Include="Cheats\Suicide.hpp">
       <Filter>Source Files\Cheats</Filter>
     </ClInclude>
-    <ClInclude Include="CheatsManager.hpp">
+    <ClInclude Include="pHake.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cheat.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -209,7 +212,10 @@
     <ClCompile Include="Cheats\Teleport.cpp">
       <Filter>Source Files\Cheats</Filter>
     </ClCompile>
-    <ClCompile Include="CheatsManager.cpp">
+    <ClCompile Include="pHake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

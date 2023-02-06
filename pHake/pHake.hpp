@@ -1,5 +1,5 @@
-#ifndef CHEATSMANAGER_HPP
-#define CHEATSMANAGER_HPP
+#ifndef PHAKE_HPP
+#define PHAKE_HPP
 
 #include <Windows.h>
 
@@ -7,43 +7,18 @@
 #include <string>
 #include <vector>
 
-class Cheat
-{
-public:
-	std::shared_ptr<pHake> phake;
-
-	std::string name_;
-
-public:
-	Cheat(pHake& phake);
-	virtual void Execute();
-	virtual void Restore();
-};
-
-class CheatLoop
-{
-public:
-	std::shared_ptr<pHake> phake;
-
-	std::string name_;
-	bool* active;
-	uint64_t    thread_intervals_;
-
-public:
-	CheatLoop(pHake& phake);
-	virtual void Execute();
-	virtual void Restore();
-};
+class Cheat;
+class CheatLoop;
 
 class pHake
 {
 public:
 	std::unique_ptr<pOverlay> menu;
-	Process process;
+	std::shared_ptr<Process> process;
 
 public:
 	pHake();
-	void Attach(LPCSTR game);
+	void Attach(LPCSTR Name, std::shared_ptr<Process> process);
 	void Add(Cheat& cheat);
 	void Add(CheatLoop& cheat);
 
@@ -55,7 +30,5 @@ private:
 	std::vector<CheatLoop> cheats_loop_;
 	std::vector<pThread> threads_;
 };
-
-
 
 #endif

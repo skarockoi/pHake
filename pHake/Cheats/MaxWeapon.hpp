@@ -1,7 +1,7 @@
 #ifndef _MAXWEAPON_HPP_
 #define _MAXWEAPON_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 #include "../SDK/Weapon.hpp"
 
 #include <vector>

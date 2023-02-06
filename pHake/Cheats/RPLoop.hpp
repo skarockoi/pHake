@@ -1,7 +1,7 @@
 #ifndef _RPLOOP_HPP_
 #define _RPLOOP_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 
 class RPLoop : public CheatLoop
 {

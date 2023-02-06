@@ -1,4 +1,5 @@
 #include "../globals.hpp"
+#include "../pHake.hpp"
 
 #include "Suicide.hpp"
 

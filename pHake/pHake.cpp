@@ -1,22 +1,18 @@
 #include "Globals.hpp"
 
 #include "pHake.hpp"
+#include "Cheat.hpp"
 #include <iostream>
 
 using namespace globals;
 
-Cheat::Cheat(pHake& phake) : name_("Default"){ this->phake = std::make_shared<pHake>(phake); }
-void Cheat::Execute() {}
-void Cheat::Restore() {}
 
-CheatLoop::CheatLoop(pHake& phake) : name_("Default"), thread_intervals_(0), active(0) { this->phake = std::make_shared<pHake>(phake); }
-void CheatLoop::Execute() {}
-void CheatLoop::Restore() {}
 
-pHake::pHake() {}
+pHake::pHake() {  }
 
-void pHake::Attach(LPCSTR Name)
+void pHake::Attach(LPCSTR Name, std::shared_ptr<Process> process)
 {
+	this->process = std::make_shared<Process>(process);
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create(Name);  // overlay gta window
 }
@@ -50,6 +46,6 @@ void pHake::Stop()
 	for (auto& i : this->cheats_)
 		i.Restore();
 		
-	process.Close(); // close handle to attached process
+	process->Close(); // close handle to attached process
 	menu->Close(); // close UI
 }

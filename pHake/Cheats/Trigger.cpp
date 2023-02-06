@@ -1,4 +1,5 @@
 #include "../globals.hpp"
+#include "../pHake.hpp"
 
 #include "Trigger.hpp"
 
@@ -21,13 +22,13 @@ void Trigger::Execute()
 	static bool already_shooting = false;
 	static NPC  entity;
 
-	entity.Update(phake->process.read<uintptr_t>(pointers.entity_aiming_at));
+	entity.Update(phake->process->read<uintptr_t>(pointers.entity_aiming_at));
 	if (entity.base() == 0x0)
 		can_shoot = false;
 	else
 		can_shoot = true;
 
-	if (!phake->process.read<uint32_t>(pointers.is_player_aiming))
+	if (!phake->process->read<uint32_t>(pointers.is_player_aiming))
 		can_shoot = false;
 
 

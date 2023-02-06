@@ -1,7 +1,7 @@
 #ifndef _TRIGGER_HPP_
 #define _TRIGGER_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 
 class Trigger : public CheatLoop
 {

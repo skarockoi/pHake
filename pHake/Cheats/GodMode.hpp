@@ -1,7 +1,7 @@
 #ifndef _GODMODE_HPP_
 #define _GODMODE_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 
 class GodMode : public CheatLoop
 {

@@ -1,4 +1,5 @@
 #include "../globals.hpp"
+#include "../pHake.hpp"
 
 #include "Teleport.hpp"
 
@@ -12,7 +13,7 @@ Teleport::Teleport(pHake& phake) : Cheat(phake)
 
 void Teleport::Execute()
 {
-	vec3 waypoint = phake->process.read<vec3>(pointers.waypoint);
+	vec3 waypoint = phake->process->read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		phake->menu->notification.Add("No Waypoint set");

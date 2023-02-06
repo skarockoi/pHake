@@ -1,7 +1,7 @@
 #ifndef _NOWANTED_HPP_
 #define _NOWANTED_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 
 class NoWanted : public CheatLoop
 {

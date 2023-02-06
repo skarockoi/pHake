@@ -1,7 +1,7 @@
 #ifndef _NOCLIP_HPP_
 #define _NOCLIP_HPP_
 
-#include "../pHake.hpp"
+#include "../Cheat.hpp"
 
 class NoClip : public CheatLoop
 {

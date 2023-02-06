@@ -1,4 +1,5 @@
 #include "../globals.hpp"
+#include "../pHake.hpp"
 
 #include "BoostPlayer.hpp"
 
@@ -44,7 +45,8 @@ void BoostPlayer::Execute()
 		settings.noclip_speed = 0.5f;
 		break;
 	}
-	phake->phake->menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
+
+	phake->menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
 }
 
 void BoostPlayer::Restore()

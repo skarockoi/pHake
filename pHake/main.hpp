@@ -1,9 +1,10 @@
 #include "Globals.hpp" // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
-bool AttachToGTA(); // attaches to the game
+bool Attach(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
 
+bool Start();
 
 int main()
 {
@@ -13,7 +14,7 @@ int main()
 		return false;
 	}
 
-	if (!AttachToGTA())
+	if (!Attach())
 	{
 		MessageBox(NULL, "could not find the game", "Error", NULL);
 		return false;
@@ -25,18 +26,5 @@ int main()
 		return false;
 	}
 
-//	threads_.push_back(new pThread([=]() {
-//		world.UpdateAll(phake->process.read<uintptr_t>(pointers.world)); // updates world info in loop
-//	settings.kmh = 3.6f * phake->process.read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
-//		}, 1));
-
-
-	pHake phake = pHake();
-
-	GodMode godmode = GodMode();
-	phake.Add(godmode);
-	phake.Start();
-
-	// TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
-
+	return Start();
 }

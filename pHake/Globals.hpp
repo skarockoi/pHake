@@ -7,7 +7,6 @@
 #include "SDK/World.hpp"
 
 namespace globals {
-
 	extern World world; // primarily used to access localplayer object
 
 	struct Settings // stores important, globally accessed variables
