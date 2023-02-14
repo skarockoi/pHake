@@ -19,6 +19,11 @@
 std::shared_ptr<Process> process;
 std::unique_ptr<pThread> thread;
 
+World      world; // primarily used to access localplayer object
+
+Settings settings;
+Pointers pointers;
+
 //	void KeyboardToggles() // find a way to put this in CheatsManager()
 //	{
 //		if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
