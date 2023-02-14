@@ -13,8 +13,7 @@
 #include "Cheats/RPLoop.hpp"
 #include "Cheats/NoClip.hpp"
 #include "Cheats/BoostVehicle.hpp"
-
-
+#include "Cheats/BoostPlayer.hpp"
 
 std::shared_ptr<Process> process;
 std::unique_ptr<pThread> thread;
@@ -110,7 +109,6 @@ bool ReadSignatures()
 }
 
 bool Start()
-
 {
 	std::shared_ptr<pHake> phake = std::make_shared<pHake>();
 	phake->Attach("Grand Theft Auto V", process);
@@ -120,11 +118,17 @@ bool Start()
 		settings.kmh = 3.6f * phake->process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 		}, 1);
 
-	GodMode godmode = GodMode(phake);
-	phake->Add(godmode);
+	phake->Add(std::make_shared<MaxWeapon>(phake));
+	phake->Add(std::make_shared<NoWanted>(phake));
+	phake->Add(std::make_shared<GodMode>(phake));
+	phake->Add(std::make_shared<Trigger>(phake));
+	phake->Add(std::make_shared<RPLoop>(phake));
+	phake->Add(std::make_shared<NoClip>(phake));
+	phake->Add(std::make_shared<BoostVehicle>(phake));
+	phake->Add(std::make_shared<BoostPlayer>(phake));
 	phake->Start();
 
-	// TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
+	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 
 	return false;
 }

@@ -4,8 +4,6 @@
 #include "Cheat.hpp"
 #include <iostream>
 
-
-
 pHake::pHake() {  }
 
 void pHake::Attach(LPCSTR Name, std::shared_ptr<Process> process)
@@ -15,23 +13,22 @@ void pHake::Attach(LPCSTR Name, std::shared_ptr<Process> process)
 	menu->Create(Name);  // overlay gta window
 }
 
-void pHake::Add(Cheat& cheat)
+void pHake::Add(std::shared_ptr<CheatLoop> cheat)
+{
+	cheats_loop_.push_back(cheat);
+	menu->list.AddBool(cheat->name_, *cheat->active);
+}
+
+void pHake::Add(std::shared_ptr<Cheat> cheat)
 {
 	cheats_.push_back(cheat);
 }
-
-void pHake::Add(CheatLoop& cheat)
-{
-	cheats_loop_.push_back(cheat);
-}
-
-
 void pHake::Start()
 {
 	//menu->list.AddFunction("Exit", this->Stop);
 
 	for (auto& i : this->cheats_loop_)
-		this->threads_.push_back(pThread([&]() { i.Execute(); }, i.thread_intervals_));
+		this->threads_.push_back(pThread([&]() { i->Execute(); }, i->thread_intervals_));
 	
 	menu->Loop(); // main loop
 }
@@ -42,7 +39,7 @@ void pHake::Stop()
 		i.Destroy();
 
 	for (auto& i : this->cheats_)
-		i.Restore();
+		i->Restore();
 		
 	process->Close(); // close handle to attached process
 	menu->Close(); // close UI

@@ -7,6 +7,7 @@
 
 Suicide::Suicide(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
+	name_ = "Suicide";
 }
 
 void Suicide::Execute()

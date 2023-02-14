@@ -10,7 +10,9 @@
 
 Trigger::Trigger(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
+	name_ = "Trigger";
 	thread_intervals_ = 1;
+	active = &settings.trigger;
 }
 
 void Trigger::Execute()

@@ -6,8 +6,6 @@
 #include <array>
 
 
-
-
 static const std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };
 static uint8_t curr_vehicle_mode = 0;
 
@@ -15,6 +13,7 @@ static Vehicle vehicle_defaults;
 
 BoostVehicle::BoostVehicle(std::shared_ptr<pHake>phake) : Cheat(phake)
 {
+	name_ = "BoostVehicle";
 }
 
 void BoostVehicle::Execute()

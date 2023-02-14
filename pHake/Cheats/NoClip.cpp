@@ -5,23 +5,20 @@
 
 #include "../Memory/AssemblyByte.hpp"
 
-
-
 constexpr auto size_asm_update_position_original = 10;
 constexpr auto size_asm_update_speed_z_original = 8;
 
 std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
 std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
 
-
-
 NoClip::NoClip(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	this->phake->process->read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
 	this->phake->process->read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
+	name_ = "NoClip";
 	thread_intervals_ = 10;
-
+	active = &settings.noclip;
 }
 
 void NoClip::Execute()

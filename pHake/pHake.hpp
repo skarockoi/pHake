@@ -21,15 +21,15 @@ public:
 public:
 	pHake();
 	void Attach(LPCSTR window_name, std::shared_ptr<Process> process_name);
-	void Add(Cheat& cheat);
-	void Add(CheatLoop& cheat);
+	void Add(std::shared_ptr<Cheat> cheat);
+	void Add(std::shared_ptr<CheatLoop> cheat);
 
 	void Start();
 	void Stop();
 
 private:
-	std::vector<Cheat> cheats_;
-	std::vector<CheatLoop> cheats_loop_;
+	std::vector<std::shared_ptr<Cheat>> cheats_;
+	std::vector<std::shared_ptr<CheatLoop>> cheats_loop_;
 	std::vector<pThread> threads_;
 };
 #endif
