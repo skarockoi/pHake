@@ -5,7 +5,7 @@
 
 #include <array>
 
-using namespace globals;
+
 
 
 static const std::array<std::string, 4> vehicle_modes = { "default", "race", "max", "fly" };

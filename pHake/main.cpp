@@ -14,7 +14,7 @@
 #include "Cheats/NoClip.hpp"
 #include "Cheats/BoostVehicle.hpp"
 
-using namespace globals;
+
 
 std::shared_ptr<Process> process;
 std::unique_ptr<pThread> thread;
@@ -105,6 +105,7 @@ bool ReadSignatures()
 }
 
 bool Start()
+
 {
 	std::shared_ptr<pHake> phake = std::make_shared<pHake>();
 	phake->Attach("Grand Theft Auto V", process);

@@ -3,7 +3,7 @@
 
 #include "RPLoop.hpp"
 
-using namespace globals;
+
 
 RPLoop::RPLoop(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {

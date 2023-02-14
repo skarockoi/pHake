@@ -5,13 +5,13 @@
 
 #include "../SDK/Weapon.hpp"
 
-using namespace globals;
+
 
 
 
 MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
-	this->phake = std::make_shared<pHake>(phake);
+	this->phake = phake;
 
 	this->thread_intervals_ = 100;
 }

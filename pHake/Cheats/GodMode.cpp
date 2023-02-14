@@ -3,7 +3,7 @@
 
 #include "GodMode.hpp"
 
-using namespace globals;
+
 
 
 GodMode::GodMode(std::shared_ptr<pHake> phake) : CheatLoop(phake)

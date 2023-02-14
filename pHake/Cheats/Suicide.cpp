@@ -3,7 +3,7 @@
 
 #include "Suicide.hpp"
 
-using namespace globals;
+
 
 Suicide::Suicide(std::shared_ptr<pHake> phake) : Cheat(phake)
 {

@@ -5,7 +5,7 @@
 
 #include "../UI/pHelper.hpp"
 
-using namespace globals;
+
 
 Teleport::Teleport(std::shared_ptr<pHake> phake) : Cheat(phake)
 {

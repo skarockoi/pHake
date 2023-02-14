@@ -6,7 +6,7 @@
 #include "../SDK/NPC.hpp"
 #include "../UI/pHelper.hpp"
 
-using namespace globals;
+
 
 Trigger::Trigger(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {

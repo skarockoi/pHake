@@ -4,7 +4,7 @@
 #include "Cheat.hpp"
 #include <iostream>
 
-using namespace globals;
+
 
 pHake::pHake() {  }
 
