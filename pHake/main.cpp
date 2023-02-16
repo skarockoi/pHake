@@ -83,8 +83,8 @@ bool Start()
 	phake->Attach("Grand Theft Auto V", process);
 
 	thread = std::make_unique<pThread>([&]() {
-		world.UpdateAll(phake->process->read<uintptr_t>(pointers.world)); // updates world info in loop
-		settings.kmh = 3.6f * phake->process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
+		world.UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
+		settings.kmh = 3.6f * process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 	}, 1);
 
 	phake->Add(std::make_shared<MaxWeapon>(phake));
