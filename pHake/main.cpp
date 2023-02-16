@@ -25,39 +25,6 @@ World      world; // primarily used to access localplayer object
 Settings settings;
 Pointers pointers;
 
-//	void KeyboardToggles() // find a way to put this in CheatsManager()
-//	{
-//		if (menu == nullptr) // prevents crashes when you call menu->Toggle() before menu was initialized
-//			return;
-//		
-//		GetKeyExecuteWaitForRelease(settings.keys.menu, []()
-//		{
-//			menu->Toggle();
-//		});
-//	
-//		GetKeyExecuteWaitForRelease(settings.keys.teleport, []()
-//		{
-//	
-//		});
-//	
-//		GetKeyExecuteWaitForRelease(settings.keys.boost_player, []()
-//		{
-//	
-//		});
-//	
-//		GetKeyExecuteWaitForRelease(settings.keys.boost_vehicle, []()
-//		{
-//	
-//		});
-//	
-//		if (settings.noclip)
-//		{
-//			GetKeyExecuteWaitForRelease(VK_SPACE, []()
-//			{
-//				// BoostPlayer
-//			});
-//		}
-//	}
 
 bool AlreadyRunning()
 {
@@ -118,7 +85,7 @@ bool Start()
 	thread = std::make_unique<pThread>([&]() {
 		world.UpdateAll(phake->process->read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * phake->process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
-		}, 1);
+	}, 1);
 
 	phake->Add(std::make_shared<MaxWeapon>(phake));
 	phake->Add(std::make_shared<NoWanted>(phake));

@@ -15,8 +15,8 @@ class CheatLoop;
 class pHake
 {
 public:
-	std::unique_ptr<pOverlay> menu;
 	std::shared_ptr<Process> process;
+	std::unique_ptr<pOverlay> menu;
 
 public:
 	pHake();
