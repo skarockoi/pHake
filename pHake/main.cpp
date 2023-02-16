@@ -14,6 +14,8 @@
 #include "Cheats/NoClip.hpp"
 #include "Cheats/BoostVehicle.hpp"
 #include "Cheats/BoostPlayer.hpp"
+#include "Cheats/Teleport.hpp"
+#include "Cheats/Suicide.hpp"
 
 std::shared_ptr<Process> process;
 std::unique_ptr<pThread> thread;
@@ -124,8 +126,11 @@ bool Start()
 	phake->Add(std::make_shared<Trigger>(phake));
 	phake->Add(std::make_shared<RPLoop>(phake));
 	phake->Add(std::make_shared<NoClip>(phake));
+	phake->menu->list.AddFloat("Km/h", settings.kmh, 0.f, 0.f);
+	phake->Add(std::make_shared<Teleport>(phake));
 	phake->Add(std::make_shared<BoostVehicle>(phake));
 	phake->Add(std::make_shared<BoostPlayer>(phake));
+	phake->Add(std::make_shared<Suicide>(phake));
 	phake->Start();
 
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit

@@ -9,8 +9,7 @@ class pButton // rectangle button that executes a function when pressed
 public:
 	pButton();
 	void Create(sf::RenderWindow* const& Window, sf::Font* font);
-
-	void Connect(std::function<void()> function);
+	void Connect(std::function<void()> func);
 
 	void Draw();
 	void Loop();
@@ -29,11 +28,13 @@ private:
 	sf::RenderWindow* window_;
 	sf::Font*		  font_;
 
+
 	sf::Text		   button_text_;
 	sf::RectangleShape button_back_;
 
 private:
-	std::function<void()> function_;
+	std::function<void()> on_click_;
+
 	bool	  active_;
 	bool	  busy_;
 	uint16_t  sleep_duration_;

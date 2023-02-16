@@ -12,6 +12,7 @@ static uint8_t curr_player_mode = 0;
 
 BoostPlayer::BoostPlayer(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
+	name_ = "BoostPlayer";
 }
 
 void BoostPlayer::Execute()
@@ -19,6 +20,8 @@ void BoostPlayer::Execute()
 	curr_player_mode++;
 	if (curr_player_mode > player_modes.size() - 1)
 		curr_player_mode = 0;
+
+	std::cout << world.localplayer.playerinfo.base();
 
 	switch (curr_player_mode)
 	{

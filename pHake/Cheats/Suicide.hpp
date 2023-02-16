@@ -5,6 +5,7 @@
 
 class Suicide : public Cheat
 {
+public:
 	Suicide(std::shared_ptr<pHake> phake);
 
 	void Execute();

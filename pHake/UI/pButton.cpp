@@ -17,7 +17,7 @@ pButton::pButton() :
 	sleep_duration_(150),
 	active_(0),
 	busy_(0),
-	function_(0),
+	on_click_(0),
 	window_(0),
 	font_(0)
 { }
@@ -41,9 +41,9 @@ void pButton::Create(sf::RenderWindow* const& Window, sf::Font* Font)
 	active_ = true;
 }
 
-void pButton::Connect(std::function<void()> function)
+void pButton::Connect(std::function<void()> func)
 {
-	this->function_ = function;
+	this->on_click_ = func;
 }
 
 void pButton::Draw()
@@ -73,9 +73,10 @@ void pButton::Loop()
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		if (function_ != NULL) 
+		if (on_click_ != NULL) 
 		{
-			function_();
+			on_click_();
+
 			while (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && IsOnBox())
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}

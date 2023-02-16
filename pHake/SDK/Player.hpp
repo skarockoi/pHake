@@ -9,7 +9,7 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class Player : public DataWrapper<0x10B8 + 0x4>
+class Player : public DataWrapper<0x20B8 + 0x4>
 {
 public:
 	using DataWrapper::DataWrapper;

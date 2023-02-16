@@ -22,10 +22,11 @@ void pHake::Add(std::shared_ptr<CheatLoop> cheat)
 void pHake::Add(std::shared_ptr<Cheat> cheat)
 {
 	cheats_.push_back(cheat);
+	menu->list.AddFunction(cheat->name_, [=]() { cheat->Execute(); });
 }
 void pHake::Start()
 {
-	//menu->list.AddFunction("Exit", this->Stop);
+	menu->list.AddFunction("Exit", [=]() {Stop(); });
 
 	for (auto& i : this->cheats_loop_)
 		this->threads_.push_back(pThread([&]() { i->Execute(); }, i->thread_intervals_));

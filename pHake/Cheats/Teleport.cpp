@@ -9,7 +9,7 @@
 
 Teleport::Teleport(std::shared_ptr<pHake> phake) : Cheat(phake)
 {
-	name_ = "Teleport";
+	name_ = "Tp to Waypoint";
 }
 
 void Teleport::Execute()

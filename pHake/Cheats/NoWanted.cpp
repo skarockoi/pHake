@@ -3,10 +3,6 @@
 
 #include "NoWanted.hpp"
 
-
-
-
-
 NoWanted::NoWanted(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
 	name_ = "NoWanted";

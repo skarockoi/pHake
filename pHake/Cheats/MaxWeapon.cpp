@@ -5,14 +5,8 @@
 
 #include "../SDK/Weapon.hpp"
 
-
-
-
-
 MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : CheatLoop(phake)
 {
-	this->phake = phake;
-
 	name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;
 	active = &settings.maxweapon;
