@@ -4,22 +4,20 @@
 #include <Windows.h>
 #include "pProcess.hpp"
 
-template <uintptr_t MaxOffset> class pClass  // class to download whole objects with one RPM call
+class ReadWriteFactory {
+public:
+	static pProcess* process;
+};
+
+template <uintptr_t MaxOffset> class pClass: public ReadWriteFactory  // class to download whole objects with one RPM call
 {
 protected:
-	std::shared_ptr<pProcess> process;
 	std::unique_ptr<uint8_t[]> data_;
 	uintptr_t base_ = 0x0;
 
 public:
 	pClass() {
 		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
-	}
-
-	pClass(std::shared_ptr<pProcess> process)
-	{
-		this->data_ = std::make_unique<uint8_t[]>(MaxOffset);
-		this->process = process;
 	}
 
 	pClass(const pClass& ext)
@@ -35,7 +33,6 @@ public:
 
 		memcpy(this->data_.get(), ext.data_.get(), MaxOffset);
 		this->base_ = ext.base_;
-		this->process = ext.process;
 
 		return *this;
 	}

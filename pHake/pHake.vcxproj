@@ -217,6 +217,7 @@
     <ClCompile Include="pLib\pCheat.cpp" />
     <ClCompile Include="pLib\pHake.cpp" />
     <ClCompile Include="pLib\pINI.cpp" />
+    <ClCompile Include="pLib\pMemory\pClass.cpp" />
     <ClCompile Include="pLib\pMemory\pProcess.cpp" />
     <ClCompile Include="pLib\pThread.cpp" />
     <ClCompile Include="pLib\pUi\pButton.cpp" />

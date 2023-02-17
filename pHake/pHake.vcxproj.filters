@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\SDK">
-      <UniqueIdentifier>{5875738b-365b-4d3c-9f2f-38b4a5062ff1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Cheats">
       <UniqueIdentifier>{f616b6aa-aaff-4c13-a09b-b660859319d3}</UniqueIdentifier>
     </Filter>
@@ -28,40 +25,43 @@
     <Filter Include="Header Files\pLib\pMemory">
       <UniqueIdentifier>{666703a3-fcc1-48c7-a0ef-ac2f94b10d0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SDK">
+      <UniqueIdentifier>{5875738b-365b-4d3c-9f2f-38b4a5062ff1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDK\AmmoInfo.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Player.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Position.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Vehicle.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\VehicleHandling.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\World.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\WeaponManager.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Weapon.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\PlayerInfo.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="main.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SDK\NPC.hpp">
-      <Filter>Header Files\SDK</Filter>
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="Cheats\MaxWeapon.hpp">
       <Filter>Source Files\Cheats</Filter>
@@ -216,6 +216,9 @@
       <Filter>Header Files\pLib\pUi</Filter>
     </ClCompile>
     <ClCompile Include="pLib\pMemory\pProcess.cpp">
+      <Filter>Header Files\pLib\pMemory</Filter>
+    </ClCompile>
+    <ClCompile Include="pLib\pMemory\pClass.cpp">
       <Filter>Header Files\pLib\pMemory</Filter>
     </ClCompile>
   </ItemGroup>

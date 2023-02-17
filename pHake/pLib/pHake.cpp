@@ -28,7 +28,8 @@ void pHake::Start()
 
 	for (auto& i : this->cheats_loop_)
 		this->threads_.push_back(pThread([&]() { i->Execute(); }, i->thread_intervals_));
-	
+
+
 	menu->Loop(); // main loop
 }
 

@@ -50,7 +50,7 @@ bool Attach()
 	if (!process->AttachProcess("GTA5.exe"))
 		return false;
 
-	world = World(process);
+	ReadWriteFactory::process = process.get();
 	return true;
 }
 
@@ -79,13 +79,17 @@ bool ReadSignatures()
 
 bool Start()
 {
+	world = World();
+
 	std::shared_ptr<pHake> phake = std::make_shared<pHake>();
 	phake->Attach("Grand Theft Auto V", process);
 
 	thread = std::make_unique<pThread>([&]() {
 		world.UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
+
 	}, 1);
+
 	phake->Add(std::make_shared<MaxWeapon>(phake));
 	phake->Add(std::make_shared<NoWanted>(phake));
 	phake->Add(std::make_shared<GodMode>(phake));
