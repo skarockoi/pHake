@@ -1,5 +1,5 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "BoostVehicle.hpp"
 
@@ -11,7 +11,7 @@ static uint8_t curr_vehicle_mode = 0;
 
 static Vehicle vehicle_defaults;
 
-BoostVehicle::BoostVehicle(std::shared_ptr<pHake>phake) : Cheat(phake)
+BoostVehicle::BoostVehicle(std::shared_ptr<pHake>phake) : pCheat(phake)
 {
 	name_ = "BoostVehicle";
 }

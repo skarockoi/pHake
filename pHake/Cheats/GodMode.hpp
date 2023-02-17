@@ -1,12 +1,13 @@
 #ifndef _GODMODE_HPP_
 #define _GODMODE_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class GodMode : public CheatLoop
+class GodMode : public pCheatLoop
 {
 public:
 	GodMode(std::shared_ptr<pHake> phake);
+
 	void Execute();
 	void Restore();
 };

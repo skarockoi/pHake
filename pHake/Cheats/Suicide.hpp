@@ -1,9 +1,9 @@
 #ifndef _SUICIDE_HPP_
 #define _SUICIDE_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class Suicide : public Cheat
+class Suicide : public pCheat
 {
 public:
 	Suicide(std::shared_ptr<pHake> phake);

@@ -1,13 +1,13 @@
 #ifndef _VEHICLEHANDLING_HPP_
 #define _VEHICLEHANDLING_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 
-class VehicleHandling : public DataWrapper<0xF0 + 0x4>
+class VehicleHandling : public pClass<0xF0 + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	float acceleration()
 	{

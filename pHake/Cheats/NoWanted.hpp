@@ -1,9 +1,9 @@
 #ifndef _NOWANTED_HPP_
 #define _NOWANTED_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class NoWanted : public CheatLoop
+class NoWanted : public pCheatLoop
 {
 public:
 	NoWanted(std::shared_ptr<pHake> phake);

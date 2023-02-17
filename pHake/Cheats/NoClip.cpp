@@ -1,9 +1,9 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "NoClip.hpp"
 
-#include "../Memory/AssemblyByte.hpp"
+#include "../pLib/pMemory/pDetour.hpp"
 
 constexpr auto size_asm_update_position_original = 10;
 constexpr auto size_asm_update_speed_z_original = 8;
@@ -11,7 +11,7 @@ constexpr auto size_asm_update_speed_z_original = 8;
 std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
 std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
 
-NoClip::NoClip(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+NoClip::NoClip(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	this->phake->process->read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
 	this->phake->process->read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
@@ -42,7 +42,7 @@ void NoClip::Execute()
 	{
 		position_base = world.localplayer.position.base();
 
-		AssemblyByte patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
+		pDetour patched_code = std::vector<uint8_t>{ 0x48, 0xB9 };	// mov rcx
 		patched_code.add(world.localplayer.position.base(), 8);			// ,player.position.base()
 		patched_code.add({ 0x48, 0x39, 0xC1,							// cmp rcx, rax 
 						  0x74, 0x04,									// je GTA5.exe + 2D
@@ -56,7 +56,7 @@ void NoClip::Execute()
 
 	if (!restore)
 	{
-		AssemblyByte detour{};
+		pDetour detour{};
 		detour.addJump(pointers.asm_update_position + 1, phake->process->base_module_.base + 0x1A, 4); // jmp'ing to phake->process.base_module_.base + 0x1A because there is a code cave
 
 		phake->process->write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code

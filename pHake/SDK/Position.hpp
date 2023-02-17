@@ -1,14 +1,14 @@
 #ifndef _POSITION_HPP_
 #define _POSITION_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
-#include "../Memory/vec3.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/pMemory/vec3.hpp"
 
-class Position : public DataWrapper<0x58 + 0x4>
+class Position : public pClass<0x58 + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	vec3 xyz()
 	{

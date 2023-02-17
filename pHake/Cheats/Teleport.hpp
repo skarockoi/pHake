@@ -1,9 +1,9 @@
 #ifndef _TELEPORT_HPP_
 #define _TELEPORT_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class Teleport : public Cheat
+class Teleport : public pCheat
 {
 public:
 	Teleport(std::shared_ptr<pHake> phake);

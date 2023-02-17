@@ -1,13 +1,14 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "Teleport.hpp"
 
-#include "../UI/pHelper.hpp"
+#include "../pLib/pHelper.hpp"
+#include "../pLib/pMemory/vec3.hpp"
 
 
 
-Teleport::Teleport(std::shared_ptr<pHake> phake) : Cheat(phake)
+Teleport::Teleport(std::shared_ptr<pHake> phake) : pCheat(phake)
 {
 	name_ = "Tp to Waypoint";
 }

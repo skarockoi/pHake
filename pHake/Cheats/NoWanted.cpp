@@ -1,9 +1,9 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "NoWanted.hpp"
 
-NoWanted::NoWanted(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+NoWanted::NoWanted(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	name_ = "NoWanted";
 	thread_intervals_ = 10;

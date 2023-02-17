@@ -1,15 +1,15 @@
 #ifndef _VEHICLE_HPP_
 #define _VEHICLE_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 #include "Position.hpp"
 #include "VehicleHandling.hpp"
 
-class Vehicle : public DataWrapper<0xC5C + 0x8>
+class Vehicle : public pClass<0xC5C + 0x8>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

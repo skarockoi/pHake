@@ -1,14 +1,14 @@
 #ifndef _WEAPON_HPP_
 #define _WEAPON_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 #include "AmmoInfo.hpp"
 
-class Weapon : public DataWrapper<0x2F4 + 0x4>
+class Weapon : public pClass<0x2F4 + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

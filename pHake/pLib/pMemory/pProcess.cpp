@@ -1,6 +1,6 @@
-#include "Process.hpp"
+#include "pProcess.hpp"
 
-uint32_t Process::FindProcessIdByProcessName(const char* ProcessName)
+uint32_t pProcess::FindProcessIdByProcessName(const char* ProcessName)
 {
 	HANDLE hPID = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	PROCESSENTRY32 process_entry_ { };
@@ -22,7 +22,7 @@ uint32_t Process::FindProcessIdByProcessName(const char* ProcessName)
 	return pid;
 }
 
-uint32_t Process::FindProcessIdByWindowName(const char* WindowName)
+uint32_t pProcess::FindProcessIdByWindowName(const char* WindowName)
 {
 	DWORD process_id = 0;
 	HWND windowHandle = FindWindowW(nullptr, (LPCWSTR)WindowName);
@@ -31,7 +31,7 @@ uint32_t Process::FindProcessIdByWindowName(const char* WindowName)
 	return process_id;
 }
 
-bool Process::AttachProcess(const char* ProcessName)
+bool pProcess::AttachProcess(const char* ProcessName)
 {
 	this->pid_ = this->FindProcessIdByProcessName(ProcessName);
 
@@ -54,7 +54,7 @@ bool Process::AttachProcess(const char* ProcessName)
 	return false;
 }
 
-bool Process::AttachWindow(const char* WindowName)
+bool pProcess::AttachWindow(const char* WindowName)
 {
 	this->pid_ = this->FindProcessIdByWindowName(WindowName);
 
@@ -77,7 +77,7 @@ bool Process::AttachWindow(const char* WindowName)
 	return false;
 }
 
-ProcessModule Process::GetModule(const char* lModule)
+ProcessModule pProcess::GetModule(const char* lModule)
 {
 	HANDLE handle_module = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, pid_);
 	MODULEENTRY32  module_entry_{};
@@ -96,12 +96,12 @@ ProcessModule Process::GetModule(const char* lModule)
 	return { 0, 0 };
 }
 
-LPVOID Process::Allocate(size_t size_in_bytes)
+LPVOID pProcess::Allocate(size_t size_in_bytes)
 {
 	return VirtualAllocEx(this->handle_, NULL, size_in_bytes, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 }
 
-uintptr_t Process::FindSignature(std::vector<uint8_t> signature)
+uintptr_t pProcess::FindSignature(std::vector<uint8_t> signature)
 {
 	std::unique_ptr<uint8_t[]> data;
 	data = std::make_unique<uint8_t[]>(this->base_module_.size);
@@ -129,7 +129,7 @@ uintptr_t Process::FindSignature(std::vector<uint8_t> signature)
 	return 0x0;
 }
 
-uintptr_t Process::FindSignature(ProcessModule target_module, std::vector<uint8_t> signature)
+uintptr_t pProcess::FindSignature(ProcessModule target_module, std::vector<uint8_t> signature)
 {
 	std::unique_ptr<uint8_t[]> data;
 	data = std::make_unique<uint8_t[]>(0xFFFFFFF);
@@ -157,7 +157,7 @@ uintptr_t Process::FindSignature(ProcessModule target_module, std::vector<uint8_
 	return 0x0;
 }
 
-uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
+uintptr_t pProcess::FindCodeCave(uint32_t length_in_bytes)
 {
 	std::vector<uint8_t> cave_pattern = {};
 
@@ -168,7 +168,7 @@ uintptr_t Process::FindCodeCave(uint32_t length_in_bytes)
 	return FindSignature(cave_pattern);
 }
 
-void Process::Close()
+void pProcess::Close()
 {
 	CloseHandle(handle_);
 }

@@ -1,25 +1,23 @@
-#include "Globals.hpp"
-
 #include "pHake.hpp"
-#include "Cheat.hpp"
+#include "pCheat.hpp"
 #include <iostream>
 
 pHake::pHake() {  }
 
-void pHake::Attach(LPCSTR Name, std::shared_ptr<Process> process)
+void pHake::Attach(LPCSTR Name, std::shared_ptr<pProcess> process)
 {
 	this->process = process;
 	menu = std::make_unique<pOverlay>(); // initialize game UI
 	menu->Create(Name);  // overlay gta window
 }
 
-void pHake::Add(std::shared_ptr<CheatLoop> cheat)
+void pHake::Add(std::shared_ptr<pCheatLoop> cheat)
 {
 	cheats_loop_.push_back(cheat);
 	menu->list.AddBool(cheat->name_, *cheat->active);
 }
 
-void pHake::Add(std::shared_ptr<Cheat> cheat)
+void pHake::Add(std::shared_ptr<pCheat> cheat)
 {
 	cheats_.push_back(cheat);
 	menu->list.AddFunction(cheat->name_, [=]() { cheat->Execute(); });

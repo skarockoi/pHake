@@ -11,6 +11,7 @@
 #include <memory>
 #include <Windows.h>
 #include <Dwmapi.h>
+
 #pragma comment (lib, "Dwmapi.lib")
 
 struct GameInfo

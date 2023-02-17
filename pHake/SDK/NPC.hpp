@@ -1,18 +1,20 @@
 #ifndef _NPC_HPP_
 #define _NPC_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
-#include "../Memory/vec3.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/pMemory/vec3.hpp"
 #include "Position.hpp"
 #include "Vehicle.hpp"
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class NPC : public DataWrapper<0x150C + 0x4>
+
+
+class NPC : public pClass<0x150C + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uint64_t baseAddress)
 	{

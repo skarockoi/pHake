@@ -1,9 +1,9 @@
 #ifndef _NOCLIP_HPP_
 #define _NOCLIP_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class NoClip : public CheatLoop
+class NoClip : public pCheatLoop
 {
 public:
 	NoClip(std::shared_ptr<pHake> phake);

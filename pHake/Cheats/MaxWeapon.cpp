@@ -1,11 +1,11 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "MaxWeapon.hpp"
 
 #include "../SDK/Weapon.hpp"
 
-MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;

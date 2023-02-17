@@ -1,18 +1,18 @@
 #ifndef _LOCALPLAYER_HPP_
 #define _LOCALPLAYER_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
-#include "../Memory/vec3.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/pMemory/vec3.hpp"
 #include "Position.hpp"
 #include "Vehicle.hpp"
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-class Player : public DataWrapper<0x20B8 + 0x4>
+class Player : public pClass<0x20B8 + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uint64_t baseAddress)
 	{

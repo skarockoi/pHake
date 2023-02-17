@@ -1,5 +1,5 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "BoostPlayer.hpp"
 
@@ -10,7 +10,7 @@ static const std::array<std::string, 3> player_modes = { "default", "fast", "max
 static uint8_t curr_player_mode = 0;
 
 
-BoostPlayer::BoostPlayer(std::shared_ptr<pHake> phake) : Cheat(phake)
+BoostPlayer::BoostPlayer(std::shared_ptr<pHake> phake) : pCheat(phake)
 {
 	name_ = "BoostPlayer";
 }

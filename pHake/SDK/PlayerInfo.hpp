@@ -1,13 +1,13 @@
 #ifndef _PLAYERINFO_HPP_
 #define _PLAYERINFO_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 
-class PlayerInfo : public DataWrapper<0xD90 + 0x4>
+class PlayerInfo : public pClass<0xD90 + 0x4>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	float swim_mp()
 	{

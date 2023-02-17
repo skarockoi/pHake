@@ -1,14 +1,14 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "Trigger.hpp"
 
 #include "../SDK/NPC.hpp"
-#include "../UI/pHelper.hpp"
+#include "../pLib/pHelper.hpp"
 
 
 
-Trigger::Trigger(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+Trigger::Trigger(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	name_ = "Trigger";
 	thread_intervals_ = 1;

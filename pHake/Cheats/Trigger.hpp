@@ -1,9 +1,9 @@
 #ifndef _TRIGGER_HPP_
 #define _TRIGGER_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class Trigger : public CheatLoop
+class Trigger : public pCheatLoop
 {
 public:
 	Trigger(std::shared_ptr<pHake> phake);

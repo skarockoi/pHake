@@ -1,9 +1,9 @@
 #ifndef _BOOSTPLAYER_HPP_
 #define _BOOSTPLAYER_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 
-class BoostPlayer : public Cheat
+class BoostPlayer : public pCheat
 {
 public:
 	BoostPlayer(std::shared_ptr<pHake> phake);

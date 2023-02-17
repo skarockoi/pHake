@@ -1,9 +1,9 @@
 #ifndef _GLOBALS_HPP_
 #define _GLOBALS_HPP_
 
-#include "UI/pOverlay.hpp"
-#include "UI/pINI.hpp"
-#include "Memory/Process.hpp"
+#include "pLib/pUi/pOverlay.hpp"
+#include "pLib/pINI.hpp"
+#include "pLib/pMemory/pProcess.hpp"
 #include "SDK/World.hpp"
 
 extern World world; // primarily used to access localplayer object

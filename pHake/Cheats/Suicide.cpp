@@ -1,11 +1,11 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "Suicide.hpp"
 
 
 
-Suicide::Suicide(std::shared_ptr<pHake> phake) : Cheat(phake)
+Suicide::Suicide(std::shared_ptr<pHake> phake) : pCheat(phake)
 {
 	name_ = "Suicide";
 }

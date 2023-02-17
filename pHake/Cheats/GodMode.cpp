@@ -1,9 +1,9 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "GodMode.hpp"
 
-GodMode::GodMode(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+GodMode::GodMode(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	name_ = "GodMode";
 	thread_intervals_ = 100;

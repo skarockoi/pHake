@@ -14,7 +14,7 @@ struct ProcessModule
 	uintptr_t base, size;
 };
 
-class Process
+class pProcess
 {
 public:
 	DWORD		  pid_; // process id

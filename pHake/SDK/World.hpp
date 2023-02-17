@@ -1,16 +1,16 @@
 #ifndef _WORLD_HPP_
 #define _WORLD_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 #include "Player.hpp"
 
 //https://github.com/Yimura/GTAV-Classes
 
-class World : public DataWrapper<0x8 + 0x8>
+class World : public pClass<0x8 + 0x8>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

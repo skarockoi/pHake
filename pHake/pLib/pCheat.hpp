@@ -2,34 +2,33 @@
 #define CHEAT_HPP
 
 #include <memory>
+#include <string>
 
 class pHake;
 
-class Cheat
+class pCheat
 {
 public:
 	std::shared_ptr<pHake> phake;
-
 	std::string name_;
-
 public:
-	Cheat(std::shared_ptr<pHake> phake);
+	pCheat(std::shared_ptr<pHake> phake);
 	virtual void Execute();
 	virtual void Restore();
 };
 
-class CheatLoop
+class pCheatLoop
 {
 public:
 	std::shared_ptr<pHake> phake;
-
 	std::string name_;
 	bool* active;
 	uint64_t    thread_intervals_;
 
 public:
-	CheatLoop(std::shared_ptr<pHake> phake);
+	pCheatLoop(std::shared_ptr<pHake> phake);
 	virtual void Execute();
 	virtual void Restore();
+
 };
 #endif

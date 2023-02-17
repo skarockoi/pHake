@@ -1,14 +1,14 @@
 #ifndef _WEAPONMANAGER_HPP_
 #define _WEAPONMANAGER_HPP_
 
-#include "../Memory/Process.hpp"
-#include "../Memory/Datawrapper.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pMemory/pClass.hpp"
 #include "Weapon.hpp"
 
-class WeaponManager : public DataWrapper<0x20 + 0x8>
+class WeaponManager : public pClass<0x20 + 0x8>
 {
 public:
-	using DataWrapper::DataWrapper;
+	using pClass::pClass;
 
 	void UpdateAll(uintptr_t baseAddress)
 	{

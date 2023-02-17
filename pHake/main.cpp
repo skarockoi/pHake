@@ -1,11 +1,11 @@
 #include "main.hpp"
 
-#include "UI/pThread.hpp"
-#include "UI/pHelper.hpp"
+#include "pLib/pThread.hpp"
+#include "pLib/pHelper.hpp"
 
 #include <array>
 #include <future>
-#include "pHake.hpp"
+#include "pLib/pHake.hpp"
 #include "Cheats/GodMode.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoWanted.hpp"
@@ -17,7 +17,7 @@
 #include "Cheats/Teleport.hpp"
 #include "Cheats/Suicide.hpp"
 
-std::shared_ptr<Process> process;
+std::shared_ptr<pProcess> process;
 std::unique_ptr<pThread> thread;
 
 World      world; // primarily used to access localplayer object
@@ -46,11 +46,11 @@ bool AlreadyRunning()
 
 bool Attach()
 {
-	process = std::make_shared<Process>();
+	process = std::make_shared<pProcess>();
 	if (!process->AttachProcess("GTA5.exe"))
 		return false;
 
-	ReadWriteFactory::process = process.get();
+	world = World(process);
 	return true;
 }
 
@@ -86,7 +86,6 @@ bool Start()
 		world.UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 	}, 1);
-
 	phake->Add(std::make_shared<MaxWeapon>(phake));
 	phake->Add(std::make_shared<NoWanted>(phake));
 	phake->Add(std::make_shared<GodMode>(phake));

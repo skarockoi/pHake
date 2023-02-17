@@ -1,16 +1,17 @@
 #ifndef _MAXWEAPON_HPP_
 #define _MAXWEAPON_HPP_
 
-#include "../Cheat.hpp"
+#include "../pLib/pCheat.hpp"
 #include "../SDK/Weapon.hpp"
 
 #include <vector>
 #include <stdint.h>
 
-class MaxWeapon : public CheatLoop
+class MaxWeapon : public pCheatLoop
 {
 public:
 	MaxWeapon(std::shared_ptr<pHake> phake);
+
 	void Execute();
 	void Restore();
 

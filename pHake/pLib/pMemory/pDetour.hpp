@@ -3,19 +3,19 @@
 
 #include <vector>
 
-class AssemblyByte // class to easily manage external detours with things like simplyfing manual JMP's or "uintptr_t to byte conversions"
+class pDetour // class to easily manage external detours with things like simplyfing manual JMP's or "uintptr_t to byte conversions"
 {
 private:
 	std::vector<uint8_t> base_{ }; // assembly byte will be hold by an std::vector<uint8_t> mainly because of resizing
 
 public:
-	AssemblyByte() {}
+	pDetour() {}
 
-	AssemblyByte(std::vector<uint8_t> ext) {
+	pDetour(std::vector<uint8_t> ext) {
 		this->add(ext);
 	}
 
-	void operator = (const AssemblyByte& ext) {
+	void operator = (const pDetour& ext) {
 		this->base_ = ext.base_;
 	}
 

@@ -1,11 +1,11 @@
 #include "../globals.hpp"
-#include "../pHake.hpp"
+#include "../pLib/pHake.hpp"
 
 #include "RPLoop.hpp"
 
 
 
-RPLoop::RPLoop(std::shared_ptr<pHake> phake) : CheatLoop(phake)
+RPLoop::RPLoop(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 {
 	name_ = "RPLoop";
 	thread_intervals_ = 1;
