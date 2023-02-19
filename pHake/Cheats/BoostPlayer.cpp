@@ -1,16 +1,15 @@
 #include "../globals.hpp"
-#include "../pLib/pHake.hpp"
 
 #include "BoostPlayer.hpp"
 
 #include <array>
 
+using namespace globals;
 
 static const std::array<std::string, 3> player_modes = { "default", "fast", "max" };
 static uint8_t curr_player_mode = 0;
 
-
-BoostPlayer::BoostPlayer(std::shared_ptr<pHake> phake) : pCheat(phake)
+BoostPlayer::BoostPlayer() : pCheat()
 {
 	name_ = "BoostPlayer";
 }
@@ -47,7 +46,7 @@ void BoostPlayer::Execute()
 		break;
 	}
 
-	phake->menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
+	menu->notification.Add("Player set to " + player_modes[curr_player_mode]);
 }
 
 void BoostPlayer::Restore()

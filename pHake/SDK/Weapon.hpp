@@ -88,7 +88,6 @@ public:
 		this->write(0x110, value);
 	}
 
-
 	uint32_t bullets_in_batch()
 	{
 		return this->read<uint32_t>(0x120);

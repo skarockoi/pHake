@@ -172,7 +172,7 @@
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="main.hpp" />
     <ClInclude Include="pLib\pCheat.hpp" />
-    <ClInclude Include="pLib\pHake.hpp" />
+    <ClInclude Include="pLib\pMenu.hpp" />
     <ClInclude Include="pLib\pHelper.hpp" />
     <ClInclude Include="pLib\pINI.hpp" />
     <ClInclude Include="pLib\pMemory\pDetour.hpp" />
@@ -215,7 +215,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <ClCompile Include="pLib\pCheat.cpp" />
-    <ClCompile Include="pLib\pHake.cpp" />
+    <ClCompile Include="pLib\pMenu.cpp" />
     <ClCompile Include="pLib\pINI.cpp" />
     <ClCompile Include="pLib\pMemory\pClass.cpp" />
     <ClCompile Include="pLib\pMemory\pProcess.cpp" />

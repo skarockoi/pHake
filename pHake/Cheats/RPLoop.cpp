@@ -1,11 +1,10 @@
 #include "../globals.hpp"
-#include "../pLib/pHake.hpp"
 
 #include "RPLoop.hpp"
 
+using namespace globals;
 
-
-RPLoop::RPLoop(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
+RPLoop::RPLoop() : pCheatLoop()
 {
 	name_ = "RPLoop";
 	thread_intervals_ = 1;
@@ -14,7 +13,7 @@ RPLoop::RPLoop(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
 
 void RPLoop::Execute()
 {
-	if (!settings.rploop)
+	if (!*active)
 		return;
 
 	world.localplayer.playerinfo.wanted_level(5);

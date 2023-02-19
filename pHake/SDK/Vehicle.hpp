@@ -20,7 +20,6 @@ public:
 
 	Position position;
 
-
 	bool god()
 	{
 		if (this->read<uint8_t>(0x189) == 1)

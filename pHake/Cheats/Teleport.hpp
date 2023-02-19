@@ -6,7 +6,7 @@
 class Teleport : public pCheat
 {
 public:
-	Teleport(std::shared_ptr<pHake> phake);
+	Teleport();
 
 	void Execute();
 	void Restore();

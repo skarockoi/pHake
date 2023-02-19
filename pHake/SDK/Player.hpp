@@ -23,7 +23,6 @@ public:
 		weapon_manager.UpdateAll(this->read<uintptr_t>(0x10B8));
 	}
 
-
 	Position position;
 
 	bool god()
@@ -103,7 +102,6 @@ public:
 	{
 		this->write<float>(0x308, value);
 	}
-
 
 	Vehicle vehicle;
 

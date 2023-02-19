@@ -1,11 +1,13 @@
 #include "../globals.hpp"
-#include "../pLib/pHake.hpp"
+#include "../pLib/pCheat.hpp"
 
 #include "MaxWeapon.hpp"
 
 #include "../SDK/Weapon.hpp"
 
-MaxWeapon::MaxWeapon(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
+using namespace globals;
+
+MaxWeapon::MaxWeapon() : pCheatLoop()
 {
 	name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;
@@ -16,7 +18,7 @@ void MaxWeapon::Execute()
 {
 	CheckCurrentWeaponAndSave();
 
-	if (settings.maxweapon)
+	if (*active)
 	{
 		if (!IsWeaponUpgraded())
 			UpgradeWeapon();
@@ -30,10 +32,8 @@ void MaxWeapon::Execute()
 
 void MaxWeapon::Restore()
 {
-	
 	if (*active)
 		RestoreWeapons();
-	
 }
 
 void MaxWeapon::RestoreWeapons()

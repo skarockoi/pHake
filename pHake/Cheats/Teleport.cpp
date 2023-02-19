@@ -1,21 +1,20 @@
 #include "../globals.hpp"
-#include "../pLib/pHake.hpp"
 
 #include "Teleport.hpp"
 
 #include "../pLib/pHelper.hpp"
 #include "../pLib/pMemory/vec3.hpp"
 
+using namespace globals;
 
-
-Teleport::Teleport(std::shared_ptr<pHake> phake) : pCheat(phake)
+Teleport::Teleport() : pCheat()
 {
 	name_ = "Tp to Waypoint";
 }
 
 void Teleport::Execute()
 {
-	vec3 waypoint = phake->process->read<vec3>(pointers.waypoint);
+	vec3 waypoint = process->read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		phake->menu->notification.Add("No Waypoint set");

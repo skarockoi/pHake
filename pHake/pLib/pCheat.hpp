@@ -4,15 +4,12 @@
 #include <memory>
 #include <string>
 
-class pHake;
-
 class pCheat
 {
 public:
-	std::shared_ptr<pHake> phake;
 	std::string name_;
 public:
-	pCheat(std::shared_ptr<pHake> phake);
+	pCheat();
 	virtual void Execute();
 	virtual void Restore();
 };
@@ -20,13 +17,12 @@ public:
 class pCheatLoop
 {
 public:
-	std::shared_ptr<pHake> phake;
 	std::string name_;
-	bool* active;
+	bool*       active;
 	uint64_t    thread_intervals_;
 
 public:
-	pCheatLoop(std::shared_ptr<pHake> phake);
+	pCheatLoop();
 	virtual void Execute();
 	virtual void Restore();
 

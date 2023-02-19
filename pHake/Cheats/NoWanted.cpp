@@ -1,9 +1,11 @@
 #include "../globals.hpp"
-#include "../pLib/pHake.hpp"
+#include "../pLib/pCheat.hpp"
 
 #include "NoWanted.hpp"
 
-NoWanted::NoWanted(std::shared_ptr<pHake> phake) : pCheatLoop(phake)
+using namespace globals;
+
+NoWanted::NoWanted() : pCheatLoop()
 {
 	name_ = "NoWanted";
 	thread_intervals_ = 10;
@@ -17,7 +19,6 @@ void NoWanted::Execute() {
 
 void NoWanted::Restore()
 {
-
 	if (*active)
 		world.localplayer.playerinfo.wanted_level(0);
 }

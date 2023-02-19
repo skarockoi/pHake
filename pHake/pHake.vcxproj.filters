@@ -99,7 +99,7 @@
     <ClInclude Include="pLib\pCheat.hpp">
       <Filter>Header Files\pLib</Filter>
     </ClInclude>
-    <ClInclude Include="pLib\pHake.hpp">
+    <ClInclude Include="pLib\pMenu.hpp">
       <Filter>Header Files\pLib</Filter>
     </ClInclude>
     <ClInclude Include="pLib\pHelper.hpp">
@@ -185,7 +185,7 @@
     <ClCompile Include="pLib\pCheat.cpp">
       <Filter>Header Files\pLib</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pHake.cpp">
+    <ClCompile Include="pLib\pMenu.cpp">
       <Filter>Header Files\pLib</Filter>
     </ClCompile>
     <ClCompile Include="pLib\pINI.cpp">

@@ -9,20 +9,18 @@
 #include <vector>
 
 #include "pThread.hpp"
-#include "pMemory/pProcess.hpp"
 
 class pCheat;
 class pCheatLoop;
 
-class pHake
+class pMenu
 {
 public:
-	std::shared_ptr<pProcess> process;
-	std::unique_ptr<pOverlay> menu;
+	std::unique_ptr<pOverlay> ui;
 
 public:
-	pHake();
-	void Attach(LPCSTR window_name, std::shared_ptr<pProcess> process_name);
+	pMenu();
+	void Attach(LPCSTR window_name);
 	void Add(std::shared_ptr<pCheat> cheat);
 	void Add(std::shared_ptr<pCheatLoop> cheat);
 

@@ -5,7 +5,7 @@
 
 #include <array>
 #include <future>
-#include "pLib/pHake.hpp"
+#include "pLib/pMenu.hpp"
 #include "Cheats/GodMode.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoWanted.hpp"
@@ -17,13 +17,11 @@
 #include "Cheats/Teleport.hpp"
 #include "Cheats/Suicide.hpp"
 
+// globals.hpp
+globals::Settings settings;
+globals::Pointers pointers;
 std::shared_ptr<pProcess> process;
-std::unique_ptr<pThread> thread;
-
-World      world; // primarily used to access localplayer object
-
-Settings settings;
-Pointers pointers;
+World world;
 
 
 bool AlreadyRunning()
@@ -79,29 +77,30 @@ bool ReadSignatures()
 
 bool Start()
 {
-	world = World();
+	std::shared_ptr<pMenu> menu = std::make_shared<pMenu>();
+	menu->Attach("Grand Theft Auto V");
 
-	std::shared_ptr<pHake> phake = std::make_shared<pHake>();
-	phake->Attach("Grand Theft Auto V", process);
-
+	std::unique_ptr<pThread> thread;
 	thread = std::make_unique<pThread>([&]() {
 		world.UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 
 	}, 1);
 
-	phake->Add(std::make_shared<MaxWeapon>(phake));
-	phake->Add(std::make_shared<NoWanted>(phake));
-	phake->Add(std::make_shared<GodMode>(phake));
-	phake->Add(std::make_shared<Trigger>(phake));
-	phake->Add(std::make_shared<RPLoop>(phake));
-	phake->Add(std::make_shared<NoClip>(phake));
-	phake->menu->list.AddFloat("Km/h", settings.kmh, 0.f, 0.f);
-	phake->Add(std::make_shared<Teleport>(phake));
-	phake->Add(std::make_shared<BoostVehicle>(phake));
-	phake->Add(std::make_shared<BoostPlayer>(phake));
-	phake->Add(std::make_shared<Suicide>(phake));
-	phake->Start();
+	menu->Add(std::make_shared<MaxWeapon>());
+	menu->Add(std::make_shared<NoWanted>());
+	menu->Add(std::make_shared<GodMode>());
+	menu->Add(std::make_shared<Trigger>());
+	menu->Add(std::make_shared<RPLoop>());
+	menu->Add(std::make_shared<NoClip>());
+	menu->ui->list.AddFloat("Km/h", settings.kmh, 0.f, 0.f);
+	menu->Add(std::make_shared<Teleport>());
+	menu->Add(std::make_shared<BoostVehicle>());
+	menu->Add(std::make_shared<BoostPlayer>());
+	menu->Add(std::make_shared<Suicide>());
+	menu->Start();
+
+	process->Close();
 
 	TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
 

@@ -6,7 +6,7 @@
 class Trigger : public pCheatLoop
 {
 public:
-	Trigger(std::shared_ptr<pHake> phake);
+	Trigger();
 
 	void Execute();
 	void Restore();

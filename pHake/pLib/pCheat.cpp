@@ -2,10 +2,10 @@
 #include "pCheat.hpp"
 #include <iostream>
 
-pCheat::pCheat(std::shared_ptr<pHake> phake) : name_("Default") { this->phake = phake; }
+pCheat::pCheat() : name_("Default") {}
 void pCheat::Execute() {}
 void pCheat::Restore() {}
 
-pCheatLoop::pCheatLoop(std::shared_ptr<pHake> phake) : name_("Default"), thread_intervals_(0), active(0) { this->phake = phake; }
+pCheatLoop::pCheatLoop() : name_("Default"), thread_intervals_(0), active(0) {}
 void pCheatLoop::Execute() {}
 void pCheatLoop::Restore() {}

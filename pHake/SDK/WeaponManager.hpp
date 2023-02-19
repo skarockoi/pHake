@@ -15,6 +15,7 @@ public:
 		this->Update(baseAddress);
 		current_weapon.UpdateAll(this->read<uintptr_t>(0x20));
 	}
+
 	Weapon current_weapon;
 };
 #endif

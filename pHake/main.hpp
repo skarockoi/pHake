@@ -1,4 +1,4 @@
-#include "Globals.hpp" // for MessageBox()
+#include "globals.hpp" // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
 bool Attach(); // attaches to the game

@@ -9,8 +9,6 @@
 #include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
 
-
-
 class NPC : public pClass<0x150C + 0x4>
 {
 public:
@@ -29,7 +27,6 @@ public:
 			return false;
 		return true;
 	}
-
 
 	Position position;
 
