@@ -17,11 +17,10 @@
 #include "Cheats/Teleport.hpp"
 #include "Cheats/Suicide.hpp"
 
+#include "Settings.hpp"
 // globals.hpp
-globals::Settings settings;
-globals::Pointers pointers;
 std::shared_ptr<pProcess> process;
-World world;
+std::shared_ptr<World> world;
 
 
 bool AlreadyRunning()
@@ -51,6 +50,20 @@ bool Attach()
 	ReadWriteFactory::process = process.get();
 	return true;
 }
+
+struct Pointers // signatures
+{
+	uintptr_t world;
+	uintptr_t waypoint;
+	uintptr_t camera_pos;
+	uintptr_t crosshair_value;
+	uintptr_t entity_aiming_at;
+	uintptr_t is_player_aiming;
+	uintptr_t asm_update_position;
+	uintptr_t asm_update_speed_z;
+	uintptr_t kmh;
+
+}pointers;
 
 bool ReadSignatures()
 {
@@ -82,12 +95,12 @@ bool Start()
 
 	std::unique_ptr<pThread> thread;
 	thread = std::make_unique<pThread>([&]() {
-		world.UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
+		world->UpdateAll(process->read<uintptr_t>(pointers.world)); // updates world info in loop
 		settings.kmh = 3.6f * process->read<float>(pointers.kmh); // meters per second * 3.6 = km/h	
 
 	}, 1);
 
-	menu->Add(std::make_shared<MaxWeapon>());
+	menu->Add(std::make_shared<MaxWeapon>(menu->ui, world, settings));
 	menu->Add(std::make_shared<NoWanted>());
 	menu->Add(std::make_shared<GodMode>());
 	menu->Add(std::make_shared<Trigger>());

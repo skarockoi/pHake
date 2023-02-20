@@ -1,17 +1,21 @@
-#include "../globals.hpp"
 #include "../pLib/pCheat.hpp"
-
 #include "MaxWeapon.hpp"
 
+#include "../pLib/pUi/pOverlay.hpp"
+
+#include "../SDK/World.hpp"
 #include "../SDK/Weapon.hpp"
 
-using namespace globals;
+#include "../Settings.hpp"
 
-MaxWeapon::MaxWeapon() : pCheatLoop()
+MaxWeapon::MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
 {
-	name_ = "MaxWeapon";
+	this->ui = ui;
+	this->world = world;
+
+	this->name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;
-	active = &settings.maxweapon;
+	this->active = &settings.maxweapon;
 }
 
 void MaxWeapon::Execute()
@@ -54,32 +58,32 @@ void MaxWeapon::RestoreWeapons()
 
 void MaxWeapon::CheckCurrentWeaponAndSave()
 {
-	if (std::find(weapon_addresses.begin(), weapon_addresses.end(), world.localplayer.weapon_manager.current_weapon.base()) != weapon_addresses.end()) // check if current weapons exists in player_weapon_addresses
+	if (std::find(weapon_addresses.begin(), weapon_addresses.end(), world->localplayer.weapon_manager.current_weapon.base()) != weapon_addresses.end()) // check if current weapons exists in player_weapon_addresses
 	{
 		// already exists
 	}
 	else // save current weapon stats in player_weapon_default to restore after MaxWeapon is turned off
 	{
-		weapon_addresses.push_back(world.localplayer.weapon_manager.current_weapon.base());
-		weapon_defaults.push_back(world.localplayer.weapon_manager.current_weapon);
+		weapon_addresses.push_back(world->localplayer.weapon_manager.current_weapon.base());
+		weapon_defaults.push_back(world->localplayer.weapon_manager.current_weapon);
 	}
 }
 
 bool MaxWeapon::IsWeaponUpgraded()
 {
-	if (world.localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
+	if (world->localplayer.weapon_manager.current_weapon.bullet_damage() == 99999.f)
 		return true;
 	return false;
 }
 
 void MaxWeapon::UpgradeWeapon()
 {
-	world.localplayer.weapon_manager.current_weapon.type(5);
-	world.localplayer.weapon_manager.current_weapon.explosion_type(25);
-	world.localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
-	world.localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
-	world.localplayer.weapon_manager.current_weapon.recoil(0.f);
-	world.localplayer.weapon_manager.current_weapon.batch_spread(0.f);
-	world.localplayer.weapon_manager.current_weapon.range(99999.f);
-	world.localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
+	world->localplayer.weapon_manager.current_weapon.type(5);
+	world->localplayer.weapon_manager.current_weapon.explosion_type(25);
+	world->localplayer.weapon_manager.current_weapon.bullet_damage(99999.f);
+	world->localplayer.weapon_manager.current_weapon.reload_mp(99999.f);
+	world->localplayer.weapon_manager.current_weapon.recoil(0.f);
+	world->localplayer.weapon_manager.current_weapon.batch_spread(0.f);
+	world->localplayer.weapon_manager.current_weapon.range(99999.f);
+	world->localplayer.weapon_manager.current_weapon.ammoinfo.ammo(999999);
 }

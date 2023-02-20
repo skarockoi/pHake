@@ -10,10 +10,14 @@
 class MaxWeapon : public pCheatLoop
 {
 public:
-	MaxWeapon(std::shared_ptr<pHake> phake);
+	MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings);
 
 	void Execute();
 	void Restore();
+
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
 
 private:
 	std::vector<uintptr_t> weapon_addresses;
@@ -24,6 +28,5 @@ private:
 	bool IsWeaponUpgraded();
 	void UpgradeWeapon();
 	void RestoreWeapons();
-
 };
 #endif

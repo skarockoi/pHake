@@ -147,6 +147,9 @@
     <ClInclude Include="pLib\pMemory\vec3.hpp">
       <Filter>Header Files\pLib\pMemory</Filter>
     </ClInclude>
+    <ClInclude Include="Settings.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
