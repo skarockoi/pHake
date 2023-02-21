@@ -6,9 +6,16 @@
 class Suicide : public pCheat
 {
 public:
-	Suicide();
+	Suicide(
+		std::shared_ptr<pOverlay> ui,
+		std::shared_ptr<World> world);
 
+public:
 	void Execute();
 	void Restore();
+
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
 };
 #endif

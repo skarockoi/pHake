@@ -1,18 +1,18 @@
-#include "../globals.hpp"
+#include "../pLib/pUi/pOverlay.hpp"
+#include "../SDK/World.hpp"
 
 #include "Suicide.hpp"
 
-using namespace globals;
 
-Suicide::Suicide() : pCheat()
+Suicide::Suicide(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world)
 {
 	name_ = "Suicide";
 }
 
 void Suicide::Execute()
 {
-	world.localplayer.health(0.f);
-	menu->notification.Add("Player health set to 0");
+	world->localplayer.health(0.f);
+	ui->notification.Add("Player health set to 0");
 }
 
 void Suicide::Restore()

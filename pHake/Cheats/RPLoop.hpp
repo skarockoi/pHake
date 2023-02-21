@@ -6,8 +6,15 @@
 class RPLoop : public pCheatLoop
 {
 public:
-	RPLoop();
+	RPLoop(
+		std::shared_ptr<pOverlay> ui,
+		std::shared_ptr<World> world,
+		Settings& settings);
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
 
+public:
 	void Execute();
 	void Restore();
 };

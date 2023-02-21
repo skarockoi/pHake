@@ -1,10 +1,10 @@
-#include "../globals.hpp"
+#include "../pLib/pUi/pOverlay.hpp"
+#include "../SDK/World.hpp"
+#include "../Settings.hpp"
 
 #include "RPLoop.hpp"
 
-using namespace globals;
-
-RPLoop::RPLoop() : pCheatLoop()
+RPLoop::RPLoop(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
 {
 	name_ = "RPLoop";
 	thread_intervals_ = 1;
@@ -16,8 +16,8 @@ void RPLoop::Execute()
 	if (!*active)
 		return;
 
-	world.localplayer.playerinfo.wanted_level(5);
-	world.localplayer.playerinfo.wanted_level(0);
+	world->localplayer.playerinfo.wanted_level(5);
+	world->localplayer.playerinfo.wanted_level(0);
 }
 
 void RPLoop::Restore()

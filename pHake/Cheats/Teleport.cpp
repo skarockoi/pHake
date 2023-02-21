@@ -1,14 +1,15 @@
-#include "../globals.hpp"
+#include "../pLib/pUi/pOverlay.hpp"
+#include "../pLib/pHelper.hpp"
+#include "../pLib/pMemory/vec3.hpp"
+#include "../SDK/World.hpp"
+#include "../Settings.hpp"
 
 #include "Teleport.hpp"
 
-#include "../pLib/pHelper.hpp"
-#include "../pLib/pMemory/vec3.hpp"
 
-using namespace globals;
-
-Teleport::Teleport() : pCheat()
+Teleport::Teleport(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, Pointers& pointers)
 {
+	this->pointers = pointers;
 	name_ = "Tp to Waypoint";
 }
 
@@ -17,20 +18,20 @@ void Teleport::Execute()
 	vec3 waypoint = process->read<vec3>(pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
-		phake->menu->notification.Add("No Waypoint set");
+		ui->notification.Add("No Waypoint set");
 		return;
 	}
 
-	if (world.localplayer.in_vehicle())
+	if (world->localplayer.in_vehicle())
 	{
 		if (IsVehicleMoving())
 		{
-			phake->menu->notification.Add("Don't move");
+			ui->notification.Add("Don't move");
 			return;
 		}
 
 		waypoint.z = -210.f;
-		world.localplayer.vehicle.position.xyz(waypoint);
+		world->localplayer.vehicle.position.xyz(waypoint);
 		Move();
 
 		goto success;
@@ -39,7 +40,7 @@ void Teleport::Execute()
 	if (settings.noclip)
 	{
 		waypoint.z = 300.f;
-		world.localplayer.position.xyz(waypoint);
+		world->localplayer.position.xyz(waypoint);
 		Move();
 
 		goto success;
@@ -47,18 +48,18 @@ void Teleport::Execute()
 
 	if (IsPlayerMoving())
 	{
-		phake->menu->notification.Add("Don't move");
+		ui->notification.Add("Don't move");
 		return;
 	}
 
 	waypoint.z = -210.f;
-	world.localplayer.position.xyz(waypoint);
+	world->localplayer.position.xyz(waypoint);
 	Move();
 
 	goto success;
 
 success:
-	phake->menu->notification.Add("Teleported to Waypoint");
+	ui->notification.Add("Teleported to Waypoint");
 	return;
 }
 
@@ -68,14 +69,14 @@ void Teleport::Restore()
 
 bool Teleport::IsPlayerMoving()
 {
-	if (world.localplayer.speed_xyz().len() > 0.1)
+	if (world->localplayer.speed_xyz().len() > 0.1)
 		return true;
 	return false;
 }
 
 bool Teleport::IsVehicleMoving()
 {
-	if (world.localplayer.vehicle.speed_xyz().len() > 0.1)
+	if (world->localplayer.vehicle.speed_xyz().len() > 0.1)
 		return true;
 	return false;
 }

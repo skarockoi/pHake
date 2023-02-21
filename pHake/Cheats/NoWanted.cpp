@@ -1,11 +1,10 @@
-#include "../globals.hpp"
-#include "../pLib/pCheat.hpp"
+#include "../pLib/pUi/pOverlay.hpp"
+#include "../SDK/World.hpp"
+#include "../Settings.hpp"
 
 #include "NoWanted.hpp"
 
-using namespace globals;
-
-NoWanted::NoWanted() : pCheatLoop()
+NoWanted::NoWanted(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
 {
 	name_ = "NoWanted";
 	thread_intervals_ = 10;
@@ -13,12 +12,12 @@ NoWanted::NoWanted() : pCheatLoop()
 }
 
 void NoWanted::Execute() {
-	if (world.localplayer.playerinfo.wanted_level() != 0)
-		world.localplayer.playerinfo.wanted_level(0);
+	if (world->localplayer.playerinfo.wanted_level() != 0)
+		world->localplayer.playerinfo.wanted_level(0);
 }
 
 void NoWanted::Restore()
 {
 	if (*active)
-		world.localplayer.playerinfo.wanted_level(0);
+		world->localplayer.playerinfo.wanted_level(0);
 }

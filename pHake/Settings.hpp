@@ -27,4 +27,16 @@ struct Settings // stores important, globally accessed variables
 
 }settings;
 
+struct Pointers // signatures
+{
+	uintptr_t world;
+	uintptr_t waypoint;
+	uintptr_t camera_pos;
+	uintptr_t crosshair_value;
+	uintptr_t entity_aiming_at;
+	uintptr_t is_player_aiming;
+	uintptr_t asm_update_position;
+	uintptr_t asm_update_speed_z;
+	uintptr_t kmh;
+}pointers;
 #endif

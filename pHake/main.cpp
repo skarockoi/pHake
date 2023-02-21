@@ -51,20 +51,6 @@ bool Attach()
 	return true;
 }
 
-struct Pointers // signatures
-{
-	uintptr_t world;
-	uintptr_t waypoint;
-	uintptr_t camera_pos;
-	uintptr_t crosshair_value;
-	uintptr_t entity_aiming_at;
-	uintptr_t is_player_aiming;
-	uintptr_t asm_update_position;
-	uintptr_t asm_update_speed_z;
-	uintptr_t kmh;
-
-}pointers;
-
 bool ReadSignatures()
 {
 	auto t0 = std::async(std::launch::async, ([]() { pointers.world = process->ReadOffsetFromSignature<uint32_t>({ 0x48, 0x8B, 0x05, 0x00, 0x00, 0x00, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x48, 0x8B, 0x48, 0x08, 0x48, 0x85, 0xC9, 0x74, 0x07 }, 3); }));

@@ -1,12 +1,9 @@
-#include "../pLib/pCheat.hpp"
-#include "MaxWeapon.hpp"
-
 #include "../pLib/pUi/pOverlay.hpp"
-
 #include "../SDK/World.hpp"
 #include "../SDK/Weapon.hpp"
-
 #include "../Settings.hpp"
+
+#include "MaxWeapon.hpp"
 
 MaxWeapon::MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
 {

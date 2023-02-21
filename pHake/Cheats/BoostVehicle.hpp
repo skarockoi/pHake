@@ -6,9 +6,16 @@
 class BoostVehicle : public pCheat
 {
 public:
-	BoostVehicle();
+	BoostVehicle(
+		std::shared_ptr<pOverlay> ui,
+		std::shared_ptr<World> world);
 
+public:
 	void Execute();
 	void Restore();
+
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
 };
 #endif

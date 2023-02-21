@@ -10,7 +10,10 @@
 class MaxWeapon : public pCheatLoop
 {
 public:
-	MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings);
+	MaxWeapon(
+		std::shared_ptr<pOverlay> ui, 
+		std::shared_ptr<World> world, 
+		Settings& settings);
 
 	void Execute();
 	void Restore();

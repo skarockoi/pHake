@@ -1,13 +1,14 @@
-#include "../globals.hpp"
-
+#include "../pLib/pUi/pOverlay.hpp"
+#include "../SDK/World.hpp"
+#include "../SDK/NPC.hpp"
+#include "../pLib/pMemory/pProcess.hpp"
+#include "../pLib/pHelper.hpp"
+#include "../Settings.hpp"
 #include "Trigger.hpp"
 
-#include "../SDK/NPC.hpp"
-#include "../pLib/pHelper.hpp"
 
-using namespace globals;
 
-Trigger::Trigger() : pCheatLoop()
+Trigger::Trigger(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, Settings& settings)
 {
 	name_ = "Trigger";
 	thread_intervals_ = 1;
