@@ -1,8 +1,8 @@
 #ifndef _WORLD_HPP_
 #define _WORLD_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
 #include "Player.hpp"
 
 //https://github.com/Yimura/GTAV-Classes

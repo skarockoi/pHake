@@ -1,10 +1,11 @@
-#include "globals.hpp" // for MessageBox()
+#include "pLib/pMenu.hpp" // SFML is annoying and needs to be included first
+#include <WinUser.h> // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
 bool Attach(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
 
-bool Start();
+bool Start(); // starts the cheat and ui
 
 int main()
 {

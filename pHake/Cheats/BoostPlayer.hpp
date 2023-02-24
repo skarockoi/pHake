@@ -2,6 +2,9 @@
 #define _BOOSTPLAYER_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
+#include "../Settings.hpp"
 
 class BoostPlayer : public pCheat
 {

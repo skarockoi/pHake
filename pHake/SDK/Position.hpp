@@ -1,9 +1,9 @@
 #ifndef _POSITION_HPP_
 #define _POSITION_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
-#include "../pLib/pMemory/vec3.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
+#include "../pLib/Memory/vec3.hpp"
 
 class Position : public pClass<0x58 + 0x4>
 {

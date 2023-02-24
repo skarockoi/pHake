@@ -1,6 +1,3 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../SDK/World.hpp"
-
 #include "RPLoop.hpp"
 
 RPLoop::RPLoop(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)

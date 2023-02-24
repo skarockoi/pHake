@@ -1,10 +1,7 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../pLib/pHelper.hpp"
-#include "../pLib/pMemory/vec3.hpp"
-#include "../SDK/World.hpp"
-
 #include "Teleport.hpp"
 
+#include "../pLib/pHelper.hpp"
+#include "../pLib/Memory/vec3.hpp"
 
 Teleport::Teleport(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, std::shared_ptr<Settings> settings)
 {

@@ -1,4 +1,5 @@
 #include "pCheat.hpp"
+
 #include <iostream>
 
 pCheat::pCheat() : name_("Default") {}

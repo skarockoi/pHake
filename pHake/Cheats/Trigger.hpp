@@ -2,6 +2,9 @@
 #define _TRIGGER_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
+#include "../pLib/Memory/pProcess.hpp"
 #include "../Settings.hpp"
 
 class Trigger : public pCheatLoop

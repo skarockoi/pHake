@@ -2,7 +2,8 @@
 #define _MAXWEAPON_HPP_
 
 #include "../pLib/pCheat.hpp"
-#include "../SDK/Weapon.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
 #include "../Settings.hpp"
 
 #include <vector>

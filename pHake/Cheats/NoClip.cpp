@@ -1,11 +1,6 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../pLib/pCheat.hpp"
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pDetour.hpp"
-#include "../SDK/World.hpp"
-#include "../Settings.hpp"
-
 #include "NoClip.hpp"
+
+#include "../pLib/Memory/pDetour.hpp"
 
 constexpr auto size_asm_update_position_original = 10;
 constexpr auto size_asm_update_speed_z_original = 8;

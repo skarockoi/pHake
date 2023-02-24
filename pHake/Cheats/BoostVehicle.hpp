@@ -2,6 +2,8 @@
 #define _BOOSTVEHICLE_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
 
 class BoostVehicle : public pCheat
 {

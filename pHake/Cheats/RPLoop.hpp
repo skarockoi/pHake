@@ -2,6 +2,8 @@
 #define _RPLOOP_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
 #include "../Settings.hpp"
 
 class RPLoop : public pCheatLoop

@@ -169,25 +169,24 @@
     <ClInclude Include="Cheats\Suicide.hpp" />
     <ClInclude Include="Cheats\Teleport.hpp" />
     <ClInclude Include="Cheats\Trigger.hpp" />
-    <ClInclude Include="globals.hpp" />
     <ClInclude Include="main.hpp" />
+    <ClInclude Include="pLib\Memory\pClass.hpp" />
+    <ClInclude Include="pLib\Memory\pDetour.hpp" />
+    <ClInclude Include="pLib\Memory\pProcess.hpp" />
+    <ClInclude Include="pLib\Memory\vec3.hpp" />
     <ClInclude Include="pLib\pCheat.hpp" />
     <ClInclude Include="pLib\pMenu.hpp" />
     <ClInclude Include="pLib\pHelper.hpp" />
     <ClInclude Include="pLib\pINI.hpp" />
-    <ClInclude Include="pLib\pMemory\pDetour.hpp" />
-    <ClInclude Include="pLib\pMemory\pClass.hpp" />
-    <ClInclude Include="pLib\pMemory\pProcess.hpp" />
-    <ClInclude Include="pLib\pMemory\vec3.hpp" />
     <ClInclude Include="pLib\pThread.hpp" />
-    <ClInclude Include="pLib\pUi\pButton.hpp" />
-    <ClInclude Include="pLib\pUi\pFont.hpp" />
-    <ClInclude Include="pLib\pUi\pItem.hpp" />
-    <ClInclude Include="pLib\pUi\pList.hpp" />
-    <ClInclude Include="pLib\pUi\pMouse.hpp" />
-    <ClInclude Include="pLib\pUi\pNotificationCenter.hpp" />
-    <ClInclude Include="pLib\pUi\pOverlay.hpp" />
-    <ClInclude Include="pLib\pUi\pWindow.hpp" />
+    <ClInclude Include="pLib\Ui\pButton.hpp" />
+    <ClInclude Include="pLib\Ui\pFont.hpp" />
+    <ClInclude Include="pLib\Ui\pItem.hpp" />
+    <ClInclude Include="pLib\Ui\pList.hpp" />
+    <ClInclude Include="pLib\Ui\pMouse.hpp" />
+    <ClInclude Include="pLib\Ui\pNotificationCenter.hpp" />
+    <ClInclude Include="pLib\Ui\pOverlay.hpp" />
+    <ClInclude Include="pLib\Ui\pWindow.hpp" />
     <ClInclude Include="SDK\AmmoInfo.hpp" />
     <ClInclude Include="SDK\NPC.hpp" />
     <ClInclude Include="SDK\Player.hpp" />
@@ -215,19 +214,19 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="pLib\Memory\pClass.cpp" />
+    <ClCompile Include="pLib\Memory\pProcess.cpp" />
     <ClCompile Include="pLib\pCheat.cpp" />
     <ClCompile Include="pLib\pMenu.cpp" />
     <ClCompile Include="pLib\pINI.cpp" />
-    <ClCompile Include="pLib\pMemory\pClass.cpp" />
-    <ClCompile Include="pLib\pMemory\pProcess.cpp" />
     <ClCompile Include="pLib\pThread.cpp" />
-    <ClCompile Include="pLib\pUi\pButton.cpp" />
-    <ClCompile Include="pLib\pUi\pItem.cpp" />
-    <ClCompile Include="pLib\pUi\pList.cpp" />
-    <ClCompile Include="pLib\pUi\pMouse.cpp" />
-    <ClCompile Include="pLib\pUi\pNotificationCenter.cpp" />
-    <ClCompile Include="pLib\pUi\pOverlay.cpp" />
-    <ClCompile Include="pLib\pUi\pWindow.cpp" />
+    <ClCompile Include="pLib\Ui\pButton.cpp" />
+    <ClCompile Include="pLib\Ui\pItem.cpp" />
+    <ClCompile Include="pLib\Ui\pList.cpp" />
+    <ClCompile Include="pLib\Ui\pMouse.cpp" />
+    <ClCompile Include="pLib\Ui\pNotificationCenter.cpp" />
+    <ClCompile Include="pLib\Ui\pOverlay.cpp" />
+    <ClCompile Include="pLib\Ui\pWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

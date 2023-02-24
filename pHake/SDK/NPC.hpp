@@ -1,9 +1,9 @@
 #ifndef _NPC_HPP_
 #define _NPC_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
-#include "../pLib/pMemory/vec3.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
+#include "../pLib/Memory/vec3.hpp"
 #include "Position.hpp"
 #include "Vehicle.hpp"
 #include "PlayerInfo.hpp"

@@ -1,8 +1,8 @@
 #ifndef _VEHICLE_HPP_
 #define _VEHICLE_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
 #include "Position.hpp"
 #include "VehicleHandling.hpp"
 

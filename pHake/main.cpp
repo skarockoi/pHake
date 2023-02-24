@@ -1,11 +1,7 @@
 #include "main.hpp"
-
 #include "pLib/pThread.hpp"
 #include "pLib/pHelper.hpp"
 
-#include <array>
-#include <future>
-#include "pLib/pMenu.hpp"
 #include "Cheats/GodMode.hpp"
 #include "Cheats/MaxWeapon.hpp"
 #include "Cheats/NoWanted.hpp"
@@ -19,9 +15,11 @@
 
 #include "Settings.hpp"
 
+#include <array>
+#include <future>
+
 std::shared_ptr<pProcess> process;
 std::shared_ptr<Settings> settings;
-
 
 bool AlreadyRunning()
 {

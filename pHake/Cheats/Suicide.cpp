@@ -1,8 +1,4 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../SDK/World.hpp"
-
 #include "Suicide.hpp"
-
 
 Suicide::Suicide(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world)
 {

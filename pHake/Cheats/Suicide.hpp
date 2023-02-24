@@ -2,6 +2,8 @@
 #define _SUICIDE_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../pLib/Ui/pOverlay.hpp"
+#include "../SDK/World.hpp"
 
 class Suicide : public pCheat
 {

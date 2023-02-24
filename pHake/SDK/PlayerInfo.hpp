@@ -1,8 +1,8 @@
 #ifndef _PLAYERINFO_HPP_
 #define _PLAYERINFO_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
 
 class PlayerInfo : public pClass<0xD90 + 0x4>
 {

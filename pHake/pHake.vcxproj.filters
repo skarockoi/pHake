@@ -19,14 +19,14 @@
     <Filter Include="Header Files\pLib">
       <UniqueIdentifier>{43e4359f-852c-4817-b7c3-61c0c802b8d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\pLib\pUi">
-      <UniqueIdentifier>{3752e10c-e60d-4411-8064-fb500237ab9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\pLib\pMemory">
-      <UniqueIdentifier>{666703a3-fcc1-48c7-a0ef-ac2f94b10d0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SDK">
       <UniqueIdentifier>{5875738b-365b-4d3c-9f2f-38b4a5062ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pLib\Memory">
+      <UniqueIdentifier>{666703a3-fcc1-48c7-a0ef-ac2f94b10d0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pLib\Ui">
+      <UniqueIdentifier>{3752e10c-e60d-4411-8064-fb500237ab9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +65,6 @@
     </ClInclude>
     <ClInclude Include="Cheats\MaxWeapon.hpp">
       <Filter>Source Files\Cheats</Filter>
-    </ClInclude>
-    <ClInclude Include="globals.hpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Cheats\NoClip.hpp">
       <Filter>Source Files\Cheats</Filter>
@@ -111,44 +108,44 @@
     <ClInclude Include="pLib\pThread.hpp">
       <Filter>Header Files\pLib</Filter>
     </ClInclude>
-    <ClInclude Include="pLib\pUi\pButton.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pFont.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pItem.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pList.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pMouse.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pNotificationCenter.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pOverlay.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pUi\pWindow.hpp">
-      <Filter>Header Files\pLib\pUi</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pMemory\pDetour.hpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pMemory\pClass.hpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pMemory\pProcess.hpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="pLib\pMemory\vec3.hpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
-    </ClInclude>
     <ClInclude Include="Settings.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pButton.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pFont.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pItem.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pList.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pMouse.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pNotificationCenter.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pOverlay.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Ui\pWindow.hpp">
+      <Filter>Header Files\pLib\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Memory\pClass.hpp">
+      <Filter>Header Files\pLib\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Memory\pDetour.hpp">
+      <Filter>Header Files\pLib\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Memory\pProcess.hpp">
+      <Filter>Header Files\pLib\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="pLib\Memory\vec3.hpp">
+      <Filter>Header Files\pLib\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,32 +194,32 @@
     <ClCompile Include="pLib\pThread.cpp">
       <Filter>Header Files\pLib</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pButton.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pButton.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pItem.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pItem.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pList.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pList.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pMouse.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pMouse.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pNotificationCenter.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pNotificationCenter.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pOverlay.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pOverlay.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pUi\pWindow.cpp">
-      <Filter>Header Files\pLib\pUi</Filter>
+    <ClCompile Include="pLib\Ui\pWindow.cpp">
+      <Filter>Header Files\pLib\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pMemory\pProcess.cpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
+    <ClCompile Include="pLib\Memory\pClass.cpp">
+      <Filter>Header Files\pLib\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="pLib\pMemory\pClass.cpp">
-      <Filter>Header Files\pLib\pMemory</Filter>
+    <ClCompile Include="pLib\Memory\pProcess.cpp">
+      <Filter>Header Files\pLib\Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

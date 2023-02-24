@@ -1,12 +1,7 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../SDK/World.hpp"
-#include "../SDK/NPC.hpp"
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pHelper.hpp"
-
 #include "Trigger.hpp"
 
-
+#include "../SDK/NPC.hpp"
+#include "../pLib/pHelper.hpp"
 
 Trigger::Trigger(std::shared_ptr<pOverlay> ui, std::shared_ptr<pProcess> process, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {

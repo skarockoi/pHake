@@ -1,8 +1,8 @@
 #ifndef _WEAPONMANAGER_HPP_
 #define _WEAPONMANAGER_HPP_
 
-#include "../pLib/pMemory/pProcess.hpp"
-#include "../pLib/pMemory/pClass.hpp"
+#include "../pLib/Memory/pProcess.hpp"
+#include "../pLib/Memory/pClass.hpp"
 #include "Weapon.hpp"
 
 class WeaponManager : public pClass<0x20 + 0x8>

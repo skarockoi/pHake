@@ -1,8 +1,4 @@
-#include "../pLib/pUi/pOverlay.hpp"
-#include "../SDK/World.hpp"
-
 #include "GodMode.hpp"
-
 
 GodMode::GodMode(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
