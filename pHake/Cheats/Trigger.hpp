@@ -6,6 +6,12 @@
 
 class Trigger : public pCheatLoop
 {
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
+	std::shared_ptr<pProcess> process;
+	std::shared_ptr<Settings> settings;
+
 public:
 	Trigger() = delete;
 	Trigger(
@@ -17,11 +23,5 @@ public:
 public:
 	void Execute();
 	void Restore();
-
-private:
-	std::shared_ptr<pOverlay> ui;
-	std::shared_ptr<World> world;
-	std::shared_ptr<pProcess> process;
-	std::shared_ptr<Settings> settings;
 };
 #endif

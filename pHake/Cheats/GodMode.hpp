@@ -6,6 +6,10 @@
 
 class GodMode : public pCheatLoop
 {
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
+
 public:
 	GodMode() = delete;
 	GodMode(
@@ -16,9 +20,5 @@ public:
 public:
 	void Execute();
 	void Restore();
-
-private:
-	std::shared_ptr<pOverlay> ui;
-	std::shared_ptr<World> world;
 };
 #endif

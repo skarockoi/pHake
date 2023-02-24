@@ -10,6 +10,10 @@
 
 class MaxWeapon : public pCheatLoop
 {
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
+
 public:
 	MaxWeapon() = delete;
 	MaxWeapon(
@@ -19,10 +23,6 @@ public:
 
 	void Execute();
 	void Restore();
-
-private:
-	std::shared_ptr<pOverlay> ui;
-	std::shared_ptr<World> world;
 
 private:
 	std::vector<uintptr_t> weapon_addresses;
