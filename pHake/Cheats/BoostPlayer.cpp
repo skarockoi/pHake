@@ -7,17 +7,17 @@
 #include <array>
 
 
-static const std::array<std::string, 3> player_modes = { "default", "fast", "max" };
-static uint8_t curr_player_mode = 0;
-
-
-BoostPlayer::BoostPlayer(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world)
+BoostPlayer::BoostPlayer(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
 	this->ui = ui;
 	this->world = world;
+	this->settings = settings;
 
 	name_ = "BoostPlayer";
 }
+
+static const std::array<std::string, 3> player_modes = { "default", "fast", "max" };
+static uint8_t curr_player_mode = 0;
 
 void BoostPlayer::Execute()
 {
@@ -32,22 +32,22 @@ void BoostPlayer::Execute()
 	case 0:
 		world->localplayer.playerinfo.walk_mp(1);
 		world->localplayer.playerinfo.swim_mp(1);
-		settings.noclip_speed = 0.05f;
+		settings->noclip_speed = 0.05f;
 
-		if (!settings.noclip)
+		if (!settings->noclip)
 			world->localplayer.ragdoll(0);
 		break;
 	case 1:
 		world->localplayer.playerinfo.walk_mp(2);
 		world->localplayer.playerinfo.swim_mp(2);
 		world->localplayer.ragdoll(1);
-		settings.noclip_speed = 0.2f;
+		settings->noclip_speed = 0.2f;
 		break;
 	case 2:
 		world->localplayer.playerinfo.walk_mp(2000);
 		world->localplayer.playerinfo.swim_mp(5);
 		world->localplayer.ragdoll(1);
-		settings.noclip_speed = 0.5f;
+		settings->noclip_speed = 0.5f;
 		break;
 	}
 
@@ -60,9 +60,9 @@ void BoostPlayer::Restore()
 	{
 		world->localplayer.playerinfo.walk_mp(1);
 		world->localplayer.playerinfo.swim_mp(1);
-		settings.noclip_speed = 0.05f;
+		settings->noclip_speed = 0.05f;
 
-		if (!settings.noclip)
+		if (!settings->noclip)
 			world->localplayer.ragdoll(0);
 	}
 }

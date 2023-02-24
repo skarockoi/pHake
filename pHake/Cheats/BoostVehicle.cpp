@@ -13,6 +13,9 @@ static Vehicle vehicle_defaults;
 
 BoostVehicle::BoostVehicle(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world)
 {
+	this->ui = ui;
+	this->world = world;
+
 	name_ = "BoostVehicle";
 }
 

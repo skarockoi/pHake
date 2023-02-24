@@ -16,7 +16,7 @@ class pCheatLoop;
 class pMenu
 {
 public:
-	std::unique_ptr<pOverlay> ui;
+	std::shared_ptr<pOverlay> ui;
 
 public:
 	pMenu();

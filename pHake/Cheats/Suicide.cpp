@@ -6,6 +6,9 @@
 
 Suicide::Suicide(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world)
 {
+	this->ui = ui;
+	this->world = world;
+
 	name_ = "Suicide";
 }
 

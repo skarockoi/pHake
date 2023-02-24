@@ -6,7 +6,7 @@ pMenu::pMenu() {  }
 
 void pMenu::Attach(LPCSTR window_name)
 {
-	ui = std::make_unique<pOverlay>(); // initialize game UI
+	ui = std::make_shared<pOverlay>(); // initialize game UI
 	ui->Create(window_name);  // overlay gta window
 }
 

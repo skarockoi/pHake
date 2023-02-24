@@ -6,17 +6,18 @@
 class NoClip : public pCheatLoop
 {
 public:
+	NoClip() = delete;
 	NoClip(
 		std::shared_ptr<pOverlay> ui,
-		std::shared_ptr<World> world,
 		std::shared_ptr<pProcess> process,
-		Pointers& pointers,
-		Settings& settings);
+		std::shared_ptr<World> world,
+		std::shared_ptr<Settings> settings);
 
 private:
 	std::shared_ptr<pOverlay> ui;
-	std::shared_ptr<World> world;
 	std::shared_ptr<pProcess> process;
+	std::shared_ptr<World> world;
+	std::shared_ptr<Settings> settings;
 
 public:
 	void Execute();

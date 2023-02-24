@@ -6,10 +6,11 @@
 class NoWanted : public pCheatLoop
 {
 public:
+	NoWanted() = delete;
 	NoWanted(
 		std::shared_ptr<pOverlay> ui,
 		std::shared_ptr<World> world,
-		Settings& settings);
+		std::shared_ptr<Settings> settings);
 
 private:
 	std::shared_ptr<pOverlay> ui;

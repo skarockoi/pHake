@@ -4,28 +4,13 @@
 #include <stdint.h>
 #include <WinUser.h>
 
-struct Settings // stores important, globally accessed variables
+struct Keys
 {
-	bool maxwanted = false;
-	bool maxweapon = false;
-	bool nowanted = false;
-	bool godmode = false;
-	bool trigger = false;
-	bool rploop = false;
-	bool noclip = false;
-
-	float noclip_speed = 0.05f;
-	float kmh = 0.f;
-
-	struct Keys
-	{
-		uint32_t menu = VK_MENU;
-		uint32_t teleport = VK_NUMPAD0;
-		uint32_t boost_player = VK_NUMPAD1;
-		uint32_t boost_vehicle = VK_NUMPAD2;
-	}keys;
-
-}settings;
+	uint32_t menu; // VK_MENU;
+	uint32_t teleport; // VK_NUMPAD0;
+	uint32_t boost_player; // VK_NUMPAD1;
+	uint32_t boost_vehicle; // VK_NUMPAD2;
+};
 
 struct Pointers // signatures
 {
@@ -38,5 +23,22 @@ struct Pointers // signatures
 	uintptr_t asm_update_position;
 	uintptr_t asm_update_speed_z;
 	uintptr_t kmh;
-}pointers;
+};
+
+struct Settings // stores important, globally accessed variables
+{
+	bool maxwanted;
+	bool maxweapon;
+	bool nowanted;
+	bool godmode;
+	bool trigger;
+	bool rploop;
+	bool noclip;
+
+	float noclip_speed;
+	float kmh;
+
+	Keys keys;
+	Pointers pointers;
+};
 #endif

@@ -5,7 +5,12 @@
 
 class BoostVehicle : public pCheat
 {
+private:
+	std::shared_ptr<pOverlay> ui;
+	std::shared_ptr<World> world;
+
 public:
+	BoostVehicle() = delete;
 	BoostVehicle(
 		std::shared_ptr<pOverlay> ui,
 		std::shared_ptr<World> world);
@@ -13,9 +18,5 @@ public:
 public:
 	void Execute();
 	void Restore();
-
-private:
-	std::shared_ptr<pOverlay> ui;
-	std::shared_ptr<World> world;
 };
 #endif

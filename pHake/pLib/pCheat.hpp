@@ -8,6 +8,7 @@ class pCheat
 {
 public:
 	std::string name_;
+
 public:
 	pCheat();
 	virtual void Execute();
@@ -25,6 +26,5 @@ public:
 	pCheatLoop();
 	virtual void Execute();
 	virtual void Restore();
-
 };
 #endif

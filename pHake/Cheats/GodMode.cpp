@@ -1,15 +1,14 @@
 #include "../pLib/pUi/pOverlay.hpp"
 #include "../SDK/World.hpp"
-#include "../Settings.hpp"
 
 #include "GodMode.hpp"
 
 
-GodMode::GodMode(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
+GodMode::GodMode(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
 	this->ui = ui;
 	this->world = world;
-	active = &settings.godmode;
+	active = &settings->godmode;
 
 	name_ = "GodMode";
 	thread_intervals_ = 100;

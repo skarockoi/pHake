@@ -2,15 +2,17 @@
 #define _TELEPORT_HPP_
 
 #include "../pLib/pCheat.hpp"
+#include "../Settings.hpp"
 
 class Teleport : public pCheat
 {
 public:
+	Teleport() = delete;
 	Teleport(
 		std::shared_ptr<pOverlay> ui,
 		std::shared_ptr<World> world,
 		std::shared_ptr<pProcess> process,
-		Pointers& pointers);
+		std::shared_ptr<Settings> settings);
 
 public:
 	void Execute();
@@ -20,7 +22,7 @@ private:
 	std::shared_ptr<pOverlay> ui;
 	std::shared_ptr<World> world;
 	std::shared_ptr<pProcess> process;
-	Pointers& pointers;
+	std::shared_ptr<Settings> settings;
 
 private:
 	bool IsPlayerMoving();

@@ -2,20 +2,23 @@
 #include "../pLib/pHelper.hpp"
 #include "../pLib/pMemory/vec3.hpp"
 #include "../SDK/World.hpp"
-#include "../Settings.hpp"
 
 #include "Teleport.hpp"
 
 
-Teleport::Teleport(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, Pointers& pointers)
+Teleport::Teleport(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, std::shared_ptr<Settings> settings)
 {
-	this->pointers = pointers;
+	this->ui = ui;
+	this->process = process;
+	this->world = world;
+	this->settings = settings;
+
 	name_ = "Tp to Waypoint";
 }
 
 void Teleport::Execute()
 {
-	vec3 waypoint = process->read<vec3>(pointers.waypoint);
+	vec3 waypoint = process->read<vec3>(settings->pointers.waypoint);
 
 	if (waypoint.x == 64000 && waypoint.y == 64000) {
 		ui->notification.Add("No Waypoint set");
@@ -37,7 +40,7 @@ void Teleport::Execute()
 		goto success;
 	}
 
-	if (settings.noclip)
+	if (settings->noclip)
 	{
 		waypoint.z = 300.f;
 		world->localplayer.position.xyz(waypoint);

@@ -3,6 +3,7 @@
 
 #include "../pLib/pCheat.hpp"
 #include "../SDK/Weapon.hpp"
+#include "../Settings.hpp"
 
 #include <vector>
 #include <stdint.h>
@@ -10,10 +11,11 @@
 class MaxWeapon : public pCheatLoop
 {
 public:
+	MaxWeapon() = delete;
 	MaxWeapon(
 		std::shared_ptr<pOverlay> ui, 
 		std::shared_ptr<World> world, 
-		Settings& settings);
+		std::shared_ptr<Settings> settings);
 
 	void Execute();
 	void Restore();

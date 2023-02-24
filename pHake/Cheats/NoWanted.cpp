@@ -4,11 +4,14 @@
 
 #include "NoWanted.hpp"
 
-NoWanted::NoWanted(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
+NoWanted::NoWanted(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
+	this->ui = ui;
+	this->world = world;
+
 	name_ = "NoWanted";
 	thread_intervals_ = 10;
-	active = &settings.nowanted;
+	active = &settings->nowanted;
 }
 
 void NoWanted::Execute() {

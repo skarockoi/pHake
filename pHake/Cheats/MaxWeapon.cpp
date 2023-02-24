@@ -1,18 +1,17 @@
 #include "../pLib/pUi/pOverlay.hpp"
 #include "../SDK/World.hpp"
 #include "../SDK/Weapon.hpp"
-#include "../Settings.hpp"
 
 #include "MaxWeapon.hpp"
 
-MaxWeapon::MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, Settings& settings)
+MaxWeapon::MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
 	this->ui = ui;
 	this->world = world;
 
 	this->name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;
-	this->active = &settings.maxweapon;
+	this->active = &settings->maxweapon;
 }
 
 void MaxWeapon::Execute()

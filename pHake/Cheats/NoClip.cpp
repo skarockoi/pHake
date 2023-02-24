@@ -13,14 +13,20 @@ constexpr auto size_asm_update_speed_z_original = 8;
 std::vector<uint8_t> asm_update_position_original(size_asm_update_position_original);
 std::vector<uint8_t> asm_update_speed_z_original(size_asm_update_speed_z_original);
 
-NoClip::NoClip(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::shared_ptr<pProcess> process, Pointers&, Settings& settings)
+NoClip::NoClip(std::shared_ptr<pOverlay> ui, std::shared_ptr<pProcess> process, std::shared_ptr<World> world, std::shared_ptr<Settings> settings)
 {
-	process->read_raw(pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
-	process->read_raw(pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
+	this->ui = ui;
+	this->process = process;
+	this->world = world;
+	this->settings = settings;
+
+	this->process->read_raw(settings->pointers.asm_update_position, &asm_update_position_original.at(0), size_asm_update_position_original); // read original opcodes at patch locations 
+	this->process->read_raw(settings->pointers.asm_update_speed_z, &asm_update_speed_z_original.at(0), size_asm_update_speed_z_original);
 
 	name_ = "NoClip";
 	thread_intervals_ = 10;
-	active = &settings.noclip;
+	active = &settings->noclip;
+
 }
 
 void NoClip::Execute()
@@ -59,10 +65,10 @@ void NoClip::Execute()
 	if (!restore)
 	{
 		pDetour detour{};
-		detour.addJump(pointers.asm_update_position + 1, process->base_module_.base + 0x1A, 4); // jmp'ing to phake->process.base_module_.base + 0x1A because there is a code cave
+		detour.addJump(settings->pointers.asm_update_position + 1, process->base_module_.base + 0x1A, 4); // jmp'ing to phake->process.base_module_.base + 0x1A because there is a code cave
 
-		process->write_bytes(pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
-		process->write_bytes(pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
+		process->write_bytes(settings->pointers.asm_update_position, detour.base()); // apply detour to jmp to our patched code
+		process->write_bytes(settings->pointers.asm_update_speed_z, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }); // nop asm_update_speed_z function to prevent the game from knowing we are flying
 
 		restore = true;
 	}
@@ -70,12 +76,12 @@ void NoClip::Execute()
 	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
 		return;
 
-	vec3 cam_pos = process->read<vec3>(pointers.camera_pos);
+	vec3 cam_pos = process->read<vec3>(settings->pointers.camera_pos);
 	vec3 old_pos = world->localplayer.position.xyz();
 	vec3 add_pos(
-		settings.noclip_speed * (old_pos.x - cam_pos.x),
-		settings.noclip_speed * (old_pos.y - cam_pos.y),
-		settings.noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
+		settings->noclip_speed * (old_pos.x - cam_pos.x),
+		settings->noclip_speed * (old_pos.y - cam_pos.y),
+		settings->noclip_speed * (old_pos.z - (cam_pos.z - 0.5f))
 	);
 
 	float len = add_pos.len();
@@ -87,6 +93,6 @@ void NoClip::Execute()
 
 void NoClip::Restore()
 {
-	process->write_bytes(pointers.asm_update_position, asm_update_position_original);
-	process->write_bytes(pointers.asm_update_speed_z, asm_update_speed_z_original);
+	process->write_bytes(settings->pointers.asm_update_position, asm_update_position_original);
+	process->write_bytes(settings->pointers.asm_update_speed_z, asm_update_speed_z_original);
 }
