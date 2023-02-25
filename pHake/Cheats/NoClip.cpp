@@ -41,6 +41,8 @@ void NoClip::Execute()
 	if (world->localplayer.in_vehicle())
 		return;
 
+	std::cout << "f";
+
 	static uintptr_t position_base = 0;
 	if (position_base != world->localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
 	{
@@ -71,10 +73,9 @@ void NoClip::Execute()
 	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
 		return;
 
-
-
 	vec3 cam_pos = process->read<vec3>(settings->pointers.camera_pos);
 	vec3 old_pos = world->localplayer.position.xyz();
+
 	vec3 add_pos(
 		settings->noclip_speed * (old_pos.x - cam_pos.x),
 		settings->noclip_speed * (old_pos.y - cam_pos.y),

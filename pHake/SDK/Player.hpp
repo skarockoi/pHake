@@ -107,7 +107,7 @@ public:
 
 	int32_t in_vehicle()
 	{
-		if (this->read<int32_t>(0xE52) != 0)
+		if (this->read<int32_t>(0xE32) != 0)
 			return true;
 		else
 			return false;
