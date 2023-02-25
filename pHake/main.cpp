@@ -81,7 +81,7 @@ bool Start()
 
 	menu->Attach("Grand Theft Auto V");
 
-	std::unique_ptr<pThread>thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and km/h
+	std::unique_ptr<pThread> thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and km/h
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh); 
@@ -99,8 +99,7 @@ bool Start()
 	menu->Add(std::make_shared<BoostPlayer>(menu->ui, world, settings));
 	menu->Add(std::make_shared<Suicide>(menu->ui, world));
 	menu->Start();
-
 	process->Close();
 
-	return TerminateProcess(GetCurrentProcess(), EXIT_SUCCESS); // exit
+	return 0;
 }

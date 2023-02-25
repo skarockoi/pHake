@@ -23,7 +23,7 @@ void pMenu::Add(std::shared_ptr<pCheat> cheat)
 }
 void pMenu::Start()
 {
-	ui->list.AddFunction("Exit", [=]() {Stop(); });
+	ui->list.AddFunction("Exit", [=]() { this->Stop(); });
 
 	for (auto& i : this->cheats_loop_)
 		this->threads_.push_back(pThread([&]() { i->Execute(); }, i->thread_intervals_));

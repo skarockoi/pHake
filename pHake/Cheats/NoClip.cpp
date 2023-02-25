@@ -22,6 +22,7 @@ NoClip::NoClip(std::shared_ptr<pOverlay> ui, std::shared_ptr<pProcess> process, 
 	thread_intervals_ = 10;
 	active = &settings->noclip;
 
+	settings->noclip_speed = 0.05f;
 }
 
 void NoClip::Execute()
@@ -56,7 +57,6 @@ void NoClip::Execute()
 
 		process->write_bytes(process->base_module_.base + 0x1A, patched_code.base()); // writing to phake->process.base_module_.base + 0x1A because there is unused code
 	}
-
 	if (!restore)
 	{
 		pDetour detour{};
@@ -71,8 +71,13 @@ void NoClip::Execute()
 	if (!HIBYTE(GetAsyncKeyState(0x57))) // W-Key
 		return;
 
+
+
 	vec3 cam_pos = process->read<vec3>(settings->pointers.camera_pos);
+	std::cout << cam_pos << std::endl;
 	vec3 old_pos = world->localplayer.position.xyz();
+	std::cout << old_pos << std::endl;
+
 	vec3 add_pos(
 		settings->noclip_speed * (old_pos.x - cam_pos.x),
 		settings->noclip_speed * (old_pos.y - cam_pos.y),
@@ -80,6 +85,7 @@ void NoClip::Execute()
 	);
 
 	float len = add_pos.len();
+	std::cout << len << std::endl << std::endl;
 	if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
 		return;
 
