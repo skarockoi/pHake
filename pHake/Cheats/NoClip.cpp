@@ -74,10 +74,7 @@ void NoClip::Execute()
 
 
 	vec3 cam_pos = process->read<vec3>(settings->pointers.camera_pos);
-	std::cout << cam_pos << std::endl;
 	vec3 old_pos = world->localplayer.position.xyz();
-	std::cout << old_pos << std::endl;
-
 	vec3 add_pos(
 		settings->noclip_speed * (old_pos.x - cam_pos.x),
 		settings->noclip_speed * (old_pos.y - cam_pos.y),
@@ -85,7 +82,6 @@ void NoClip::Execute()
 	);
 
 	float len = add_pos.len();
-	std::cout << len << std::endl << std::endl;
 	if (len > 50.f || len < -50.f) // check length of added speed to prevent spikes
 		return;
 
