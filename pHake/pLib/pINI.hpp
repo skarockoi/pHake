@@ -2,9 +2,10 @@
 #define _PSETTINGS_HPP_
 
 #include <string>
+#include <sstream>
 #include <vector>
 
-class pINI // Bad INI Parser
+class pINI // INI Parser
 {
 public:
 	pINI();

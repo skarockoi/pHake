@@ -1,5 +1,5 @@
 #include "pLib/pMenu.hpp" // SFML is annoying and needs to be included first
-#include <WinUser.h> // for MessageBox()
+#include <Windows.h> // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running
 bool Attach(); // attaches to the game

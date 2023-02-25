@@ -4,7 +4,7 @@
 #include "pLib/pINI.hpp"
 
 #include <stdint.h>
-#include <WinUser.h>
+#include <Windows.h>
 
 struct Keys
 {
