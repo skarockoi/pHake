@@ -6,7 +6,7 @@ bool Attach(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
 bool ReadConfig(); // read ini file
 
-bool Start(); // starts the cheat and ui
+bool Start(); // starts the cheat
 
 int main()
 {

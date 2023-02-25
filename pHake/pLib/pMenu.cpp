@@ -38,6 +38,9 @@ void pMenu::Stop()
 
 	for (auto& i : this->cheats_)
 		i->Restore();
+
+	for (auto& i : this->cheats_loop_)
+		i->Restore();
 		
 	ui->Close(); // close UI
 }
