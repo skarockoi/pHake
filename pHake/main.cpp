@@ -22,8 +22,6 @@
 
 std::shared_ptr<pProcess> process;
 std::shared_ptr<Settings> settings;
-std::unique_ptr<pINI> ini;
-
 
 bool AlreadyRunning()
 {
@@ -79,23 +77,7 @@ bool ReadSignatures()
 
 bool ReadConfig()
 {
-	ini = std::make_unique<pINI>();
-	bool success = ini->Open("settings.ini");
-
-	ini->Comment("# Start Up Toggles:");
-	settings->maxweapon = ini->Get<bool>("MaxWeapon", 0); // restore to default values if ini file is broken
-	settings->nowanted = ini->Get<bool>("NoWanted", 0);
-	settings->godmode = ini->Get<bool>("Godmode", 0);
-	settings->trigger = ini->Get<bool>("Trigger", 0);
-	settings->rploop = ini->Get<bool>("RpLoop", 0);
-	settings->noclip = ini->Get<bool>("NoClip", 0);
-	ini->Comment("# Keycodes: --> https://github.com/xhz8s/pHake/wiki/Keycodes <--");
-	settings->keys.menu = ini->Get<uint32_t>("Toggle Menu", VK_MENU);
-	settings->keys.teleport = ini->Get<uint32_t>("Teleport To Waypoint", VK_NUMPAD0);
-	settings->keys.boost_player = ini->Get<uint32_t>("Boost Player", VK_NUMPAD1);
-	settings->keys.boost_vehicle = ini->Get<uint32_t>("Boost Vehicle", VK_NUMPAD2);
-
-	return success;
+	return settings->Read();
 }
 
 bool Start()
@@ -123,15 +105,9 @@ bool Start()
 	menu->Add(std::make_shared<BoostPlayer>(menu->ui, world, settings));
 	menu->Add(std::make_shared<Suicide>(menu->ui, world));
 	menu->Start();
-	process->Close();
 
-	ini->Edit<bool>("MaxWeapon", settings->maxweapon); // save to file
-	ini->Edit<bool>("NoWanted", settings->nowanted);
-	ini->Edit<bool>("Godmode", settings->godmode);
-	ini->Edit<bool>("Trigger", settings->trigger);
-	ini->Edit<bool>("RpLoop", settings->rploop);
-	ini->Edit<bool>("NoClip", settings->noclip);
-	ini->Save();
+	process->Close();
+	settings->Save();
 
 	return 0;
 }

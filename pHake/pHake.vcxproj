@@ -227,6 +227,7 @@
     <ClCompile Include="pLib\Ui\pNotificationCenter.cpp" />
     <ClCompile Include="pLib\Ui\pOverlay.cpp" />
     <ClCompile Include="pLib\Ui\pWindow.cpp" />
+    <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

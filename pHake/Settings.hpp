@@ -1,6 +1,8 @@
 #ifndef _SETTINGS_HPP_
 #define _SETTINGS_HPP_
 
+#include "pLib/pINI.hpp"
+
 #include <stdint.h>
 #include <WinUser.h>
 
@@ -25,8 +27,15 @@ struct Pointers // signatures
 	uintptr_t kmh;
 };
 
-struct Settings // stores important, globally accessed variables
+class Settings
 {
+public:
+	Settings() {};
+
+	bool Read();
+	void Save();
+
+public:
 	bool maxwanted;
 	bool maxweapon;
 	bool nowanted;
@@ -40,5 +49,8 @@ struct Settings // stores important, globally accessed variables
 
 	Keys keys;
 	Pointers pointers;
+
+private:
+	pINI ini;
 };
 #endif

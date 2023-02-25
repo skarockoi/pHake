@@ -4,6 +4,7 @@
 bool AlreadyRunning(); // check if cheat is already running
 bool Attach(); // attaches to the game
 bool ReadSignatures(); // finds all needed signatures
+bool ReadConfig(); // read ini file
 
 bool Start(); // starts the cheat and ui
 
@@ -25,6 +26,11 @@ int main()
 	{
 		MessageBox(NULL, "game version does not match cheat version", "Error", NULL);
 		return false;
+	}
+
+	if (!ReadConfig())
+	{
+		MessageBox(NULL, "settings file could not be read, restoring...", "Note", NULL);
 	}
 
 	return Start();
