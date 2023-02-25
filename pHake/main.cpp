@@ -90,7 +90,7 @@ bool Start()
 	std::unique_ptr<pThread> thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and km/h
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
-		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh); 
+		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh);
 	}, 1);
 
 	menu->Add(std::make_shared<MaxWeapon>(menu->ui, world, settings));
