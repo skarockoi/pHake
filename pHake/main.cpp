@@ -91,12 +91,17 @@ bool Start()
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh);
+
+		GetKeyExecuteWaitForRelease(settings->keys.menu, [=]()
+			{
+				menu->ui->Toggle();
+			});
 	}, 1);
 
 	menu->Add(std::make_shared<MaxWeapon>(menu->ui, world, settings));
 	menu->Add(std::make_shared<NoWanted>(menu->ui, world, settings));
 	menu->Add(std::make_shared<GodMode>(menu->ui, world, settings));
-	menu->Add(std::make_shared<Trigger>(menu->ui, process ,world, settings));
+	menu->Add(std::make_shared<Trigger>(menu->ui, process, world, settings));
 	menu->Add(std::make_shared<RPLoop>(menu->ui, world, settings));
 	menu->Add(std::make_shared<NoClip>(menu->ui, process, world, settings));
 	menu->ui->list.AddFloat("Km/h", settings->kmh, 0.f, 0.f);
