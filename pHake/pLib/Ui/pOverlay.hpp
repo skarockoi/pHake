@@ -39,9 +39,11 @@ private:
 class pOverlay // creates an transparent overlay over selected process
 {
 public:
-	pOverlay();
 	pList list;
 	pNotificationCenter notification;
+
+public:
+	pOverlay();
 	
 	void Create(LPCSTR Name);
 	void Toggle();

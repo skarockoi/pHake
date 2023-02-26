@@ -87,7 +87,7 @@ bool Start()
 
 	menu->Attach("Grand Theft Auto V");
 
-	std::unique_ptr<pThread> thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and km/h
+	std::unique_ptr<pThread> thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and key toggles
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh);
@@ -96,6 +96,28 @@ bool Start()
 			{
 				menu->ui->Toggle();
 			});
+		GetKeyExecuteWaitForRelease(settings->keys.teleport, [=]()
+			{
+				//
+			});
+
+		GetKeyExecuteWaitForRelease(settings->keys.boost_player, [=]()
+			{
+				//
+			});
+
+		GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, [=]()
+			{
+				//
+			});
+
+		if (settings->noclip)
+		{
+			GetKeyExecuteWaitForRelease(VK_SPACE, [=]()
+				{
+					//
+				});
+		}
 	}, 1);
 
 	menu->Add(std::make_shared<MaxWeapon>(menu->ui, world, settings));
