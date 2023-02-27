@@ -87,6 +87,29 @@ bool Start()
 
 	menu->Attach("Grand Theft Auto V");
 
+	auto maxweapon = std::make_shared<MaxWeapon>(menu->ui, world, settings);
+	auto nowanted = std::make_shared<NoWanted>(menu->ui, world, settings);
+	auto godmode = std::make_shared<GodMode>(menu->ui, world, settings);
+	auto trigger = std::make_shared<Trigger>(menu->ui, process, world, settings);
+	auto rploop = std::make_shared<RPLoop>(menu->ui, world, settings);
+	auto noclip = std::make_shared<NoClip>(menu->ui, process, world, settings);
+	auto teleport = std::make_shared<Teleport>(menu->ui, world, process, settings);
+	auto boostvehicle = std::make_shared<BoostVehicle>(menu->ui, world);
+	auto boostplayer = std::make_shared<BoostPlayer>(menu->ui, world, settings);
+	auto suicide = std::make_shared<Suicide>(menu->ui, world);
+
+	menu->Add(maxweapon);
+	menu->Add(nowanted);
+	menu->Add(godmode);
+	menu->Add(trigger);
+	menu->Add(rploop);
+	menu->Add(noclip);
+	menu->ui->list.AddFloat("Km/h", settings->kmh, 0.f, 0.f);
+	menu->Add(teleport);
+	menu->Add(boostvehicle);
+	menu->Add(boostplayer);
+	menu->Add(suicide);
+
 	std::unique_ptr<pThread> thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and key toggles
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
@@ -98,39 +121,28 @@ bool Start()
 			});
 		GetKeyExecuteWaitForRelease(settings->keys.teleport, [=]()
 			{
-				//
+				teleport->Execute();
 			});
 
 		GetKeyExecuteWaitForRelease(settings->keys.boost_player, [=]()
 			{
-				//
+				boostplayer->Execute();
 			});
 
 		GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, [=]()
 			{
-				//
+				boostvehicle->Execute();
 			});
 
 		if (settings->noclip)
 		{
 			GetKeyExecuteWaitForRelease(VK_SPACE, [=]()
 				{
-					//
+					boostplayer->Execute();
 				});
 		}
 	}, 1);
 
-	menu->Add(std::make_shared<MaxWeapon>(menu->ui, world, settings));
-	menu->Add(std::make_shared<NoWanted>(menu->ui, world, settings));
-	menu->Add(std::make_shared<GodMode>(menu->ui, world, settings));
-	menu->Add(std::make_shared<Trigger>(menu->ui, process, world, settings));
-	menu->Add(std::make_shared<RPLoop>(menu->ui, world, settings));
-	menu->Add(std::make_shared<NoClip>(menu->ui, process, world, settings));
-	menu->ui->list.AddFloat("Km/h", settings->kmh, 0.f, 0.f);
-	menu->Add(std::make_shared<Teleport>(menu->ui, world, process, settings));
-	menu->Add(std::make_shared<BoostVehicle>(menu->ui, world));
-	menu->Add(std::make_shared<BoostPlayer>(menu->ui, world, settings));
-	menu->Add(std::make_shared<Suicide>(menu->ui, world));
 	menu->Start();
 
 	process->Close();
