@@ -221,5 +221,8 @@
     <ClCompile Include="pLib\Memory\pProcess.cpp">
       <Filter>Header Files\pLib\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
