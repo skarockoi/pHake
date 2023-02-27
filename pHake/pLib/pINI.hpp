@@ -27,7 +27,7 @@ private:
 	bool			CheckExistanceOfKey(const std::string& key);
 	bool			CheckExistanceOfComment(const std::string& comment);
 	bool			ChangeKeyValue(const std::string& key, const std::string& value);
-	bool			CreateDirectyRecursive(const std::string& dirName);
+	bool			CreateDirectoryRecursive(const std::string& dirName);
 	std::vector<std::string> split(const std::string& str, const char sep); // split a string separated by sep into a vector
 
 

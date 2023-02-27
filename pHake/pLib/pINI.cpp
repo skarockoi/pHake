@@ -42,7 +42,7 @@ bool pINI::Open(const std::string& filepath)
 			directory += i;
 		}
 
-		CreateDirectyRecursive(directory);
+		CreateDirectoryRecursive(directory);
 
 		std::ofstream file{ filepath };
 		file.close();
@@ -131,7 +131,7 @@ bool pINI::ChangeKeyValue(const std::string& key, const std::string& value)
 	return false;
 }
 
-bool pINI::CreateDirectyRecursive(const std::string& dirName)
+bool pINI::CreateDirectoryRecursive(const std::string& dirName)
 {
 	std::error_code err;
 	if (!std::filesystem::create_directories(dirName, err))
