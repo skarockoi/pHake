@@ -30,4 +30,4 @@
 # Wiki for Developers
 - <a href="https://github.com/xhz8s/pHake/discussions/29">Development Talk</a><br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Compilation-with-Visual-Studio">Compilation</a><br/>
-- <a href="">How to add own Cheats (not yet ready)</a><br/>
+- <a href="">How to add own Cheats (not ready yet)</a><br/>
