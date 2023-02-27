@@ -25,7 +25,7 @@
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini<br/>
 
 # Download
-- <a href="https://github.com/xhz8s/pHake/releases/download/5.6/pHake_5.6_1.60.zip">pHake 5.6 (1.60/1.61) Outdated</a><br/>
+- <a href="https://github.com/xhz8s/pHake/releases/download/5.7/pHake_5.7_1.66.zip">pHake 5.7 (1.66) Outdated</a><br/>
 
 # Wiki for Developers
 - <a href="https://github.com/xhz8s/pHake/discussions/29">Development Talk</a><br/>
