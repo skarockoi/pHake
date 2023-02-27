@@ -87,7 +87,7 @@ bool Start()
 
 	menu->Attach("Grand Theft Auto V");
 
-	auto maxweapon = std::make_shared<MaxWeapon>(menu->ui, world, settings);
+	auto maxweapon = std::make_shared<MaxWeapon>(menu->ui, world, settings); // start cheats
 	auto nowanted = std::make_shared<NoWanted>(menu->ui, world, settings);
 	auto godmode = std::make_shared<GodMode>(menu->ui, world, settings);
 	auto trigger = std::make_shared<Trigger>(menu->ui, process, world, settings);
@@ -98,7 +98,7 @@ bool Start()
 	auto boostplayer = std::make_shared<BoostPlayer>(menu->ui, world, settings);
 	auto suicide = std::make_shared<Suicide>(menu->ui, world);
 
-	menu->Add(maxweapon);
+	menu->Add(maxweapon); // add cheats to menu
 	menu->Add(nowanted);
 	menu->Add(godmode);
 	menu->Add(trigger);

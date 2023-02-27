@@ -17,7 +17,15 @@ BoostVehicle::BoostVehicle(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> 
 
 void BoostVehicle::Execute()
 {
-	if (vehicle_defaults.base() ^ world->localplayer.vehicle.base())
+	uintptr_t vehicle_base_addr = world->localplayer.vehicle.base();
+
+	if (vehicle_base_addr == 0x0)
+	{
+		ui->notification.Add("No vehicle available");
+		return;
+	}
+
+	if (vehicle_defaults.base() != vehicle_base_addr)
 	{
 		vehicle_defaults = world->localplayer.vehicle;
 		curr_vehicle_mode = 0;
