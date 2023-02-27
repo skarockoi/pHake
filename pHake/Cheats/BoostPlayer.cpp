@@ -20,7 +20,6 @@ void BoostPlayer::Execute()
 	if (curr_player_mode > player_modes.size() - 1)
 		curr_player_mode = 0;
 
-	std::cout << world->localplayer.playerinfo.base();
 
 	switch (curr_player_mode)
 	{

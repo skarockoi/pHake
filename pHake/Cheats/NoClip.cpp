@@ -41,8 +41,6 @@ void NoClip::Execute()
 	if (world->localplayer.in_vehicle())
 		return;
 
-	std::cout << "f";
-
 	static uintptr_t position_base = 0;
 	if (position_base != world->localplayer.position.base()) // every time the localplayer.position.base() changes the patched code needs to be updated
 	{
