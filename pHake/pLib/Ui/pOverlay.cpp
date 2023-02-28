@@ -70,11 +70,11 @@ void pOverlay::Create(LPCSTR Name)
 	notification.Create(&window_);
 
 	mouse_.Create(&window_);
-	mouse_.Toggle();
 
 	list.Create(&window_);
 	list.position(sf::Vector2f(window_.getSize().x / 2, window_.getSize().y / 4));
-	list.Toggle();
+
+	this->Toggle();
 }
 
 void pOverlay::Toggle()
