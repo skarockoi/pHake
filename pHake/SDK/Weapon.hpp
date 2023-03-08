@@ -1,8 +1,8 @@
 #ifndef _WEAPON_HPP_
 #define _WEAPON_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
+
 #include "AmmoInfo.hpp"
 
 class Weapon : public pClass<0x2F4 + 0x4>

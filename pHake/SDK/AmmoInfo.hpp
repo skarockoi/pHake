@@ -1,7 +1,6 @@
 #ifndef _AMMOINFO_HPP_
 #define _AMMOINFO_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
 
 class AmmoInfo : public pClass<0x20 + 0x4>

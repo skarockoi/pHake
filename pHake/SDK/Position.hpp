@@ -1,7 +1,6 @@
 #ifndef _POSITION_HPP_
 #define _POSITION_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
 #include "../pLib/Memory/vec3.hpp"
 

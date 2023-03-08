@@ -15,13 +15,13 @@ public:
 	void Save();
 
 public:
-	bool maxwanted = 0;
-	bool maxweapon = 0;
-	bool nowanted = 0;
-	bool godmode = 0;
-	bool trigger = 0;
-	bool rploop = 0;
-	bool noclip = 0;
+	bool maxwanted = false;
+	bool maxweapon = false;
+	bool nowanted = false;
+	bool godmode = false;
+	bool trigger = false;
+	bool rploop = false;
+	bool noclip = false;
 
 	float noclip_speed = 0.f;
 	float kmh = 0.f;

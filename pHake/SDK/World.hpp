@@ -1,13 +1,11 @@
 #ifndef _WORLD_HPP_
 #define _WORLD_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
+
 #include "Player.hpp"
 
-//https://github.com/Yimura/GTAV-Classes
-
-class World : public pClass<0x8 + 0x8>
+class World : public pClass<0x8 + 0x8> // https://github.com/Yimura/GTAV-Classes
 {
 public:
 	using pClass::pClass;

@@ -1,13 +1,13 @@
 #ifndef _LOCALPLAYER_HPP_
 #define _LOCALPLAYER_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
 #include "../pLib/Memory/vec3.hpp"
+
 #include "Position.hpp"
 #include "Vehicle.hpp"
-#include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
+#include "PlayerInfo.hpp"
 
 class Player : public pClass<0x20B8 + 0x4>
 {

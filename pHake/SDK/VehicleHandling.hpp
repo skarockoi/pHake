@@ -1,7 +1,6 @@
 #ifndef _VEHICLEHANDLING_HPP_
 #define _VEHICLEHANDLING_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
 
 class VehicleHandling : public pClass<0xF0 + 0x4>

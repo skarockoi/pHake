@@ -1,13 +1,13 @@
 #ifndef _NPC_HPP_
 #define _NPC_HPP_
 
-#include "../pLib/Memory/pProcess.hpp"
 #include "../pLib/Memory/pClass.hpp"
 #include "../pLib/Memory/vec3.hpp"
+
 #include "Position.hpp"
 #include "Vehicle.hpp"
-#include "PlayerInfo.hpp"
 #include "WeaponManager.hpp"
+#include "PlayerInfo.hpp"
 
 class NPC : public pClass<0x150C + 0x4>
 {
