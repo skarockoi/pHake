@@ -15,13 +15,13 @@
 
 # Usage
 - GTA needs to be in "Fullscreen Windowed" or "Windowed" mode<br/>
+- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys:</a> (can be changed in settings.ini)<br/>
 - ALT : Toggle Menu<br/>
 - Left/Right Mouse: Toggle Features<br/>
 - Num0 : Teleport to Waypoint<br/>
 - Num1 : Boost Player<br/>
 - Num2 : Boost Vehicle<br/>
 - Space : To change speed while flying<br/>
-- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini<br/>
 
 # Download
 - <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a><br/> 
