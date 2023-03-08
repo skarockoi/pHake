@@ -21,15 +21,12 @@ public:
 	HANDLE		  handle_; // handle to process
 	ProcessModule base_module_;
 
-private:
-	uint32_t FindProcessIdByProcessName(const char* process_name);
-	uint32_t FindProcessIdByWindowName(const char* window_name);
-
 public:
 	bool AttachProcess(const char* process_name);
 	bool AttachWindow(const char* window_name);
 	void Close();
 
+public:
 	ProcessModule GetModule(const char* module_name);
 	LPVOID		  Allocate(size_t size_in_bytes);
 	uintptr_t	  FindCodeCave(uint32_t length_in_bytes);
@@ -94,5 +91,9 @@ public:
 		}
 		return this->read<T>(buffer + offsets.back());
 	}
+
+private:
+	uint32_t FindProcessIdByProcessName(const char* process_name);
+	uint32_t FindProcessIdByWindowName(const char* window_name);
 };
 #endif
