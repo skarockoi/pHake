@@ -31,6 +31,7 @@
 - <a href="https://github.com/skarockoi/pHake/releases/download/5.8/pHake_5.8_1.66.zip">pHake 5.8 (GTA:O 1.66)</a>
 - <a href="https://github.com/skarockoi/pHake/releases/download/5.7/pHake_5.7_1.66.zip">pHake 5.7 (GTA:O 1.66)</a>
 - <a href="https://github.com/skarockoi/pHake/releases/download/5.6/pHake_5.6_1.60.zip">pHake 5.6 (GTA:O 1.60/1.61)</a>
+- <a href="https://github.com/skarockoi/pHake/releases/download/1/pHake.Steam.Legay.zip">Steam Only Legacy Versions</a>
 
 # Wiki for Developers
 - <a href="https://github.com/skarockoi/pHake/discussions/29">Development Talk</a>
