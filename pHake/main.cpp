@@ -110,7 +110,7 @@ bool Start()
 	menu->Add(boostplayer);
 	menu->Add(suicide);
 
-	std::unique_ptr<pThread> thread_world = std::make_unique<pThread>([&]() // extra thread needed to update world info and key toggles
+	std::unique_ptr<pThread> thread_world = std::make_unique<pThread>([&]() // extra thread needed to update world info
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh);
@@ -118,32 +118,13 @@ bool Start()
 
 	std::unique_ptr<pThread> thread_toggles = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
 		{
-			GetKeyExecuteWaitForRelease(settings->keys.menu, [=]()
-				{
-					menu->ui->Toggle();
-				});
-			GetKeyExecuteWaitForRelease(settings->keys.teleport, [=]()
-				{
-					teleport->Execute();
-				});
-
-			GetKeyExecuteWaitForRelease(settings->keys.boost_player, [=]()
-				{
-					boostplayer->Execute();
-				});
-
-			GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, [=]()
-				{
-					boostvehicle->Execute();
-				});
+			GetKeyExecuteWaitForRelease(settings->keys.menu, [=]() { menu->ui->Toggle(); });
+			GetKeyExecuteWaitForRelease(settings->keys.teleport, [=]() { teleport->Execute(); });
+			GetKeyExecuteWaitForRelease(settings->keys.boost_player, [=]() { boostplayer->Execute(); });
+			GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, [=]() { boostvehicle->Execute(); });
 
 			if (settings->noclip)
-			{
-				GetKeyExecuteWaitForRelease(VK_SPACE, [=]()
-					{
-						boostplayer->Execute();
-					});
-			}
+				GetKeyExecuteWaitForRelease(VK_SPACE, [=]() { boostplayer->Execute(); });
 	}, 10);
 
 	menu->Start();
