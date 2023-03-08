@@ -17,7 +17,7 @@
 - GTA needs to be in "Fullscreen Windowed" or "Windowed" mode<br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys:</a> (can be changed in settings.ini)<br/>
 Key | Function
---- | -------- |
+------------ | ------------ |
 ALT | Toggle Menu
 L/R Mouse | Toggle Features
 Num0 | Teleport to Waypoint
