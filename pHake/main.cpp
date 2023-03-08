@@ -87,16 +87,16 @@ bool Start()
 
 	menu->Attach("Grand Theft Auto V");
 
-	auto maxweapon = std::make_shared<MaxWeapon>(menu->ui, world, settings); // start cheats
-	auto nowanted = std::make_shared<NoWanted>(menu->ui, world, settings);
-	auto godmode = std::make_shared<GodMode>(menu->ui, world, settings);
-	auto trigger = std::make_shared<Trigger>(menu->ui, process, world, settings);
-	auto rploop = std::make_shared<RPLoop>(menu->ui, world, settings);
-	auto noclip = std::make_shared<NoClip>(menu->ui, process, world, settings);
-	auto teleport = std::make_shared<Teleport>(menu->ui, world, process, settings);
-	auto boostvehicle = std::make_shared<BoostVehicle>(menu->ui, world);
-	auto boostplayer = std::make_shared<BoostPlayer>(menu->ui, world, settings);
-	auto suicide = std::make_shared<Suicide>(menu->ui, world);
+	const auto maxweapon = std::make_shared<MaxWeapon>(menu->ui, world, settings); // start cheats
+	const auto nowanted = std::make_shared<NoWanted>(menu->ui, world, settings);
+	const auto godmode = std::make_shared<GodMode>(menu->ui, world, settings);
+	const auto trigger = std::make_shared<Trigger>(menu->ui, process, world, settings);
+	const auto rploop = std::make_shared<RPLoop>(menu->ui, world, settings);
+	const auto noclip = std::make_shared<NoClip>(menu->ui, process, world, settings);
+	const auto teleport = std::make_shared<Teleport>(menu->ui, world, process, settings);
+	const auto boostvehicle = std::make_shared<BoostVehicle>(menu->ui, world);
+	const auto boostplayer = std::make_shared<BoostPlayer>(menu->ui, world, settings);
+	const auto suicide = std::make_shared<Suicide>(menu->ui, world);
 
 	menu->Add(maxweapon); // add cheats to menu
 	menu->Add(nowanted);
