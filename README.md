@@ -24,7 +24,7 @@
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini<br/>
 
 # Download
-- if it's not already installed: <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a><br/> 
+- <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a><br/> 
 - <a href="https://github.com/xhz8s/pHake/releases/download/5.8/pHake_5.8_1.66.zip">pHake 5.8 (GTA:O 1.66)</a><br/>
 
 # Wiki for Developers
