@@ -82,8 +82,8 @@ bool ReadConfig()
 
 bool Start()
 {
-	std::shared_ptr<World> world = std::make_shared<World>();
-	std::shared_ptr<pMenu> menu = std::make_shared<pMenu>();
+	const std::shared_ptr<World> world = std::make_shared<World>();
+	const std::shared_ptr<pMenu> menu = std::make_shared<pMenu>();
 
 	menu->Attach("Grand Theft Auto V");
 
@@ -110,13 +110,13 @@ bool Start()
 	menu->Add(boostplayer);
 	menu->Add(suicide);
 
-	std::unique_ptr<pThread> thread_world = std::make_unique<pThread>([&]() // extra thread needed to update world info
+	const std::unique_ptr<pThread> thread_world = std::make_unique<pThread>([&]() // extra thread needed to update world info
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.metres_per_second); // converting m/s to km/h
 	}, 1);
 
-	std::unique_ptr<pThread> thread_toggles = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
+	const std::unique_ptr<pThread> thread_toggles = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
 	{
 		GetKeyExecuteWaitForRelease(settings->keys.menu, std::bind(&pOverlay::Toggle, menu->ui));
 		GetKeyExecuteWaitForRelease(settings->keys.teleport, std::bind(&pCheat::Execute, teleport));
