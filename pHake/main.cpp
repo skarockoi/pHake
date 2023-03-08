@@ -147,6 +147,7 @@ bool Start()
 	}, 10);
 
 	menu->Start();
+
 	thread_world->Destroy();
 	thread_toggles->Destroy();
 
