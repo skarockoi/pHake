@@ -17,7 +17,7 @@
 | Key       | Function             |
 |-----------|----------------------|
 | ALT       | Toggle Menu          |
-| L/R Mouse | Toggle Features      |
+| Mouse     | Toggle Features      |
 | NUM0      | Teleport to Waypoint |
 | NUM1      | Boost Player         |
 | NUM2      | Boost Vehicle        |
