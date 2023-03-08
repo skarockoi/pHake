@@ -18,8 +18,7 @@ inline void sleep(uint32_t ms)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
-template <typename T>
-void GetKeyExecuteWaitForRelease(int key, T function) // waits for key to be pressed, executes the function and then waits until you release the key again
+static void GetKeyExecuteWaitForRelease(int key, std::function<void()> function) // waits for key to be pressed, executes the function and then waits until you release the key again
 {
 	if (HIBYTE(GetAsyncKeyState(key)))
 	{
