@@ -4,7 +4,7 @@ GodMode::GodMode(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std
 {
 	this->ui = ui;
 	this->world = world;
-	active = &settings->godmode;
+	active_ = &settings->godmode;
 
 	name_ = "GodMode";
 	thread_intervals_ = 100;
@@ -12,7 +12,7 @@ GodMode::GodMode(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std
 
 void GodMode::Execute()
 {
-	if (*active)
+	if (*active_)
 	{
 		if (!world->localplayer.god())
 			world->localplayer.god(1);

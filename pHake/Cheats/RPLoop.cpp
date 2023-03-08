@@ -7,12 +7,12 @@ RPLoop::RPLoop(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, std::
 
 	name_ = "RPLoop";
 	thread_intervals_ = 1;
-	active = &settings->rploop;
+	active_ = &settings->rploop;
 }
 
 void RPLoop::Execute()
 {
-	if (!*active)
+	if (!*active_)
 		return;
 
 	world->localplayer.playerinfo.wanted_level(5);

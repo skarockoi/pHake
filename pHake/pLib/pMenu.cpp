@@ -13,7 +13,7 @@ void pMenu::Attach(LPCSTR window_name)
 void pMenu::Add(std::shared_ptr<pCheatLoop> cheat)
 {
 	cheats_loop_.push_back(cheat);
-	ui->list.AddBool(cheat->name_, *cheat->active);
+	ui->list.AddBool(cheat->name_, *cheat->active_);
 }
 
 void pMenu::Add(std::shared_ptr<pCheat> cheat)

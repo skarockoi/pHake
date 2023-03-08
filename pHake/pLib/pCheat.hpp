@@ -19,7 +19,7 @@ class pCheatLoop
 {
 public:
 	std::string name_;
-	bool*       active;
+	bool*       active_;
 	uint64_t    thread_intervals_;
 
 public:

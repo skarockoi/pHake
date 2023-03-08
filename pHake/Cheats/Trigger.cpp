@@ -12,7 +12,7 @@ Trigger::Trigger(std::shared_ptr<pOverlay> ui, std::shared_ptr<pProcess> process
 
 	name_ = "Trigger";
 	thread_intervals_ = 1;
-	active = &settings->trigger;
+	active_ = &settings->trigger;
 }
 
 void Trigger::Execute()

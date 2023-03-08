@@ -9,14 +9,14 @@ MaxWeapon::MaxWeapon(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world,
 
 	this->name_ = "MaxWeapon";
 	this->thread_intervals_ = 100;
-	this->active = &settings->maxweapon;
+	this->active_ = &settings->maxweapon;
 }
 
 void MaxWeapon::Execute()
 {
 	CheckCurrentWeaponAndSave();
 
-	if (*active)
+	if (*active_)
 	{
 		if (!IsWeaponUpgraded())
 			UpgradeWeapon();
@@ -30,7 +30,7 @@ void MaxWeapon::Execute()
 
 void MaxWeapon::Restore()
 {
-	if (*active)
+	if (*active_)
 		RestoreWeapons();
 }
 

@@ -7,7 +7,7 @@ NoWanted::NoWanted(std::shared_ptr<pOverlay> ui, std::shared_ptr<World> world, s
 	
 	name_ = "NoWanted";
 	thread_intervals_ = 10;
-	active = &settings->nowanted;
+	active_ = &settings->nowanted;
 }
 
 void NoWanted::Execute() {
@@ -17,6 +17,6 @@ void NoWanted::Execute() {
 
 void NoWanted::Restore()
 {
-	if (*active)
+	if (*active_)
 		world->localplayer.playerinfo.wanted_level(0);
 }

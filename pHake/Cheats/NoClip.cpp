@@ -20,7 +20,7 @@ NoClip::NoClip(std::shared_ptr<pOverlay> ui, std::shared_ptr<pProcess> process, 
 
 	name_ = "NoClip";
 	thread_intervals_ = 10;
-	active = &settings->noclip;
+	active_ = &settings->noclip;
 
 	settings->noclip_speed = 0.05f;
 }
@@ -29,7 +29,7 @@ void NoClip::Execute()
 {
 	static bool restore = false; // check to restore or patch game coDE
 
-	if (!*active)
+	if (!*active_)
 	{
 		if (restore)
 			this->Restore();
