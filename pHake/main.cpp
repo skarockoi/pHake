@@ -127,7 +127,7 @@ bool Start()
 			GetKeyExecuteWaitForRelease(settings->keys.boost_player, std::bind(&pCheat::Execute, boostplayer));
 	}, 10);
 
-	menu->Start();
+	menu->Start(); // start cheats and ui
 
 	thread_world->Destroy();
 	thread_toggles->Destroy();
