@@ -110,13 +110,13 @@ bool Start()
 	menu->Add(boostplayer);
 	menu->Add(suicide);
 
-	std::unique_ptr<pThread> world_thread = std::make_unique<pThread>([&]() // extra thread needed to update world info and key toggles
+	std::unique_ptr<pThread> thread_world = std::make_unique<pThread>([&]() // extra thread needed to update world info and key toggles
 	{
 		world->UpdateAll(process->read<uintptr_t>(settings->pointers.world));
 		settings->kmh = 3.6f * process->read<float>(settings->pointers.kmh);
 	}, 1);
 
-	std::unique_ptr<pThread> toggles_thread = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
+	std::unique_ptr<pThread> thread_toggles = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
 		{
 			GetKeyExecuteWaitForRelease(settings->keys.menu, [=]()
 				{
@@ -147,8 +147,8 @@ bool Start()
 	}, 10);
 
 	menu->Start();
-	world_thread->Destroy();
-	toggles_thread->Destroy();
+	thread_world->Destroy();
+	thread_toggles->Destroy();
 
 	process->Close();
 	settings->Save();
