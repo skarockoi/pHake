@@ -24,7 +24,7 @@
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini<br/>
 
 # Download
-- <a href="https://github.com/xhz8s/pHake/releases/download/5.8/pHake_5.8_1.66.zip">pHake 5.7 (GTA:O 1.66)</a><br/>
+- <a href="https://github.com/xhz8s/pHake/releases/download/5.8/pHake_5.8_1.66.zip">pHake 5.8 (GTA:O 1.66)</a><br/>
 
 # Wiki for Developers
 - <a href="https://github.com/xhz8s/pHake/discussions/29">Development Talk</a><br/>
