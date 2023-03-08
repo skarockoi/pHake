@@ -44,7 +44,7 @@ public:
 		uintptr_t is_player_aiming = 0x0;
 		uintptr_t asm_update_position = 0x0;
 		uintptr_t asm_update_speed_z = 0x0;
-		uintptr_t kmh = 0x0;
+		uintptr_t metres_per_second = 0x0;
 	}pointers;
 
 private:
