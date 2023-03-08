@@ -14,8 +14,7 @@
 - Suicide<br/>
 
 # Usage
-- Start in game<br/>
-- Fullscreen Windowed<br/>
+GTA needs to be in "Fullscreen Windowed" or "Windowed" mode<br/>
 - ALT : Toggle Menu<br/>
 - Left/Right Mouse: Toggle Features<br/>
 - Num0 : Teleport to Waypoint<br/>
