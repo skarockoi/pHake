@@ -147,6 +147,8 @@ bool Start()
 	}, 10);
 
 	menu->Start();
+	world_thread->Destroy();
+	toggles_thread->Destroy();
 
 	process->Close();
 	settings->Save();
