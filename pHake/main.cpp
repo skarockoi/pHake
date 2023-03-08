@@ -117,14 +117,14 @@ bool Start()
 	}, 1);
 
 	std::unique_ptr<pThread> thread_toggles = std::make_unique<pThread>([&]() // extra thread needed for keyboard toggles
-		{
-			GetKeyExecuteWaitForRelease(settings->keys.menu, [=]() { menu->ui->Toggle(); });
-			GetKeyExecuteWaitForRelease(settings->keys.teleport, [=]() { teleport->Execute(); });
-			GetKeyExecuteWaitForRelease(settings->keys.boost_player, [=]() { boostplayer->Execute(); });
-			GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, [=]() { boostvehicle->Execute(); });
+	{
+		GetKeyExecuteWaitForRelease(settings->keys.menu, std::bind(&pOverlay::Toggle, menu->ui));
+		GetKeyExecuteWaitForRelease(settings->keys.teleport, std::bind(&pCheat::Execute, teleport));
+		GetKeyExecuteWaitForRelease(settings->keys.boost_player, std::bind(&pCheat::Execute, boostplayer));
+		GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, std::bind(&pCheat::Execute, boostvehicle));
 
-			if (settings->noclip)
-				GetKeyExecuteWaitForRelease(VK_SPACE, [=]() { boostplayer->Execute(); });
+		if (settings->noclip)
+			GetKeyExecuteWaitForRelease(settings->keys.boost_player, std::bind(&pCheat::Execute, boostplayer));
 	}, 10);
 
 	menu->Start();
