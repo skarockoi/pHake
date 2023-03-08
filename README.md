@@ -14,6 +14,10 @@
 - Suicide
 
 # Usage
+- If you get dll errors, install <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a>
+- GTA needs to be in "Fullscreen Windowed" or "Windowed" mode
+- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini
+
 | Key       | Function             |
 |-----------|----------------------|
 | ALT       | Toggle Menu          |
@@ -22,9 +26,6 @@
 | NUM1      | Boost Player         |
 | NUM2      | Boost Vehicle        |
 | Space     | Change Fly Speed     |
-- <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys</a> can be changed in settings.ini
-- If you get dll errors, install <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a>
-- GTA needs to be in "Fullscreen Windowed" or "Windowed" mode
 
 # Download
 - <a href="https://github.com/skarockoi/pHake/releases/download/5.8/pHake_5.8_1.66.zip">pHake 5.8 (GTA:O 1.66)</a>
