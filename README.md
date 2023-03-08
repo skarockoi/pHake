@@ -16,14 +16,14 @@
 # Usage
 - GTA needs to be in "Fullscreen Windowed" or "Windowed" mode<br/>
 - <a href="https://github.com/xhz8s/pHake/wiki/Keycodes">Keys:</a> (can be changed in settings.ini)<br/>
-Key | Function
------------- | ------------ |
-ALT | Toggle Menu
-L/R Mouse | Toggle Features
-Num0 | Teleport to Waypoint
-Num1 | Boost Player
-Num2 | Boost Vehicle
-Space | To change speed while flying
+| Key       | Function             |
+|-----------|----------------------|
+| ALT       | Toggle Menu          |
+| L/M Mouse | Toggle Features      |
+| NUM0      | Teleport to Waypoint |
+| NUM1      | Boost Player         |
+| NUM2      | Boost Vehicle        |
+| Space     | Change Fly Speed     |
 
 # Download
 - <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">vc_redist.x64</a><br/> 
