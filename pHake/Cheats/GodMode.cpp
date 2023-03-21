@@ -25,7 +25,6 @@ void GodMode::Execute()
 		if (world->localplayer.god())
 			world->localplayer.god(0);
 		
-
 		if (world->localplayer.vehicle.god())
 			world->localplayer.vehicle.god(0);
 	}
