@@ -1,5 +1,5 @@
-#ifndef _ASSEMBLYBYTE_HPP_
-#define _ASSEMBLYBYTE_HPP_
+#ifndef _PDETOUR_HPP_
+#define _PDETOUR_HPP_
 
 #include <vector>
 

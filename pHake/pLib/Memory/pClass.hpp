@@ -1,5 +1,5 @@
-#ifndef _DATAWRAPPER_HPP_
-#define _DATAWRAPPER_HPP_
+#ifndef _PCLASS_HPP_
+#define _PCLASS_HPP_
 
 #include <Windows.h>
 #include "pProcess.hpp"

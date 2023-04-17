@@ -1,5 +1,5 @@
-#ifndef _PSETTINGS_HPP_
-#define _PSETTINGS_HPP_
+#ifndef _PINI_HPP_
+#define _PINI_HPP_
 
 #include <string>
 #include <sstream>

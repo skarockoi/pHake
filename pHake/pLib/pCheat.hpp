@@ -1,5 +1,5 @@
-#ifndef CHEAT_HPP
-#define CHEAT_HPP
+#ifndef PCHEAT_HPP
+#define PCHEAT_HPP
 
 #include <memory>
 #include <string>

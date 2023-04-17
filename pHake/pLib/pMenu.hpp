@@ -1,5 +1,5 @@
-#ifndef PHAKE_HPP
-#define PHAKE_HPP
+#ifndef PMENU_HPP
+#define PMENU_HPP
 
 #include "Ui/pOverlay.hpp"
 
