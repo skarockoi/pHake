@@ -1,4 +1,4 @@
-#include "pLib/pMenu.hpp" // SFML is annoying and needs to be included first
+#include <SFML/Graphics.hpp> // SFML is annoying and needs to be included first
 #include <Windows.h> // for MessageBox()
 
 bool AlreadyRunning(); // check if cheat is already running

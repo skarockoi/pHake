@@ -1,5 +1,6 @@
 #include "main.hpp"
 
+#include "pLib/pMenu.hpp"
 #include "pLib/pThread.hpp"
 #include "pLib/pHelper.hpp"
 #include "pLib/pINI.hpp"
