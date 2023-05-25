@@ -35,7 +35,6 @@
 - <a href="https://github.com/skarockoi/pHake/releases/download/1/pHake.Steam.Legay.zip">Steam Only Legacy Versions</a>
 
 # Wiki for Developers
-- <a href="https://github.com/skarockoi/pHake/discussions/29">Development Talk</a>
 - <a href="https://github.com/skarockoi/pHake/wiki/Compilation-with-Visual-Studio">Compilation with Visual Studio</a>
 - <a href="https://github.com/skarockoi/pHake">How to add Cheats (not ready)</a>
 - <a href="https://github.com/skarockoi/pHake">How to use pLib to create your own Cheat (not ready)</a>
