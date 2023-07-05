@@ -74,7 +74,8 @@ void pOverlay::Create(LPCSTR Name)
 	list.Create(&window_);
 	list.position(sf::Vector2f(window_.getSize().x / 2, window_.getSize().y / 4));
 
-	this->Toggle();
+	list.Toggle();
+	mouse_.Toggle();
 }
 
 void pOverlay::Toggle()
