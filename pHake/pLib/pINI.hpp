@@ -11,23 +11,23 @@ public:
 	pINI();
 	~pINI();
 	
-	bool			Open(const std::string& filepath);
+	bool Open(const std::string& filepath);
 	template <typename T>
-	T				Get(const std::string& key, T default_value);
+	T	 Get(const std::string& key, T default_value);
 	template <typename T>
-	bool			Edit(const std::string& key, T value);
+	bool Edit(const std::string& key, T value);
 
-	void			Comment(const std::string& key);
-	void			Save();
-	void			Clear();
+	void Comment(const std::string& key);
+	void Save();
+	void Clear();
 
 private:
-	void			AddKeyAndValue(const std::string& key, const std::string& value);
-	std::string		GetKeyByName(const std::string& key);
-	bool			CheckExistanceOfKey(const std::string& key);
-	bool			CheckExistanceOfComment(const std::string& comment);
-	bool			ChangeKeyValue(const std::string& key, const std::string& value);
-	bool			CreateDirectoryRecursive(const std::string& dirName);
+	void AddKeyAndValue(const std::string& key, const std::string& value);
+	std::string	GetKeyByName(const std::string& key);
+	bool CheckExistanceOfKey(const std::string& key);
+	bool CheckExistanceOfComment(const std::string& comment);
+	bool ChangeKeyValue(const std::string& key, const std::string& value);
+	bool CreateDirectoryRecursive(const std::string& dirName);
 	std::vector<std::string> split(const std::string& str, const char sep); // split a string separated by sep into a vector
 
 
