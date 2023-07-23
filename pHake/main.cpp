@@ -125,7 +125,7 @@ bool Start()
 		GetKeyExecuteWaitForRelease(settings->keys.boost_vehicle, std::bind(&pCheat::Execute, boostvehicle));
 
 		if (settings->noclip)
-			GetKeyExecuteWaitForRelease(settings->keys.boost_player, std::bind(&pCheat::Execute, boostplayer));
+			GetKeyExecuteWaitForRelease(VK_SPACE, std::bind(&pCheat::Execute, boostplayer));
 	}, 10);
 
 	menu->Start(); // start cheats and ui
