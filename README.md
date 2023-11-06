@@ -27,9 +27,6 @@
 |   | NUM2      | Boost Vehicle        |
 |   | Space     | Change Fly Speed     |
 
-# Download
-I won't update signatures and offsets anymore.
-
 # Wiki for Developers
 - <a href="https://github.com/skarockoi/pHake/wiki/Compilation-with-Visual-Studio">Compilation with Visual Studio</a>
 - <a href="https://github.com/skarockoi/pHake">How to add Cheats (not ready)</a>
