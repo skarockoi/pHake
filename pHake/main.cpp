@@ -81,7 +81,7 @@ bool ReadConfig()
 	return settings->Read();
 }
 
-bool Start()
+bool Start() // signatures and sdk might be out of date
 {
 	const std::shared_ptr<World> world = std::make_shared<World>();
 	const std::shared_ptr<pMenu> menu = std::make_shared<pMenu>();
